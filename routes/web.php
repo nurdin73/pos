@@ -55,8 +55,63 @@ Route::group(['prefix' => 'admin', 'middleware' => ['auth']], function () {
         Route::get('/database', 'Admin\SettingController@database')->name('settingDatabase');
         Route::get('/management-staff', 'Admin\SettingController@managementStaff')->name('settingManagementStaff');
     });
-
 });
+
+Route::group(['prefix' => 'api/'], function () {
+    Route::group(['prefix' => 'v1/'], function () {
+        Route::group(['prefix' => 'managements'], function () {
+
+            // get all
+            Route::get('/', 'Api\Managements\BarangController@index');
+            Route::get('/stok', 'Api\Managements\StokController@index');
+            Route::get('/kategori', 'Api\Managements\KategoriController@index');
+            Route::get('/categories', 'Api\Managements\KategoriController@getLike');
+            Route::get('/pelanggan', 'Api\Managements\PelangganController@index');
+            Route::get('/kasbon', 'Api\Managements\KasbonController@index');
+            Route::get('/pajak', 'Api\Managements\PajakController@index');
+
+            // get detail
+            Route::get('barang/{id}', 'Api\Managements\BarangController@show');
+            Route::get('stok/{id}', 'Api\Managements\StokController@show');
+            Route::get('kategori/{id}', 'Api\Managements\KategoriController@show');
+            Route::get('pelanggan/{id}', 'Api\Managements\PelangganController@show');
+            Route::get('kasbon/{id}', 'Api\Managements\KasbonController@show');
+            Route::get('pajak/{id}', 'Api\Managements\PajakController@show');
+
+            // add 
+            Route::group(['prefix' => 'add'], function () {
+                Route::post('/barang', 'Api\Managements\BarangController@store');
+                Route::post('/stok', 'Api\Managements\StokController@store');
+                Route::post('/kategori', 'Api\Managements\KategoriController@store');
+                Route::post('/pelanggan', 'Api\Managements\PelangganController@store');
+                Route::post('/kasbon', 'Api\Managements\KasbonController@store');
+                Route::post('/pajak', 'Api\Managements\PajakController@store');
+            });
+
+            // update 
+            Route::group(['prefix' => 'update'], function () {
+                Route::put('/barang/{id}', 'Api\Managements\BarangController@update');
+                Route::put('/stok/{id}', 'Api\Managements\StokController@update');
+                Route::put('/kategori/{id}', 'Api\Managements\KategoriController@update');
+                Route::put('/pelanggan/{id}', 'Api\Managements\PelangganController@update');
+                Route::put('/kasbon/{id}', 'Api\Managements\KasbonController@update');
+                Route::put('/pajak/{id}', 'Api\Managements\PajakController@update');
+            });
+
+            // delete 
+            Route::group(['prefix' => 'delete'], function () {
+                Route::delete('/barang/{id}', 'Api\Managements\BarangController@destroy');
+                Route::delete('/stok/{id}', 'Api\Managements\StokController@destroy');
+                Route::delete('/kategori/{id}', 'Api\Managements\KategoriController@destroy');
+                Route::delete('/pelanggan/{id}', 'Api\Managements\PelangganController@destroy');
+                Route::delete('/kasbon/{id}', 'Api\Managements\KasbonController@destroy');
+                Route::delete('/pajak/{id}', 'Api\Managements\PajakController@destroy');
+            });
+
+        });
+    });
+});
+
 
 
 Route::get('/home', 'HomeController@index')->name('home');

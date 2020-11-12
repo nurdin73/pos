@@ -35,7 +35,7 @@
         <a class="c-sidebar-nav-link" href="{{ route('managementStok') }}">
           <svg class="c-sidebar-nav-icon">
             <use xlink:href="{{ asset('vendors/@coreui/icons/svg/free.svg#cil-chart') }}"></use>
-          </svg> management Stok
+          </svg> Management Stok
         </a>
       </li>
       <li class="c-sidebar-nav-item">

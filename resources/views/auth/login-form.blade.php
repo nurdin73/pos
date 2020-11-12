@@ -1,5 +1,5 @@
 @extends('components.auth.template')
-
+@section('title', 'Login - Point Of Sales')
 @section('content')
 <div class="col-md-5">
     <div class="card-group">
