@@ -2,12 +2,26 @@
 
 namespace App\Http\Controllers\Api\Managements;
 
+use App\Helpers\GenerateCode;
 use App\Http\Controllers\Controller;
+use App\Models\FileProducts;
+use App\Models\Products;
 use Illuminate\Http\Request;
-
+use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\Storage;
+use Illuminate\Support\Str;
 
 class BarangController extends Controller
 {
+    protected $productsService;
+
+    public function __construct() {
+        $this->productsService = app()->make('ProductsService');
+        if(!Auth::user()) {
+            return response(['message' => 'not autorized'], 403);
+        }
+    }
+
     /**
      * Display a listing of the resource.
      *
@@ -27,7 +41,56 @@ class BarangController extends Controller
      */
     public function store(Request $request)
     {
-        
+        $request->validate([
+            'nama_barang' => 'required|unique:products',
+            'type_barang' => 'required',
+            'stok' => 'required|numeric',
+            'harga_dasar' => 'required',
+            'harga_jual' => 'required',
+        ]);
+
+        // ----------------------------- //
+        // Variable ------------------- //
+        $satuan = $request->input('satuan');
+        $type_barang = $request->input('type_barang');
+        $nama_barang = $request->input('nama_barang');
+        $stok = $request->input('stok');
+        $harga_dasar = $request->input('harga_dasar');
+        $harga_jual = $request->input('harga_jual');
+        $berat = $request->input('berat');
+        $diskon = $request->input('diskon');
+        $rak = $request->input('rak');
+        $keterangan = $request->input('keterangan');
+        $kategori = $request->input('kategori');
+        $files = $request->file('files');
+        // ------------------------------- //
+        if($satuan) {
+            if($satuan != "gram" && $satuan != "pcs") {
+                return response(['message' => 'value satuan tidak valid'], 406);
+            }
+        }
+        if($type_barang) {
+            if($type_barang != "baru" && $type_barang != "bekas") {
+                return response(['message' => 'type barang tidak valid'], 406);
+            }
+        }
+        if(!$files) return response(['message' => 'gada']);
+
+        $data = [
+            'nama_barang' => $nama_barang,
+            'type_barang' => $type_barang,
+            'kode_barang' => GenerateCode::kode(),
+            'harga_dasar' => $harga_dasar,
+            'harga_jual' => $harga_jual,
+            'stok' => $stok,
+            'kategori_id' => $kategori,
+            'berat' => $berat,
+            'satuan' => $satuan,
+            'diskon' => $diskon,
+            'rak' => $rak,
+            'keterangan' => $keterangan,
+        ];
+        return $this->productsService->addProduct($data, $files);
     }
 
     /**

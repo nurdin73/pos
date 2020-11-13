@@ -27,8 +27,8 @@
     <link href="https://fonts.googleapis.com/css2?family=Quicksand:wght@400;500&display=swap" rel="stylesheet">
 
     {{-- 3rd PARTY --}}
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/Ladda/1.0.6/ladda-themeless.min.css" integrity="sha512-EOY99TUZ7AClCNvbnvrhtMXDuWzxUBXV7SFovruHvYf2dbvRB5ya+jgDPk5bOyTtZDbqFH3PTuTWl/D7+7MGsA==" crossorigin="anonymous" />
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/Ladda/1.0.6/ladda.min.css" integrity="sha512-0Wjihk3d5C3yp6MThcWP1WxttnKS1IWsfDf6Jd6ETz7c4QLO3SZSmqW04wDysN2Q1/QqEmJ5XFWc/p53B5ME0g==" crossorigin="anonymous" />
+    {{-- <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/Ladda/1.0.6/ladda-themeless.min.css" integrity="sha512-EOY99TUZ7AClCNvbnvrhtMXDuWzxUBXV7SFovruHvYf2dbvRB5ya+jgDPk5bOyTtZDbqFH3PTuTWl/D7+7MGsA==" crossorigin="anonymous" />
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/Ladda/1.0.6/ladda.min.css" integrity="sha512-0Wjihk3d5C3yp6MThcWP1WxttnKS1IWsfDf6Jd6ETz7c4QLO3SZSmqW04wDysN2Q1/QqEmJ5XFWc/p53B5ME0g==" crossorigin="anonymous" /> --}}
     {{-- Spinkit --}}
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/spinkit/2.0.1/spinkit.min.css" integrity="sha512-kRYkjiYH/VXxoiaDK2oGNMKIi8VQVfie1lkYGX3kmfzWNR2kfaF5ze0885W3/eE6lIiURBsZA91M/WNvCajHMw==" crossorigin="anonymous" />
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/spinkit/2.0.1/spinkit.css" integrity="sha512-OZT9eXTvKtWjeXPDP5rDFG9X7rRDoj507dyi7os5jHhVgMtq7febcNmeMA3I/E9936YaewzVOKOd3xsXSZNbZA==" crossorigin="anonymous" />
@@ -72,8 +72,9 @@
     {{-- 3rd PARTY --}}
 
     {{-- ladda --}}
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/Ladda/1.0.6/ladda.min.js" integrity="sha512-fK8kfclYYyRUN1KzdZLVJrAc+LmdsZYH+0Fp3TP4MPJzcLUk3FbQpfWSbL/uxh7cmqbuogJ75pMmL62SiNwWeg==" crossorigin="anonymous"></script>
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/Ladda/1.0.6/ladda.jquery.min.js" integrity="sha512-9pDK1QtjyYU3QU0NU3+kZ6TrxsMJISp9qxRXDN3Ali+pZPJzxDJL1jc6oQuLoAtve6Pc+KUDy6QJajimBKxfYg==" crossorigin="anonymous"></script>
+    {{-- <script src="https://cdnjs.cloudflare.com/ajax/libs/Ladda/1.0.6/ladda.min.js" integrity="sha512-fK8kfclYYyRUN1KzdZLVJrAc+LmdsZYH+0Fp3TP4MPJzcLUk3FbQpfWSbL/uxh7cmqbuogJ75pMmL62SiNwWeg==" crossorigin="anonymous"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/Ladda/1.0.6/ladda.jquery.min.js" integrity="sha512-9pDK1QtjyYU3QU0NU3+kZ6TrxsMJISp9qxRXDN3Ali+pZPJzxDJL1jc6oQuLoAtve6Pc+KUDy6QJajimBKxfYg==" crossorigin="anonymous"></script> --}}
+    
     <script src="https://cdnjs.cloudflare.com/ajax/libs/Ladda/1.0.6/spin.min.js" integrity="sha512-FzwLmClLNd77zi/Ke+dYlawHiPBAWhk8FzA4pwFV2a6PIR7/VHDLZ0yKm/ekC38HzTc5lo8L8NM98zWNtCDdyg==" crossorigin="anonymous"></script>
     
     {{-- Toastr --}}

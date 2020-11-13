@@ -3,6 +3,7 @@
 @section('css')
 <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/select2/4.0.13/css/select2.min.css" integrity="sha512-nMNlpuaDPrqlEls3IX/Q56H36qvBASwb3ipuo3MxeWbsQB1881ox0cRv7UPTgBlriqoynt35KjEwgGUeUXIPnw==" crossorigin="anonymous" />
 <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap4-select2-theme@1.0.3/src/css/bootstrap4-select2-theme.css">
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/PgwSlider/2.3.0/pgwslider.min.css" integrity="sha512-J1G8iGNI7Vk77uSN3MCVgvfTYdKVmqXhNZRI/QdC4L0S6MRImg40OsfF+N95Hix1n/Mxu7PHvdE1ULW4Hgfxyw==" crossorigin="anonymous" />
 @endsection
 
 @section('content')
@@ -69,7 +70,7 @@
         <h4 class="modal-title">Tambah Barang</h4>
         <button class="close" type="button" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">×</span></button>
       </div>
-      <form id="formAddbarang">
+      <form id="formAddbarang" enctype="multipart/form-data">
         <div class="modal-body">
           <div class="row">
             <div class="col-md-8">
@@ -77,24 +78,21 @@
                 <label for="nama_barang">Nama Barang</label>
                 <input type="text" name="nama_barang" id="nama_barang" class="form-control">
               </div>
-              <div class="form-group">
-                <label for="type_barang">Type Barang</label>
-                <select name="type_barang" id="type_barang" class="form-control">
-                  <option value="baru">Baru</option>
-                  <option value="bekas">Bekas</option>
-                </select>
-              </div>
+              
               <div class="row">
-                <div class="col-4">
+                <div class="col-6">
+                  <div class="form-group">
+                    <label for="type_barang">Type Barang</label>
+                    <select name="type_barang" id="type_barang" class="form-control">
+                      <option value="baru">Baru</option>
+                      <option value="bekas">Bekas</option>
+                    </select>
+                  </div>
+                </div>
+                <div class="col-6">
                   <div class="form-group">
                     <label for="stok">Stok Barang</label>
                     <input type="text" name="stok" id="stok" class="form-control">
-                  </div>
-                </div>
-                <div class="col-8">
-                  <div class="form-group">
-                    <label for="kode">Kode Barang</label>
-                    <input type="text" name="kode" id="kode" class="form-control">
                   </div>
                 </div>
               </div>
@@ -135,23 +133,26 @@
               </div>
             </div>
             <div class="col-md-4">
-              <img src="https://dummyimage.com/400x400/000/fff&text=image" alt="tes" class="img-fluid img-responsive img-thumbnail figure-img" id="preview">
-              <div class="row">
-                <div class="col-6">
-                  <button class="btn btn-block btn-primary btn-sm d-flex justify-content-center align-items-center" type="button">
-                    <svg class="c-icon">
-                      <use xlink:href="{{ asset('vendors/@coreui/icons/svg/free.svg#cil-image-plus') }}"></use>
-                    </svg>
-                    <span> Gambar</span>
-                  </button>
+              <div class="row mb-2">
+                <div class="col-12">
+                  <ul class="pgwSlider">
+
+                  </ul>
                 </div>
-                <div class="col-6">
-                  <button class="btn btn-block btn-primary btn-sm d-flex justify-content-center align-items-center" type="button">
-                    <svg class="c-icon">
-                      <use xlink:href="{{ asset('vendors/@coreui/icons/svg/free.svg#cil-video') }}"></use>
-                    </svg>
-                    <span> Video</span>
-                  </button>
+              </div>
+              <div class="row">
+                <div class="col-12">
+                  <div class="form-group">
+                    <div class="input-group mb-3">
+                      <div class="custom-file">
+                        <input type="file" name="files" class="custom-file-input" id="inputGroupFile01" aria-describedby="inputGroupFileAddon01" multiple>
+                        <label class="custom-file-label" for="inputGroupFile01">Choose file</label>
+                      </div>
+                    </div>
+                  </div>
+                  <div class="progress" style="display: none">
+                    <div class="progress-bar progress-bar-striped progress-bar-animated" role="progressbar" aria-valuenow="0" aria-valuemin="0" aria-valuemax="100" style="width: 0%"></div>
+                  </div>
                 </div>
               </div>
             </div>
@@ -172,7 +173,10 @@
               <div class="col-md-6">
                 <div class="form-group">
                   <label for="satuan">Satuan(gram,pcs)</label>
-                  <input type="text" name="satuan" id="satuan" class="form-control">
+                  <select name="satuan" id="satuan" class="form-control">
+                    <option value="gram">Gram</option>
+                    <option value="pcs">Pcs</option>
+                  </select>
                 </div>
                 <div class="form-group">
                   <label for="rak">Letak rak</label>
@@ -198,7 +202,8 @@
 </div>
 @endsection
 
-@section('js')
+@section('js')  
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/PgwSlider/2.3.0/pgwslider.min.js" integrity="sha512-Oz0WQx5ADiBluAj9vpDDLDKZRqMvawtS4jtgi4ebPahhvfB6pWlPdoDbr6gPndcVt4uPn/nX1/8rTuDA2B/qBQ==" crossorigin="anonymous"></script>
   <script src="https://cdnjs.cloudflare.com/ajax/libs/select2/4.0.13/js/select2.min.js" integrity="sha512-2ImtlRlf2VVmiGZsjm9bEyhjGW4dU7B6TNwh/hx/iSByxNENtj3WVE6o/9Lj4TJeVXPi4bnOIMXFIJJAeufa0A==" crossorigin="anonymous"></script>
   <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery-validate/1.19.2/jquery.validate.min.js" integrity="sha512-UdIMMlVx0HEynClOIFSyOrPggomfhBKJE28LKl8yR3ghkgugPnG6iLfRfHwushZl1MOPSY6TsuBDGPK2X4zYKg==" crossorigin="anonymous"></script>
   <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery-validate/1.19.2/additional-methods.min.js" integrity="sha512-6Uv+497AWTmj/6V14BsQioPrm3kgwmK9HYIyWP+vClykX52b0zrDGP7lajZoIY1nNlX4oQuh7zsGjmF7D0VZYA==" crossorigin="anonymous"></script>
