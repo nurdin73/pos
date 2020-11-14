@@ -1,9 +1,10 @@
 @extends('layouts.template')
 
 @section('css')
-<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/select2/4.0.13/css/select2.min.css" integrity="sha512-nMNlpuaDPrqlEls3IX/Q56H36qvBASwb3ipuo3MxeWbsQB1881ox0cRv7UPTgBlriqoynt35KjEwgGUeUXIPnw==" crossorigin="anonymous" />
-<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap4-select2-theme@1.0.3/src/css/bootstrap4-select2-theme.css">
-<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/PgwSlider/2.3.0/pgwslider.min.css" integrity="sha512-J1G8iGNI7Vk77uSN3MCVgvfTYdKVmqXhNZRI/QdC4L0S6MRImg40OsfF+N95Hix1n/Mxu7PHvdE1ULW4Hgfxyw==" crossorigin="anonymous" />
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/select2/4.0.13/css/select2.min.css" integrity="sha512-nMNlpuaDPrqlEls3IX/Q56H36qvBASwb3ipuo3MxeWbsQB1881ox0cRv7UPTgBlriqoynt35KjEwgGUeUXIPnw==" crossorigin="anonymous" />
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap4-select2-theme@1.0.3/src/css/bootstrap4-select2-theme.css">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/PgwSlider/2.3.0/pgwslider.min.css" integrity="sha512-J1G8iGNI7Vk77uSN3MCVgvfTYdKVmqXhNZRI/QdC4L0S6MRImg40OsfF+N95Hix1n/Mxu7PHvdE1ULW4Hgfxyw==" crossorigin="anonymous" />
+  <link rel="stylesheet" href="https://cdn.datatables.net/1.10.22/css/dataTables.bootstrap4.min.css">
 @endsection
 
 @section('content')
@@ -14,44 +15,38 @@
           <div class="card-header">
             <div class="d-flex justify-content-between align-items-center">
               <span>Data Barang</span>
-              <button class="btn btn-primary btn-sm d-flex justify-content-center align-items-center" data-toggle="modal" data-target="#myModal">
-                <svg class="c-icon">
-                  <use xlink:href="{{ asset('vendors/@coreui/icons/svg/free.svg#cil-plus') }}"></use>
-                </svg>
-                <span>Tambah barang</span>
-              </button>
+              <div class="btn-group">
+                <button class="btn btn-success btn-sm d-flex justify-content-center align-items-center" data-toggle="modal" data-target="#myModal">
+                  <svg class="c-icon">
+                    <use xlink:href="{{ asset('vendors/@coreui/icons/svg/free.svg#cil-plus') }}"></use>
+                  </svg>
+                  <span>Import barang</span>
+                </button>
+                <button class="btn btn-primary btn-sm d-flex justify-content-center align-items-center" data-toggle="modal" data-target="#myModal">
+                  <svg class="c-icon">
+                    <use xlink:href="{{ asset('vendors/@coreui/icons/svg/free.svg#cil-plus') }}"></use>
+                  </svg>
+                  <span>Tambah barang</span>
+                </button>
+              </div>
             </div>
           </div>
           <div class="card-body">
             <div class="table-responsive">
-              <table class="table table-striped table-hover table-condensed">
+              <table class="table table-striped table-hover table-condensed" id="dataTables">
                 <thead>
                   <tr>
-                    <th>No.</th>
-                    <th>Gambar Barang</th>
+                    <th></th>
+                    <th>Kode Barang</th>
                     <th>Nama Barang</th>
                     <th>Stok</th>
-                    <th>Harga</th>
+                    <th>Harga Dasar</th>
+                    <th>Harga Jual</th>
                     <th align="center">Aksi</th>
                   </tr>
                 </thead>
                 <tbody>
-                  <tr>
-                    <td style="width: 5%">1.</td>
-                    <td style="width: 15%">
-                      <img src="https://dummyimage.com/100x100/000/fff&text=Image" alt="image" class="img-fluid img-responsive" width="50" height="50">
-                    </td>
-                    <td style="width: 40%">Jelly kukus</td>
-                    <td style="width: 5%">20</td>
-                    <td>Rp. 1.000.00 ,-</td>
-                    <td align="center">
-                      <div class="btn-group btn-group-sm" role="group" aria-label="Small button group">
-                        <button class="btn btn-primary" type="button">Edit</button>
-                        <button class="btn btn-primary" type="button">Detail</button>
-                        <button class="btn btn-primary" type="button">Hapus</button>
-                      </div>
-                    </td>
-                  </tr>
+                  
                 </tbody>
               </table>
             </div>
@@ -208,8 +203,11 @@
   <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery-validate/1.19.2/jquery.validate.min.js" integrity="sha512-UdIMMlVx0HEynClOIFSyOrPggomfhBKJE28LKl8yR3ghkgugPnG6iLfRfHwushZl1MOPSY6TsuBDGPK2X4zYKg==" crossorigin="anonymous"></script>
   <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery-validate/1.19.2/additional-methods.min.js" integrity="sha512-6Uv+497AWTmj/6V14BsQioPrm3kgwmK9HYIyWP+vClykX52b0zrDGP7lajZoIY1nNlX4oQuh7zsGjmF7D0VZYA==" crossorigin="anonymous"></script>
   <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery-validate/1.19.2/localization/messages_id.min.js" integrity="sha512-Pb0klMWnom+fUBpq+8ncvrvozi/TDwdAbzbICN8EBoaVXZo00q6tgWk+6k6Pd+cezWRwyu2cB+XvVamRsbbtBA==" crossorigin="anonymous"></script>
+  <script src="https://cdn.datatables.net/1.10.22/js/jquery.dataTables.min.js"></script>
+  <script src="https://cdn.datatables.net/1.10.22/js/dataTables.bootstrap4.min.js"></script>
   <script>
     const URL_API = '{{ url('api/v1') }}'
+    const URL_IMAGE = '{{ url('') }}'
   </script>
   <script src="{{ asset('js/managements/barang.js') }}"></script>
 @endsection

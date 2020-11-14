@@ -133,7 +133,7 @@ $(document).ready(function () {
       } else {
         nextSibling.innerHTML = files[0].name
       }
-      readURL(files)
+      Functions.prototype.readURL(files)
     }
   })
 
@@ -160,50 +160,16 @@ $(document).ready(function () {
     return true
   }
 
-  // $('#harga_dasar').on('keyup', function() {
-  //   const newVal = formatRupiah($(this).val())
-  //   $(this).val(newVal)
-  // })
-  // $('#harga_jual').on('keyup', function() {
-  //   const newVal = formatRupiah($(this).val())
-  //   $(this).val(newVal)
-  // })
-
-  function readURL(inputs = []) {
-    if(inputs.length > 0) {
-      for (let i = 0; i < inputs.length; i++) {
-        const element = inputs[i];
-        let filename = element.name.split('.')[0]
-        const reader = new FileReader()
-        reader.onload = function(e) {
-          $('.pgwSlider').append(`
-            <li><img src="${e.target.result}" alt="${filename}" data-large-src="${e.target.result}"></li>
-          `)
-        }
-        reader.readAsDataURL(element);
-      }
-      setTimeout(() => {
-        $('.pgwSlider').pgwSlider({
-          displayControls: true,
-        });
-      }, 100);
-    }
-  }
-
-  function formatRupiah(angka, prefix){
-    var number_string = angka.replace(/[^,\d]/g, '').toString(),
-    split   		= number_string.split(','),
-    sisa     		= split[0].length % 3,
-    rupiah     		= split[0].substr(0, sisa),
-    ribuan     		= split[0].substr(sisa).match(/\d{3}/gi);
-
-    // tambahkan titik jika yang di input sudah menjadi angka ribuan
-    if(ribuan){
-      separator = sisa ? '.' : '';
-      rupiah += separator + ribuan.join('.');
-    }
-
-    rupiah = split[1] != undefined ? rupiah + ',' + split[1] : rupiah;
-    return prefix == undefined ? rupiah : (rupiah ? 'Rp. ' + rupiah : '');
-  }
+  // get data
+  const urlListProduct = URL_API + "/managements"
+  const columns = [
+    { data : 'checkbox', name: 'checkbox', orderable: false, searchable: false },
+    {data : 'kode_barang', name: 'kode_barang'},
+    {data : 'nama_barang', name: 'nama_barang'},
+    {data : 'stok', name: 'stok'},
+    {data : 'harga_dasar', name: 'harga_dasar'},
+    {data : 'harga_jual', name: 'harga_jual'},
+    {data : 'actions', name: 'actions', orderable: false, searchable: false},
+  ]
+  Functions.prototype.tableResult("#dataTables", urlListProduct, columns)
 });

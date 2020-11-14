@@ -65,7 +65,8 @@ class KategoriController extends Controller
      */
     public function show($id)
     {
-        //
+        $result = Categories::find($id);
+        return response($result);
     }
 
 

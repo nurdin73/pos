@@ -4,12 +4,9 @@ namespace App\Http\Controllers\Api\Managements;
 
 use App\Helpers\GenerateCode;
 use App\Http\Controllers\Controller;
-use App\Models\FileProducts;
-use App\Models\Products;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
-use Illuminate\Support\Facades\Storage;
-use Illuminate\Support\Str;
+
 
 class BarangController extends Controller
 {
@@ -29,7 +26,7 @@ class BarangController extends Controller
      */
     public function index()
     {
-        //
+        return $this->productsService->getAll();
     }
 
 
@@ -101,7 +98,7 @@ class BarangController extends Controller
      */
     public function show($id)
     {
-        //
+        return $this->productsService->show($id);
     }
 
     /**

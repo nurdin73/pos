@@ -1,6 +1,5 @@
 <?php
 
-use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Route;
 
 /*
@@ -31,7 +30,13 @@ Route::group(['prefix' => 'auth'], function () {
 Route::group(['prefix' => 'admin', 'middleware' => ['auth']], function () {
     Route::get('/', 'Admin\AdminController@index')->name('dashboardAdmin');
     Route::group(['prefix' => 'management'], function () {
-        Route::get('/', 'Admin\AdminController@barang')->name('managementBarang');
+        // route barang
+        Route::group(['prefix' => '/barang'], function () {
+            Route::get('/', 'Admin\AdminController@barang')->name('managementBarang');
+            Route::get('/edit/{id}', 'Admin\AdminController@editProduct');
+            Route::get('/detail/{id}', 'Admin\AdminController@detailProduct');
+        });
+
         Route::get('/kategori', 'Admin\AdminController@kategori')->name('managementKategori');
         Route::get('/management-stok', 'Admin\AdminController@managementStok')->name('managementStok');
         Route::get('/pelanggan', 'Admin\AdminController@pelanggan')->name('managementPelanggan');
@@ -111,7 +116,5 @@ Route::group(['prefix' => 'api/'], function () {
         });
     });
 });
-
-
 
 Route::get('/home', 'HomeController@index')->name('home');

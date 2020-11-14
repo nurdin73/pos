@@ -19,7 +19,11 @@
     <meta name="description" content="POS">
     <meta name="author" content="Nurdin">
     <meta name="keyword" content="pos, point of sale">
-    <title>{{ ucfirst(Str::slug(end($explodeUrl), " ")) }} - Point Of Sales</title>
+    @if ((count($explodeUrl) - 3) <= 3)
+      <title>{{ ucfirst(Str::slug(end($explodeUrl), " ")) }} - Point Of Sales</title>
+    @else
+      <title>{{ ucfirst($explodeUrl[count($explodeUrl) - 2]) }} Barang - Point Of Sales</title>
+    @endif
     <!-- Main styles for this application-->
     <link href="{{ asset('css/style.css') }}" rel="stylesheet">
     <meta name="csrf-token" content="{{ csrf_token() }}">

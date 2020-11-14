@@ -14,7 +14,19 @@ class AdminController extends Controller
 
     public function barang()
     {
-        return view('admin.managements.barang');
+        return view('admin.managements.barang.index');
+    }
+
+    public function editProduct($id)
+    {
+        $data['id'] = decrypt($id);
+        return view('admin.managements.barang.edit', $data);
+    }
+
+    public function detailProduct($id)
+    {
+        $data['id'] = decrypt($id);
+        return view('admin.managements.barang.detail', $data);
     }
 
     public function kategori()

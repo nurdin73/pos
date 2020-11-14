@@ -1,16 +1,22 @@
 <?php
 namespace App\Helpers;
 
+use App\Models\Products;
+
 class GenerateCode 
 {
-    public static function kode($length = 5)
+    public static function kode()
     {
-        $char = '0123456789';
-        $charLength = strlen($char);
-        $random_string = 'POS';
-        for ($i=0; $i < $length; $i++) { 
-            $random_string .= $char[rand(0, $charLength - 1)];
-        } 
-        return $random_string;
+        $checkKode = Products::select("*")->max('kode_barang');
+        $getCodeStore = env('KODE_TOKO');
+        $explode = "";
+        if($checkKode) {
+            $lengthOfCode = strlen($getCodeStore);
+            $explode = explode($getCodeStore[$lengthOfCode - 1], $checkKode);
+        }
+        $urutan = $explode != "" ? (int)$explode[1] : (int)$checkKode;
+        $urutan++;
+        $kode = sprintf("%04s", $urutan);
+        return $getCodeStore.date('ymd').$kode;
     }
 }
