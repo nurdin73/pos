@@ -10,9 +10,7 @@ use App\Models\FileProducts;
 class UploadService
 {
 	public function uploadProductImage($file, $id, $path)
-	{
-		$result = FileProducts::find($id);
-		if(!$result) return response(['message' => 'Gambar tidak ada!'], 404);
+	{;
 		$optimizerChain = OptimizerChainFactory::create();
         $filename = Str::random(20) .'.'. $file->getClientOriginalExtension();
         $img = Image::make($file->getRealPath());
