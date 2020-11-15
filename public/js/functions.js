@@ -63,20 +63,71 @@ class Functions
                 $('.pgwSlider').pgwSlider({
                     displayControls: true,
                 });
-            }, 100);
+            }, 500);
         }
     }
-    readURLOnlyOne(inputs) {
-        if(inputs.length > 0) {
-            for (let i = 0; i < inputs.length; i++) {
-                const element = inputs[i];
-                const reader = new FileReader()
-                reader.onload = function(e) {
-                    $('.labelUpload').css('background-image', `url(${e.target.result})`)
-                }
-                reader.readAsDataURL(element);
+    uploadImage(inputs, url, id) {
+        const data = new FormData()
+        data.append('file', inputs)
+        data.append('id', id)
+        $.ajax({
+            url: url,
+            method: 'post',
+            processData: false,
+            contentType: false,
+            data: data,
+            headers: {'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')},
+            beforeSend: function() {
+                $('.progress').show()
+            },
+            xhr: function() {
+                const xhr = new window.XMLHttpRequest()
+
+                xhr.upload.addEventListener("progress", function(e) {
+                    if(e.lengthComputable) {
+                        var percentComplete = e.loaded / e.total
+                        percentComplete = Math.round(percentComplete * 100)
+                        $('.progress-bar').attr('aria-valuenow', percentComplete).css('width', percentComplete + '%').text(percentComplete + '%');
+                    }
+                }, false)
+                return xhr
+            },
+            success: function(response) {
+                $('.progress').hide()
+                toastr.success(response.message, "success")
+                $('#uploadFile').parent().before(`
+                    <div class="col-md-3 col-sm-4 col-6 mb-2">
+                        <img src="${URL_IMAGE + "/" + response.create.image}" alt="${URL_IMAGE + "/" + response.create.image}" class="img-responsive img-fluid img-thumbnail">
+                        <button class="btn btn-sm btn-danger delImage" data-image-id="${response.create.id}">
+                            <i class="fas fa-times"></i>
+                        </button>
+                    </div>
+                `)
+            },
+            error: function(err) {
+                $('.progress').hide()
+                toastr.error(err.responseJSON.message, "error")
             }
-        }
+        })
+    }
+
+    deleteData(url) {
+        $.ajax({
+            method: "DELETE",
+            headers: {'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')},
+            url: url,
+            beforeSend: function() {
+                $('.loading').show()
+            },
+            success: function(response) {
+                $('.loading').hide()
+                toastr.success(response.message, "success")
+            },
+            error: function(err) {
+                $('.loading').hide()
+                toastr.error(err.responseJSON.message, "error")
+            }
+        })
     }
     
     formatRupiah(angka, prefix){
@@ -123,5 +174,25 @@ class Functions
                 process.errorData = err
             }
         });
+    }
+
+    updateData(url, data, method) {
+        $.ajax({
+            url: url,
+            method: method,
+            data: data,
+            headers: {'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')},
+            beforeSend: function() {
+                $('.loading').show()
+            },
+            success: function(response) {
+                $('.loading').hide()
+                toastr.success(response.message, 'Success!')
+            },
+            error: function(err) {
+                $('.loading').hide()
+                toastr.error(err.responseJSON.message)
+            }
+        })
     }
 }

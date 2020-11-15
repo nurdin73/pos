@@ -3,7 +3,6 @@
 @section('css')
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/select2/4.0.13/css/select2.min.css" integrity="sha512-nMNlpuaDPrqlEls3IX/Q56H36qvBASwb3ipuo3MxeWbsQB1881ox0cRv7UPTgBlriqoynt35KjEwgGUeUXIPnw==" crossorigin="anonymous" />
   <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap4-select2-theme@1.0.3/src/css/bootstrap4-select2-theme.css">
-  <link rel="stylesheet" href="https://cdn.datatables.net/1.10.22/css/dataTables.bootstrap4.min.css">
 @endsection
 
 @section('content')
@@ -12,7 +11,7 @@
       <div class="fade-in">
         <div class="card">
           <div class="card-header d-flex justify-content-between align-items-center">
-            <span class="lead">Edit Barang</span>
+            <span class="lead">Edit Barang <span id="kode-barang" class="badge badge-info"></span></span>
             <a href="{{ route('managementBarang') }}" class="btn btn-primary btn-sm">
               Kembali
             </a>
@@ -25,7 +24,7 @@
               </ul>
               <div class="tab-content">
                 <div class="tab-pane active" id="home" role="tabpanel">
-                  <form id="updateProduct">
+                  <form id="updateProduct" autocomplete="off">
                     <div class="row">
                       <div class="col-md-6">
                         <div class="form-group">
@@ -125,32 +124,20 @@
                   </form>
                 </div>
                 <div class="tab-pane" id="profile" role="tabpanel">
-                  <div class="row">
-                    <div class="col-md-3 col-sm-4 col-6 mb-2">
-                      <img src="https://dummyimage.com/300x300/000/fff" alt="coba" class="img-responsive img-fluid img-thumbnail">
-                    </div>
-                    <div class="col-md-3 col-sm-4 col-6 mb-2">
-                      <img src="https://dummyimage.com/300x300/000/fff" alt="coba" class="img-responsive img-fluid img-thumbnail">
-                    </div>
-                    <div class="col-md-3 col-sm-4 col-6 mb-2">
-                      <img src="https://dummyimage.com/300x300/000/fff" alt="coba" class="img-responsive img-fluid img-thumbnail">
-                    </div>
-                    <div class="col-md-3 col-sm-4 col-6 mb-2">
-                      <img src="https://dummyimage.com/300x300/000/fff" alt="coba" class="img-responsive img-fluid img-thumbnail">
-                    </div>
-                    <div class="col-md-3 col-sm-4 col-6 mb-2">
-                      <img src="https://dummyimage.com/300x300/000/fff" alt="coba" class="img-responsive img-fluid img-thumbnail">
-                    </div>
-                    <div class="col-md-3 col-sm-4 col-6 mb-2">
-                      <img src="https://dummyimage.com/300x300/000/fff" alt="coba" class="img-responsive img-fluid img-thumbnail">
-                    </div>
-                    <div class="col-md-3 col-sm-4 col-6 mb-2">
+                  <div class="row" id="fieldImage">
+                    <div class="col-md-3 col-sm-4 col-6 mb-2" id="fieldUpload">
                       <form id="uploadFile" enctype="multipart/form-data">
-                        <input type="file" name="upload" id="upload" class="upload" multiple>
-                        <label for="upload" class="labelUpload" style="background-image: url('https://dummyimage.com/300x300/000/fff')">
-                          <i class="far fa-images"></i>
-                          <small class="labelFile">ini label</small>
-                        </label>
+                        <div class="form-group">
+                          <div class="input-group mb-3">
+                            <div class="custom-file">
+                              <input type="file" name="files" class="update-file" id="updateFile" aria-describedby="inputGroupFileAddon01">
+                              <label class="custom-file-label" for="updateFile">Choose file</label>
+                            </div>
+                          </div>
+                        </div>
+                        <div class="progress" style="display: none">
+                          <div class="progress-bar progress-bar-striped progress-bar-animated" role="progressbar" aria-valuenow="0" aria-valuemin="0" aria-valuemax="100" style="width: 0%"></div>
+                        </div>
                       </form>
                     </div>
                   </div>
@@ -170,15 +157,13 @@
   <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery-validate/1.19.2/jquery.validate.min.js" integrity="sha512-UdIMMlVx0HEynClOIFSyOrPggomfhBKJE28LKl8yR3ghkgugPnG6iLfRfHwushZl1MOPSY6TsuBDGPK2X4zYKg==" crossorigin="anonymous"></script>
   <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery-validate/1.19.2/additional-methods.min.js" integrity="sha512-6Uv+497AWTmj/6V14BsQioPrm3kgwmK9HYIyWP+vClykX52b0zrDGP7lajZoIY1nNlX4oQuh7zsGjmF7D0VZYA==" crossorigin="anonymous"></script>
   <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery-validate/1.19.2/localization/messages_id.min.js" integrity="sha512-Pb0klMWnom+fUBpq+8ncvrvozi/TDwdAbzbICN8EBoaVXZo00q6tgWk+6k6Pd+cezWRwyu2cB+XvVamRsbbtBA==" crossorigin="anonymous"></script>
-  <script src="https://cdn.datatables.net/1.10.22/js/jquery.dataTables.min.js"></script>
-  <script src="https://cdn.datatables.net/1.10.22/js/dataTables.bootstrap4.min.js"></script>
   <script src="https://kit.fontawesome.com/b10279cbf9.js" crossorigin="anonymous"></script>
+  <script src="https://cdn.jsdelivr.net/npm/sweetalert2@10"></script>
   <script>
     const URL_API = '{{ url('api/v1') }}'
     const URL_IMAGE = '{{ url('') }}'
     const id = '{{ $id }}'
     const data = null
   </script>
-  <script src="{{ asset('js/managements/barang.js') }}"></script>
   <script src="{{ asset('js/managements/barangUpdate.js') }}"></script>
 @endsection

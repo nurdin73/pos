@@ -14,6 +14,7 @@ class AppServiceProvider extends ServiceProvider
     public function register()
     {
         $this->app->singleton('ProductsService', \App\Services\ProductsService::class);
+        $this->app->singleton('UploadService', \App\Services\UploadService::class);
     }
 
     /**

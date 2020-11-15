@@ -79,4 +79,25 @@ class ProductsService
         $result = Products::with('images:id,product_id,image')->where('id', $id)->first();
         return $result;
     }
+
+    public function updateProduct($data, $id)
+    {
+        $result = Products::find($id);
+        if(!$result) return response(['message' => 'Data tidak cocok dengan dokumen apapun'], 404);
+        $result->update($data);
+        $result->save();
+        return response(['message' => 'Update produk berhasil']);
+    }
+
+    public function deleteProduct($id)
+    {
+        $result = Products::with('images:id,product_id,image')->where('id', $id)->first();
+        if(!$result) return response(['message' => 'Data tidak cocok dengan dokumen apapun'], 404);
+        foreach ($result->images as $image) {
+            Storage::disk('local')->delete($image->image);
+        }
+        $delete = Products::find($id)->delete();
+        if(!$delete) return response(['message' => 'produk gagal dihapus'], 500);
+        return response(['message' => 'Produk berhasil dihapus']); 
+    }
 }

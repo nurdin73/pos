@@ -16,7 +16,7 @@ class GenerateCode
         }
         $urutan = $explode != "" ? (int)$explode[1] : (int)$checkKode;
         $urutan++;
-        $kode = sprintf("%04s", $urutan);
-        return $getCodeStore.date('ymd').$kode;
+        $kode = sprintf("%09s", $urutan);
+        return $getCodeStore.$kode;
     }
 }

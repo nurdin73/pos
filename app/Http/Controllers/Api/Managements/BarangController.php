@@ -110,7 +110,53 @@ class BarangController extends Controller
      */
     public function update(Request $request, $id)
     {
-        //
+        $request->validate([
+            'nama_barang' => 'required',
+            'type_barang' => 'required',
+            'stok' => 'required|numeric',
+            'harga_dasar' => 'required',
+            'harga_jual' => 'required',
+        ]);
+
+        // ----------------------------- //
+        // Variable ------------------- //
+        $satuan = $request->input('satuan');
+        $type_barang = $request->input('type_barang');
+        $nama_barang = $request->input('nama_barang');
+        $stok = $request->input('stok');
+        $harga_dasar = $request->input('harga_dasar');
+        $harga_jual = $request->input('harga_jual');
+        $berat = $request->input('berat');
+        $diskon = $request->input('diskon');
+        $rak = $request->input('rak');
+        $keterangan = $request->input('keterangan');
+        $kategori = $request->input('kategori');
+        // ------------------------------- //
+        if($satuan) {
+            if($satuan != "gram" && $satuan != "pcs") {
+                return response(['message' => 'value satuan tidak valid'], 406);
+            }
+        }
+        if($type_barang) {
+            if($type_barang != "baru" && $type_barang != "bekas") {
+                return response(['message' => 'type barang tidak valid'], 406);
+            }
+        }
+
+        $data = [
+            'nama_barang' => $nama_barang,
+            'type_barang' => $type_barang,
+            'harga_dasar' => $harga_dasar,
+            'harga_jual' => $harga_jual,
+            'stok' => $stok,
+            'kategori_id' => $kategori,
+            'berat' => $berat,
+            'satuan' => $satuan,
+            'diskon' => $diskon,
+            'rak' => $rak,
+            'keterangan' => $keterangan,
+        ];
+        return $this->productsService->updateProduct($data, $id);
     }
 
     /**
@@ -121,6 +167,7 @@ class BarangController extends Controller
      */
     public function destroy($id)
     {
-        //
+        $decrypt = decrypt($id);
+        return $this->productsService->deleteProduct($decrypt);
     }
 }

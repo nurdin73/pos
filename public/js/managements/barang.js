@@ -172,4 +172,29 @@ $(document).ready(function () {
     {data : 'actions', name: 'actions', orderable: false, searchable: false},
   ]
   Functions.prototype.tableResult("#dataTables", urlListProduct, columns)
+
+
+  // delete data
+  $('#dataTables').on('click', 'tbody tr td .delete', function(e) {
+    e.preventDefault()
+    const id = $(this).data('id')
+    const urlDeleteProduct = URL_API + "/managements/delete/barang/" + id
+    Swal.fire({
+      title: 'Yakin ingin menghapus produk ini?',
+      text: "produk akan dihapus permanen!",
+      icon: 'warning',
+      showCancelButton: true,
+      confirmButtonColor: '#3085d6',
+      cancelButtonColor: '#d33',
+      confirmButtonText: 'Ya, Hapus!'
+    }).then((result) => {
+      if (result.isConfirmed) {
+        $(this).parent().remove()
+        Functions.prototype.deleteData(urlDeleteProduct);
+        setTimeout(() => {
+          window.location.reload()
+        }, 3000);
+      }
+    })
+  })
 });

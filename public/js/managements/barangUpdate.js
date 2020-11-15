@@ -1,5 +1,50 @@
+var showAll = false
 $(document).ready(function () {
     getDetail.loadData = id
+    $('#addCategory').on('click', function(e) {
+        $('#formAdd').slideToggle()
+    })
+
+    $('#btnShowOther').on('click', function(e) {
+        if(showAll == true) {
+            showAll = false
+        } else {
+            showAll = true
+        }
+        $('#showOther').slideToggle()
+    })
+    $('#submitCategory').on('click', function(e) {
+        e.preventDefault()
+        const nameCategory = $('#kategoriAdd').val()
+        if(!nameCategory) return toastr.warning("Nama kategori tidak boleh kosong", 'perhatian!')
+        const data = {
+            name : nameCategory
+        }
+        const url = URL_API + "/managements/add/kategori"
+        Functions.prototype.httpRequest(url, data, "post")
+        $('#kategoriAdd').removeClass('is-valid').val('')
+    })
+    $('#kategori').select2({
+        theme:'bootstrap4',
+        ajax: {
+            url: URL_API + "/managements/categories",
+            data: function (params) {
+                return {
+                    name: params.term,
+                }
+            },
+            processResults: function(data, params) {
+                return {
+                    results: data.map(result => {
+                        return {
+                            text: result.name,
+                            id: result.id
+                        }
+                    })
+                }
+            },
+        }
+    })
 });
 
 // functions
@@ -13,6 +58,7 @@ const getDetail = {
         $('#nama_barang').val(response.nama_barang)
         $('#type_barang').val(response.type_barang).trigger('change')
         $('#stok').val(response.stok)
+        $('#kode-barang').text(response.kode_barang)
         $('#harga_dasar').val(response.harga_dasar)
         $('#harga_jual').val(response.harga_jual)
         $('#kategori').val(response.kategori_id)
@@ -22,6 +68,19 @@ const getDetail = {
         $('#rak').val(response.rak)
         $('#keterangan').val(response.keterangan)
         getKategoriById.loadData = response.kategori_id
+        if(response.images.length > 0) {
+            var listImage = ""
+            response.images.map(image => {
+                listImage += `
+                    <div class="col-md-3 col-sm-4 col-6 mb-2">
+                        <img src="${URL_IMAGE + "/" + image.image}" alt="${URL_IMAGE + "/" + image.image}" class="img-responsive img-fluid img-thumbnail">
+                        <button class="btn btn-sm btn-danger delImage" data-image-id="${image.id}">
+                            <i class="fas fa-times"></i>
+                        </button>
+                    </div>`
+            })
+            $('#fieldUpload').before(listImage)
+        }
     },
     set errorData(err) {
         console.log(err);
@@ -49,13 +108,83 @@ const getKategoriById = {
     }
 }
 
-$('.upload').on('change', function(e) {
+$('.update-file').on('change', function(e) {
     e.preventDefault()
-    const files = document.getElementById('upload').files
-    if(files.length > 1) {
-        $('.labelFile').html(`${files.length} File dipilih`)
-    } else {
-        $('.labelFile').html(files[0].name)
-        Functions.prototype.readURLOnlyOne(files)
+    const files = document.getElementById('updateFile').files
+    const urlUpload = URL_API + "/managements/upload-image-product"
+
+    Functions.prototype.uploadImage(files[0], urlUpload, id)
+})
+
+$('#fieldImage').on('click', 'div .delImage', function(e) {
+    e.preventDefault()
+    const image_id = $(this).data('image-id')
+    const urlDeleteImage = URL_API + "/managements/delete-image-product/" + image_id
+    Swal.fire({
+      title: 'Yakin ingin menghapus gambar ini?',
+      text: "gambar akan dihapus permanen!",
+      icon: 'warning',
+      showCancelButton: true,
+      confirmButtonColor: '#3085d6',
+      cancelButtonColor: '#d33',
+      confirmButtonText: 'Ya, Hapus!'
+    }).then((result) => {
+      if (result.isConfirmed) {
+        $(this).parent().remove()
+        Functions.prototype.deleteData(urlDeleteImage);
+      }
+    })
+})
+
+$('#updateProduct').validate({
+    rules: {
+        nama_barang: {
+            required : true
+        },
+        type_barang: {
+            required : true
+        },
+        stok: {
+            required : true,
+            number : true
+        },
+        harga_dasar: {
+            required : true,
+            number : true
+        },
+        harga_jual: {
+            required : true,
+            number : true
+        },
+        kategori: {
+            required : true
+        },
+        berat: {
+            number: true
+        },
+        diskon: {
+            number: true
+        },
+    },
+    errorClass: "is-invalid",
+    validClass: "is-valid",
+    errorElement: "small",
+    submitHandler: function(form, e) {
+      e.preventDefault()
+      const urlUpdateProduct = URL_API + "/managements/update/barang/" + id
+      const data = {
+        nama_barang: $('#nama_barang').val(),
+        type_barang: $('#type_barang').val(),
+        stok: $('#stok').val(),
+        harga_dasar: $('#harga_dasar').val(),
+        harga_jual: $('#harga_jual').val(),
+        kategori: $('#kategori').val(),
+        berat: showAll ? $('#berat').val() : "",
+        satuan: showAll ? $('#satuan').val() : "",
+        diskon: showAll ? $('#diskon').val() : "",
+        rak: showAll ? $('#rak').val() : "",
+        keterangan: showAll ? $('#keterangan').val() : "",
+      }
+      Functions.prototype.updateData(urlUpdateProduct, data, 'put')
     }
 })

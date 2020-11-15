@@ -66,6 +66,10 @@ Route::group(['prefix' => 'api/'], function () {
     Route::group(['prefix' => 'v1/'], function () {
         Route::group(['prefix' => 'managements'], function () {
 
+            // uploadImage
+            Route::post('/upload-image-product', 'UploadFileController@uploadProductImage');
+            Route::delete('/delete-image-product/{id}', 'UploadFileController@delImageProduct');
+
             // get all
             Route::get('/', 'Api\Managements\BarangController@index');
             Route::get('/stok', 'Api\Managements\StokController@index');
