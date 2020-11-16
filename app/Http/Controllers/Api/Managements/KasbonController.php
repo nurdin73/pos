@@ -7,14 +7,33 @@ use Illuminate\Http\Request;
 
 class KasbonController extends Controller
 {
+
+    protected $kasbonService;
+
+    public function __construct() {
+        $this->kasbonService = app()->make('KasbonService');
+    }
+
     /**
      * Display a listing of the resource.
      *
      * @return \Illuminate\Http\Response
      */
-    public function index()
+    public function index(Request $request)
     {
-        //
+        $nama = $request->input('nama');
+        if($nama == null) {
+            $nama = "";
+        }
+        $tempo = $request->input('jatuh_tempo');
+        if($tempo == null) {
+            $tempo = "";
+        }
+        $page = $request->input('page');
+        if($page == null) {
+            $page = 1;
+        }
+        return $this->kasbonService->getAll($nama, $tempo);
     }
 
     /**

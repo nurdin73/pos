@@ -165,5 +165,5 @@
     const id = '{{ $id }}'
     const data = null
   </script>
-  <script src="{{ asset('js/managements/barangUpdate.js') }}"></script>
+  <script src="{{ asset('js/managements/barang/barangUpdate.js') }}"></script>
 @endsection

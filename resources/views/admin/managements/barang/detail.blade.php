@@ -124,5 +124,5 @@
     const id = '{{ $id }}'
     const data = null
   </script>
-  <script src="{{ asset('js/managements/detailBarang.js') }}"></script>
+  <script src="{{ asset('js/managements/barang/detailBarang.js') }}"></script>
 @endsection

@@ -20,7 +20,7 @@
     <meta name="author" content="Nurdin">
     <meta name="keyword" content="pos, point of sale">
     @if ((count($explodeUrl) - 3) <= 3)
-      <title>{{ ucfirst(Str::slug(end($explodeUrl), " ")) }} - Point Of Sales</title>
+      <title>{{ ucfirst(Str::slug(explode("?", end($explodeUrl))[0], " ")) ?? ucfirst(Str::slug(end($explodeUrl), " ")) }} - Point Of Sales</title>
     @else
       <title>{{ ucfirst($explodeUrl[count($explodeUrl) - 2]) }} Barang - Point Of Sales</title>
     @endif

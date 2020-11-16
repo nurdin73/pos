@@ -36,7 +36,6 @@
               <table class="table table-striped table-hover table-condensed" id="dataTables">
                 <thead>
                   <tr>
-                    <th></th>
                     <th>Kode Barang</th>
                     <th>Nama Barang</th>
                     <th>Stok</th>
@@ -210,5 +209,5 @@
     const URL_API = '{{ url('api/v1') }}'
     const URL_IMAGE = '{{ url('') }}'
   </script>
-  <script src="{{ asset('js/managements/barang.js') }}"></script>
+  <script src="{{ asset('js/managements/barang/barang.js') }}"></script>
 @endsection

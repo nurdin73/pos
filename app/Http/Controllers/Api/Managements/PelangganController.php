@@ -7,6 +7,13 @@ use Illuminate\Http\Request;
 
 class PelangganController extends Controller
 {
+
+    protected $customerService;
+    
+    public function __construct() {
+        $this->customerService = app()->make('CustomerService');
+    }
+
     /**
      * Display a listing of the resource.
      *
@@ -14,7 +21,7 @@ class PelangganController extends Controller
      */
     public function index()
     {
-        //
+        return $this->customerService->getAll();
     }
 
 
@@ -26,7 +33,19 @@ class PelangganController extends Controller
      */
     public function store(Request $request)
     {
-        //
+        $request->validate([
+            'nama'      => 'required',
+            'email'     => 'required|email|unique:customers',
+            'no_telp'   => 'required|numeric|unique:customers',
+            'alamat'    => 'required'
+        ]);
+        $data = [
+            'nama' => $request->input('nama'),
+            'email' => $request->input('email'),
+            'no_telp' => $request->input('no_telp'),
+            'alamat' => $request->input('alamat'),
+        ];
+        return $this->customerService->add($data);
     }
 
     /**
@@ -37,7 +56,7 @@ class PelangganController extends Controller
      */
     public function show($id)
     {
-        //
+        return $this->customerService->get($id);
     }
 
     /**
@@ -49,7 +68,18 @@ class PelangganController extends Controller
      */
     public function update(Request $request, $id)
     {
-        //
+        $request->validate([
+            'nama'      => 'required',
+            'no_telp'   => 'required|numeric',
+            'alamat'    => 'required'
+        ]);
+        $data = [
+            'nama' => $request->input('nama'),
+            'no_telp' => $request->input('no_telp'),
+            'alamat' => $request->input('alamat'),
+        ];
+
+        return $this->customerService->update($data, $id);
     }
 
     /**
@@ -60,6 +90,6 @@ class PelangganController extends Controller
      */
     public function destroy($id)
     {
-        //
+        return $this->customerService->destroy($id);
     }
 }

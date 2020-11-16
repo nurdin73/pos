@@ -163,7 +163,6 @@ $(document).ready(function () {
   // get data
   const urlListProduct = URL_API + "/managements"
   const columns = [
-    { data : 'checkbox', name: 'checkbox', orderable: false, searchable: false },
     {data : 'kode_barang', name: 'kode_barang'},
     {data : 'nama_barang', name: 'nama_barang'},
     {data : 'stok', name: 'stok'},
@@ -172,7 +171,6 @@ $(document).ready(function () {
     {data : 'actions', name: 'actions', orderable: false, searchable: false},
   ]
   Functions.prototype.tableResult("#dataTables", urlListProduct, columns)
-
 
   // delete data
   $('#dataTables').on('click', 'tbody tr td .delete', function(e) {

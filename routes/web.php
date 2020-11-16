@@ -40,7 +40,10 @@ Route::group(['prefix' => 'admin', 'middleware' => ['auth']], function () {
         Route::get('/kategori', 'Admin\AdminController@kategori')->name('managementKategori');
         Route::get('/management-stok', 'Admin\AdminController@managementStok')->name('managementStok');
         Route::get('/pelanggan', 'Admin\AdminController@pelanggan')->name('managementPelanggan');
-        Route::get('/kasbon', 'Admin\AdminController@kasbon')->name('managementKasbon');
+        Route::group(['prefix' => '/kasbon'], function () {
+            Route::get('/', 'Admin\AdminController@kasbon')->name('managementKasbon');
+            Route::get('/add', 'Admin\AdminController@addKasbon')->name('addKasbon');
+        });
         Route::get('/pajak', 'Admin\AdminController@pajak')->name('managementPajak');
     });
 

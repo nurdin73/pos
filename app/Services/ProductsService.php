@@ -28,14 +28,7 @@ class ProductsService
                     $btn .= "</div>";
                     return $btn;
                 })
-                ->addColumn('checkbox', function ($row){
-                    $row = json_encode($row);
-                    $row = json_decode($row);
-                    $id = $row->id;
-                    $checkbox = "<input type='checkbox' class='check' name='check' id='check' data-id='$id'>";
-                    return $checkbox;
-                })
-                ->rawColumns(['checkbox', 'actions'])
+                ->rawColumns(['actions'])
                 ->make(true);
     }
 

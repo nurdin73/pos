@@ -31,7 +31,7 @@ class AdminController extends Controller
 
     public function kategori()
     {
-        return view('admin.managements.kategori');
+        return view('admin.managements.kategori.index');
     }
 
     public function managementStok()
@@ -41,12 +41,17 @@ class AdminController extends Controller
 
     public function pelanggan()
     {
-        return view('admin.managements.pelanggan');
+        return view('admin.managements.customer.index');
     }
 
     public function kasbon()
     {
-        return view('admin.managements.kasbon');
+        return view('admin.managements.kasbon.index');
+    }
+
+    public function addKasbon()
+    {
+        return view('admin.managements.kasbon.add');
     }
     
     public function pajak()

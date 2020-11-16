@@ -131,6 +131,7 @@ class Functions
     }
     
     formatRupiah(angka, prefix){
+        var separator = ""
         var number_string = angka.replace(/[^,\d]/g, '').toString(),
             split   		= number_string.split(','),
             sisa     		= split[0].length % 3,
@@ -149,12 +150,13 @@ class Functions
 
     tableResult(field = "#dataTables", url = "", columns = []) {
         $(field).DataTable({
+            "destroy"       : true,
             "serverSide"    : true,
             "prosessing"    : true,
             "deferRender"   : true,
             "stateSave"     : true,
             "ajax"          : url,
-            "columns"       : columns   
+            "columns"       : columns,
         })
     }
 
@@ -171,6 +173,7 @@ class Functions
                 process.successData = response
             },
             error: function(err) {
+                $('.loading').hide()
                 process.errorData = err
             }
         });
@@ -194,5 +197,23 @@ class Functions
                 toastr.error(err.responseJSON.message)
             }
         })
+    }
+
+    getRequest(process, url) {
+        $.ajax({
+            type: "get",
+            url: url,
+            beforeSend: function() {
+                $('.loading').show()
+            },
+            success: function (response) {
+                $('.loading').hide()
+                process.successData = response
+            },
+            error: function(err) {
+                $('.loading').hide()
+                process.errorData = err
+            }
+        });
     }
 }
