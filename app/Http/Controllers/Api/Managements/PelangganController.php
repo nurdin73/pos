@@ -24,6 +24,16 @@ class PelangganController extends Controller
         return $this->customerService->getAll();
     }
 
+    public function search(Request $request)
+    {
+        $nama = $request->input('nama');
+        return $this->customerService->search($nama);
+    }
+
+    public function getKasbon($id)
+    {
+        return $this->customerService->kasbonCustomers($id);
+    }
 
     /**
      * Store a newly created resource in storage.

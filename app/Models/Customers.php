@@ -10,6 +10,6 @@ class Customers extends Model
 
     public function cashReceipts()
     {
-        return $this->hasMany(CashReceipts::class, 'id', 'id');
+        return $this->hasMany(CashReceipts::class, 'pelanggan_id', 'id');
     }
 }

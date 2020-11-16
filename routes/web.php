@@ -42,7 +42,8 @@ Route::group(['prefix' => 'admin', 'middleware' => ['auth']], function () {
         Route::get('/pelanggan', 'Admin\AdminController@pelanggan')->name('managementPelanggan');
         Route::group(['prefix' => '/kasbon'], function () {
             Route::get('/', 'Admin\AdminController@kasbon')->name('managementKasbon');
-            Route::get('/add', 'Admin\AdminController@addKasbon')->name('addKasbon');
+            // Route::get('/add', 'Admin\AdminController@addKasbon')->name('addKasbon');
+            Route::get('/bayar/{id}', 'Admin\AdminController@bayarKasbon');
         });
         Route::get('/pajak', 'Admin\AdminController@pajak')->name('managementPajak');
     });
@@ -80,6 +81,8 @@ Route::group(['prefix' => 'api/'], function () {
             Route::get('/categories', 'Api\Managements\KategoriController@getLike');
             Route::get('/pelanggan', 'Api\Managements\PelangganController@index');
             Route::get('/kasbon', 'Api\Managements\KasbonController@index');
+            Route::get('/search-pelanggan', 'Api\Managements\PelangganController@search');
+            Route::get('/kasbon-pelanggan/{id}', 'Api\Managements\PelangganController@getKasbon');
             Route::get('/pajak', 'Api\Managements\PajakController@index');
 
             // get detail

@@ -26,6 +26,19 @@ class CustomerService
         ->make(true);
     }
 
+    public function search($nama)
+    {
+        $nama = '%'.$nama.'%';
+        $results = Customers::where('nama', 'like', $nama)->limit(5)->get();
+        return response($results);
+    }
+
+    public function kasbonCustomers($id)
+    {
+        $result = Customers::with('cashReceipts')->where('id', $id)->first();
+        return response($result);
+    }
+
     public function add($data)
     {
         $create = Customers::create($data);

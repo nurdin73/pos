@@ -44,7 +44,23 @@ class KasbonController extends Controller
      */
     public function store(Request $request)
     {
-        //
+        $request->validate([
+            'pelanggan_id' => 'required|numeric',
+            'jumlah' => 'required|numeric',
+            'jatuh_tempo' => 'required',
+            'keterangan' => 'required'
+        ]);
+
+        $data = [
+            'pelanggan_id' => $request->input('pelanggan_id'),
+            'jumlah' => $request->input('jumlah'),
+            'jatuh_tempo' => $request->input('jatuh_tempo'),
+            'keterangan' => $request->input('keterangan'),
+            'tgl_kasbon' => date("Y-m-d H:i:s"),
+            'status' => 'belum lunas'
+        ];
+
+        return $this->kasbonService->add($data);
     }
 
     /**
