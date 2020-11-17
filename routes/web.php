@@ -96,7 +96,7 @@ Route::group(['prefix' => 'api/'], function () {
             Route::get('pajak/{id}', 'Api\Managements\PajakController@show');
 
             // add 
-            Route::group(['prefix' => 'add'], function () {
+            Route::group(['prefix' => 'add', 'middleware' => ['auth']], function () {
                 Route::post('/barang', 'Api\Managements\BarangController@store');
                 Route::post('/stok', 'Api\Managements\StokController@store');
                 Route::post('/kategori', 'Api\Managements\KategoriController@store');
@@ -106,7 +106,7 @@ Route::group(['prefix' => 'api/'], function () {
             });
 
             // update 
-            Route::group(['prefix' => 'update'], function () {
+            Route::group(['prefix' => 'update', 'middleware' => ['auth']], function () {
                 Route::put('/barang/{id}', 'Api\Managements\BarangController@update');
                 Route::put('/stok/{id}', 'Api\Managements\StokController@update');
                 Route::put('/kategori/{id}', 'Api\Managements\KategoriController@update');
@@ -116,7 +116,7 @@ Route::group(['prefix' => 'api/'], function () {
             });
 
             // delete 
-            Route::group(['prefix' => 'delete'], function () {
+            Route::group(['prefix' => 'delete', 'middleware' => ['auth']], function () {
                 Route::delete('/barang/{id}', 'Api\Managements\BarangController@destroy');
                 Route::delete('/stok/{id}', 'Api\Managements\StokController@destroy');
                 Route::delete('/kategori/{id}', 'Api\Managements\KategoriController@destroy');
