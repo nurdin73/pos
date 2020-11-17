@@ -18,7 +18,6 @@ class CreateInstallmentsTable extends Migration
             $table->foreignId('cash_receipt_id')->constrained('cash_receipts')->cascadeOnDelete();
             $table->bigInteger('cicilan');
             $table->dateTime('tgl_pembayaran');
-            $table->bigInteger('sisa');
             $table->timestamps();
         });
     }

@@ -57,6 +57,7 @@
           <svg class="c-sidebar-nav-icon">
             <use xlink:href="{{ asset('vendors/@coreui/icons/svg/free.svg#cil-dollar') }}"></use>
           </svg> Pajak
+          <span class="badge badge-danger">PRO</span>
         </a>
       </li>
       <li class="c-sidebar-nav-title">Laporan</li>
@@ -85,6 +86,7 @@
           <svg class="c-sidebar-nav-icon">
             <use xlink:href="{{ asset('vendors/@coreui/icons/svg/free.svg#cil-dollar') }}"></use>
           </svg> Pajak
+          <span class="badge badge-danger">PRO</span>
         </a>
       </li>
       <li class="c-sidebar-nav-item">
@@ -121,6 +123,7 @@
           <svg class="c-sidebar-nav-icon">
             <use xlink:href="{{ asset('vendors/@coreui/icons/svg/free.svg#cil-contact') }}"></use>
           </svg> Management Staff
+          <span class="badge badge-danger">PRO</span>
         </a>
       </li>
     </ul>

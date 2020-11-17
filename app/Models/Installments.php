@@ -6,7 +6,7 @@ use Illuminate\Database\Eloquent\Model;
 
 class Installments extends Model
 {
-    protected $fillable = ['cash_receipt_id', 'cicilan', 'tgl_pembayaran', 'sisa'];
+    protected $fillable = ['cash_receipt_id', 'cicilan', 'tgl_pembayaran'];
 
     public function cashReceipt()
     {

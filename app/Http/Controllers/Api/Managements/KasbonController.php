@@ -25,15 +25,7 @@ class KasbonController extends Controller
         if($nama == null) {
             $nama = "";
         }
-        $tempo = $request->input('jatuh_tempo');
-        if($tempo == null) {
-            $tempo = "";
-        }
-        $page = $request->input('page');
-        if($page == null) {
-            $page = 1;
-        }
-        return $this->kasbonService->getAll($nama, $tempo);
+        return $this->kasbonService->showAll($nama);
     }
 
     /**

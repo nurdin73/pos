@@ -39,20 +39,22 @@ const getDataList = {
     },
     set successData(response) {
         var paginations = ""
+        var total_kasbon = 0
+        var total_trx = 0
         $('#listData').empty()
         if(response.data.length > 0) {
             response.data.map(result => {
+                total_kasbon += result.jumlah
+                total_trx += result.total
                 $('#listData').append(`
                     <tr>
-                        <td>${result.customer ? result.customer.nama : ""}</td>
-                        <td>${Functions.prototype.formatRupiah(result.jumlah.toString(), 'Rp.')}</td>
-                        <td>${moment(result.jatuh_tempo).format('D MMMM YYYY')}</td>
-                        <td>${result.status == "belum lunas" ? `<span class="badge badge-danger">${result.status}</span>` : `<span class="badge badge-success">${result.status}</span>`}</td>
+                        <td>${result.nama}</td>
+                        <td>${result.email}</td>
+                        <td>${result.no_telp}</td>
+                        <td>${Functions.prototype.formatRupiah(result.jumlah.toString(), 'Rp. ')}</td>
+                        <td>${Functions.prototype.formatRupiah(result.sisa.toString(), 'Rp. ')}</td>
                         <td align="center">
-                            ${result.status == "belum lunas" ? 
-                                `<a href="${window.location.href + '/bayar/' + result.customer.id}" class="btn btn-sm btn-success">Bayar</a>` :
-                                `<span class="btn btn-sm btn-success">Lunas</span>`
-                            }
+                            <a href="${window.location.href + '/bayar/' + result.id}" class="btn btn-sm btn-success">Bayar</a>
                         </td>
                     </tr>
                 `)
@@ -67,8 +69,8 @@ const getDataList = {
         var paginations = Functions.prototype.createPaginate(response.current_page, response.last_page, response.prev_page_url)
         $('.pagination').html(paginations)
         paginations = ""
-        $('#totalKasbon').text(Functions.prototype.formatRupiah(response.total_kasbon, 'Rp. '))
-        $('#totalTransaksi').text(response.total)
+        $('#totalKasbon').text(Functions.prototype.formatRupiah(total_kasbon.toString(), 'Rp. '))
+        $('#totalTransaksi').text(total_trx)
     },
     set errorData(err) {
         toastr.error(err.responseJSON.message, 'error')

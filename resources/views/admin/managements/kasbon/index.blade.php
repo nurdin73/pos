@@ -51,14 +51,9 @@
           <div class="card-body">
             <form id="filterData" autocomplete="off">
               <div class="row">
-                <div class="col-6 col-md-4">
+                <div class="col-12 col-md-8">
                   <div class="form-group">
                     <input type="text" name="nama" id="nama" placeholder="Cari Nama (optional)" class="form-control">
-                  </div>
-                </div>
-                <div class="col-6 col-md-4">
-                  <div class="form-group">
-                    <input type="text" name="jatuh_tempo" id="jatuh_tempo" placeholder="Jatuh Tempo (optional)" class="form-control">
                   </div>
                 </div>
                 <div class="col-6 col-md-2">
@@ -82,9 +77,10 @@
                 <thead>
                   <tr>
                     <th>Nama Pelanggan</th>
-                    <th>Jumlah</th>
-                    <th>Tanggal Tempo</th>
-                    <th>Status</th>
+                    <th>Email</th>
+                    <th>No Telp</th>
+                    <th>Jumlah Kasbon</th>
+                    <th>Sisa</th>
                     <th>Actions</th>
                   </tr>
                 </thead>
@@ -94,17 +90,7 @@
               </table>
               <nav aria-label="..." class="d-flex justify-content-end">
                 <ul class="pagination">
-                  {{-- <li class="page-item disabled">
-                    <a class="page-link" href="#" tabindex="-1" aria-disabled="true">Previous</a>
-                  </li>
-                  <li class="page-item"><a class="page-link" href="#">1</a></li>
-                  <li class="page-item active" aria-current="page">
-                    <a class="page-link" href="#">2 <span class="sr-only">(current)</span></a>
-                  </li>
-                  <li class="page-item"><a class="page-link" href="#">3</a></li>
-                  <li class="page-item">
-                    <a class="page-link" href="#">Next</a>
-                  </li> --}}
+                  
                 </ul>
               </nav>
             </div>
