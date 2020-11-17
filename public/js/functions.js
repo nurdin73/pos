@@ -216,4 +216,36 @@ class Functions
             }
         });
     }
+
+    createPaginate(current_page, last_page, prev_page_url) {
+        var paginations = ""
+        if(prev_page_url == null) {
+            paginations += `<li class="page-item disabled">
+                <a class="page-link" href="#" tabindex="-1" aria-disabled="true">Previous</a>
+            </li>`
+        } else {
+            paginations += `<li class="page-item">
+                <a class="page-link" data-id="${current_page - 1}" href="#">Previous</a>
+            </li>`
+        }
+        for (let i = 1; i <= last_page; i++) {
+            if(current_page == i) {
+                paginations += `<li class="page-item active" aria-current="page">
+                <a class="page-link" href="#" data-id="${current_page}">${current_page} <span class="sr-only">(current)</span></a>
+              </li>`
+            } else {
+                paginations += `<li class="page-item"><a class="page-link" data-id="${i}" href="#">${i}</a></li>`
+            }
+        }
+        if(current_page == last_page) {
+            paginations += `<li class="page-item disabled">
+                <a class="page-link" href="#" tabindex="-1" data-id="${current_page}" aria-disabled="true">Next</a>
+            </li>`
+        } else {
+            paginations += `<li class="page-item">
+            <a class="page-link" data-id="${current_page + 1}" href="#">Next</a>
+          </li>`
+        }
+        return paginations;
+    }
 }

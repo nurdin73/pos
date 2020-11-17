@@ -6,7 +6,10 @@
         <div class="card">
         	<div class="card-header d-flex justify-content-between align-items-center">
         		<span class="lead">Bayar kasbon</span>
-        		<button class="btn btn-sm btn-primary">Print</button>
+        		<div class="btn-group">
+              <button class="btn btn-sm btn-success">Tambah kasbon</button>
+              <button class="btn btn-sm btn-primary">Print</button>
+            </div>
         	</div>
         	<div class="card-body">
         		<div class="row">
@@ -41,13 +44,18 @@
         						<th>Tanggal Transaksi</th>
         						<th>Jatuh Tempo</th>
         						<th style="width: 15%">Status</th>
-        						<th style="width: 10%">Actions</th>
+        						<th style="width: 20%">Actions</th>
         					</tr>
         				</thead>
         				<tbody id="listData">
         					
         				</tbody>
-        			</table>
+              </table>
+              <nav aria-label="..." class="d-flex justify-content-end">
+                <ul class="pagination">
+                  
+                </ul>
+              </nav>
         		</div>
         	</div>
         </div>
@@ -55,6 +63,89 @@
     </div>
   </main>
 @endsection 
+
+@section('modal')
+  <div class="modal fade" id="bayarKasbon" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+    <div class="modal-dialog modal-md" role="document">
+      <div class="modal-content">
+        <div class="modal-header">
+          <h4 class="modal-title">Bayar Kasbon</h4>
+          <button class="close" type="button" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">×</span></button>
+        </div>
+        <form id="formAddKasbon" autocomplete="off">
+          <div class="modal-body">
+            <div class="row">
+              <div class="col-6">
+                <div class="d-flex justify-content-start align-items-start flex-column">
+                  <small class="text-muted">Nama Pelanggan</small>
+                  <span class="font-weight-bold" id="customerName">Nurdin</span>
+                </div>
+              </div>
+              {{-- <div class="col-6">
+                <div class="d-flex justify-content-end align-items-end flex-column">
+                  <a class="text-muted" href="#">Lihat pelanggan</a>
+                </div>
+              </div> --}}
+            </div>
+            <div class="dropdown-divider"></div>
+            <div class="status"></div>
+            <div class="d-flex justify-content-between flex-column">
+              <div class="row mb-1">
+                <div class="col-6">
+                  <div class="d-flex justify-content-start align-items-start flex-column">
+                    <small class="text-muted">Tanggal Transaksi</small>
+                    <span class="font-weight-bold" id="tglTransaksi"></span>
+                  </div>
+                </div>
+                <div class="col-6">
+                  <div class="d-flex justify-content-end align-items-end flex-column">
+                    <small class="text-muted">Jatuh Tempo</small>
+                    <span class="font-weight-bold" id="tglTempo"></span>
+                  </div>
+                </div>
+              </div>
+              <div class="row">
+                <div class="col-6">
+                  <div class="d-flex justify-content-start align-items-start flex-column">
+                    <small class="text-muted">Total</small>
+                    <span class="font-weight-bold totalKasbon">0</span>
+                  </div>
+                </div>
+                <div class="col-6">
+                  <div class="d-flex justify-content-end align-items-end flex-column">
+                    <small class="text-muted">Belum Dibayar</small>
+                    <span class="font-weight-bold" id="sisa"></span>
+                  </div>
+                </div>
+              </div>
+            </div>
+            <div class="dropdown-divider"></div>
+            <div class="table-responsive">
+              <table class="table table-borderless table-striped">
+                <thead>
+                  <tr>
+                    <th>Cicilan</th>
+                    <th>Tanggal Pembayaran</th>
+                    <th>Sisa</th>
+                  </tr>
+                </thead>
+                <tbody id="listCicilan">
+                  
+                </tbody>
+              </table>
+            </div>
+          </div>
+          <div class="modal-footer">
+            {{-- <button class="btn btn-primary" id="btn-submit" type="submit">Save changes</button> --}}
+            <button class="btn btn-primary" type="submit">Lanjutkan Pembayaran</button>
+          </div>
+        </form>
+      </div>
+      <!-- /.modal-content-->
+    </div>
+    <!-- /.modal-dialog-->
+  </div>
+@endsection
 
 @section('js')
 	<script src="https://cdnjs.cloudflare.com/ajax/libs/moment.js/2.29.1/moment.min.js" integrity="sha512-qTXRIMyZIFb8iQcfjXWCO8+M5Tbc38Qi5WzdPOYZHIlZpzBHG3L3by84BBBOiRGiEb7KKtAOAs5qYdUiZiQNNQ==" crossorigin="anonymous"></script>

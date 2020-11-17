@@ -1,6 +1,7 @@
 <?php
 namespace App\Services;
 
+use App\Models\CashReceipts;
 use App\Models\Customers;
 
 class CustomerService
@@ -35,8 +36,11 @@ class CustomerService
 
     public function kasbonCustomers($id)
     {
-        $result = Customers::with('cashReceipts')->where('id', $id)->first();
-        return response($result);
+        $customer = Customers::find($id);
+        $total = collect(['total_kasbon' => CashReceipts::select("jumlah")->where('pelanggan_id', $id)->sum('jumlah')]); 
+        $customer->setRelation('cashReceipts', $customer->cashReceipts()->paginate(5));
+        $results = $total->merge($customer);
+        return response($results);
     }
 
     public function add($data)

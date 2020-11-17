@@ -64,33 +64,7 @@ const getDataList = {
                 </tr>
             `)
         }
-        if(response.prev_page_url == null) {
-            paginations += `<li class="page-item disabled">
-                <a class="page-link" href="#" tabindex="-1" aria-disabled="true">Previous</a>
-            </li>`
-        } else {
-            paginations += `<li class="page-item">
-                <a class="page-link" data-id="${response.current_page - 1}" href="#">Previous</a>
-            </li>`
-        }
-        for (let i = 1; i <= response.last_page; i++) {
-            if(response.current_page == i) {
-                paginations += `<li class="page-item active" aria-current="page">
-                <a class="page-link" href="#" data-id="${response.current_page}">${response.current_page} <span class="sr-only">(current)</span></a>
-              </li>`
-            } else {
-                paginations += `<li class="page-item"><a class="page-link" data-id="${i}" href="#">${i}</a></li>`
-            }
-        }
-        if(response.current_page == response.last_page) {
-            paginations += `<li class="page-item disabled">
-                <a class="page-link" href="#" tabindex="-1" data-id="${response.current_page}" aria-disabled="true">Next</a>
-            </li>`
-        } else {
-            paginations += `<li class="page-item">
-            <a class="page-link" data-id="${response.current_page + 1}" href="#">Next</a>
-          </li>`
-        }
+        var paginations = Functions.prototype.createPaginate(response.current_page, response.last_page, response.prev_page_url)
         $('.pagination').html(paginations)
         paginations = ""
         $('#totalKasbon').text(Functions.prototype.formatRupiah(response.total_kasbon, 'Rp. '))

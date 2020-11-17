@@ -71,7 +71,7 @@ class KasbonController extends Controller
      */
     public function show($id)
     {
-        //
+        return $this->kasbonService->detail($id);
     }
 
     /**

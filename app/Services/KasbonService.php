@@ -32,4 +32,10 @@ class KasbonService
         if(!$create) return response(['message' => 'Kasbon gagal ditambahkan'], 500);
         return response(['message' => 'Kasbon berhasil ditambahkan']);
     }
+
+    public function detail($id)
+    {
+        $result = CashReceipts::with('customer', 'installments')->where('id', $id)->first();
+        return response($result);
+    }
 }
