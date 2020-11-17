@@ -27,12 +27,13 @@ const getDetail = {
 }
 
 function addData() {  
+    
     $('#paymentForm').validate({
         rules: {
             jumlah: {
                 required: true,
                 number: true,
-                min: 100
+                min: 100,
             },
             method_payment: {
                 required: true
@@ -46,7 +47,13 @@ function addData() {
         errorElement: "small",
         submitHandler: function(form, e) {
             e.preventDefault()
-            
+            const data = {
+                cicilan: $('#jumlah').val(),
+                method_payment: $('#method_payment').val(),
+                keterangan: $('#keterangan').val()
+            }
+            const urlPost = URL_API + "/managements/payment-kasbon/" + id
+            Functions.prototype.httpRequest(urlPost, data, 'post')
         }
     })
 }

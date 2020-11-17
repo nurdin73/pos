@@ -38,7 +38,7 @@ class CustomerService
     {
         $customer = Customers::find($id);
         $total = collect(['total_kasbon' => CashReceipts::select("jumlah")->where('pelanggan_id', $id)->sum('jumlah')]); 
-        $customer->setRelation('cashReceipts', $customer->cashReceipts()->paginate(5));
+        $customer->setRelation('cashReceipts', $customer->cashReceipts()->with('installments')->paginate(5));
         $results = $total->merge($customer);
         return response($results);
     }

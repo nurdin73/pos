@@ -3,51 +3,10 @@ namespace App\Services;
 
 use App\Models\CashReceipts;
 use App\Models\Customers;
+use App\Models\Installments;
 
 class KasbonService
 {
-    public function getAll($name, $tempo)
-    {
-        $results = null;
-        $total = collect(['total_kasbon' => CashReceipts::select("jumlah")->sum('jumlah')]);
-        if($name != "") {
-            $results = CashReceipts::with('customer')->whereHas('customer', function($q) use($name) {
-                $q->where('nama', 'like', '%'. $name .'%');
-            });
-        } else {
-            $results = CashReceipts::with('customer');
-        }
-        $results->orderBy('id', 'DESC');
-        if($tempo != "") {
-            $tempo .= " 00:00:00";
-            $results = $results->where('jatuh_tempo', $tempo);
-        }
-        $results = $results->paginate(5);
-        $results = $total->merge($results);
-        return response($results);
-    }
-
-    // public function showAll($nama)
-    // {   
-    //     $customers = null;
-    //     $totalkasbonUser = collect(['total_kasbon_user' => 0]);
-    //     $totalTrx = collect(['total_trx' => CashReceipts::all()->count()]);
-    //     $total = collect(['total_kasbon' => CashReceipts::select("jumlah", 'pelanggan_id')->sum('jumlah')]);
-    //     if($nama != "") {
-    //         $customers = Customers::where('nama', 'like', '%'.$nama.'%')->paginate(5);
-    //     } else {
-    //         $customers = Customers::select('id', 'nama', 'email', 'no_telp')->paginate(5);
-    //     }
-    //     if($customers) {
-    //         foreach ($customers as $customer) {
-    //             $totalkasbonUser = collect(['total_kasbon_user' => CashReceipts::select("jumlah", 'pelanggan_id')->where('pelanggan_id', $customer->id)->sum('jumlah')]);
-    //         }
-    //     }
-    //     $results = $totalkasbonUser->merge($customers);
-    //     $results = $total->merge($results);
-    //     $results = $totalTrx->merge($results);
-    //     return response($results);
-    // }
     public function showAll($nama)
     {
         $data = [];
@@ -99,5 +58,16 @@ class KasbonService
     {
         $result = CashReceipts::with('customer', 'installments')->where('id', $id)->first();
         return response($result);
+    }
+
+    public function processPayment($data = [], $id)
+    {
+        $checkKasbon = CashReceipts::find($id);
+        if(!$checkKasbon) return response(['message' => 'Kasbon tidak ditemukan'], 404);
+        $data['cash_receipt_id'] = $id;
+        $data['tgl_pembayaran'] = date('Y-m-d H:i:s');
+        $create = Installments::create($data);
+        if(!$create) return response(['message' => 'Cicilan gagal ditambahkan'], 500);
+        return response(['message' => 'Cicilan berhasil ditambahkan']);
     }
 }

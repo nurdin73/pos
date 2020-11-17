@@ -32,7 +32,7 @@ class CashRecSeeder extends Seeder
                 'jumlah' => $data[$i],
                 'tgl_kasbon' => '2020-11-09 00:00:00',
                 'jatuh_tempo' => '2020-11-16 00:00:00',
-                'keterangan' => 'tes'
+                'keterangan' => 'tes',
             ]);
         }
     }

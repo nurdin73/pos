@@ -55,6 +55,25 @@ class KasbonController extends Controller
         return $this->kasbonService->add($data);
     }
 
+    public function payment(Request $request, $id)
+    {
+        $request->validate([
+            'cicilan' => 'required|numeric',
+            'method_payment' => 'required',
+            'keterangan' => 'required'
+        ]);
+        $method_payment = $request->input('method_payment');
+        if($method_payment != "cash" || $method_payment != "debit") {
+            return response(['message' => 'Metode pembayaran tidak valid'], 406);
+        }
+        $data = [
+            'cicilan' => $request->input('cicilan'),
+            'keterangan' => $request->input('keterangan'),
+            'method_payment' => $request->input('method_payment'),
+        ];
+        return $this->kasbonService->processPayment($data, $id);
+    }
+
     /**
      * Display the specified resource.
      *

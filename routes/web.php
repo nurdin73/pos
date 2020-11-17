@@ -102,6 +102,7 @@ Route::group(['prefix' => 'api/'], function () {
                 Route::post('/kategori', 'Api\Managements\KategoriController@store');
                 Route::post('/pelanggan', 'Api\Managements\PelangganController@store');
                 Route::post('/kasbon', 'Api\Managements\KasbonController@store');
+                Route::post('/payment-kasbon/{id}', 'Api\Managements\KasbonController@payment');
                 Route::post('/pajak', 'Api\Managements\PajakController@store');
             });
 
