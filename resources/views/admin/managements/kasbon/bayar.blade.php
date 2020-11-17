@@ -137,7 +137,7 @@
           </div>
           <div class="modal-footer">
             {{-- <button class="btn btn-primary" id="btn-submit" type="submit">Save changes</button> --}}
-            <button class="btn btn-primary" type="submit">Lanjutkan Pembayaran</button>
+            <button class="btn btn-primary btn-bayar" type="submit">Lanjutkan Pembayaran</button>
           </div>
         </form>
       </div>

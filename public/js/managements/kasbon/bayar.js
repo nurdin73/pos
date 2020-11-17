@@ -80,7 +80,7 @@ function bayar() {
 						<tr>
 							<td>${Functions.prototype.formatRupiah(result.cicilan.toString(), 'Rp. ')}</td>
 							<td>${moment(result.tgl_pembayaran).format('D MMMM YYYY')}</td>
-							<td>${Functions.prototype.formatRupiah(result.sisa.toString(), 'Rp. ')}</td>
+							<td>${Functions.prototype.formatRupiah(sisa.toString(), 'Rp. ')}</td>
 						</tr>
 					`)
 				})
@@ -92,10 +92,12 @@ function bayar() {
 				`)
 			}
 			$('#sisa').text(Functions.prototype.formatRupiah(sisa.toString(), 'Rp. '))
-			if(response.status == "belum lunas") {
+			if(sisa != 0) {
 				$('.status').html(`<span class="badge badge-danger">Belum lunas</span>`)
+				$('.btn-bayar').text('Lanjutkan pembayaran').attr('disabled', false).removeClass('disabled btn-success').addClass('btn-primary')
 			} else {
 				$('.status').html('<span class="badge badge-success">Lunas</span>')
+				$('.btn-bayar').text('Sudah Lunas').attr('disabled', true).addClass('btn-success disabled').removeClass('btn-primary')
 			}
 		},
 		set errorData(err) {
