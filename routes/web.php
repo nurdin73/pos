@@ -44,6 +44,8 @@ Route::group(['prefix' => 'admin', 'middleware' => ['auth']], function () {
             Route::get('/', 'Admin\AdminController@kasbon')->name('managementKasbon');
             // Route::get('/add', 'Admin\AdminController@addKasbon')->name('addKasbon');
             Route::get('/bayar/{id}', 'Admin\AdminController@bayarKasbon');
+            // bayar kasbon
+            Route::get('/bayar/{id}/{id_kasbon}', 'Admin\AdminController@payment');
         });
         Route::get('/pajak', 'Admin\AdminController@pajak')->name('managementPajak');
     });

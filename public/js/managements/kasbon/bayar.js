@@ -92,6 +92,7 @@ function bayar() {
 				`)
 			}
 			$('#sisa').text(Functions.prototype.formatRupiah(sisa.toString(), 'Rp. '))
+			$('.btn-bayar').attr('href', urlPageKasbon + "/bayar/" + response.customer.nama + "/" + response.id)
 			if(sisa != 0) {
 				$('.status').html(`<span class="badge badge-danger">Belum lunas</span>`)
 				$('.btn-bayar').text('Lanjutkan pembayaran').attr('disabled', false).removeClass('disabled btn-success').addClass('btn-primary')

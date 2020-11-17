@@ -15,7 +15,7 @@
         <li class="breadcrumb-item">{{ $explodeUrl[$i] }}</li>
       @endfor
       <li class="breadcrumb-item">{{ Str::slug($explodeUrl[count($explodeUrl) - 2], " ") }}</li>
-      <li class="breadcrumb-item active">{{ $id ?? end($explodeUrl) }}</li>
+      <li class="breadcrumb-item active">{{ $id_kasbon ?? $id ?? end($explodeUrl) }}</li>
     @endif
   </ol>
 </div>

@@ -72,74 +72,72 @@
           <h4 class="modal-title">Bayar Kasbon</h4>
           <button class="close" type="button" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">×</span></button>
         </div>
-        <form id="formAddKasbon" autocomplete="off">
-          <div class="modal-body">
+        <div class="modal-body">
+          <div class="row">
+            <div class="col-6">
+              <div class="d-flex justify-content-start align-items-start flex-column">
+                <small class="text-muted">Nama Pelanggan</small>
+                <span class="font-weight-bold" id="customerName">Nurdin</span>
+              </div>
+            </div>
+            {{-- <div class="col-6">
+              <div class="d-flex justify-content-end align-items-end flex-column">
+                <a class="text-muted" href="#">Lihat pelanggan</a>
+              </div>
+            </div> --}}
+          </div>
+          <div class="dropdown-divider"></div>
+          <div class="status"></div>
+          <div class="d-flex justify-content-between flex-column">
+            <div class="row mb-1">
+              <div class="col-6">
+                <div class="d-flex justify-content-start align-items-start flex-column">
+                  <small class="text-muted">Tanggal Transaksi</small>
+                  <span class="font-weight-bold" id="tglTransaksi"></span>
+                </div>
+              </div>
+              <div class="col-6">
+                <div class="d-flex justify-content-end align-items-end flex-column">
+                  <small class="text-muted">Jatuh Tempo</small>
+                  <span class="font-weight-bold" id="tglTempo"></span>
+                </div>
+              </div>
+            </div>
             <div class="row">
               <div class="col-6">
                 <div class="d-flex justify-content-start align-items-start flex-column">
-                  <small class="text-muted">Nama Pelanggan</small>
-                  <span class="font-weight-bold" id="customerName">Nurdin</span>
+                  <small class="text-muted">Total</small>
+                  <span class="font-weight-bold totalKasbon">0</span>
                 </div>
               </div>
-              {{-- <div class="col-6">
+              <div class="col-6">
                 <div class="d-flex justify-content-end align-items-end flex-column">
-                  <a class="text-muted" href="#">Lihat pelanggan</a>
-                </div>
-              </div> --}}
-            </div>
-            <div class="dropdown-divider"></div>
-            <div class="status"></div>
-            <div class="d-flex justify-content-between flex-column">
-              <div class="row mb-1">
-                <div class="col-6">
-                  <div class="d-flex justify-content-start align-items-start flex-column">
-                    <small class="text-muted">Tanggal Transaksi</small>
-                    <span class="font-weight-bold" id="tglTransaksi"></span>
-                  </div>
-                </div>
-                <div class="col-6">
-                  <div class="d-flex justify-content-end align-items-end flex-column">
-                    <small class="text-muted">Jatuh Tempo</small>
-                    <span class="font-weight-bold" id="tglTempo"></span>
-                  </div>
-                </div>
-              </div>
-              <div class="row">
-                <div class="col-6">
-                  <div class="d-flex justify-content-start align-items-start flex-column">
-                    <small class="text-muted">Total</small>
-                    <span class="font-weight-bold totalKasbon">0</span>
-                  </div>
-                </div>
-                <div class="col-6">
-                  <div class="d-flex justify-content-end align-items-end flex-column">
-                    <small class="text-muted">Belum Dibayar</small>
-                    <span class="font-weight-bold" id="sisa"></span>
-                  </div>
+                  <small class="text-muted">Belum Dibayar</small>
+                  <span class="font-weight-bold" id="sisa"></span>
                 </div>
               </div>
             </div>
-            <div class="dropdown-divider"></div>
-            <div class="table-responsive">
-              <table class="table table-borderless table-striped">
-                <thead>
-                  <tr>
-                    <th>Cicilan</th>
-                    <th>Tanggal Pembayaran</th>
-                    <th>Sisa</th>
-                  </tr>
-                </thead>
-                <tbody id="listCicilan">
-                  
-                </tbody>
-              </table>
-            </div>
           </div>
-          <div class="modal-footer">
-            {{-- <button class="btn btn-primary" id="btn-submit" type="submit">Save changes</button> --}}
-            <button class="btn btn-primary btn-bayar" type="submit">Lanjutkan Pembayaran</button>
+          <div class="dropdown-divider"></div>
+          <div class="table-responsive">
+            <table class="table table-borderless table-striped">
+              <thead>
+                <tr>
+                  <th>Cicilan</th>
+                  <th>Tanggal Pembayaran</th>
+                  <th>Sisa</th>
+                </tr>
+              </thead>
+              <tbody id="listCicilan">
+                
+              </tbody>
+            </table>
           </div>
-        </form>
+        </div>
+        <div class="modal-footer">
+          {{-- <button class="btn btn-primary" id="btn-submit" type="submit">Save changes</button> --}}
+          <a class="btn btn-primary btn-bayar" href="#" >Lanjutkan Pembayaran</a>
+        </div>
       </div>
       <!-- /.modal-content-->
     </div>
@@ -153,6 +151,7 @@
     const URL_API = '{{ url('api/v1') }}'
     const URL_IMAGE = '{{ url('') }}'
     const id = '{{ $id }}'
+    const urlPageKasbon = '{{ route('managementKasbon') }}'
   </script>
 	<script type="text/javascript" src="{{ asset('js/managements/kasbon/bayar.js') }}"></script>
 @endsection

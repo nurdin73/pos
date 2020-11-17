@@ -54,6 +54,12 @@ class AdminController extends Controller
         return view('admin.managements.kasbon.add');
     }
 
+    public function payment($id, $id_kasbon)
+    {
+        $data['id_kasbon'] = $id_kasbon;
+        return view('admin.managements.kasbon.payment-next', $data);
+    }
+
     public function bayarKasbon($id)
     {
         $data['id'] = $id;
