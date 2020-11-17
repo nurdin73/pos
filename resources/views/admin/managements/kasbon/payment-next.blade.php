@@ -4,8 +4,9 @@
     <div class="container-fluid">
       <div class="fade-in">
         <div class="card">
-          <div class="card-header">
+          <div class="card-header d-flex justify-content-between align-items-center">
             <span class="lead">Pembayaran Piutang</span>
+            <a href="{{ route('managementKasbon') }}" class="btn btn-danger btn-sm">Kembali</a>
           </div>
         </div>
         <div class="row">
@@ -48,7 +49,7 @@
                     <div class="col-md-6">
                       <div class="form-group">
                         <label for="jumlah">Jumlah</label>
-                        <input type="number" min="0" value="0" name="jumlah" id="jumlah" class="form-control">
+                        <input type="text" value="0" name="jumlah" id="jumlah" class="form-control">
                       </div>
                     </div>
                     <div class="col-md-6">

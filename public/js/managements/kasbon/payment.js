@@ -19,7 +19,6 @@ const getDetail = {
                 sisa -= result.jumlah
             })
         }
-        $('#jumlah').attr('max', sisa);
         $('#custSisa').text(Functions.prototype.formatRupiah(sisa.toString(), 'Rp. '))
     },
     set errorData(err) {
