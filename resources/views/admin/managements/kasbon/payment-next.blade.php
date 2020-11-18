@@ -13,6 +13,7 @@
           <div class="col-md-4">
             <div class="card">
               <div class="card-body">
+                <input type="hidden" id="id_user">
                 <div class="d-flex justify-content-between align-items-start">
                   <div class="d-flex justify-content-start align-items-start flex-column">
                     <small class="text-primary text-uppercase font-weight-bold">Nama pelanggan</small>
@@ -76,6 +77,30 @@
             </div>
           </div>
         </div>
+        <div class="card">
+          <div class="card-body">
+            <div class="table-responsive">
+              <table class="table table-borderless table-striped">
+                <thead>
+                  <tr>
+                    <th style="width: 15%">Cicilan</th>
+                    <th style="width: 20%">Tanggal Pembayaran</th>
+                    <th>Keterangan</th>
+                    <th style="width: 15%">Sisa</th>
+                  </tr>
+                </thead>
+                <tbody id="listData">
+
+                </tbody>
+              </table>
+              <nav aria-label="..." class="d-flex justify-content-end">
+                <ul class="pagination">
+                  
+                </ul>
+              </nav>
+            </div>
+          </div>
+        </div>
       </div>
     </div>
   </main>
@@ -85,11 +110,12 @@
   <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery-validate/1.19.2/jquery.validate.min.js" integrity="sha512-UdIMMlVx0HEynClOIFSyOrPggomfhBKJE28LKl8yR3ghkgugPnG6iLfRfHwushZl1MOPSY6TsuBDGPK2X4zYKg==" crossorigin="anonymous"></script>
   <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery-validate/1.19.2/additional-methods.min.js" integrity="sha512-6Uv+497AWTmj/6V14BsQioPrm3kgwmK9HYIyWP+vClykX52b0zrDGP7lajZoIY1nNlX4oQuh7zsGjmF7D0VZYA==" crossorigin="anonymous"></script>
   <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery-validate/1.19.2/localization/messages_id.min.js" integrity="sha512-Pb0klMWnom+fUBpq+8ncvrvozi/TDwdAbzbICN8EBoaVXZo00q6tgWk+6k6Pd+cezWRwyu2cB+XvVamRsbbtBA==" crossorigin="anonymous"></script>
-  <script src="https://cdn.jsdelivr.net/npm/sweetalert2@10"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/moment.js/2.29.1/moment.min.js" integrity="sha512-qTXRIMyZIFb8iQcfjXWCO8+M5Tbc38Qi5WzdPOYZHIlZpzBHG3L3by84BBBOiRGiEb7KKtAOAs5qYdUiZiQNNQ==" crossorigin="anonymous"></script>
   <script>
     const URL_API = '{{ url('api/v1') }}'
     const URL_IMAGE = '{{ url('') }}'
     const id = '{{ $id_kasbon }}'
+    const urlKasbon = '{{ route('managementKasbon') }}'
   </script>
   <script src="{{ asset('js/managements/kasbon/payment.js') }}"></script>
 @endsection

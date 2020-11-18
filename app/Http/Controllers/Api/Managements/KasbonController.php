@@ -49,7 +49,6 @@ class KasbonController extends Controller
             'jatuh_tempo' => $request->input('jatuh_tempo'),
             'keterangan' => $request->input('keterangan'),
             'tgl_kasbon' => date("Y-m-d H:i:s"),
-            'status' => 'belum lunas'
         ];
 
         return $this->kasbonService->add($data);
@@ -63,7 +62,7 @@ class KasbonController extends Controller
             'keterangan' => 'required'
         ]);
         $method_payment = $request->input('method_payment');
-        if($method_payment != "cash" || $method_payment != "debit") {
+        if($method_payment != "cash" && $method_payment != "debit") {
             return response(['message' => 'Metode pembayaran tidak valid'], 406);
         }
         $data = [

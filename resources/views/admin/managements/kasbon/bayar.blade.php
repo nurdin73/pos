@@ -7,8 +7,7 @@
         	<div class="card-header d-flex justify-content-between align-items-center">
         		<span class="lead">Bayar kasbon</span>
         		<div class="btn-group">
-              <button class="btn btn-sm btn-success">Tambah kasbon</button>
-              <button class="btn btn-sm btn-primary">Print</button>
+              <a class="btn btn-sm btn-danger" href="{{ route('managementKasbon') }}">Kembali</a>
             </div>
         	</div>
         	<div class="card-body">
@@ -80,11 +79,16 @@
                 <span class="font-weight-bold" id="customerName">Nurdin</span>
               </div>
             </div>
-            {{-- <div class="col-6">
+            <div class="col-6">
               <div class="d-flex justify-content-end align-items-end flex-column">
-                <a class="text-muted" href="#">Lihat pelanggan</a>
+                <small class="text-muted">Hubungi</small>
+                <div class="d-flex">
+                  <a href="#" class="btn btn-sm btn-success mr-2" id="chatWhatsapp" data-action="share/whatsapp/share">
+                    <i class="fab fa-whatsapp"></i>
+                  </a>
+                </div>
               </div>
-            </div> --}}
+            </div>
           </div>
           <div class="dropdown-divider"></div>
           <div class="status"></div>
@@ -147,10 +151,13 @@
 
 @section('js')
 	<script src="https://cdnjs.cloudflare.com/ajax/libs/moment.js/2.29.1/moment.min.js" integrity="sha512-qTXRIMyZIFb8iQcfjXWCO8+M5Tbc38Qi5WzdPOYZHIlZpzBHG3L3by84BBBOiRGiEb7KKtAOAs5qYdUiZiQNNQ==" crossorigin="anonymous"></script>
-	<script>
+  <script src="https://kit.fontawesome.com/b10279cbf9.js" crossorigin="anonymous"></script>
+  <script>
     const URL_API = '{{ url('api/v1') }}'
     const URL_IMAGE = '{{ url('') }}'
     const id = '{{ $id }}'
+    const KODE_NOMOR = '{{ env('KODE_NOMOR') }}'
+    const NAMA_TOKO = '{{ env('NAMA_TOKO') }}'
     const urlPageKasbon = '{{ route('managementKasbon') }}'
   </script>
 	<script type="text/javascript" src="{{ asset('js/managements/kasbon/bayar.js') }}"></script>

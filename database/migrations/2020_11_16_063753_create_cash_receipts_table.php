@@ -17,11 +17,9 @@ class CreateCashReceiptsTable extends Migration
             $table->id();
             $table->foreignId('pelanggan_id')->constrained('customers')->cascadeOnDelete();
             $table->bigInteger('jumlah');
-            $table->bigInteger('dibayar')->default(0);
             $table->dateTime('tgl_kasbon');
             $table->dateTime('jatuh_tempo');
             $table->text('keterangan');
-            $table->enum('status', ['belum lunas', 'lunas'])->default('belum lunas');
             $table->timestamps();
         });
     }

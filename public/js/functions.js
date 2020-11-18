@@ -252,4 +252,11 @@ class Functions
         }
         return paginations;
     }
+
+    shareToWhatsapp(phone = "", text = "") {
+        var url = "https://api.whatsapp.com/send?"
+        url += "phone=" + phone
+        url += "&text=" + text 
+        return url
+    }
 }

@@ -1,5 +1,13 @@
 $(document).ready(function () {
-    getDetail.loadData = id
+    var query_params = id
+    getDetail.loadData = query_params
+    $('.pagination').on('click', '.page-item .page-link', function(e) {
+        e.preventDefault()
+        const page = $(this).data('id');
+		query_params += "?page=" + page
+		getDetail.loadData = query_params
+		query_params = id
+    })
     addData()
 });
 
@@ -10,15 +18,32 @@ const getDetail = {
     },
     set successData(response) {
         var sisa = response.jumlah
+        $('#listData').empty()
+        $('#id_user').val(response.customer.id)
         $('#nameCust').text(response.customer.nama)
         $('#custEmail').text(response.customer.email)
         $('#custTelp').text(response.customer.no_telp)
         $('#custAddress').text(response.customer.alamat)
-        if(response.installments.length > 0) {
-            response.installments.map(result => {
-                sisa -= result.jumlah
+        if(response.installments.data.length > 0) {
+            response.installments.data.map(result => {
+                sisa -= result.cicilan
+                $('#listData').append(`
+                    <tr>
+                        <td>${Functions.prototype.formatRupiah(result.cicilan.toString(), 'Rp. ')}</td>
+                        <td>${moment(result.tgl_pembayaran).format('D MMMM YYYY h:mm:ss')}</td>
+                        <td>${result.keterangan}</td>
+                        <td>${Functions.prototype.formatRupiah(sisa.toString(), 'Rp. ')}</td>
+                    </tr>
+                `)
             })
+            const { current_page, last_page, prev_page_url } = response.installments
+            var paginations = Functions.prototype.createPaginate(current_page, last_page, prev_page_url)
+            $('.pagination').html(paginations)
+            paginations = ""
         }
+        if(sisa < 1) {
+            $('#paymentForm').remove()
+        } 
         $('#custSisa').text(Functions.prototype.formatRupiah(sisa.toString(), 'Rp. '))
     },
     set errorData(err) {
@@ -52,8 +77,13 @@ function addData() {
                 method_payment: $('#method_payment').val(),
                 keterangan: $('#keterangan').val()
             }
-            const urlPost = URL_API + "/managements/payment-kasbon/" + id
+            const urlPost = URL_API + "/managements/add/payment-kasbon/" + id
             Functions.prototype.httpRequest(urlPost, data, 'post')
+            setTimeout(() => {
+                getDetail.loadData = id
+                $('#paymentForm')[0].reset()
+            }, 2000);
+
         }
     })
 }

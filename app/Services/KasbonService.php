@@ -56,18 +56,32 @@ class KasbonService
 
     public function detail($id)
     {
-        $result = CashReceipts::with('customer', 'installments')->where('id', $id)->first();
+        $result = CashReceipts::with('customer')->where('id', $id)->first();
+        $result->setRelation('installments', $result->installments()->paginate(5));
         return response($result);
     }
 
     public function processPayment($data = [], $id)
     {
-        $checkKasbon = CashReceipts::find($id);
+        $message = [];
+        $totalCicilan = 0;
+        $cicilan = $data['cicilan'];
+        $checkKasbon = CashReceipts::with('installments')->where('id', $id)->first();
+        foreach ($checkKasbon->installments as $i) {
+            $totalCicilan += $i->cicilan;
+        }
         if(!$checkKasbon) return response(['message' => 'Kasbon tidak ditemukan'], 404);
         $data['cash_receipt_id'] = $id;
         $data['tgl_pembayaran'] = date('Y-m-d H:i:s');
+        $newTotalCicilan = $totalCicilan + $data['cicilan'];
+        $message['message'] = 'Cicilan berhasil ditambahkan';
+        if($newTotalCicilan > $checkKasbon->jumlah) {
+            $data['cicilan'] = $checkKasbon->jumlah - $totalCicilan;
+            $kembalian = intval($cicilan) - intval($data['cicilan']);
+            $message['message'] = 'Kasbon lunas. biaya kembalian = '. $kembalian;
+        }
         $create = Installments::create($data);
         if(!$create) return response(['message' => 'Cicilan gagal ditambahkan'], 500);
-        return response(['message' => 'Cicilan berhasil ditambahkan']);
+        return response($message);
     }
 }

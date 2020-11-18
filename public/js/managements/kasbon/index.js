@@ -62,7 +62,7 @@ const getDataList = {
         } else {
             $('#listData').append(`
                 <tr>
-                    <td colspan="5" align="center">Data not found</td>
+                    <td colspan="6" align="center">Data not found</td>
                 </tr>
             `)
         }
@@ -109,7 +109,8 @@ function addKasbon() {
             },
             jumlah: {
                 required: true,
-                number: true
+                number: true,
+                min: 1000
             },
             add_jatuh_tempo: {
                 required: true,
