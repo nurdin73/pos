@@ -34,9 +34,9 @@ class AdminController extends Controller
         return view('admin.managements.kategori.index');
     }
 
-    public function managementStok()
+    public function managementTransaksi()
     {
-        return view('admin.managements.managementStok');
+        return view('admin.managements.transaksi.index');
     }
 
     public function pelanggan()

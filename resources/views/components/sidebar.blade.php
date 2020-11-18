@@ -32,10 +32,10 @@
         </a>
       </li>
       <li class="c-sidebar-nav-item">
-        <a class="c-sidebar-nav-link" href="{{ route('managementStok') }}">
+        <a class="c-sidebar-nav-link" href="{{ route('managementTransaksi') }}">
           <svg class="c-sidebar-nav-icon">
             <use xlink:href="{{ asset('vendors/@coreui/icons/svg/free.svg#cil-chart') }}"></use>
-          </svg> Management Stok
+          </svg> Transaksi
         </a>
       </li>
       <li class="c-sidebar-nav-item">
