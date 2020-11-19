@@ -21,6 +21,7 @@ class CreateProductsTable extends Migration
             $table->bigInteger('harga_dasar')->default(0);
             $table->bigInteger('harga_jual')->default(0);
             $table->bigInteger('stok')->default(0);
+            $table->bigInteger('selled')->default(0);
             $table->foreignId('kategori_id')->constrained('categories')->cascadeOnDelete();
             $table->bigInteger('berat')->nullable();
             $table->enum('satuan', ['gram', 'pcs'])->nullable();

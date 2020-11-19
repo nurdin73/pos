@@ -21,6 +21,7 @@ class ProductSeeder extends Seeder
                 'harga_dasar' => 1000,
                 'harga_jual'  => 2000,
                 'stok'        => 100,
+                'selled'        => 0,
                 'kategori_id' => 1
             ]);
         }

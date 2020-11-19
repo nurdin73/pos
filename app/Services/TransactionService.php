@@ -33,8 +33,27 @@ class TransactionService
     {
         $data['tgl_transaksi'] = date('Y-m-d H:i:s');
         $create = Transactions::create($data);
+        $returnQytProd = false;
         if(!$create) return response(['message' => 'transaksi gagal ditambahkan'], 500);
-        $delCart = Carts::where('no_invoice', $create->no_invoice)->delete();
-        return response(['message' => 'transaksi berhasil ditambahkan']);
+        $checkCart = Carts::where('no_invoice', $create->no_invoice)->get();
+        if($checkCart) {
+            foreach ($checkCart as $cc) {
+                $selled = $cc->qyt;
+                $updateProduct = Products::find($cc->product_id);
+                $selled += $updateProduct->selled;
+                if($selled > $updateProduct->qyt) {
+                    $returnQytProd = true;
+                } else {
+                    $updateProduct->update([
+                        'selled' => $selled
+                    ]);
+                }
+            }
+        }
+        if($returnQytProd == false) {
+            return response(['message' => 'transaksi berhasil ditambahkan']);
+        } else {
+            return response(['message' => 'transaksi gagal ditambahkan'], 500);
+        }
     }
 }
