@@ -34,6 +34,7 @@ class TransactionService
         $data['tgl_transaksi'] = date('Y-m-d H:i:s');
         $create = Transactions::create($data);
         if(!$create) return response(['message' => 'transaksi gagal ditambahkan'], 500);
+        $delCart = Carts::where('no_invoice', $create->no_invoice)->delete();
         return response(['message' => 'transaksi berhasil ditambahkan']);
     }
 }
