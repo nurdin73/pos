@@ -24,9 +24,22 @@ class BarangController extends Controller
      *
      * @return \Illuminate\Http\Response
      */
-    public function index()
+    public function index(Request $request)
     {
-        return $this->productsService->getAll();
+        $nama = $request->input('search_nama_barang');
+        if($nama == null) {
+            $nama = "";
+        }
+        $kode = $request->input('search_kode_barang');
+        if($kode == null) {
+            $kode = "";
+        }
+        $sorting = $request->input('sorting');
+        if($sorting == null) {
+            $sorting = 10;
+        }
+        // return $this->productsService->getAll();
+        return $this->productsService->showAll($nama, $kode, $sorting);
     }
 
 
@@ -167,7 +180,6 @@ class BarangController extends Controller
      */
     public function destroy($id)
     {
-        $decrypt = decrypt($id);
-        return $this->productsService->deleteProduct($decrypt);
+        return $this->productsService->deleteProduct($id);
     }
 }

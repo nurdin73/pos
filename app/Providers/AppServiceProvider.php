@@ -18,6 +18,7 @@ class AppServiceProvider extends ServiceProvider
         $this->app->singleton('CategoriesService', \App\Services\CategoriesService::class);
         $this->app->singleton('CustomerService', \App\Services\CustomerService::class);
         $this->app->singleton('KasbonService', \App\Services\KasbonService::class);
+        $this->app->singleton('TransactionService', \App\Services\TransactionService::class);
     }
 
     /**

@@ -1,5 +1,6 @@
 $(document).ready(function () {
   var showAll = false
+  var query_params = ""
   $('#addCategory').on('click', function(e) {
     $('#formAdd').slideToggle()
   })
@@ -13,6 +14,77 @@ $(document).ready(function () {
     $('#showOther').slideToggle()
   })
 
+  $('.pagination').on('click', '.page-item .page-link', function(e) {
+    e.preventDefault()
+    const id = $(this).data('id');
+    if(query_params == "") {
+      query_params = "?page=" + id
+    } else {
+      query_params += "&page=" + id
+    }
+    getListProducts.loadData = query_params
+  })  
+  addImage()
+  addData()
+  addCategory()
+  delProduct()
+  getCategory()
+
+  $('#filteringData').on('submit', function(e) {
+    e.preventDefault()
+    query_params = ""
+    query_params += "?" + $(this).serialize()
+    getListProducts.loadData =  query_params
+  })
+  $('.btn-reset').on('click', function(e) {
+    e.preventDefault()
+    $('#filteringData')[0].reset()
+    getListProducts.loadData = ""
+  })
+
+  getListProducts.loadData = "";
+});
+
+function validateFile(input) {  
+  var fileType = ['.jpg', '.jpeg', '.png']
+  var val = $(input).val()
+  if (val.length > 0) {
+      var fileValid = false
+      for (let i = 0; i < fileType.length; i++) {
+          const element = fileType[i];
+          if(val.substr(val.length - element.length, element.length).toLowerCase() == element.toLowerCase()) {
+              fileValid = true
+              // break
+          }
+      }
+
+      if(!fileValid) {
+          toastr.warning("Type file tidak valid", 'perhatian!')
+          $('.custom-file-label').text("Choose file")
+          $(input).val("")
+          return false
+      }
+  }
+  return true
+}
+
+function addImage() {
+  $('.custom-file-input').on('change', function(e) {
+    $('.pgwSlider').empty()
+    if(validateFile($(this))) {
+      const files = document.getElementById('inputGroupFile01').files
+      const nextSibling = e.target.nextElementSibling
+      if(files.length > 1) {
+        nextSibling.innerHTML = `${files.length} photo dipilih`
+      } else {
+        nextSibling.innerHTML = files[0].name
+      }
+      Functions.prototype.readURL(files)
+    }
+  })
+}
+
+function addData() {
   $('#formAddbarang').validate({
     rules: {
       nama_barang: {
@@ -87,7 +159,9 @@ $(document).ready(function () {
       console.log(sendData);
     }
   })
+}
 
+function addCategory() {
   $('#submitCategory').on('click', function(e) {
     e.preventDefault()
     const nameCategory = $('#kategoriAdd').val()
@@ -99,7 +173,9 @@ $(document).ready(function () {
     Functions.prototype.httpRequest(url, data, "post")
     $('#kategoriAdd').removeClass('is-valid').val('')
   })
+}
 
+function getCategory() {
   $('#kategori').select2({
     theme:'bootstrap4',
     ajax: {
@@ -121,58 +197,9 @@ $(document).ready(function () {
       },
     }
   })
+}
 
-  
-  $('.custom-file-input').on('change', function(e) {
-    $('.pgwSlider').empty()
-    if(validateFile($(this))) {
-      const files = document.getElementById('inputGroupFile01').files
-      const nextSibling = e.target.nextElementSibling
-      if(files.length > 1) {
-        nextSibling.innerHTML = `${files.length} photo dipilih`
-      } else {
-        nextSibling.innerHTML = files[0].name
-      }
-      Functions.prototype.readURL(files)
-    }
-  })
-
-  function validateFile(input) {  
-    var fileType = ['.jpg', '.jpeg', '.png']
-    var val = $(input).val()
-    if (val.length > 0) {
-        var fileValid = false
-        for (let i = 0; i < fileType.length; i++) {
-            const element = fileType[i];
-            if(val.substr(val.length - element.length, element.length).toLowerCase() == element.toLowerCase()) {
-                fileValid = true
-                // break
-            }
-        }
-
-        if(!fileValid) {
-            toastr.warning("Type file tidak valid", 'perhatian!')
-            $('.custom-file-label').text("Choose file")
-            $(input).val("")
-            return false
-        }
-    }
-    return true
-  }
-
-  // get data
-  const urlListProduct = URL_API + "/managements"
-  const columns = [
-    {data : 'kode_barang', name: 'kode_barang'},
-    {data : 'nama_barang', name: 'nama_barang'},
-    {data : 'stok', name: 'stok'},
-    {data : 'harga_dasar', name: 'harga_dasar'},
-    {data : 'harga_jual', name: 'harga_jual'},
-    {data : 'actions', name: 'actions', orderable: false, searchable: false},
-  ]
-  Functions.prototype.tableResult("#dataTables", urlListProduct, columns)
-
-  // delete data
+function delProduct() {
   $('#dataTables').on('click', 'tbody tr td .delete', function(e) {
     e.preventDefault()
     const id = $(this).data('id')
@@ -195,4 +222,51 @@ $(document).ready(function () {
       }
     })
   })
-});
+}
+
+const getListProducts = {
+  set loadData(data) {
+    const urlListProd = URL_API + "/managements" + data
+    Functions.prototype.getRequest(getListProducts, urlListProd)
+  },
+  set successData(response) {
+    $('#listProducts').empty()
+    const { current_page, last_page, prev_page_url, data, to, from, total } = response
+    if(data.length > 0) {
+      data.map(result => {
+        $('#listProducts').append(`
+          <tr>
+            <td>${result.kode_barang}</td>
+            <td>${result.nama_barang}</td>
+            <td>${result.stok}</td>
+            <td>${result.harga_dasar}</td>
+            <td>${result.harga_jual}</td>
+            <td>
+              <div class="btn-group">
+                <a href="${BASE_URL_ADMIN}/management/barang/edit/${result.id}" class='btn btn-info btn-sm'>Update</a>
+                <a href="${BASE_URL_ADMIN}/management/barang/detail/${result.id}" class='btn btn-primary btn-sm'>Detail</a>
+                <button class='btn btn-sm btn-danger delete' data-id="${result.id}">Delete</button>
+              </div>
+            </td>
+          </tr>
+        `)
+      })
+    } else {
+      $('#listProducts').append(`
+        <tr>
+          <td colspan="6" align="center">Data tidak ditemukan</td>
+        </tr>
+      `)
+    }
+    $('#fromData').text(from)
+    $('#toData').text(to)
+    $('#totalData').text(total)
+    var paginations = ""
+    paginations = Functions.prototype.createPaginate(current_page, last_page, prev_page_url)
+    $('.pagination').html(paginations)
+    paginations = ""
+  },
+  set errorData(err) {
+    console.log(err);
+  }
+}

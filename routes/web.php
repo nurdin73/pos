@@ -1,5 +1,6 @@
 <?php
 
+use App\Helpers\GenerateCode;
 use Illuminate\Support\Facades\Route;
 
 /*
@@ -86,6 +87,7 @@ Route::group(['prefix' => 'api/'], function () {
             Route::get('/search-pelanggan', 'Api\Managements\PelangganController@search');
             Route::get('/kasbon-pelanggan/{id}', 'Api\Managements\PelangganController@getKasbon');
             Route::get('/pajak', 'Api\Managements\PajakController@index');
+            Route::get('/carts/{no_invoice}', 'Api\Managements\TransaksiController@getCarts');
 
             // get detail
             Route::get('barang/{id}', 'Api\Managements\BarangController@show');
@@ -104,6 +106,8 @@ Route::group(['prefix' => 'api/'], function () {
                 Route::post('/kasbon', 'Api\Managements\KasbonController@store');
                 Route::post('/payment-kasbon/{id}', 'Api\Managements\KasbonController@payment');
                 Route::post('/pajak', 'Api\Managements\PajakController@store');
+                Route::post('/cart', 'Api\Managements\TransaksiController@store');
+                Route::post('/transaction', 'Api\Managements\TransaksiController@addTransaksi');
             });
 
             // update 
@@ -128,6 +132,10 @@ Route::group(['prefix' => 'api/'], function () {
 
         });
     });
+});
+
+Route::get('tes', function() {
+    return GenerateCode::invoice();
 });
 
 Route::get('/home', 'HomeController@index')->name('home');

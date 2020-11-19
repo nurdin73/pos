@@ -32,6 +32,26 @@ class ProductsService
                 ->make(true);
     }
 
+    public function showAll($nama, $kode, $sorting)
+    {
+        $results = Products::select('id', 'nama_barang', 'kode_barang', 'harga_dasar', 'harga_jual', 'stok');
+        $results->orderBy('kode_barang', 'ASC');
+        if($nama != "") {
+            if($kode != "") {
+                $results = $results->where('kode_barang', 'like', '%'.$kode.'%')->where('nama_barang', 'like', '%'.$nama.'%')->paginate($sorting);
+            } else {
+                $results = $results->where('nama_barang', 'like', '%'.$nama.'%')->paginate($sorting);
+            }
+        } else {
+            if($kode != "") {
+                $results = $results->where('kode_barang', 'like', '%'.$kode.'%')->paginate($sorting);
+            } else {
+                $results = $results->paginate($sorting);
+            }
+        }
+        return response($results);
+    }
+
     public function addProduct($data, $files)
     {
         $return = false;

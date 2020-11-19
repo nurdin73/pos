@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers\Admin;
 
+use App\Helpers\GenerateCode;
 use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
 
@@ -19,13 +20,13 @@ class AdminController extends Controller
 
     public function editProduct($id)
     {
-        $data['id'] = decrypt($id);
+        $data['id'] = $id;
         return view('admin.managements.barang.edit', $data);
     }
 
     public function detailProduct($id)
     {
-        $data['id'] = decrypt($id);
+        $data['id'] = $id;
         return view('admin.managements.barang.detail', $data);
     }
 
@@ -36,7 +37,8 @@ class AdminController extends Controller
 
     public function managementTransaksi()
     {
-        return view('admin.managements.transaksi.index');
+        $data['no_invoice'] = GenerateCode::invoice();
+        return view('admin.managements.transaksi.index', $data);
     }
 
     public function pelanggan()
