@@ -16,7 +16,7 @@
                 <div>Jumlah Transaksi</div>
                 <div class="progress progress-xs my-2">
                   <div class="progress-bar bg-success" role="progressbar" style="width: 0%" aria-valuenow="0" aria-valuemin="0" aria-valuemax="100"></div>
-                </div><small class="text-muted">0% vs kemarin</small>
+                </div><small class="text-muted"><span id="percentaseTotalTrx"></span> vs kemarin</small>
               </div>
             </div>
           </div>
