@@ -3,6 +3,7 @@ $(document).ready(function () {
     getCarts.loadData = noInvoice
     actionDelAndUpdate()
     processPayment()
+    updateCart()
 });
 
 function getData() {
@@ -127,8 +128,8 @@ const getCarts = {
     if(response.length > 0) {
       var i = 1
       response.map(result => {
-        subTotal += result.product.harga_jual * result.qyt
-        const total = result.qyt * result.product.harga_jual
+        subTotal += (result.product.harga_jual * result.qyt) - result.diskon_product
+        const total = (result.qyt * result.product.harga_jual) - result.diskon_product
         $('#listCarts').append(`
         <tr data-id="${result.id}">
           <td>${i++}</td>
@@ -141,7 +142,7 @@ const getCarts = {
           <td>
             <div class="btn-group">
               <button class="btn btn-sm btn-danger delete" data-id="${result.id}">Hapus</button>
-              <button class="btn btn-sm btn-info update"  data-id="${result.id}">Edit</button>
+              <button class="btn btn-sm btn-info update" data-toggle="modal" data-target="#detailCart" data-id="${result.id}">Edit</button>
             </div>
           </td>
         </tr>
@@ -166,6 +167,7 @@ const getCarts = {
 function actionDelAndUpdate() {  
   $('#listCarts').on('click', 'tr td div .delete', function(e) {
     e.preventDefault()
+    const id = $(this).data('id')
     Swal.fire({
       title: 'Perhatian?',
       text: "Yakin ingin menghapus produk ini",
@@ -176,9 +178,68 @@ function actionDelAndUpdate() {
       confirmButtonText: 'Ya, Hapus!'
     }).then((result) => {
       if (result.isConfirmed) {
-        
+        const url = URL_API + "/managements/delete/cart/" + id
+        Functions.prototype.deleteData(url)
+        getCarts.loadData = noInvoice
       }
     })
+  })
+
+  $('#listCarts').on('click', 'tr td div .update', function(e) {
+    e.preventDefault()
+    const id = $(this).data('id')
+    const urlDetail = URL_API + "/managements/cart/" + id
+    Functions.prototype.requestDetail(detailCart, urlDetail)
+  })
+  const detailCart = {
+    set successData(response) {
+      $('#kodeBarangUpdate').text(response.product.kode_barang)
+      $('#hargaBarangUpdate').text(Functions.prototype.formatRupiah(response.product.harga_jual.toString(), 'Rp. '))
+      $('#namaBarangUpdate').text(response.product.nama_barang)
+      $('#id_cart').val(response.id)
+      $('#qyt_update').val(response.qyt)
+      $('#dicount_barang_update').val(response.diskon_product)
+    },
+    set errorData(err) {
+      toastr.error(err.responseJSON.message, 'Error')
+    }
+  }
+}
+
+function updateCart() {  
+  $('#formUpdateCart').validate({
+    rules: {
+      qyt_update: {
+        required: true,
+        number: true,
+        min: 1
+      },
+      dicount_barang_update: {
+        required: true,
+        number: true,
+        min: 0,
+        max: function() {
+          return $('#sub_total').val()
+        }
+      }
+    },
+    errorClass: "is-invalid",
+    validClass: "is-valid",
+    errorElement: "small",
+    submitHandler: function(form, e) {
+      const id = $('#id_cart').val()
+      const url = URL_API + "/managements/update/cart/" + id
+      const data = {
+        qyt: $('#qyt_update').val(),
+        diskon_product: $('#dicount_barang_update').val()
+      }
+      Functions.prototype.updateData(url, data, 'put')
+      getCarts.loadData = noInvoice
+      $('#formUpdateCart')[0].reset()
+      $('#detailCart').modal('hide')
+      $('#qyt_update').removeClass('is-valid')
+      $('#dicount_barang_update').removeClass('is-valid')
+    }
   })
 }
 

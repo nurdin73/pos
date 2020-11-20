@@ -1,6 +1,5 @@
 <?php
 
-use App\Helpers\GenerateCode;
 use Illuminate\Support\Facades\Route;
 
 /*
@@ -88,7 +87,7 @@ Route::group(['prefix' => 'api/'], function () {
             Route::get('/kasbon-pelanggan/{id}', 'Api\Managements\PelangganController@getKasbon');
             Route::get('/pajak', 'Api\Managements\PajakController@index');
             Route::get('/carts/{no_invoice}', 'Api\Managements\TransaksiController@getCarts');
-
+            Route::get('/transaksi', 'Api\Managements\TransaksiController@transactions');
             // get detail
             Route::get('barang/{id}', 'Api\Managements\BarangController@show');
             Route::get('stok/{id}', 'Api\Managements\StokController@show');
@@ -96,6 +95,7 @@ Route::group(['prefix' => 'api/'], function () {
             Route::get('pelanggan/{id}', 'Api\Managements\PelangganController@show');
             Route::get('kasbon/{id}', 'Api\Managements\KasbonController@show');
             Route::get('pajak/{id}', 'Api\Managements\PajakController@show');
+            Route::get('cart/{id}', 'Api\Managements\TransaksiController@detailCart');
 
             // add 
             Route::group(['prefix' => 'add', 'middleware' => ['auth']], function () {
@@ -118,6 +118,7 @@ Route::group(['prefix' => 'api/'], function () {
                 Route::put('/pelanggan/{id}', 'Api\Managements\PelangganController@update');
                 Route::put('/kasbon/{id}', 'Api\Managements\KasbonController@update');
                 Route::put('/pajak/{id}', 'Api\Managements\PajakController@update');
+                Route::put('/cart/{id}', 'Api\Managements\TransaksiController@updateCart');
             });
 
             // delete 
@@ -128,14 +129,11 @@ Route::group(['prefix' => 'api/'], function () {
                 Route::delete('/pelanggan/{id}', 'Api\Managements\PelangganController@destroy');
                 Route::delete('/kasbon/{id}', 'Api\Managements\KasbonController@destroy');
                 Route::delete('/pajak/{id}', 'Api\Managements\PajakController@destroy');
+                Route::delete('/cart/{id}', 'Api\Managements\TransaksiController@deleteCart');
             });
 
         });
     });
-});
-
-Route::get('tes', function() {
-    return GenerateCode::invoice();
 });
 
 Route::get('/home', 'HomeController@index')->name('home');

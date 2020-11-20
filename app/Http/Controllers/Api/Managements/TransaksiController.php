@@ -49,4 +49,36 @@ class TransaksiController extends Controller
     {
         return $this->transactionService->getCarts($no_invoice);
     }
+
+    public function deleteCart($id)
+    {
+        return $this->transactionService->delete($id);
+    }
+
+    public function detailCart($id)
+    {
+        return $this->transactionService->detailCart($id);
+    }
+
+    public function updateCart(Request $request, $id)
+    {
+        $request->validate([
+            'qyt' => 'required|numeric',
+            'diskon_product' => 'required|numeric'
+        ]);
+        $data = [
+            'qyt' => $request->input('qyt'),
+            'diskon_product' => $request->input('diskon_product')
+        ];
+        return $this->transactionService->updateCart($data, $id);
+    }
+
+    public function transactions(Request $request)
+    {
+        $date = $request->input('date');
+        if(!$date) {
+            $date = "hari ini";
+        }
+        return $this->transactionService->transactions($date);
+    }
 }

@@ -32,28 +32,72 @@ class TransactionService
     public function add($data)
     {
         $data['tgl_transaksi'] = date('Y-m-d H:i:s');
-        $create = Transactions::create($data);
         $returnQytProd = false;
-        if(!$create) return response(['message' => 'transaksi gagal ditambahkan'], 500);
-        $checkCart = Carts::where('no_invoice', $create->no_invoice)->get();
+        $checkCart = Carts::where('no_invoice', $data['no_invoice'])->get();
         if($checkCart) {
             foreach ($checkCart as $cc) {
-                $selled = $cc->qyt;
                 $updateProduct = Products::find($cc->product_id);
-                $selled += $updateProduct->selled;
-                if($selled > $updateProduct->qyt) {
+                $sisaStok = $updateProduct->stok - $updateProduct->selled;
+                if($cc->qyt > $sisaStok) {
                     $returnQytProd = true;
                 } else {
                     $updateProduct->update([
-                        'selled' => $selled
+                        'selled' => $updateProduct->selled + $cc->qyt
                     ]);
                 }
             }
         }
         if($returnQytProd == false) {
+            $create = Transactions::create($data);
+            if(!$create) return response(['message' => 'transaksi gagal ditambahkan'], 500);
             return response(['message' => 'transaksi berhasil ditambahkan']);
         } else {
             return response(['message' => 'transaksi gagal ditambahkan'], 500);
+        }
+    }
+
+    public function delete($id)
+    {
+        $check = Carts::find($id);
+        if(!$check) return response(['message' => 'terjadi kesalahan. silahkan coba kembali'], 406);
+        $delete = $check->delete();
+        if(!$delete) return response(['message' => 'terjadi kesalahan. silahkan coba kembali'], 500);
+        return response(['message' => 'Keranjang berhasil dihapus']);
+    }
+
+    public function detailCart($id)
+    {
+        $cart = Carts::with('product:id,kode_barang,nama_barang,harga_jual')->where('id', $id)->first();
+        if(!$cart) return response(['message' => 'terjadi kesalahan. silahkan coba kembali'], 406);
+        return response($cart);
+    }
+
+    public function updateCart($data, $id)
+    {
+        $cart = Carts::find($id);
+        if(!$cart) return response(['message' => 'terjadi kesalahan. silahkan coba kembali'], 406);
+        $checkStok = Products::find($cart->product_id);
+        $sisaStok = $checkStok->stok - $checkStok->selled;
+        if($data['qyt'] > $sisaStok) return response(['message' => 'jumlah barang melebihi batas. silahkan masukkan jumlah barang dibawah '.$sisaStok], 406);
+        $update = $cart->update($data);
+        if(!$update) return response(['message' => 'Keranjang gagal diupdate'], 500);
+        return response(['message' => 'keranjang berhasil diupdate']);
+    }
+
+    public function transactions($hari)
+    {
+        if($hari == "hari ini") {
+            $date = date('Y-m-d');
+            $transactions = Transactions::with('carts.product:id,harga_dasar,harga_jual,selled')
+            ->select('id', 'no_invoice', 'diskon_transaksi', 'total', 'tgl_transaksi')
+            ->where('tgl_transaksi', 'like', '%'.$date.'%')->get();
+            return $transactions;
+        } else {
+            $date = date('Y-m-d', strtotime("-1 days"));
+            $transactions = Transactions::with('carts.product:id,harga_dasar,harga_jual,selled')
+            ->select('id', 'no_invoice', 'diskon_transaksi', 'total', 'tgl_transaksi')
+            ->where('tgl_transaksi', 'like', '%'.$date.'%')->get();
+            return $transactions;
         }
     }
 }
