@@ -79,9 +79,11 @@ const getTransactionsYesterday = {
         const keuntungan = total - modal
         const totalTransaksiHariIni = parseInt($('#countTransaction').text()) - response.length
         const totalTransaksiKemarin = response.length
-        const percenseharian = Math.floor((totalTransaksiHariIni / totalTransaksiKemarin) * 100)
+        var percenseharian = Math.floor((totalTransaksiKemarin / totalTransaksiHariIni) * 100)
+        if(totalTransaksiKemarin == 0 && totalTransaksiHariIni == 0) {
+            percenseharian = 0
+        }
         $('#percentaseTotalTrx').text(percenseharian + '%')
-        console.log(keuntungan);
     },
     set errorData(err) {
         toastr.error(err.responseJSON.message, 'Error')
