@@ -21,7 +21,8 @@ class CreateTransactionsTable extends Migration
             $table->bigInteger('diskon_transaksi')->default(0);
             $table->bigInteger('total');
             $table->longText('keterangan')->nullable();
-            $table->dateTime('tgl_transaksi');
+            $table->date('tgl_transaksi');
+            $table->time('jam_transaksi');
             $table->timestamps();
         });
     }

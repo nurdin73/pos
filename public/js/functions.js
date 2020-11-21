@@ -273,6 +273,28 @@ class Functions
         return paginations;
     }
 
+    createChart( field, type = 'line', nameLabel = "", data = [], labels = [], options = {}) {
+        var chart = new Chart(field, {
+            // The type of chart we want to create
+            type: type,
+        
+            // The data for our dataset
+            data: {
+                labels: labels,
+                datasets: [{
+                    label: nameLabel,
+                    backgroundColor: '#321fdb',
+                    borderColor: 'rgb(255, 99, 132)',
+                    data: data,
+                }]
+            },
+        
+            // Configuration options go here
+            options: options
+        });
+        return chart
+    }
+
     createCountingData(from, to, total) {
         return `<span class="text-muted">Menampilan <span>${from}</span> sampai <span>${to}</span> dari <span>${total}</span> data</span>`
     }

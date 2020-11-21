@@ -88,6 +88,7 @@ Route::group(['prefix' => 'api/'], function () {
             Route::get('/pajak', 'Api\Managements\PajakController@index');
             Route::get('/carts/{no_invoice}', 'Api\Managements\TransaksiController@getCarts');
             Route::get('/transaksi', 'Api\Managements\TransaksiController@transactions');
+            Route::get('/transaksi-per-jam', 'Api\Managements\TransaksiController@getTransactionPerHours');
             // get detail
             Route::get('barang/{id}', 'Api\Managements\BarangController@show');
             Route::get('stok/{id}', 'Api\Managements\StokController@show');

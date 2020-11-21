@@ -27,7 +27,7 @@
                 <div>Keuntungan</div>
                 <div class="progress progress-xs my-2">
                   <div class="progress-bar bg-success" role="progressbar" style="width: 0%" aria-valuenow="0" aria-valuemin="0" aria-valuemax="100"></div>
-                </div><small class="text-muted">0% vs kemarin</small>
+                </div><small class="text-muted"><span id="percentaseTotalKeuntungan"></span> vs kemarin</small>
               </div>
             </div>
           </div>
@@ -38,7 +38,7 @@
                 <div>Pendapatan</div>
                 <div class="progress progress-xs my-2">
                   <div class="progress-bar bg-success" role="progressbar" style="width: 0%" aria-valuenow="0" aria-valuemin="0" aria-valuemax="100"></div>
-                </div><small class="text-muted">0% vs kemarin</small>
+                </div><small class="text-muted"><span id="percentaseTotalPendapatan"></span> vs kemarin</small>
               </div>
             </div>
           </div>
@@ -56,13 +56,13 @@
                   </a>
                 </li>
                 <li class="nav-item">
-                  <a class="nav-link" data-toggle="tab" href="#pendapatan" role="tab" aria-controls="pendapatan">
-                    Pendapatan
+                  <a class="nav-link" data-toggle="tab" href="#keuntungan2" role="tab" aria-controls="keuntungan2">
+                    Keuntungan
                   </a>
                 </li>
                 <li class="nav-item">
-                  <a class="nav-link" data-toggle="tab" href="#keuntungan" role="tab" aria-controls="keuntungan">
-                    Keuntungan
+                  <a class="nav-link" data-toggle="tab" href="#pendapatan2" role="tab" aria-controls="pendapatan2">
+                    Pendapatan
                   </a>
                 </li>
               </ul>
@@ -70,11 +70,11 @@
                 <div class="tab-pane active" id="jml_trx" role="tabpanel">
                   <canvas id="myChart"></canvas>
                 </div>
-                <div class="tab-pane" id="pendapatan" role="tabpanel">
-                  <canvas id="myChart2"></canvas>
+                <div class="tab-pane" id="keuntungan2" role="tabpanel">
+                  <canvas id="keuntunganChart"></canvas>
                 </div>
-                <div class="tab-pane" id="keuntungan" role="tabpanel">
-                  <canvas id="myChart3"></canvas>
+                <div class="tab-pane" id="pendapatan2" role="tabpanel">
+                  <canvas id="pendapatanChart"></canvas>
                 </div>
               </div>
             </div>
@@ -89,6 +89,8 @@
   <script src="https://cdn.jsdelivr.net/npm/chart.js@2.8.0"></script>
   <script>
     const URL_API = '{{ url('api/v1') }}'
+    var keuntunganHariIni = 0
+    var pendapatanHariIni = 0
   </script>
   <script src="{{ asset('js/reports/umum/index.js') }}"></script>
 @endsection

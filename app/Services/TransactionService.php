@@ -31,7 +31,8 @@ class TransactionService
 
     public function add($data)
     {
-        $data['tgl_transaksi'] = date('Y-m-d H:i:s');
+        $data['tgl_transaksi'] = date('Y-m-d');
+        $data['jam_transaksi'] = date('H') < 10 ? "0".date('H').":00:00" : date('H').":00:00";
         $returnQytProd = false;
         $checkCart = Carts::where('no_invoice', $data['no_invoice'])->get();
         if($checkCart) {
@@ -89,15 +90,64 @@ class TransactionService
         if($hari == "hari ini") {
             $date = date('Y-m-d');
             $transactions = Transactions::with('carts.product:id,harga_dasar,harga_jual,selled')
-            ->select('id', 'no_invoice', 'diskon_transaksi', 'total', 'tgl_transaksi')
-            ->where('tgl_transaksi', 'like', '%'.$date.'%')->get();
+            ->select('id', 'no_invoice', 'diskon_transaksi', 'total', 'tgl_transaksi', 'jam_transaksi')
+            ->where('tgl_transaksi', 'like', '%'.$date.'%')
+            ->orderBy('jam_transaksi', 'ASC')
+            ->get();
             return $transactions;
         } else {
             $date = date('Y-m-d', strtotime("-1 days"));
             $transactions = Transactions::with('carts.product:id,harga_dasar,harga_jual,selled')
-            ->select('id', 'no_invoice', 'diskon_transaksi', 'total', 'tgl_transaksi')
-            ->where('tgl_transaksi', 'like', '%'.$date.'%')->get();
+            ->select('id', 'no_invoice', 'diskon_transaksi', 'total', 'tgl_transaksi', 'jam_transaksi')
+            ->where('tgl_transaksi', 'like', '%'.$date.'%')
+            ->orderBy('jam_transaksi', 'ASC')
+            ->get();
             return $transactions;
         }
+    }
+
+    public function getTrxPerHours()
+    {
+        $dataset = [];
+        $date = date('Y-m-d');
+        $jam = [
+            "00:00:00" => [],
+            "01:00:00" => [],
+            "02:00:00" => [],
+            "03:00:00" => [],
+            "04:00:00" => [],
+            "05:00:00" => [],
+            "06:00:00" => [],
+            "07:00:00" => [],
+            "08:00:00" => [],
+            "09:00:00" => [],
+            "10:00:00" => [],
+            "11:00:00" => [],
+            "12:00:00" => [],
+            "13:00:00" => [],
+            "14:00:00" => [],
+            "15:00:00" => [],
+            "16:00:00" => [],
+            "17:00:00" => [],
+            "18:00:00" => [],
+            "19:00:00" => [],
+            "20:00:00" => [],
+            "21:00:00" => [],
+            "22:00:00" => [],
+            "23:00:00" => [],
+            "24:00:00" => [],
+        ];
+        $dataset = array_merge($dataset, $jam);
+        foreach ($jam as $j => $val) {
+            $transactions = Transactions::with('carts.product:id,harga_dasar,harga_jual,selled')
+            ->select('id', 'no_invoice', 'diskon_transaksi', 'total', 'tgl_transaksi', 'jam_transaksi')
+            ->where('tgl_transaksi', 'like', '%'.$date.'%')
+            ->where('jam_transaksi', 'like', '%'.$j.'%')
+            ->get();
+            foreach ($transactions as $trx) {
+                array_push($dataset[$j], $trx);
+            }
+        }
+        return response($dataset);
     }
 }

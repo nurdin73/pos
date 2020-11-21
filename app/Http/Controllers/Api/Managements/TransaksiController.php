@@ -81,4 +81,9 @@ class TransaksiController extends Controller
         }
         return $this->transactionService->transactions($date);
     }
+
+    public function getTransactionPerHours()
+    {
+        return $this->transactionService->getTrxPerHours();
+    }
 }
