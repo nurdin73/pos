@@ -89,6 +89,10 @@ Route::group(['prefix' => 'api/'], function () {
             Route::get('/carts/{no_invoice}', 'Api\Managements\TransaksiController@getCarts');
             Route::get('/transaksi', 'Api\Managements\TransaksiController@transactions');
             Route::get('/transaksi-per-jam', 'Api\Managements\TransaksiController@getTransactionPerHours');
+            Route::get('/transaksi-per-hari', 'Api\Managements\TransaksiController@getTransactionPerDays');
+            Route::get('/transaksi-per-bulan', 'Api\Managements\TransaksiController@getTransactionPerMonth');
+            Route::get('/transaksi-per-tahun', 'Api\Managements\TransaksiController@getTransactionPerYear');
+
             // get detail
             Route::get('barang/{id}', 'Api\Managements\BarangController@show');
             Route::get('stok/{id}', 'Api\Managements\StokController@show');

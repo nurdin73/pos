@@ -241,6 +241,8 @@
     const URL_API = '{{ url('api/v1') }}'
     const URL_IMAGE = '{{ url('') }}'
     const BASE_URL_ADMIN = '{{ url('admin') }}'
+    var showAll = false
+    var query_params = ""
   </script>
   <script src="{{ asset('js/managements/barang/barang.js') }}"></script>
 @endsection

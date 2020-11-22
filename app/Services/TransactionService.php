@@ -135,7 +135,6 @@ class TransactionService
             "21:00:00" => [],
             "22:00:00" => [],
             "23:00:00" => [],
-            "24:00:00" => [],
         ];
         $dataset = array_merge($dataset, $jam);
         foreach ($jam as $j => $val) {
@@ -149,5 +148,65 @@ class TransactionService
             }
         }
         return response($dataset);
+    }
+
+    public function getTrxPerDays()
+    {
+        $days = [];
+        for ($i=1; $i <= 31; $i++) { 
+            $i = $i < 10 ? "0".$i : $i;
+            $tgl = date('Y-m'). "-" .$i;
+            $days[$tgl] = [];
+        }
+        // $dataset = array_merge($dataset, $days);
+        foreach ($days as $d => $value) {
+            $transactions = Transactions::with('carts.product:id,harga_dasar,harga_jual,selled')
+            ->select('id', 'no_invoice', 'diskon_transaksi', 'total', 'tgl_transaksi', 'jam_transaksi')
+            ->where('tgl_transaksi', $d)
+            ->get();
+            foreach ($transactions as $trx) {
+                array_push($days[$d], $trx);
+            }
+        }
+        return response($days);
+    }
+
+    public function getTrxPerMonth()
+    {
+        $month = [];
+        for ($i=1; $i <= 12; $i++) { 
+            $i = $i < 10 ? "0".$i : $i;
+            $bln = date('Y')."-".$i;
+            $month[$bln] = [];
+        }
+        foreach ($month as $m => $value) {
+            $transactions = Transactions::with('carts.product:id,harga_dasar,harga_jual,selled')
+            ->select('id', 'no_invoice', 'diskon_transaksi', 'total', 'tgl_transaksi', 'jam_transaksi')
+            ->where('tgl_transaksi', 'like', '%'.$m.'%')
+            ->get();
+            foreach ($transactions as $trx) {
+                array_push($month[$m], $trx);
+            }
+        }
+        return $month;
+    }
+
+    public function getTrxPerYear()
+    {
+        $years = [];
+        for ($i=date('Y'); $i <= date('Y') + 10; $i++) { 
+            $i = $i < 10 ? "0".$i : $i;
+            $years[$i] = [];
+        }
+        foreach ($years as $y => $value) {
+            $transactions = Transactions::with('carts.product:id,harga_dasar,harga_jual,selled')
+            ->select('id', 'no_invoice', 'diskon_transaksi', 'total', 'tgl_transaksi', 'jam_transaksi')
+            ->where('tgl_transaksi', 'like', '%'.$y.'%')
+            ->get();
+            foreach ($transactions as $trx) {
+                array_push($years[$y], $trx);
+            }
+        }
+        return $years;
     }
 }

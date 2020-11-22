@@ -1,6 +1,4 @@
 $(document).ready(function () {
-  var showAll = false
-  var query_params = ""
   $('#addCategory').on('click', function(e) {
     $('#formAdd').slideToggle()
   })
