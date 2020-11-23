@@ -12,7 +12,7 @@
     <div class="container-fluid">
       <div class="fade-in">
         <div class="row">
-          <div class="col-6 col-lg-6">
+          <div class="col-lg-6">
             <div class="card overflow-hidden">
               <div class="card-body p-0 d-flex align-items-center">
                 <div class="bg-primary p-4 mfe-3">
@@ -27,7 +27,7 @@
               </div>
             </div>
           </div>
-          <div class="col-6 col-lg-6">
+          <div class="col-lg-6">
             <div class="card overflow-hidden">
               <div class="card-body p-0 d-flex align-items-center">
                 <div class="bg-primary p-4 mfe-3">

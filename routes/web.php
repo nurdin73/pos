@@ -138,7 +138,19 @@ Route::group(['prefix' => 'api/'], function () {
             });
 
         });
+
+        Route::group(['prefix' => 'settings'], function () {
+            // get all
+
+            // get detail
+            Route::get('/profile', 'Api\Settings\ProfileController@detail');
+
+            // update
+            Route::group(['prefix' => '/update'], function () {
+                Route::put('/profile/{id}', 'Api\Settings\ProfileController@update');
+                Route::put('/change-password', 'Api\Settings\ProfileController@changePassword');
+            });
+        });
     });
 });
-
 Route::get('/home', 'HomeController@index')->name('home');

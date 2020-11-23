@@ -194,7 +194,7 @@ class TransactionService
     public function getTrxPerYear()
     {
         $years = [];
-        for ($i=date('Y'); $i <= date('Y') + 10; $i++) { 
+        for ($i=date('Y') - 2; $i <= date('Y') + 8; $i++) { 
             $i = $i < 10 ? "0".$i : $i;
             $years[$i] = [];
         }
