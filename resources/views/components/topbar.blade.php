@@ -21,13 +21,13 @@
         <use xlink:href="{{ asset('vendors/@coreui/icons/svg/free.svg#cil-envelope-open') }}"></use>
       </svg></a></li>
   <li class="c-header-nav-item dropdown"><a class="c-header-nav-link" data-toggle="dropdown" href="#" role="button" aria-haspopup="true" aria-expanded="false">
-      <div class="c-avatar"><img class="c-avatar-img" src="{{ asset('assets/img/avatars/6.jpg') }}" alt="user@email.com"></div>
+      <div class="c-avatar"><img class="c-avatar-img" src="https://demo.getstisla.com/assets/img/avatar/avatar-1.png" alt="user@email.com"></div>
     </a>
     <div class="dropdown-menu dropdown-menu-right pt-0">
       <div class="dropdown-header bg-light py-2">
         <strong>Settings</strong>
       </div>
-      <a class="dropdown-item" href="#">
+      <a class="dropdown-item" href="{{ route('settingProfile') }}">
         <svg class="c-icon mr-2">
           <use xlink:href="{{ asset('vendors/@coreui/icons/svg/free.svg#cil-user') }}"></use>
         </svg> Profile
