@@ -1,9 +1,14 @@
 <?php
 namespace App\Services;
 
+use App\Models\Stores;
 use App\Models\User;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Hash;
+use Illuminate\Support\Facades\Storage;
+use Spatie\ImageOptimizer\OptimizerChainFactory;
+use Illuminate\Support\Str;
+use Intervention\Image\Facades\Image;
 
 class SettingService
 {
@@ -37,5 +42,29 @@ class SettingService
         } else {
             return response(['message' => 'Password Lama tidak sesuai'], 403);
         }
+    }
+
+    public function updateLogo($file)
+    {
+        $optimizerChain = OptimizerChainFactory::create();
+        $path = "images/logo/";
+        $filename = Str::random(20) .'.'. $file->getClientOriginalExtension();
+        $img = Image::make($file->getRealPath());
+        $img->resize(300, 300);
+        $img->stream();
+        Storage::disk('local')->put($path . $filename, $img, 'public');
+        $storagePath = Storage::disk('local')->getDriver()->getAdapter()->getPathPrefix().$path.$filename;
+        $optimizerChain->optimize($storagePath);
+        $store = Stores::find(1);
+        if($store) {
+            $store->update([
+                'logo' => $path . $filename
+            ]);
+        } else {
+            $create = Stores::create([
+                'logo' => $path . $filename
+            ]);
+        }
+        return response(['message' => 'Logo berhasil diupdate']);
     }
 }

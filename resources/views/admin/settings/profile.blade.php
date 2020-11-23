@@ -8,12 +8,16 @@
             <div class="card">
               <div class="card-body">
                 <div class="row">
-                  <div class="col-md-12">
+                  <div class="col-md-4">
                     <div class="d-flex flex-column justify-content-start align-items-start">
                       <span class="text-primary font-weight-bold text-uppercase">Nama</span>
                       <span class="text-muted" id="nameUser"></span>
                       <span class="text-primary font-weight-bold text-uppercase">Email</span>
                       <span class="text-muted" id="emailUser"></span>
+                    </div>
+                  </div>
+                  <div class="col-md-8">
+                    <div class="d-flex flex-column justify-content-start align-items-start">
                       <span class="text-primary font-weight-bold text-uppercase">Role</span>
                       <span class="badge badge-info" id="roleUser"></span>
                       <span class="text-primary font-weight-bold text-uppercase">Alamat</span>

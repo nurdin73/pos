@@ -149,6 +149,7 @@ Route::group(['prefix' => 'api/'], function () {
             Route::group(['prefix' => '/update'], function () {
                 Route::put('/profile/{id}', 'Api\Settings\ProfileController@update');
                 Route::put('/change-password', 'Api\Settings\ProfileController@changePassword');
+                Route::put('/change-logo', 'Api\Settings\StoreController@updateLogo');
             });
         });
     });

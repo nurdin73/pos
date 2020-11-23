@@ -77,6 +77,10 @@ function changePass() {
                 confirm_pass: $('#password_confirm').val(),
             }
             Functions.prototype.updateData(url, data, 'put')
+            getProfile.loadData = ""
+            $('#password_lama').removeClass('is-valid')
+            $('#password_baru').removeClass('is-valid')
+            $('#password_confirm').removeClass('is-valid')
         }
     })
 }

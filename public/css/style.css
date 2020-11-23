@@ -17257,3 +17257,15 @@ a.text-dark:hover, a.text-dark:focus {
   right: 25px;
   top: 10px;
 }
+#logo {
+  display: none;
+}
+#logo + label {
+  background-color: #00002133;
+  padding: 15px 15px;
+  position: absolute;
+  bottom: -8px;
+  left: 0;
+  right: 0;
+  text-align: center;
+}
