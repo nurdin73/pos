@@ -63,8 +63,8 @@ Route::group(['prefix' => 'admin', 'middleware' => ['auth']], function () {
     Route::group(['prefix' => 'settings'], function () {
         Route::get('/', 'Admin\SettingController@index')->name('settingProfile');
         Route::get('/toko', 'Admin\SettingController@toko')->name('settingToko');
-        Route::get('/database', 'Admin\SettingController@database')->name('settingDatabase');
-        Route::get('/management-staff', 'Admin\SettingController@managementStaff')->name('settingManagementStaff');
+        // Route::get('/database', 'Admin\SettingController@database')->name('settingDatabase');
+        // Route::get('/management-staff', 'Admin\SettingController@managementStaff')->name('settingManagementStaff');
     });
 });
 
@@ -144,12 +144,13 @@ Route::group(['prefix' => 'api/'], function () {
 
             // get detail
             Route::get('/profile', 'Api\Settings\ProfileController@detail');
-
+            Route::get('/store', 'Api\Settings\StoreController@detail');
             // update
             Route::group(['prefix' => '/update'], function () {
                 Route::put('/profile/{id}', 'Api\Settings\ProfileController@update');
                 Route::put('/change-password', 'Api\Settings\ProfileController@changePassword');
-                Route::put('/change-logo', 'Api\Settings\StoreController@updateLogo');
+                Route::post('/change-logo', 'Api\Settings\StoreController@updateLogo');
+                Route::put('/change-detail-store', 'Api\Settings\StoreController@update');
             });
         });
     });

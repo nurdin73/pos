@@ -12,7 +12,7 @@
           <div class="col-md-3">
             <div class="card">
               <div class="card-body">
-                <form action="#" class="position-relative">
+                <form action="#" class="position-relative" enctype="multipart/form-data">
                   <img src="https://demo.getstisla.com/assets/img/avatar/avatar-1.png" alt="avatar" class="img-fluid img-thumbnail" id="prevLogo">
                   <input type="file" name="logo" id="logo">
                   <label for="logo" class="logo">Ganti logo</label>
@@ -23,7 +23,7 @@
           <div class="col-md-9">
             <div class="card">
               <div class="card-body">
-                <form action="#">
+                <form id="updateStoreDetail">
                   <div class="row">
                     <div class="col-md-6">
                       <div class="form-group">
@@ -75,8 +75,10 @@
   <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery-validate/1.19.2/jquery.validate.min.js" integrity="sha512-UdIMMlVx0HEynClOIFSyOrPggomfhBKJE28LKl8yR3ghkgugPnG6iLfRfHwushZl1MOPSY6TsuBDGPK2X4zYKg==" crossorigin="anonymous"></script>
   <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery-validate/1.19.2/additional-methods.min.js" integrity="sha512-6Uv+497AWTmj/6V14BsQioPrm3kgwmK9HYIyWP+vClykX52b0zrDGP7lajZoIY1nNlX4oQuh7zsGjmF7D0VZYA==" crossorigin="anonymous"></script>
   <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery-validate/1.19.2/localization/messages_id.min.js" integrity="sha512-Pb0klMWnom+fUBpq+8ncvrvozi/TDwdAbzbICN8EBoaVXZo00q6tgWk+6k6Pd+cezWRwyu2cB+XvVamRsbbtBA==" crossorigin="anonymous"></script>
+  <script src="https://cdn.jsdelivr.net/npm/sweetalert2@10"></script>
   <script>
     const URL_API = '{{ url('api/v1') }}'
+    const BASE_URL = '{{ url('/') }}'
   </script>
   <script src="{{ asset('js/settings/toko.js') }}"></script>
 @endsection

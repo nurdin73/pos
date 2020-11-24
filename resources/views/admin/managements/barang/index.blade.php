@@ -25,13 +25,13 @@
           <div class="card-body">
             <form action="#" id="filteringData">
               <div class="row">
-                <div class="col-md-3">
+                <div class="col-6 col-md-3">
                   <div class="form-group">
                     <label for="search_kode_barang" class="sr-only">Kode Barang</label>
                     <input type="text" name="search_kode_barang" id="search_kode_barang" placeholder="Cari Kode(optional)" class="form-control">
                   </div>
                 </div>
-                <div class="col-md-3">
+                <div class="col-6 col-md-3">
                   <div class="form-group">
                     <label for="search_nama_barang" class="sr-only">Nama Barang</label>
                     <input type="text" name="search_nama_barang" id="search_nama_barang" placeholder="Cari Nama(optional)" class="form-control">
@@ -48,12 +48,12 @@
                     </select>
                   </div>
                 </div>
-                <div class="col-md-2">
+                <div class="col-6 col-md-2">
                   <div class="form-group">
                     <button type="submit" class="btn btn-primary btn-block">Filter</button>
                   </div>
                 </div>
-                <div class="col-md-2">
+                <div class="col-6 col-md-2">
                   <div class="form-group">
                     <button type="reset" class="btn btn-warning btn-block btn-reset">Reset</button>
                   </div>

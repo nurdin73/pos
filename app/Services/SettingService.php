@@ -57,6 +57,7 @@ class SettingService
         $optimizerChain->optimize($storagePath);
         $store = Stores::find(1);
         if($store) {
+            Storage::disk('local')->delete($store->logo);
             $store->update([
                 'logo' => $path . $filename
             ]);
@@ -66,5 +67,22 @@ class SettingService
             ]);
         }
         return response(['message' => 'Logo berhasil diupdate']);
+    }
+
+    public function getDetailStore()
+    {
+        $result = Stores::find(1);
+        return response($result);
+    }
+
+    public function updateStore($data)
+    {
+        $store = Stores::find(1);
+        if(!$store) {
+            Stores::create($data);
+        } else {
+            $store->update($data);
+        }
+        return response(['message' => 'Detail toko berhasil di update']);
     }
 }

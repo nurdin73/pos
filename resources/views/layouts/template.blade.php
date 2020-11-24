@@ -1,6 +1,7 @@
 <?php 
   $url = url()->full(); 
   $explodeUrl = explode('/', $url);
+  $settings = DB::table('stores')->select("*")->first();
 ?>
 <!DOCTYPE html>
 <!--
@@ -20,16 +21,16 @@
     <meta name="author" content="Nurdin">
     <meta name="keyword" content="pos, point of sale">
     @if ((count($explodeUrl) - 3) <= 3)
-      <title>{{ ucfirst(Str::slug(explode("?", end($explodeUrl))[0], " ")) ?? ucfirst(Str::slug(end($explodeUrl), " ")) }} - Point Of Sales</title>
+      <title>{{ ucfirst(Str::slug(explode("?", end($explodeUrl))[0], " ")) ?? ucfirst(Str::slug(end($explodeUrl), " ")) }} - {{ $settings->nama_toko ?? "" }} Point Of Sales</title>
     @else
-      <title>{{ ucfirst($explodeUrl[count($explodeUrl) - 2]) }} Barang - Point Of Sales</title>
+      <title>{{ ucfirst($explodeUrl[count($explodeUrl) - 2]) }} Barang - {{ $settings->nama_toko ?? "" }} Point Of Sales</title>
     @endif
     <!-- Main styles for this application-->
     <link href="{{ asset('css/style.css') }}" rel="stylesheet">
     <meta name="csrf-token" content="{{ csrf_token() }}">
     {{-- Font --}}
     <link href="https://fonts.googleapis.com/css2?family=Quicksand:wght@400;500&display=swap" rel="stylesheet">
-
+    <link rel="shortcut icon" href="{{ asset($settings->logo ?? "") }}" type="image/x-icon">
     {{-- 3rd PARTY --}}
     {{-- <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/Ladda/1.0.6/ladda-themeless.min.css" integrity="sha512-EOY99TUZ7AClCNvbnvrhtMXDuWzxUBXV7SFovruHvYf2dbvRB5ya+jgDPk5bOyTtZDbqFH3PTuTWl/D7+7MGsA==" crossorigin="anonymous" />
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/Ladda/1.0.6/ladda.min.css" integrity="sha512-0Wjihk3d5C3yp6MThcWP1WxttnKS1IWsfDf6Jd6ETz7c4QLO3SZSmqW04wDysN2Q1/QqEmJ5XFWc/p53B5ME0g==" crossorigin="anonymous" /> --}}

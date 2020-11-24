@@ -3,6 +3,7 @@ namespace App\Services;
 
 use App\Models\FileProducts;
 use App\Models\Products;
+use App\Models\Stocks;
 use Illuminate\Support\Facades\Storage;
 use Spatie\ImageOptimizer\OptimizerChainFactory;
 use Illuminate\Support\Str;
@@ -56,12 +57,14 @@ class ProductsService
     {
         $return = false;
         $path = 'images/products/';
+        $wm = public_path('wm.png');
         $pathOfFile = [];
         foreach ($files as $file) {
             $optimizerChain = OptimizerChainFactory::create();
             $filename = Str::random(20) .'.'. $file->getClientOriginalExtension();
             $img = Image::make($file->getRealPath());
             $img->resize(300, 300);
+            $img->insert($wm, 'center');
             $img->stream();
             Storage::disk('local')->put($path . $filename, $img, 'public');
             $storagePath = Storage::disk('local')->getDriver()->getAdapter()->getPathPrefix().$path.$filename;
@@ -79,9 +82,15 @@ class ProductsService
                 if($addImage) {
                     $return = true;
                 } else {
-                    Products::find($create->id)->destroy();
+                    Products::find($create->id)->delete();
                 }
             }
+            $managementStok = Stocks::create([
+                'product_id' => $create->id,
+                'stok' => $data['stok'],
+                'harga_dasar' => $data['harga_dasar'],
+                'tgl_update' => date('Y-m-d H:i:s')
+            ]);
         }
         if($return == false) return response(['message' => 'Produk gagal ditambahkan'], 406);
         return response(['message' => 'Produk berhasil ditambahkan']);

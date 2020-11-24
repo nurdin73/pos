@@ -17261,11 +17261,14 @@ a.text-dark:hover, a.text-dark:focus {
   display: none;
 }
 #logo + label {
-  background-color: #00002133;
+  background-color: #00002c67;
   padding: 15px 15px;
   position: absolute;
   bottom: -8px;
   left: 0;
   right: 0;
   text-align: center;
+  cursor: pointer;
+  color: #ffffff;
+  font-weight: bold;
 }

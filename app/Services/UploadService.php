@@ -10,11 +10,13 @@ use App\Models\FileProducts;
 class UploadService
 {
 	public function uploadProductImage($file, $id, $path)
-	{;
+	{
+		$wm = public_path('wm.png');
 		$optimizerChain = OptimizerChainFactory::create();
         $filename = Str::random(20) .'.'. $file->getClientOriginalExtension();
         $img = Image::make($file->getRealPath());
-        $img->resize(300, 300);
+		$img->resize(300, 300);
+		$img->insert($wm, 'center');
         $img->stream();
         Storage::disk('local')->put($path . $filename, $img, 'public');
         $storagePath = Storage::disk('local')->getDriver()->getAdapter()->getPathPrefix().$path.$filename;

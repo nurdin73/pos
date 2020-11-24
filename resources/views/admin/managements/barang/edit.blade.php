@@ -44,20 +44,6 @@
                           </div>
                           <div class="col-6">
                             <div class="form-group">
-                              <label for="stok">Stok Barang</label>
-                              <input type="text" name="stok" id="stok" class="form-control">
-                            </div>
-                          </div>
-                        </div>
-                        <div class="row">
-                          <div class="col-md-6">
-                            <div class="form-group">
-                              <label for="harga_dasar">Harga dasar</label>
-                              <input type="text" name="harga_dasar" id="harga_dasar" class="form-control">
-                            </div>
-                          </div>
-                          <div class="col-md-6">
-                            <div class="form-group">
                               <label for="harga_jual">Harga jual</label>
                               <input type="text" name="harga_jual" id="harga_jual" class="form-control">
                             </div>

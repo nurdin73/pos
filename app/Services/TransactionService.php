@@ -25,7 +25,7 @@ class TransactionService
 
     public function getCarts($no_invoice)
     {
-        $results = Carts::with('product:id,kode_barang,nama_barang,harga_jual')->where('no_invoice', $no_invoice)->select('id','product_id', 'qyt', 'diskon_product')->get();
+        $results = Carts::with('product:id,kode_barang,nama_barang,harga_jual,diskon')->where('no_invoice', $no_invoice)->select('id','product_id', 'qyt', 'diskon_product')->get();
         return response($results);
     }
 
@@ -38,11 +38,12 @@ class TransactionService
         if($checkCart) {
             foreach ($checkCart as $cc) {
                 $updateProduct = Products::find($cc->product_id);
-                $sisaStok = $updateProduct->stok - $updateProduct->selled;
+                $sisaStok = $updateProduct->stok;
                 if($cc->qyt > $sisaStok) {
                     $returnQytProd = true;
                 } else {
                     $updateProduct->update([
+                        'stok' => $updateProduct->stok - $cc->qyt,
                         'selled' => $updateProduct->selled + $cc->qyt
                     ]);
                 }
@@ -78,8 +79,11 @@ class TransactionService
         $cart = Carts::find($id);
         if(!$cart) return response(['message' => 'terjadi kesalahan. silahkan coba kembali'], 406);
         $checkStok = Products::find($cart->product_id);
-        $sisaStok = $checkStok->stok - $checkStok->selled;
+        $sisaStok = $checkStok->stok;
+        $diskonProduk = $checkStok->diskon != null ? $checkStok->harga_jual * ($checkStok->diskon / 100) : 0;
+        $totalHarga = $checkStok->harga_jual - $diskonProduk;
         if($data['qyt'] > $sisaStok) return response(['message' => 'jumlah barang melebihi batas. silahkan masukkan jumlah barang dibawah '.$sisaStok], 406);
+        if($data['diskon_product'] > $totalHarga) return response(['message' => 'diskon yang dimasukkan melebihi total pembelian.'], 422);
         $update = $cart->update($data);
         if(!$update) return response(['message' => 'Keranjang gagal diupdate'], 500);
         return response(['message' => 'keranjang berhasil diupdate']);

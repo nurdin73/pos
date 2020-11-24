@@ -127,8 +127,6 @@ class BarangController extends Controller
         $request->validate([
             'nama_barang' => 'required',
             'type_barang' => 'required',
-            'stok' => 'required|numeric',
-            'harga_dasar' => 'required',
             'harga_jual' => 'required',
         ]);
 
@@ -137,8 +135,6 @@ class BarangController extends Controller
         $satuan = $request->input('satuan');
         $type_barang = $request->input('type_barang');
         $nama_barang = $request->input('nama_barang');
-        $stok = $request->input('stok');
-        $harga_dasar = $request->input('harga_dasar');
         $harga_jual = $request->input('harga_jual');
         $berat = $request->input('berat');
         $diskon = $request->input('diskon');
@@ -160,9 +156,7 @@ class BarangController extends Controller
         $data = [
             'nama_barang' => $nama_barang,
             'type_barang' => $type_barang,
-            'harga_dasar' => $harga_dasar,
             'harga_jual' => $harga_jual,
-            'stok' => $stok,
             'kategori_id' => $kategori,
             'berat' => $berat,
             'satuan' => $satuan,

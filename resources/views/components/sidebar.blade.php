@@ -111,7 +111,7 @@
           </svg> Toko
         </a>
       </li>
-      <li class="c-sidebar-nav-item">
+      {{-- <li class="c-sidebar-nav-item">
         <a class="c-sidebar-nav-link" href="{{ route('settingDatabase') }}">
           <svg class="c-sidebar-nav-icon">
             <use xlink:href="{{ asset('vendors/@coreui/icons/svg/free.svg#cil-storage') }}"></use>
@@ -125,7 +125,7 @@
           </svg> Management Staff
           <span class="badge badge-danger">PRO</span>
         </a>
-      </li>
+      </li> --}}
     </ul>
     <button class="c-sidebar-minimizer c-class-toggler" type="button" data-target="_parent" data-class="c-sidebar-minimized"></button>
   </div>

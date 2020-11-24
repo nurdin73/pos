@@ -32,7 +32,6 @@ class Functions
                 $('.loading').show()
             },
             success: function (response) {
-                console.log(response);
                 $('.loading').hide()
                 toastr.success(response.message, "success")
                 setTimeout(() => {
@@ -66,6 +65,15 @@ class Functions
             }, 500);
         }
     }
+
+    prevImage(image, field) {
+        const reader = new FileReader()
+        reader.onload = function(e) {
+            field.attr('src', e.target.result)
+        }
+        reader.readAsDataURL(image)
+    }
+
     uploadImage(inputs, url, id) {
         const data = new FormData()
         data.append('file', inputs)
@@ -304,5 +312,27 @@ class Functions
         url += "phone=" + phone
         url += "&text=" + text 
         return url
+    }
+    validateFile(input) {  
+        var fileType = ['.jpg', '.jpeg', '.png']
+        var val = $(input).val()
+        if (val.length > 0) {
+            var fileValid = false
+            for (let i = 0; i < fileType.length; i++) {
+                const element = fileType[i];
+                if(val.substr(val.length - element.length, element.length).toLowerCase() == element.toLowerCase()) {
+                    fileValid = true
+                    // break
+                }
+            }
+      
+            if(!fileValid) {
+                toastr.warning("Type file tidak valid", 'perhatian!')
+                $('.custom-file-label').text("Choose file")
+                $(input).val("")
+                return false
+            }
+        }
+        return true
     }
 }

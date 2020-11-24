@@ -57,9 +57,7 @@ const getDetail = {
     set successData(response) {
         $('#nama_barang').val(response.nama_barang)
         $('#type_barang').val(response.type_barang).trigger('change')
-        $('#stok').val(response.stok)
         $('#kode-barang').text(response.kode_barang)
-        $('#harga_dasar').val(response.harga_dasar)
         $('#harga_jual').val(response.harga_jual)
         $('#kategori').val(response.kategori_id)
         $('#berat').val(response.berat)
@@ -144,14 +142,6 @@ $('#updateProduct').validate({
         type_barang: {
             required : true
         },
-        stok: {
-            required : true,
-            number : true
-        },
-        harga_dasar: {
-            required : true,
-            number : true
-        },
         harga_jual: {
             required : true,
             number : true
@@ -175,8 +165,6 @@ $('#updateProduct').validate({
       const data = {
         nama_barang: $('#nama_barang').val(),
         type_barang: $('#type_barang').val(),
-        stok: $('#stok').val(),
-        harga_dasar: $('#harga_dasar').val(),
         harga_jual: $('#harga_jual').val(),
         kategori: $('#kategori').val(),
         berat: showAll ? $('#berat').val() : "",

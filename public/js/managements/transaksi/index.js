@@ -128,14 +128,16 @@ const getCarts = {
     if(response.length > 0) {
       var i = 1
       response.map(result => {
-        subTotal += (result.product.harga_jual * result.qyt) - result.diskon_product
-        const total = (result.qyt * result.product.harga_jual) - result.diskon_product
+        const diskonProduk = result.product.diskon != null ? result.product.harga_jual * (result.product.diskon / 100) : 0
+        const hargaProduk = result.product.harga_jual - diskonProduk
+        const total = (result.qyt * hargaProduk) - result.diskon_product
+        subTotal += (hargaProduk * result.qyt) - result.diskon_product
         $('#listCarts').append(`
         <tr data-id="${result.id}">
           <td>${i++}</td>
           <td>${result.product.kode_barang}</td>
           <td>${result.product.nama_barang}</td>
-          <td>${result.product.harga_jual}</td>
+          <td>${Functions.prototype.formatRupiah(hargaProduk.toString(), 'Rp. ')}</td>
           <td>${result.qyt}</td>
           <td>${Functions.prototype.formatRupiah(result.diskon_product.toString(), 'Rp. ')}</td>
           <td>${Functions.prototype.formatRupiah(total.toString(), 'Rp. ')}</td>
@@ -218,9 +220,6 @@ function updateCart() {
         required: true,
         number: true,
         min: 0,
-        max: function() {
-          return $('#sub_total').val()
-        }
       }
     },
     errorClass: "is-invalid",
