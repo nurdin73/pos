@@ -29,12 +29,18 @@ const getDetail = {
         Functions.prototype.requestDetail(getDetail, urlDetail)
     },
     set successData(response) {
+        var harga_dasar = 0
+        var stocks = 0
+        response.stocks.map(resultStok => {
+            stocks += resultStok.stok
+            harga_dasar = resultStok.harga_dasar
+        })
         $('#nama_barang').val(response.nama_barang)
         $('#type_barang').val(response.type_barang).trigger('change').attr('disabled', true)
-        $('#stok').val(response.stok)
+        $('#stok').val(stocks)
         $('#kode-barang').text(response.kode_barang)
-        $('#harga_dasar').val(response.harga_dasar)
-        $('#harga_jual').val(response.harga_jual)
+        $('#harga_dasar').val(Functions.prototype.formatRupiah(harga_dasar.toString(), 'Rp. '))
+        $('#harga_jual').val(Functions.prototype.formatRupiah(response.harga_jual.toString(), 'Rp. '))
         $('#kategori').val(response.kategori_id)
         $('#berat').val(response.berat)
         $('#satuan').val(response.satuan).trigger('change').attr('disabled', true)

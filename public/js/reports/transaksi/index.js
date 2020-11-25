@@ -22,7 +22,11 @@ const getTrxPerJam = {
             ds.map(trx => {
                 totalPembelian += trx.total
                 trx.carts.map(cart => {
-                    totalModal += cart.product.harga_dasar * cart.qyt
+                    var harga_dasar = 0
+                    cart.product.stocks.map(stock => {
+                        harga_dasar = stock.harga_dasar
+                    })
+                    totalModal += harga_dasar * cart.qyt
                 })
             })
             const keuntunganTotal = totalPembelian - totalModal
@@ -83,7 +87,11 @@ const getTrxPerDays = {
             ds.map(trx => {
                 totalPembelian += trx.total
                 trx.carts.map(cart => {
-                    totalModal += cart.product.harga_dasar * cart.qyt
+                    var harga_dasar = 0
+                    cart.product.stocks.map(stock => {
+                        harga_dasar = stock.harga_dasar
+                    })
+                    totalModal += harga_dasar * cart.qyt
                 })
             })
             const keuntunganTotal = totalPembelian - totalModal
@@ -142,7 +150,11 @@ const getTrxPerMonth = {
             ds.map(trx => {
                 totalPembelian += trx.total
                 trx.carts.map(cart => {
-                    totalModal += cart.product.harga_dasar * cart.qyt
+                    var harga_dasar = 0
+                    cart.product.stocks.map(stock => {
+                        harga_dasar = stock.harga_dasar
+                    })
+                    totalModal += harga_dasar * cart.qyt
                 })
             })
             const keuntunganTotal = totalPembelian - totalModal
@@ -201,7 +213,11 @@ const getTrxPerYears = {
             ds.map(trx => {
                 totalPembelian += trx.total
                 trx.carts.map(cart => {
-                    totalModal += cart.product.harga_dasar * cart.qyt
+                    var harga_dasar = 0
+                    cart.product.stocks.map(stock => {
+                        harga_dasar = stock.harga_dasar
+                    })
+                    totalModal += harga_dasar * cart.qyt
                 })
             })
             const keuntunganTotal = totalPembelian - totalModal

@@ -72,4 +72,9 @@ class AdminController extends Controller
     {
         return view('admin.managements.pajak');
     }
+
+    public function managementStok()
+    {
+        return view('admin.managements.managementStok');
+    }
 }

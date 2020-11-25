@@ -232,13 +232,19 @@ const getListProducts = {
     const { current_page, last_page, prev_page_url, data, to, from, total } = response
     if(data.length > 0) {
       data.map(result => {
+        var stocks = 0
+        var harga_dasar = 0
+        result.stocks.map(dataStok => {
+          stocks += dataStok.stok
+          harga_dasar = dataStok.harga_dasar
+        })
         $('#listProducts').append(`
           <tr>
             <td>${result.kode_barang}</td>
             <td>${result.nama_barang}</td>
-            <td>${result.stok}</td>
-            <td>${result.harga_dasar}</td>
-            <td>${result.harga_jual}</td>
+            <td>${stocks}</td>
+            <td>${Functions.prototype.formatRupiah(harga_dasar.toString(), 'Rp. ')}</td>
+            <td>${Functions.prototype.formatRupiah(result.harga_jual.toString(), 'Rp. ')}</td>
             <td>
               <div class="btn-group">
                 <a href="${BASE_URL_ADMIN}/management/barang/edit/${result.id}" class='btn btn-info btn-sm'>Update</a>

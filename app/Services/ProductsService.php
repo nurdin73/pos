@@ -35,7 +35,7 @@ class ProductsService
 
     public function showAll($nama, $kode, $sorting)
     {
-        $results = Products::select('id', 'nama_barang', 'kode_barang', 'harga_dasar', 'harga_jual', 'stok');
+        $results = Products::with('stocks') ->select('id', 'nama_barang', 'kode_barang', 'harga_dasar', 'harga_jual', 'stok');
         $results->orderBy('kode_barang', 'ASC');
         if($nama != "") {
             if($kode != "") {
@@ -98,7 +98,7 @@ class ProductsService
 
     public function show($id)
     {
-        $result = Products::with('images:id,product_id,image')->where('id', $id)->first();
+        $result = Products::with('images:id,product_id,image', 'stocks')->where('id', $id)->first();
         return $result;
     }
 

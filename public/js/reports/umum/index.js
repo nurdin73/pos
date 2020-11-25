@@ -18,7 +18,11 @@ const getTransactionsNow = {
                 total += result.total
                 if(result.carts.length > 0) {
                     result.carts.map(cart => {
-                        modal += cart.product.harga_dasar * cart.qyt
+                        var harga_dasar = 0
+                        cart.product.stocks.map(stock => {
+                            harga_dasar = stock.harga_dasar
+                        })
+                        modal += harga_dasar * cart.qyt
                     })  
                 }
             })
@@ -47,7 +51,11 @@ const getTransactionsYesterday = {
                 total += result.total
                 if(result.carts.length > 0) {
                     result.carts.map(cart => {
-                        modal += cart.product.harga_dasar * cart.qyt
+                        var harga_dasar = 0
+                        cart.product.stocks.map(stock => {
+                            harga_dasar = stock.harga_dasar
+                        })
+                        modal += harga_dasar * cart.qyt
                     })  
                 }
             })
@@ -101,9 +109,14 @@ const getTrxPerJam = {
             ds.map(trx => {
                 totalPembelian += trx.total
                 trx.carts.map(cart => {
-                    totalModal += cart.product.harga_dasar * cart.qyt
+                    var harga_dasar = 0
+                    cart.product.stocks.map(stok => {
+                        harga_dasar = stok.harga_dasar
+                    })
+                    totalModal += harga_dasar * cart.qyt
                 })
             })
+            console.log(totalPembelian, totalModal);
             const keuntunganTotal = totalPembelian - totalModal
             const pendapatan = totalPembelian
             totalKeuntungan.push(keuntunganTotal)

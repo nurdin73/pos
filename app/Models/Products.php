@@ -17,4 +17,9 @@ class Products extends Model
     {
         return $this->hasMany(FileProducts::class, 'product_id', 'id');
     }
+
+    function stocks()
+    {
+        return $this->hasMany(Stocks::class, 'product_id', 'id');
+    }
 }

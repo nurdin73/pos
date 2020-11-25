@@ -40,6 +40,7 @@ Route::group(['prefix' => 'admin', 'middleware' => ['auth']], function () {
         Route::get('/kategori', 'Admin\AdminController@kategori')->name('managementKategori');
         Route::get('/transaksi', 'Admin\AdminController@managementTransaksi')->name('managementTransaksi');
         Route::get('/pelanggan', 'Admin\AdminController@pelanggan')->name('managementPelanggan');
+        Route::get('/management-stok', 'Admin\AdminController@managementStok')->name('managementStok');
         Route::group(['prefix' => '/kasbon'], function () {
             Route::get('/', 'Admin\AdminController@kasbon')->name('managementKasbon');
             // Route::get('/add', 'Admin\AdminController@addKasbon')->name('addKasbon');
@@ -78,7 +79,6 @@ Route::group(['prefix' => 'api/'], function () {
 
             // get all
             Route::get('/', 'Api\Managements\BarangController@index');
-            Route::get('/stok', 'Api\Managements\StokController@index');
             Route::get('/kategori', 'Api\Managements\KategoriController@index');
             Route::get('/categories', 'Api\Managements\KategoriController@getLike');
             Route::get('/pelanggan', 'Api\Managements\PelangganController@index');
@@ -95,7 +95,6 @@ Route::group(['prefix' => 'api/'], function () {
 
             // get detail
             Route::get('barang/{id}', 'Api\Managements\BarangController@show');
-            Route::get('stok/{id}', 'Api\Managements\StokController@show');
             Route::get('kategori/{id}', 'Api\Managements\KategoriController@show');
             Route::get('pelanggan/{id}', 'Api\Managements\PelangganController@show');
             Route::get('kasbon/{id}', 'Api\Managements\KasbonController@show');
@@ -116,7 +115,7 @@ Route::group(['prefix' => 'api/'], function () {
             });
 
             // update 
-            Route::group(['prefix' => 'update', 'middleware' => ['auth']], function () {
+            Route::group(['prefix' => 'update'], function () {
                 Route::put('/barang/{id}', 'Api\Managements\BarangController@update');
                 Route::put('/stok/{id}', 'Api\Managements\StokController@update');
                 Route::put('/kategori/{id}', 'Api\Managements\KategoriController@update');

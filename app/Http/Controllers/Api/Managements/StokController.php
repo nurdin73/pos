@@ -7,6 +7,11 @@ use Illuminate\Http\Request;
 
 class StokController extends Controller
 {
+    protected $stockService;
+
+    public function __construct() {
+        $this->stockService = app()->make('StockService');
+    }
     /**
      * Display a listing of the resource.
      *
@@ -48,7 +53,19 @@ class StokController extends Controller
      */
     public function update(Request $request, $id)
     {
-        //
+        $request->validate([
+            'harga_dasar' => 'numeric',
+            'jumlah' => 'required|numeric',
+            'method' => 'required'
+        ]);
+
+        $data = [
+            'harga_dasar' => $request->input('harga_dasar'),
+            'jumlah' => $request->input('jumlah'),
+            'method' => $request->input('method')
+        ];
+
+        return $this->stockService->updateStok($data, $id);
     }
 
     /**

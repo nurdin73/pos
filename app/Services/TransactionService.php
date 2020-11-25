@@ -25,7 +25,7 @@ class TransactionService
 
     public function getCarts($no_invoice)
     {
-        $results = Carts::with('product:id,kode_barang,nama_barang,harga_jual,diskon')->where('no_invoice', $no_invoice)->select('id','product_id', 'qyt', 'diskon_product')->get();
+        $results = Carts::with('product.stocks')->where('no_invoice', $no_invoice)->select('id','product_id', 'qyt', 'diskon_product')->get();
         return response($results);
     }
 
@@ -93,7 +93,7 @@ class TransactionService
     {
         if($hari == "hari ini") {
             $date = date('Y-m-d');
-            $transactions = Transactions::with('carts.product:id,harga_dasar,harga_jual,selled')
+            $transactions = Transactions::with('carts.product.stocks')
             ->select('id', 'no_invoice', 'diskon_transaksi', 'total', 'tgl_transaksi', 'jam_transaksi')
             ->where('tgl_transaksi', 'like', '%'.$date.'%')
             ->orderBy('jam_transaksi', 'ASC')
@@ -101,7 +101,7 @@ class TransactionService
             return $transactions;
         } else {
             $date = date('Y-m-d', strtotime("-1 days"));
-            $transactions = Transactions::with('carts.product:id,harga_dasar,harga_jual,selled')
+            $transactions = Transactions::with('carts.product.stocks')
             ->select('id', 'no_invoice', 'diskon_transaksi', 'total', 'tgl_transaksi', 'jam_transaksi')
             ->where('tgl_transaksi', 'like', '%'.$date.'%')
             ->orderBy('jam_transaksi', 'ASC')
@@ -142,7 +142,7 @@ class TransactionService
         ];
         $dataset = array_merge($dataset, $jam);
         foreach ($jam as $j => $val) {
-            $transactions = Transactions::with('carts.product:id,harga_dasar,harga_jual,selled')
+            $transactions = Transactions::with('carts.product.stocks')
             ->select('id', 'no_invoice', 'diskon_transaksi', 'total', 'tgl_transaksi', 'jam_transaksi')
             ->where('tgl_transaksi', 'like', '%'.$date.'%')
             ->where('jam_transaksi', 'like', '%'.$j.'%')
@@ -164,7 +164,7 @@ class TransactionService
         }
         // $dataset = array_merge($dataset, $days);
         foreach ($days as $d => $value) {
-            $transactions = Transactions::with('carts.product:id,harga_dasar,harga_jual,selled')
+            $transactions = Transactions::with('carts.product.stocks')
             ->select('id', 'no_invoice', 'diskon_transaksi', 'total', 'tgl_transaksi', 'jam_transaksi')
             ->where('tgl_transaksi', $d)
             ->get();
@@ -184,7 +184,7 @@ class TransactionService
             $month[$bln] = [];
         }
         foreach ($month as $m => $value) {
-            $transactions = Transactions::with('carts.product:id,harga_dasar,harga_jual,selled')
+            $transactions = Transactions::with('carts.product.stocks')
             ->select('id', 'no_invoice', 'diskon_transaksi', 'total', 'tgl_transaksi', 'jam_transaksi')
             ->where('tgl_transaksi', 'like', '%'.$m.'%')
             ->get();
@@ -203,7 +203,7 @@ class TransactionService
             $years[$i] = [];
         }
         foreach ($years as $y => $value) {
-            $transactions = Transactions::with('carts.product:id,harga_dasar,harga_jual,selled')
+            $transactions = Transactions::with('carts.product.stocks')
             ->select('id', 'no_invoice', 'diskon_transaksi', 'total', 'tgl_transaksi', 'jam_transaksi')
             ->where('tgl_transaksi', 'like', '%'.$y.'%')
             ->get();
