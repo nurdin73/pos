@@ -59,14 +59,14 @@
           </svg> Kasbon
         </a>
       </li>
-      <li class="c-sidebar-nav-item">
+      {{-- <li class="c-sidebar-nav-item">
         <a class="c-sidebar-nav-link" href="{{ route('managementPajak') }}">
           <svg class="c-sidebar-nav-icon">
             <use xlink:href="{{ asset('vendors/@coreui/icons/svg/free.svg#cil-dollar') }}"></use>
           </svg> Pajak
           <span class="badge badge-danger">PRO</span>
         </a>
-      </li>
+      </li> --}}
       <li class="c-sidebar-nav-title">Laporan</li>
       <li class="c-sidebar-nav-item c-sidebar-nav-dropdown">
         <a class="c-sidebar-nav-link c-sidebar-nav-dropdown-toggle" href="#">
@@ -88,21 +88,21 @@
           </svg> Modal
         </a>
       </li>
-      <li class="c-sidebar-nav-item">
+      {{-- <li class="c-sidebar-nav-item">
         <a class="c-sidebar-nav-link" href="{{ route('reportPajak') }}">
           <svg class="c-sidebar-nav-icon">
             <use xlink:href="{{ asset('vendors/@coreui/icons/svg/free.svg#cil-dollar') }}"></use>
           </svg> Pajak
           <span class="badge badge-danger">PRO</span>
         </a>
-      </li>
-      <li class="c-sidebar-nav-item">
+      </li> --}}
+      {{-- <li class="c-sidebar-nav-item">
         <a class="c-sidebar-nav-link" href="{{ route('reportPengunjung') }}">
           <svg class="c-sidebar-nav-icon">
             <use xlink:href="{{ asset('vendors/@coreui/icons/svg/free.svg#cil-people') }}"></use>
           </svg> Pengunjung
         </a>
-      </li>
+      </li> --}}
       <li class="c-sidebar-nav-title">Pengaturan</li>
       <li class="c-sidebar-nav-item">
         <a class="c-sidebar-nav-link" href="{{ route('settingProfile') }}">
