@@ -93,6 +93,7 @@ Route::group(['prefix' => 'api/'], function () {
             Route::get('/transaksi-per-bulan', 'Api\Managements\TransaksiController@getTransactionPerMonth');
             Route::get('/transaksi-per-tahun', 'Api\Managements\TransaksiController@getTransactionPerYear');
             Route::get('/stocks/{id_product}', 'Api\Managements\StokController@listStok');
+            Route::get('/modal', 'Api\Managements\StokController@modal');
 
             // get detail
             Route::get('barang/{id}', 'Api\Managements\BarangController@show');

@@ -70,4 +70,9 @@ class StokController extends Controller
     {
         return $this->stockService->destroy($id);
     }
+
+    public function modal()
+    {
+        return $this->stockService->modal();
+    }
 }

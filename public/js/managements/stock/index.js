@@ -66,8 +66,8 @@ function showStok() {
     set successData(response) {
       $('.listStok').empty()
       var modal = 0
-      if(response.data.length > 0) {
-        response.data.map((result, i) => {
+      if(response.length > 0) {
+        response.map((result, i) => {
           modal += result.harga_dasar * result.stok
           if(i == 0) {
             $('.listStok').append(`

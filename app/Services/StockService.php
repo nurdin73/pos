@@ -1,6 +1,7 @@
 <?php
 namespace App\Services;
 
+use App\Models\Products;
 use App\Models\Stocks;
 
 class StockService 
@@ -41,7 +42,7 @@ class StockService
 
     public function listStok($product_id)
     {
-        $stocks = Stocks::where('product_id', $product_id)->select('id', 'stok', 'harga_dasar', 'tgl_update')->paginate(5);
+        $stocks = Stocks::where('product_id', $product_id)->select('id', 'stok', 'harga_dasar', 'tgl_update')->get();
         return response($stocks);
     }
 
@@ -69,5 +70,11 @@ class StockService
         $delete = $stok->delete();
         if(!$delete) return response(['message' => 'Histori gagal dihapus'], 500);
         return response(['message' => 'Histori berhasil di hapus']);
+    }
+
+    public function modal()
+    {
+        $stocks = Stocks::with('product:id,nama_barang')->select('id', 'product_id', 'stok', 'harga_dasar', 'tgl_update')->paginate(5);
+        return response($stocks);
     }
 }
