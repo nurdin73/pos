@@ -92,6 +92,7 @@ Route::group(['prefix' => 'api/'], function () {
             Route::get('/transaksi-per-hari', 'Api\Managements\TransaksiController@getTransactionPerDays');
             Route::get('/transaksi-per-bulan', 'Api\Managements\TransaksiController@getTransactionPerMonth');
             Route::get('/transaksi-per-tahun', 'Api\Managements\TransaksiController@getTransactionPerYear');
+            Route::get('/stocks/{id_product}', 'Api\Managements\StokController@listStok');
 
             // get detail
             Route::get('barang/{id}', 'Api\Managements\BarangController@show');
@@ -100,11 +101,11 @@ Route::group(['prefix' => 'api/'], function () {
             Route::get('kasbon/{id}', 'Api\Managements\KasbonController@show');
             Route::get('pajak/{id}', 'Api\Managements\PajakController@show');
             Route::get('cart/{id}', 'Api\Managements\TransaksiController@detailCart');
+            Route::get('stok-detail/{id}', 'Api\Managements\StokController@show');
 
             // add 
             Route::group(['prefix' => 'add', 'middleware' => ['auth']], function () {
                 Route::post('/barang', 'Api\Managements\BarangController@store');
-                Route::post('/stok', 'Api\Managements\StokController@store');
                 Route::post('/kategori', 'Api\Managements\KategoriController@store');
                 Route::post('/pelanggan', 'Api\Managements\PelangganController@store');
                 Route::post('/kasbon', 'Api\Managements\KasbonController@store');
@@ -118,6 +119,7 @@ Route::group(['prefix' => 'api/'], function () {
             Route::group(['prefix' => 'update'], function () {
                 Route::put('/barang/{id}', 'Api\Managements\BarangController@update');
                 Route::put('/stok/{id}', 'Api\Managements\StokController@update');
+                Route::put('/stok-history/{id}', 'Api\Managements\StokController@updateStok');
                 Route::put('/kategori/{id}', 'Api\Managements\KategoriController@update');
                 Route::put('/pelanggan/{id}', 'Api\Managements\PelangganController@update');
                 Route::put('/kasbon/{id}', 'Api\Managements\KasbonController@update');

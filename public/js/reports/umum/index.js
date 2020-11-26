@@ -1,6 +1,5 @@
 $(document).ready(function () {
     getTransactionsNow.loadData = ""
-    getTransactionsYesterday.loadData = "?date=kemarin"
     getTrxPerJam.loadData = ""
 });
 
@@ -19,10 +18,12 @@ const getTransactionsNow = {
                 if(result.carts.length > 0) {
                     result.carts.map(cart => {
                         var harga_dasar = 0
-                        cart.product.stocks.map(stock => {
-                            harga_dasar = stock.harga_dasar
-                        })
-                        modal += harga_dasar * cart.qyt
+                        if(cart.product.stocks.length > 0) {
+                            cart.product.stocks.map(stock => {
+                                harga_dasar = stock.harga_dasar
+                            })
+                            modal += harga_dasar * cart.qyt
+                        }
                     })  
                 }
             })
@@ -33,59 +34,6 @@ const getTransactionsNow = {
         $('#keuntungan').text(Functions.prototype.formatRupiah(keuntunganHariIni.toString(), 'Rp. '))
         $('#pendapatan').text(Functions.prototype.formatRupiah(pendapatanHariIni.toString(), 'Rp. '))
         $('#countTransaction').text(response.length)
-    },
-    set errorData(err) {
-        toastr.error(err.responseJSON.message, 'Error')
-    }
-}
-const getTransactionsYesterday = {
-    set loadData(data) {
-        const url = URL_API + "/managements/transaksi" + data
-        Functions.prototype.getRequest(getTransactionsYesterday, url)
-    },
-    set successData(response) {
-        var total = 0
-        var modal = 0
-        if(response.length > 0) {
-            response.map(result => {
-                total += result.total
-                if(result.carts.length > 0) {
-                    result.carts.map(cart => {
-                        var harga_dasar = 0
-                        cart.product.stocks.map(stock => {
-                            harga_dasar = stock.harga_dasar
-                        })
-                        modal += harga_dasar * cart.qyt
-                    })  
-                }
-            })
-        }
-        const keuntungan = total - modal
-        const totalTransaksiHariIni = parseInt($('#countTransaction').text()) - response.length
-        const totalTransaksiKemarin = response.length
-        var percenseharian = 0
-        var persentaseKeuntungan = 0
-        var persentasePendapatan = 0
-        if(totalTransaksiKemarin <= 0) {
-            percenseharian = 100
-        } else {
-            percenseharian = Math.floor((totalTransaksiHariIni / totalTransaksiKemarin) * 100)
-        }
-
-        if (keuntungan <= 0) {
-            persentaseKeuntungan = 100
-        } else {
-            persentaseKeuntungan = Math.floor(((keuntunganHariIni - keuntungan) / keuntungan) * 100)
-        }
-        if (total <= 0) {
-            persentasePendapatan = 100
-        } else {
-            persentasePendapatan = Math.floor(((pendapatanHariIni - total) / total) * 100)
-        }
-
-        $('#percentaseTotalTrx').text(percenseharian + '%')
-        $('#percentaseTotalKeuntungan').text(persentaseKeuntungan + '%')
-        $('#percentaseTotalPendapatan').text(persentasePendapatan + '%')
     },
     set errorData(err) {
         toastr.error(err.responseJSON.message, 'Error')
@@ -110,13 +58,14 @@ const getTrxPerJam = {
                 totalPembelian += trx.total
                 trx.carts.map(cart => {
                     var harga_dasar = 0
-                    cart.product.stocks.map(stok => {
-                        harga_dasar = stok.harga_dasar
-                    })
-                    totalModal += harga_dasar * cart.qyt
+                    if(cart.product.stocks.length > 0) {
+                        cart.product.stocks.map(stok => {
+                            harga_dasar = stok.harga_dasar
+                        })
+                        totalModal += harga_dasar * cart.qyt
+                    }
                 })
             })
-            console.log(totalPembelian, totalModal);
             const keuntunganTotal = totalPembelian - totalModal
             const pendapatan = totalPembelian
             totalKeuntungan.push(keuntunganTotal)
@@ -142,7 +91,7 @@ const getTrxPerJam = {
                 yAxes: [{
                     ticks: {
                         beginAtZero: true,
-                        stepSize : 5000
+                        stepSize : 50000
                     },
 
                 }]

@@ -54,7 +54,7 @@ const getTrxPerJam = {
                 yAxes: [{
                     ticks: {
                         beginAtZero: true,
-                        stepSize : 5000
+                        stepSize : 50000
                     },
 
                 }]
@@ -118,7 +118,7 @@ const getTrxPerDays = {
                 yAxes: [{
                     ticks: {
                         beginAtZero: true,
-                        stepSize : 5000
+                        stepSize : 50000
                     },
 
                 }]
@@ -181,7 +181,7 @@ const getTrxPerMonth = {
                 yAxes: [{
                     ticks: {
                         beginAtZero: true,
-                        stepSize : 5000
+                        stepSize : 50000
                     },
 
                 }]
@@ -244,7 +244,7 @@ const getTrxPerYears = {
                 yAxes: [{
                     ticks: {
                         beginAtZero: true,
-                        stepSize : 5000
+                        stepSize : 50000
                     },
 
                 }]

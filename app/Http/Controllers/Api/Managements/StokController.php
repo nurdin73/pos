@@ -12,36 +12,10 @@ class StokController extends Controller
     public function __construct() {
         $this->stockService = app()->make('StockService');
     }
-    /**
-     * Display a listing of the resource.
-     *
-     * @return \Illuminate\Http\Response
-     */
-    public function index()
-    {
-        //
-    }
 
-    /**
-     * Store a newly created resource in storage.
-     *
-     * @param  \Illuminate\Http\Request  $request
-     * @return \Illuminate\Http\Response
-     */
-    public function store(Request $request)
+    public function listStok($id_product)
     {
-        //
-    }
-
-    /**
-     * Display the specified resource.
-     *
-     * @param  int  $id
-     * @return \Illuminate\Http\Response
-     */
-    public function show($id)
-    {
-        //
+        return $this->stockService->listStok($id_product);
     }
 
     /**
@@ -68,6 +42,24 @@ class StokController extends Controller
         return $this->stockService->updateStok($data, $id);
     }
 
+    public function show($id)
+    {
+        return $this->stockService->detail($id);
+    }
+
+    public function updateStok(Request $request, $id)
+    {
+        $request->validate([
+            'harga_dasar' => 'required|numeric',
+            'stok' => 'required|numeric'
+        ]);
+        $data = [
+            'harga_dasar' => $request->input('harga_dasar'),
+            'stok' => $request->input('stok')
+        ];
+        return $this->stockService->update($data, $id);
+    }
+
     /**
      * Remove the specified resource from storage.
      *
@@ -76,6 +68,6 @@ class StokController extends Controller
      */
     public function destroy($id)
     {
-        //
+        return $this->stockService->destroy($id);
     }
 }

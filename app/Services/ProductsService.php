@@ -35,7 +35,7 @@ class ProductsService
 
     public function showAll($nama, $kode, $sorting)
     {
-        $results = Products::with('stocks') ->select('id', 'nama_barang', 'kode_barang', 'harga_dasar', 'harga_jual', 'stok');
+        $results = Products::with('stocks') ->select('id', 'nama_barang', 'kode_barang', 'harga_dasar', 'harga_jual', 'selled');
         $results->orderBy('kode_barang', 'ASC');
         if($nama != "") {
             if($kode != "") {
@@ -92,7 +92,7 @@ class ProductsService
                 'tgl_update' => date('Y-m-d H:i:s')
             ]);
         }
-        if($return == false) return response(['message' => 'Produk gagal ditambahkan'], 406);
+        if($return == false) return response(['message' => 'Produk gagal ditambahkan'], 500);
         return response(['message' => 'Produk berhasil ditambahkan']);
     }
 

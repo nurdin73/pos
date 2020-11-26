@@ -3,14 +3,21 @@ namespace App\Services;
 
 use App\Models\Carts;
 use App\Models\Products;
+use App\Models\Stocks;
 use App\Models\Transactions;
 
 class TransactionService
 {
     public function store($data)
     {
-        $queryForProd = Products::find($data['product_id']);
-        if($queryForProd->stok < 1) return response(['message' => 'stok barang ini sudah habis'], 406);
+        $queryForProd = Products::with('stocks')->where('id', $data['product_id'])->first();
+        $sisaStok = 0;
+        if(count($queryForProd->stocks) > 0) {
+            foreach ($queryForProd->stocks as $stock) {
+                $sisaStok += $stock->stok;
+            }
+        }
+        if($sisaStok < 1) return response(['message' => 'stok barang ini sudah habis'], 404);
         $checkCart = Carts::where(['no_invoice' => $data['no_invoice'], 'product_id' => $data['product_id']])->first();
         if($checkCart) {
             $data['qyt'] = $checkCart->qyt + $data['qyt'];
@@ -34,18 +41,37 @@ class TransactionService
         $data['tgl_transaksi'] = date('Y-m-d');
         $data['jam_transaksi'] = date('H') < 10 ? "0".date('H').":00:00" : date('H').":00:00";
         $returnQytProd = false;
-        $checkCart = Carts::where('no_invoice', $data['no_invoice'])->get();
+        $checkCart = Carts::with('product.stocks')->where('no_invoice', $data['no_invoice'])->get();
         if($checkCart) {
             foreach ($checkCart as $cc) {
-                $updateProduct = Products::find($cc->product_id);
-                $sisaStok = $updateProduct->stok;
+                $sisaStok = 0;
+                if(count($cc->product->stocks)) {
+                    foreach ($cc->product->stocks as $stock) {
+                        $sisaStok += $stock->stok;
+                    }
+                }
                 if($cc->qyt > $sisaStok) {
                     $returnQytProd = true;
                 } else {
-                    $updateProduct->update([
-                        'stok' => $updateProduct->stok - $cc->qyt,
-                        'selled' => $updateProduct->selled + $cc->qyt
+                    Products::find($cc->product_id)->update([
+                        'selled' => $cc->product->selled + $cc->qyt
                     ]);
+                    foreach ($cc->product->stocks as $stock) {
+                        if($cc->qyt > $stock->stok) {
+                            $idStok = $stock->id;
+                            $cc->qyt -= $stock->stok;
+                            $stock->stok = 0;
+                            $update = Stocks::find($idStok)->delete();
+                        } else {
+                            $idStok = $stock->id;
+                            $stock->stok -= $cc->qyt;
+                            $cc->qyt = 0;
+                            $update = Stocks::find($idStok)->update([
+                                'stok' => $stock->stok
+                            ]);
+                            break;
+                        }
+                    }
                 }
             }
         }
@@ -70,19 +96,24 @@ class TransactionService
     public function detailCart($id)
     {
         $cart = Carts::with('product:id,kode_barang,nama_barang,harga_jual')->where('id', $id)->first();
-        if(!$cart) return response(['message' => 'terjadi kesalahan. silahkan coba kembali'], 406);
+        if(!$cart) return response(['message' => 'terjadi kesalahan. silahkan coba kembali'], 500);
         return response($cart);
     }
 
     public function updateCart($data, $id)
     {
         $cart = Carts::find($id);
-        if(!$cart) return response(['message' => 'terjadi kesalahan. silahkan coba kembali'], 406);
-        $checkStok = Products::find($cart->product_id);
-        $sisaStok = $checkStok->stok;
+        if(!$cart) return response(['message' => 'terjadi kesalahan. silahkan coba kembali'], 500);
+        $checkStok = Products::with('stocks')->where('id', $cart->product_id)->first();
+        $sisaStok = 0;
+        if(count($checkStok->stocks) > 0) {
+            foreach ($checkStok->stocks as $stock) {
+                $sisaStok += $stock->stok;
+            }
+        }
         $diskonProduk = $checkStok->diskon != null ? $checkStok->harga_jual * ($checkStok->diskon / 100) : 0;
         $totalHarga = $checkStok->harga_jual - $diskonProduk;
-        if($data['qyt'] > $sisaStok) return response(['message' => 'jumlah barang melebihi batas. silahkan masukkan jumlah barang dibawah '.$sisaStok], 406);
+        if($data['qyt'] > $sisaStok) return response(['message' => 'jumlah barang melebihi batas. silahkan masukkan jumlah barang dibawah '.$sisaStok], 422);
         if($data['diskon_product'] > $totalHarga) return response(['message' => 'diskon yang dimasukkan melebihi total pembelian.'], 422);
         $update = $cart->update($data);
         if(!$update) return response(['message' => 'Keranjang gagal diupdate'], 500);
