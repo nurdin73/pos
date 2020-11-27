@@ -141,6 +141,10 @@ Route::group(['prefix' => 'api/'], function () {
 
         });
 
+        Route::group(['prefix' => 'reports'], function () {
+            Route::get('/penjualan-barang', 'Api\Reports\PenjualanController@getAll');
+        });
+
         Route::group(['prefix' => 'settings'], function () {
             // get all
 
@@ -157,4 +161,5 @@ Route::group(['prefix' => 'api/'], function () {
         });
     });
 });
+
 Route::get('/home', 'HomeController@index')->name('home');

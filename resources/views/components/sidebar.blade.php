@@ -78,7 +78,7 @@
           <li class="c-sidebar-nav-item"><a class="c-sidebar-nav-link" href="{{ route('reportUmum') }}"><span class="c-sidebar-nav-icon"></span> Umum</a></li>
           <li class="c-sidebar-nav-item"><a class="c-sidebar-nav-link" href="{{ route('reportTransaksi') }}"><span class="c-sidebar-nav-icon"></span> Transaksi</a></li>
           <li class="c-sidebar-nav-item"><a class="c-sidebar-nav-link" href="{{ route('reportPenjualan') }}"><span class="c-sidebar-nav-icon"></span> Penjualan Barang</a></li>
-          <li class="c-sidebar-nav-item"><a class="c-sidebar-nav-link" href="{{ route('reportPembelian') }}"><span class="c-sidebar-nav-icon"></span> Pembelian Barang</a></li>
+          <li class="c-sidebar-nav-item"><a class="c-sidebar-nav-link" href="{{ route('reportPembelian') }}"><span class="c-sidebar-nav-icon"></span> Pembelian Barang <span class="badge badge-danger">Soon</span></a></li>
         </ul>
       </li>
       <li class="c-sidebar-nav-item">

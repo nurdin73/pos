@@ -302,6 +302,22 @@ class Functions
         });
         return chart
     }
+    createManyChart( field, type = 'line', dataset = [], labels = [], options = {}) {
+        var chart = new Chart(field, {
+            // The type of chart we want to create
+            type: type,
+        
+            // The data for our dataset
+            data: {
+                labels: labels,
+                datasets: dataset
+            },
+        
+            // Configuration options go here
+            options: options
+        });
+        return chart
+    }
 
     createCountingData(from, to, total) {
         return `<span class="text-muted">Menampilan <span>${from}</span> sampai <span>${to}</span> dari <span>${total}</span> data</span>`

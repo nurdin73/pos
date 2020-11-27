@@ -6,6 +6,7 @@
         <div class="card">
           <div class="card-header d-flex justify-content-between align-items-center">
             <span class="lead">Sisa Modal</span>
+            <span id="sisaModal" class="text-uppercase text-primary font-weight-bold"></span>
             <button class="btn btn-sm btn-success">Export Excel</button>
           </div>
         </div>

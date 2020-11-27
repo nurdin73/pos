@@ -74,7 +74,20 @@ class StockService
 
     public function modal()
     {
+        $totalModal = 0;
+        $countModal = Stocks::select('stok', 'harga_dasar')->get();
+        $modal = [];
+        foreach ($countModal as $cm) {
+            $modal[] = $cm->stok * $cm->harga_dasar;
+        }
+        for ($i=0; $i < count($modal); $i++) { 
+            $totalModal += $modal[$i];
+        }
+        $resultModal = collect([
+            'total_modal' => $totalModal
+        ]);
         $stocks = Stocks::with('product:id,nama_barang')->select('id', 'product_id', 'stok', 'harga_dasar', 'tgl_update')->paginate(5);
-        return response($stocks);
+        $results = $resultModal->merge($stocks);
+        return response($results);
     }
 }

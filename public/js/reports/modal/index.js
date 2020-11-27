@@ -15,7 +15,8 @@ const getListModal = {
     },
     set successData(response) {
         $('#listProduct').empty()
-        const {current_page, last_page, prev_page_url} = response
+        const {current_page, last_page, prev_page_url, total_modal} = response
+        $('#sisaModal').text(Functions.prototype.formatRupiah(total_modal.toString(), 'Rp. '))
         if(response.data.length > 0) {
             response.data.map(result => {
                 const totalModal = result.stok * result.harga_dasar

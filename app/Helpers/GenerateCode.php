@@ -9,17 +9,14 @@ class GenerateCode
 {
     public static function kode()
     {
-        $checkKode = Products::select("*")->max('kode_barang');
-        $getCodeStore = env('KODE_TOKO');
-        $explode = "";
-        if($checkKode) {
-            $lengthOfCode = strlen($getCodeStore);
-            $explode = explode($getCodeStore[$lengthOfCode - 1], $checkKode);
-        }
-        $urutan = $explode != "" ? (int)$explode[1] : (int)$checkKode;
+        $query = "SELECT MAX(MID(kode_barang, 4, 9)) AS kode_barang FROM products";
+        $checkKodeBarang = DB::select($query);
+        $getCodeStore = env('KODE_TOKO', 'POS');
+        $urutan = $checkKodeBarang[0]->kode_barang;
         $urutan++;
         $kode = sprintf("%09s", $urutan);
         return $getCodeStore.$kode;
+        // return response($checkNoInvoice);
     }
 
     public static function invoice()

@@ -17,7 +17,7 @@ class UploadService
         $img = Image::make($file->getRealPath());
 		$img->resize(300, 300);
 		$img->insert($wm, 'center');
-        $img->stream();
+        $img->encode('jpg', 60);
         Storage::disk('local')->put($path . $filename, $img, 'public');
         $storagePath = Storage::disk('local')->getDriver()->getAdapter()->getPathPrefix().$path.$filename;
         $optimizerChain->optimize($storagePath);
