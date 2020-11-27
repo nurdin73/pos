@@ -159,6 +159,11 @@ Route::group(['prefix' => 'api/'], function () {
                 Route::put('/change-detail-store', 'Api\Settings\StoreController@update');
             });
         });
+
+        Route::group(['prefix' => 'dashboard'], function () {
+            Route::get('/transaksi', 'Api\DashboardController@transactions');
+            Route::get('/chart-transactions', 'Api\DashboardController@chartTransactions');
+        });
     });
 });
 
