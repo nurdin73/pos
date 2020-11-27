@@ -87,7 +87,7 @@ const getChartTransactions = {
                 }]
             }
         }
-        Functions.prototype.createManyChart(resetCanvas(), 'line', dataset, labels, options)
+        Functions.prototype.createManyChart(resetCanvas(), 'bar', dataset, labels, options)
     },
     set errorData(err) {
         toastr.error(err.responseJSON.message, 'Error')
