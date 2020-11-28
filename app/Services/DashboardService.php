@@ -1,6 +1,7 @@
 <?php
 namespace App\Services;
 
+use App\Models\Products;
 use App\Models\Transactions;
 use DateTime;
 
@@ -208,7 +209,8 @@ class DashboardService
 
     public function bestSeller($year)
     {
-        
+        $products = Products::where('selled', '>', 0)->select('id', 'nama_barang', 'type_barang', 'kode_barang', 'harga_jual', 'selled')->orderBy('selled', 'DESC')->limit(5)->get();
+        return response($products);
     }
 
     public function newTransactions($year)
