@@ -26,4 +26,22 @@ class DashboardController extends Controller
         }
         return $this->dashboardService->chartTransactions($time);
     }
+
+    public function bestSeller(Request $request)
+    {
+        $year = $request->input('year');
+        if(!$year) {
+            $year = date('Y');
+        }
+        return $this->dashboardService->bestSeller($year);
+    }
+
+    public function newTransactions(Request $request)
+    {
+        $year = $request->input('year');
+        if(!$year) {
+            $year = date('Y');
+        }
+        return $this->dashboardService->newTransactions($year);
+    }
 }

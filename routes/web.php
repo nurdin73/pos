@@ -167,6 +167,8 @@ Route::group(['prefix' => 'api/'], function () {
         Route::group(['prefix' => 'dashboard'], function () {
             Route::get('/transaksi', 'Api\DashboardController@transactions');
             Route::get('/chart-transactions', 'Api\DashboardController@chartTransactions');
+            Route::get('/best-seller', 'Api\DashboardController@bestSeller');
+            Route::get('new-transactions', 'Api\DashboardController@newTransactions');
         });
     });
 });

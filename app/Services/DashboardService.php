@@ -203,15 +203,16 @@ class DashboardService
                 }
                 break;
         }
-        // foreach ($labelTime as $y => $value) {
-        //     $transactions = Transactions::with('carts.product.stocks')
-        //     ->select('id', 'no_invoice', 'diskon_transaksi', 'total', 'tgl_transaksi', 'jam_transaksi')
-        //     ->where('tgl_transaksi', 'like', '%'.$y.'%')
-        //     ->get();
-        //     foreach ($transactions as $trx) {
-        //         array_push($labelTime[$y], $trx);
-        //     }
-        // }
         return $sets;
+    }
+
+    public function bestSeller($year)
+    {
+        
+    }
+
+    public function newTransactions($year)
+    {
+        
     }
 }
