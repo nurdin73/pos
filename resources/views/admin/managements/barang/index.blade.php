@@ -216,6 +216,34 @@
               <label for="keterangan">Keterangan</label>
               <textarea name="keterangan" id="keterangan" cols="30" rows="2" class="form-control"></textarea>
             </div>
+
+            <div class="d-flex justify-content-center flex-column align-items-center mb-2">
+              <span class="text-muted font-weight-bold text-uppercase">Daftar harga</span>
+              <div class="dropdown-divider"></div>
+              <div id="listTypeHarga" style="width: 100%">
+                {{-- <div class="border rounded p-2 mb-2">
+                  <div class="d-flex justify-content-between align-items-center">
+                    <span class="text-muted">Type : <span id="#typeAgen">Agen</span></span>
+                    <div class="btn-group">
+                      <button class="btn btn-sm btn-success">Edit</button>
+                      <button class="btn btn-sm btn-danger">Hapus</button>
+                    </div>
+                  </div>
+                  <div class="dropdown-divider"></div>
+                  <div class="row">
+                    <div class="col-3">
+                      1
+                    </div>
+                    <div class="col-9">
+                      <span id="harga">Rp. 0</span>
+                    </div>
+                  </div>
+                </div> --}}
+              </div>
+            </div>
+            <div class="d-flex justify-content-center">
+              <button type="button" class="btn btn-lg btn-outline-primary" data-toggle="modal" data-target="#typeHargaModal">Tambah type harga? <br> (Grosir / Retailer / Eceran / Gojek)</button>
+            </div>
           </div>
         </div>
         <div class="modal-footer">
@@ -228,6 +256,32 @@
   </div>
   <!-- /.modal-dialog-->
 </div>
+
+<!-- Modal -->
+<div class="modal fade" id="typeHargaModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+  <div class="modal-dialog modal-sm shadow">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title" id="exampleModalLabel">Type Harga</h5>
+        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+          <span aria-hidden="true">&times;</span>
+        </button>
+      </div>
+      <div class="modal-body">
+        <form action="#" id="formTypeHarga" autocomplete="off">
+          <div class="form-group">
+            <input type="text" name="nama_agen" id="nama_agen" placeholder="e.g : Agen" class="form-control">
+          </div>
+          <div class="form-group">
+            <input type="text" name="harga_type" id="harga_type" placeholder="harga 1 pcs" class="form-control">
+          </div>
+          <button class="btn btn-sm btn-block btn-primary">Tambahkan</button>
+        </form>
+      </div>
+    </div>
+  </div>
+</div>
+
 @endsection
 
 @section('js')  
@@ -243,6 +297,7 @@
     const BASE_URL_ADMIN = '{{ url('admin') }}'
     var showAll = false
     var query_params = ""
+    var typeHargaAdd = false
   </script>
   <script src="{{ asset('js/managements/barang/barang.js') }}"></script>
 @endsection

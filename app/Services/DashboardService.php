@@ -97,8 +97,8 @@ class DashboardService
                             }
                             $dataset[] = [
                                 'modal' => $harga_dasar * $cart->qyt,
-                                'pendapatan' => $cart->product->harga_jual * $cart->qyt,
-                                'keuntungan' => ($cart->product->harga_jual * $cart->qyt) - ($harga_dasar * $cart->qyt)
+                                'pendapatan' => $trx->total,
+                                'keuntungan' => ($trx->total) - ($harga_dasar * $cart->qyt)
                             ];
                         }
                         $modal = 0;
@@ -138,8 +138,8 @@ class DashboardService
                             }
                             $dataset[] = [
                                 'modal' => $harga_dasar * $cart->qyt,
-                                'pendapatan' => $cart->product->harga_jual * $cart->qyt,
-                                'keuntungan' => ($cart->product->harga_jual * $cart->qyt) - ($harga_dasar * $cart->qyt)
+                                'pendapatan' => $trx->total,
+                                'keuntungan' => ($trx->total) - ($harga_dasar * $cart->qyt)
                             ];
                         }
                         $modal = 0;
@@ -181,8 +181,8 @@ class DashboardService
                             }
                             $dataset[] = [
                                 'modal' => $harga_dasar * $cart->qyt,
-                                'pendapatan' => $cart->product->harga_jual * $cart->qyt,
-                                'keuntungan' => ($cart->product->harga_jual * $cart->qyt) - ($harga_dasar * $cart->qyt)
+                                'pendapatan' => $trx->total,
+                                'keuntungan' => ($trx->total) - ($harga_dasar * $cart->qyt)
                             ];
                         }
                         $modal = 0;

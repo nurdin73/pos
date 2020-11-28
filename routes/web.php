@@ -103,6 +103,7 @@ Route::group(['prefix' => 'api/'], function () {
             Route::get('pajak/{id}', 'Api\Managements\PajakController@show');
             Route::get('cart/{id}', 'Api\Managements\TransaksiController@detailCart');
             Route::get('stok-detail/{id}', 'Api\Managements\StokController@show');
+            Route::get('type-price/{id}', 'Api\Managements\barangController@detailTypePrice');
 
             // add 
             Route::group(['prefix' => 'add', 'middleware' => ['auth']], function () {
@@ -114,6 +115,7 @@ Route::group(['prefix' => 'api/'], function () {
                 Route::post('/pajak', 'Api\Managements\PajakController@store');
                 Route::post('/cart', 'Api\Managements\TransaksiController@store');
                 Route::post('/transaction', 'Api\Managements\TransaksiController@addTransaksi');
+                Route::post('/type-price', 'Api\Managements\BarangController@addTypePrice');
             });
 
             // update 
@@ -126,6 +128,7 @@ Route::group(['prefix' => 'api/'], function () {
                 Route::put('/kasbon/{id}', 'Api\Managements\KasbonController@update');
                 Route::put('/pajak/{id}', 'Api\Managements\PajakController@update');
                 Route::put('/cart/{id}', 'Api\Managements\TransaksiController@updateCart');
+                Route::put('/type-price/{id}', 'Api\Managements\BarangController@updateTypePrice');
             });
 
             // delete 
@@ -137,6 +140,7 @@ Route::group(['prefix' => 'api/'], function () {
                 Route::delete('/kasbon/{id}', 'Api\Managements\KasbonController@destroy');
                 Route::delete('/pajak/{id}', 'Api\Managements\PajakController@destroy');
                 Route::delete('/cart/{id}', 'Api\Managements\TransaksiController@deleteCart');
+                Route::delete('/type-price/{id}', 'Api\Managements\BarangController@deleteTypePrice');
             });
 
         });

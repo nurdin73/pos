@@ -21,6 +21,7 @@
               <ul class="nav nav-tabs" role="tablist">
                 <li class="nav-item"><a class="nav-link active" data-toggle="tab" href="#home" role="tab" aria-controls="home">Data</a></li>
                 <li class="nav-item"><a class="nav-link" data-toggle="tab" href="#profile" role="tab" aria-controls="profile">Images</a></li>
+                <li class="nav-item"><a class="nav-link" data-toggle="tab" href="#type_harga" role="tab" aria-controls="type_harga">Type Harga</a></li>
               </ul>
               <div class="tab-content">
                 <div class="tab-pane active" id="home" role="tabpanel">
@@ -128,6 +129,16 @@
                     </div>
                   </div>
                 </div>
+                <div class="tab-pane" id="type_harga" role="tabpanel">
+                  <div class="d-flex justify-content-center flex-column align-items-center mb-2">
+                    <div id="listTypeHarga" style="width: 100%">
+                      
+                    </div>
+                  </div>
+                  <div class="d-flex justify-content-center">
+                    <button type="button" class="btn btn-lg btn-outline-primary" data-toggle="modal" data-target="#typeHargaModal">Tambah type harga? <br> (Grosir / Retailer / Eceran / Gojek)</button>
+                  </div>
+                </div>
               </div>
             </div>
           </div>
@@ -136,6 +147,60 @@
     </div>
   </main>
 @endsection 
+
+@section('modal')
+  <!-- Modal -->
+  <div class="modal fade" id="typeHargaModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+    <div class="modal-dialog modal-sm shadow">
+      <div class="modal-content">
+        <div class="modal-header">
+          <h5 class="modal-title" id="exampleModalLabel">Type Harga</h5>
+          <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+            <span aria-hidden="true">&times;</span>
+          </button>
+        </div>
+        <div class="modal-body">
+          <form action="#" id="formTypeHarga" autocomplete="off">
+            <input type="hidden" id="idProdPrice">
+            <div class="form-group">
+              <input type="text" name="nama_agen" id="nama_agen" placeholder="e.g : Agen" class="form-control">
+            </div>
+            <div class="form-group">
+              <input type="text" name="harga_type" id="harga_type" placeholder="harga 1 pcs" class="form-control">
+            </div>
+            <button class="btn btn-sm btn-block btn-primary">Tambahkan</button>
+          </form>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Modal -->
+  <div class="modal fade" id="updatePrice" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+    <div class="modal-dialog modal-sm shadow">
+      <div class="modal-content">
+        <div class="modal-header">
+          <h5 class="modal-title" id="exampleModalLabel">Update Type Harga</h5>
+          <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+            <span aria-hidden="true">&times;</span>
+          </button>
+        </div>
+        <div class="modal-body">
+          <form action="#" id="formTypeHargaUpdate" autocomplete="off">
+            <input type="hidden" id="idProdPrice">
+            <div class="form-group">
+              <input type="text" name="nama_agen_update" id="nama_agen_update" placeholder="e.g : Agen" class="form-control">
+            </div>
+            <div class="form-group">
+              <input type="text" name="harga_type_update" id="harga_type_update" placeholder="harga 1 pcs" class="form-control">
+            </div>
+            <button class="btn btn-sm btn-block btn-primary">Update</button>
+          </form>
+        </div>
+      </div>
+    </div>
+  </div>
+@endsection
 
 
 @section('js')

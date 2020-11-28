@@ -4,6 +4,7 @@ namespace App\Services;
 use App\Models\FileProducts;
 use App\Models\Products;
 use App\Models\Stocks;
+use App\Models\TypePrices;
 use Illuminate\Support\Facades\Storage;
 use Spatie\ImageOptimizer\OptimizerChainFactory;
 use Illuminate\Support\Str;
@@ -53,7 +54,7 @@ class ProductsService
         return response($results);
     }
 
-    public function addProduct($data, $files)
+    public function addProduct($data, $files, $typeHarga, $stocks)
     {
         $return = false;
         $path = 'images/products/';
@@ -87,10 +88,29 @@ class ProductsService
             }
             $managementStok = Stocks::create([
                 'product_id' => $create->id,
-                'stok' => $data['stok'],
-                'harga_dasar' => $data['harga_dasar'],
+                'stok' => $stocks['stok'],
+                'harga_dasar' => $stocks['harga_dasar'],
                 'tgl_update' => date('Y-m-d H:i:s')
             ]);
+            \Log::info('nama agen '.json_encode($typeHarga['data']));
+            if($typeHarga['typeHarga']) {
+                $nama_agen = explode(',', $typeHarga['data']['nama_agen']);
+                $harga = explode(',', $typeHarga['data']['harga']);
+                for ($i=0; $i < count($nama_agen); $i++) { 
+                    $addTypePrice = TypePrices::create([
+                        'product_id' => $create->id,
+                        'nama_agen' => $nama_agen[$i],
+                        'harga' => $harga[$i],
+                    ]);
+                }
+            }
+            // foreach ($typeHarga['data'] as $th) {
+            //     $addTypePrice = TypePrices::create([
+            //         'product_id' => $create->id,
+            //         'nama_agen' => $th['nama_agen'],
+            //         'harga' => $th['harga'],
+            //     ]);
+            // }
         }
         if($return == false) return response(['message' => 'Produk gagal ditambahkan'], 500);
         return response(['message' => 'Produk berhasil ditambahkan']);
@@ -98,7 +118,7 @@ class ProductsService
 
     public function show($id)
     {
-        $result = Products::with('images:id,product_id,image', 'stocks')->where('id', $id)->first();
+        $result = Products::with('images:id,product_id,image', 'stocks', 'typePrices')->where('id', $id)->first();
         return $result;
     }
 
@@ -121,5 +141,39 @@ class ProductsService
         $delete = Products::find($id)->delete();
         if(!$delete) return response(['message' => 'produk gagal dihapus'], 500);
         return response(['message' => 'Produk berhasil dihapus']); 
+    }
+
+    public function detailTypePrice($id)
+    {
+        $checkTypePrice = TypePrices::find($id);
+        if(!$checkTypePrice) return response(['message' => 'Type Price tidak ditemukan'], 404);
+        return response($checkTypePrice);
+    }
+
+    public function addTypePrice($data)
+    {
+        $checkProd = Products::find($data['product_id']);
+        if(!$checkProd) return response(['message' => 'Produk tidak ditemukan'], 404);
+        $create = TypePrices::create($data);
+        if(!$create) return response(['message' => 'type harga gagal ditambahkan'], 500);
+        return response(['message' => 'Type harga berhasil ditambahkan']);
+    }
+
+    public function updateTypePrice($data, $id)
+    {
+        $checkTypePrice = TypePrices::find($id);
+        if(!$checkTypePrice) return response(['message' => 'Type Price tidak ditemukan'], 404);
+        $update = $checkTypePrice->update($data);
+        if(!$update) return response(['message' => 'type harga gagal diupdate'], 500);
+        return response(['message' => 'Type harga berhasil diupdate']);
+    }
+
+    public function deleteTypePrice($id)
+    {
+        $checkTypePrice = TypePrices::find($id);
+        if(!$checkTypePrice) return response(['message' => 'Type Price tidak ditemukan'], 404);
+        $delete = $checkTypePrice->delete();
+        if(!$delete) return response(['message' => 'type harga gagal dihapus'], 500);
+        return response(['message' => 'Type harga berhasil dihapus']);
     }
 }

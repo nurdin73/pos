@@ -22,4 +22,9 @@ class Products extends Model
     {
         return $this->hasMany(Stocks::class, 'product_id', 'id');
     }
+
+    public function typePrices()
+    {
+        return $this->hasMany(TypePrices::class, 'product_id', 'id');
+    }
 }

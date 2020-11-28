@@ -90,9 +90,7 @@ class BarangController extends Controller
             'nama_barang' => $nama_barang,
             'type_barang' => $type_barang,
             'kode_barang' => GenerateCode::kode(),
-            'harga_dasar' => $harga_dasar,
             'harga_jual' => $harga_jual,
-            'stok' => $stok,
             'selled' => 0,
             'kategori_id' => $kategori,
             'berat' => $berat,
@@ -101,7 +99,18 @@ class BarangController extends Controller
             'rak' => $rak,
             'keterangan' => $keterangan,
         ];
-        return $this->productsService->addProduct($data, $files);
+        $stocks = [
+            'harga_dasar' => $harga_dasar,
+            'stok' => $stok,
+        ];
+        $typeharga = [
+            'typeHarga' => $request->input('typeHarga'),
+            'data' => [
+                'nama_agen' => $request->input('nama_agen'),
+                'harga' => $request->input('harga'),
+            ],
+        ];
+        return $this->productsService->addProduct($data, $files, $typeharga, $stocks);
     }
 
     /**
@@ -176,5 +185,47 @@ class BarangController extends Controller
     public function destroy($id)
     {
         return $this->productsService->deleteProduct($id);
+    }
+
+    public function detailTypePrice($id)
+    {
+        return $this->productsService->detailTypePrice($id);
+    }
+
+    public function addTypePrice(Request $request)
+    {
+        $request->validate([
+            'product_id' => 'required|numeric',
+            'nama_agen'  => 'required',
+            'harga'      => 'required|numeric'
+        ]);
+
+        $data = [
+            'product_id' => $request->input('product_id'),
+            'nama_agen' => $request->input('nama_agen'),
+            'harga' => $request->input('harga'),
+        ];
+
+        return $this->productsService->addTypePrice($data);
+    }
+
+    public function updateTypePrice(Request $request, $id)
+    {
+        $request->validate([
+            'nama_agen'  => 'required',
+            'harga'      => 'required|numeric'
+        ]);
+
+        $data = [
+            'nama_agen' => $request->input('nama_agen'),
+            'harga' => $request->input('harga'),
+        ];
+
+        return $this->productsService->updateTypePrice($data, $id);
+    }
+
+    public function deleteTypePrice($id)
+    {
+        return $this->productsService->deleteTypePrice($id);
     }
 }

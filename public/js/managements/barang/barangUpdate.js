@@ -55,6 +55,7 @@ const getDetail = {
         Functions.prototype.requestDetail(getDetail, urlDetail)
     },
     set successData(response) {
+        $('#idProdPrice').val(response.id)
         $('#nama_barang').val(response.nama_barang)
         $('#type_barang').val(response.type_barang).trigger('change')
         $('#kode-barang').text(response.kode_barang)
@@ -79,9 +80,36 @@ const getDetail = {
             })
             $('#fieldUpload').before(listImage)
         }
+        if(response.type_prices.length > 0) {
+            $('#listTypeHarga').empty()
+            response.type_prices.map(price => {
+                $('#listTypeHarga').append(`
+                <div class="border rounded p-2 mb-2 listTypeHarga">
+                    <div class="d-flex justify-content-between align-items-center">
+                    <span class="text-muted">Type : ${price.nama_agen}</span>
+                    <input type="hidden" name="nama_agent[]" value="${price.nama_agen}" />
+                    <div class="btn-group">
+                        <button class="btn btn-sm btn-success edit" data-id="${price.id}" data-toggle="modal" data-target="#updatePrice">Edit</button>
+                        <button class="btn btn-sm btn-danger hapus" data-id="${price.id}">Hapus</button>
+                    </div>
+                    </div>
+                    <div class="dropdown-divider"></div>
+                    <div class="row">
+                    <div class="col-3">
+                        1
+                    </div>
+                    <div class="col-9">
+                        <span id="harga">${Functions.prototype.formatRupiah(price.harga.toString(), 'Rp. ')}</span>
+                        <input type="hidden" name="type_harga[]" value="${price.harga}" />
+                    </div>
+                    </div>
+                </div>
+                `)
+            })
+        }
     },
     set errorData(err) {
-        console.log(err);
+        toastr.error(err.responseJSON.message, 'Error')
     }
 }
 
@@ -102,7 +130,7 @@ const getKategoriById = {
         })
     },
     set errorData(err) {
-        console.log(err);
+        toastr.error(err.responseJSON.message, 'Error')
     }
 }
 
@@ -176,3 +204,105 @@ $('#updateProduct').validate({
       Functions.prototype.updateData(urlUpdateProduct, data, 'put')
     }
 })
+
+$('#formTypeHarga').validate({
+    rules: {
+        nama_agen: {
+            required: true,
+        },
+        harga_type: {
+            required: true,
+            number: true
+        },
+    },
+    errorClass: "is-invalid",
+    validClass: "is-valid",
+    errorElement: "small",
+    submitHandler: function(form, e) {
+        e.preventDefault()
+        const data = {
+            product_id: $('#idProdPrice').val(),
+            nama_agen: $('#nama_agen').val(),
+            harga: $('#harga_type').val()
+        }
+        const urlPost = URL_API + "/managements/add/type-price"
+        const postTypePrice = {
+            set successData(response) {
+                toastr.success(response.message, 'Success')
+                setTimeout(() => {
+                    window.location.reload()
+                }, 500);
+            },
+            set errorData(err) {
+                toastr.error(err.responseJSON.message, 'Error')
+            }
+        }
+        Functions.prototype.postRequest(postTypePrice, urlPost, data)
+    }
+})
+
+$('#listTypeHarga').on('click', 'div div .hapus', function(e) {
+    e.preventDefault()
+    const idPrice = $(this).data('id')
+    const urlDelPrice = URL_API + "/managements/delete/type-price/" + idPrice
+    Swal.fire({
+        title: 'Perhatian?',
+        text: "type harga akan dihapus permanen!",
+        icon: 'warning',
+        showCancelButton: true,
+        confirmButtonColor: '#3085d6',
+        cancelButtonColor: '#d33',
+        confirmButtonText: 'Ya, Hapus!'
+    }).then((result) => {
+        if (result.isConfirmed) {
+            $(this).parent().parent().parent().remove()
+            Functions.prototype.deleteData(urlDelPrice);
+        }
+    })
+})
+$('#listTypeHarga').on('click', 'div div .edit', function(e) {
+    e.preventDefault()
+    const idPrice = $(this).data('id')
+    const urlDetailPrice = URL_API + "/managements/type-price/" + idPrice
+    const detailPrice = {
+        set successData(response) {
+            $('#nama_agen_update').val(response.nama_agen)
+            $('#harga_type_update').val(response.harga)
+            $('#idProdPrice').val(response.id)
+        },
+        set errorData(err) {
+            toastr.error(err.responseJSON.message, 'Error')
+        }
+    }
+    Functions.prototype.requestDetail(detailPrice, urlDetailPrice)
+})
+
+$('#formTypeHargaUpdate').validate({
+    rules: {
+        nama_agen_update: {
+            required: true,
+        },
+        harga_type_update: {
+            required: true,
+            number: true,
+            min: 0
+        },
+    },
+    errorClass: "is-invalid",
+    validClass: "is-valid",
+    errorElement: "small",
+    submitHandler: function(form, e) {
+        e.preventDefault()
+        const data = {
+            nama_agen: $('#nama_agen_update').val(),
+            harga: $('#harga_type_update').val()
+        }
+        const idPrice = $('#idProdPrice').val()
+        const urlUpdatePrice = URL_API + "/managements/update/type-price/" + idPrice
+        Functions.prototype.updateData(urlUpdatePrice, data, 'put')
+        setTimeout(() => {
+            window.location.reload()
+        }, 500);
+    }
+})
+

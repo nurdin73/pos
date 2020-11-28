@@ -27,6 +27,7 @@ $(document).ready(function () {
   addCategory()
   delProduct()
   getCategory()
+  typeHarga()
 
   $('#filteringData').on('submit', function(e) {
     e.preventDefault()
@@ -136,6 +137,9 @@ function addData() {
         diskon: showAll ? $('#diskon').val() : "",
         rak: showAll ? $('#rak').val() : "",
         keterangan: showAll ? $('#keterangan').val() : "",
+        typeHarga: typeHargaAdd,
+        nama_agen: showAll ? (typeHargaAdd ? $('input[name^=nama_agent]').map((id, el) => { return $(el).val() }).get() : "") : "",
+        harga: showAll ? (typeHargaAdd ? $('input[name^=type_harga]').map((id, el) => { return $(el).val() }).get() : "") : "",
       }
       const files = $('.custom-file-input')[0].files
       formData.append('nama_barang', data.nama_barang)
@@ -149,12 +153,14 @@ function addData() {
       formData.append('diskon', data.diskon)
       formData.append('rak', data.rak)
       formData.append('keterangan', data.keterangan)
+      formData.append('typeHarga', data.typeHarga)
+      formData.append('nama_agen', data.nama_agen)
+      formData.append('harga', data.harga)
       for (let i = 0; i < files.length; i++) {
         const element = files[i];
         formData.append('files[]', element)
       }
       const sendData = Functions.prototype.uploadFile(urlPostBarang, formData, 'post')
-      console.log(sendData);
     }
   })
 }
@@ -273,4 +279,60 @@ const getListProducts = {
   set errorData(err) {
     console.log(err);
   }
+}
+
+function typeHarga() {
+  $('#formTypeHarga').validate({
+    rules: {
+      nama_agen: {
+        required: true,
+      },
+      harga_type: {
+        required: true,
+        number: true
+      },
+    },
+    errorClass: "is-invalid",
+    validClass: "is-valid",
+    errorElement: "small",
+    submitHandler: function(form, e) {
+      e.preventDefault()
+      typeHargaAdd = true
+      const data = {
+        agen: $('#nama_agen').val(),
+        harga: $('#harga_type').val()
+      }
+
+      const listTypePriceTemplate = `<div class="border rounded p-2 mb-2 listTypeHarga">
+      <div class="d-flex justify-content-between align-items-center">
+        <span class="text-muted">Type : ${data.agen}</span>
+        <input type="hidden" name="nama_agent[]" value="${data.agen}" />
+        <button class="btn btn-sm btn-danger hapus">Hapus</button>
+      </div>
+      <div class="dropdown-divider"></div>
+      <div class="row">
+        <div class="col-3">
+          1
+        </div>
+        <div class="col-9">
+          <span id="harga">${Functions.prototype.formatRupiah(data.harga.toString(), 'Rp. ')}</span>
+          <input type="hidden" name="type_harga[]" value="${data.harga}" />
+        </div>
+      </div>
+    </div>`
+
+    $('#listTypeHarga').append(listTypePriceTemplate)
+    $('#typeHargaModal').modal('hide')
+    $('#formTypeHarga')[0].reset()
+    $('#nama_agen').removeClass('is-valid')
+    $('#harga_type').removeClass('is-valid')
+    }
+  })
+
+  $('#listTypeHarga').on('click', 'div div .hapus', function(e) {
+    e.preventDefault()
+    if(confirm('mau menghapus type harga?')) {
+      $(this).parent().parent().remove()
+    }
+  })
 }
