@@ -57,6 +57,7 @@ class BarangController extends Controller
             'stok' => 'required|numeric',
             'harga_dasar' => 'required',
             'harga_jual' => 'required',
+            'kode_barang' => 'required'
         ]);
 
         // ----------------------------- //
@@ -72,6 +73,7 @@ class BarangController extends Controller
         $rak = $request->input('rak');
         $keterangan = $request->input('keterangan');
         $kategori = $request->input('kategori');
+        $kode_barang = $request->input('kode_barang');
         $files = $request->file('files');
         // ------------------------------- //
         if($satuan) {
@@ -89,7 +91,7 @@ class BarangController extends Controller
         $data = [
             'nama_barang' => $nama_barang,
             'type_barang' => $type_barang,
-            'kode_barang' => GenerateCode::kode(),
+            'kode_barang' => $kode_barang,
             'harga_jual' => $harga_jual,
             'selled' => 0,
             'kategori_id' => $kategori,

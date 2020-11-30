@@ -86,6 +86,9 @@ function addImage() {
 function addData() {
   $('#formAddbarang').validate({
     rules: {
+      kode_barang: {
+        required : true
+      },
       nama_barang: {
         required : true
       },
@@ -137,6 +140,7 @@ function addData() {
         diskon: showAll ? $('#diskon').val() : "",
         rak: showAll ? $('#rak').val() : "",
         keterangan: showAll ? $('#keterangan').val() : "",
+        kode_barang: $('#kode_barang').val(),
         typeHarga: typeHargaAdd,
         nama_agen: showAll ? (typeHargaAdd ? $('input[name^=nama_agent]').map((id, el) => { return $(el).val() }).get() : "") : "",
         harga: showAll ? (typeHargaAdd ? $('input[name^=type_harga]').map((id, el) => { return $(el).val() }).get() : "") : "",
@@ -156,6 +160,7 @@ function addData() {
       formData.append('typeHarga', data.typeHarga)
       formData.append('nama_agen', data.nama_agen)
       formData.append('harga', data.harga)
+      formData.append('kode_barang', data.kode_barang)
       for (let i = 0; i < files.length; i++) {
         const element = files[i];
         formData.append('files[]', element)
@@ -277,7 +282,7 @@ const getListProducts = {
     paginations = ""
   },
   set errorData(err) {
-    console.log(err);
+    toastr.error(err.responseJSON.message, 'Error')
   }
 }
 

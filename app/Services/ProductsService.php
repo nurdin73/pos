@@ -5,6 +5,7 @@ use App\Models\FileProducts;
 use App\Models\Products;
 use App\Models\Stocks;
 use App\Models\TypePrices;
+use Illuminate\Support\Facades\Log;
 use Illuminate\Support\Facades\Storage;
 use Spatie\ImageOptimizer\OptimizerChainFactory;
 use Illuminate\Support\Str;
@@ -15,7 +16,7 @@ class ProductsService
 {
     public function getAll()
     {
-        $results = Products::select('id', 'nama_barang', 'stok', 'kode_barang', 'harga_dasar', 'harga_jual')->get();
+        $results = Products::select('id', 'nama_barang', 'kode_barang', 'harga_jual')->get();
         return datatables()->of($results)
                 ->addIndexColumn()
                 ->addColumn('actions', function($row) {
@@ -36,7 +37,7 @@ class ProductsService
 
     public function showAll($nama, $kode, $sorting)
     {
-        $results = Products::with('stocks') ->select('id', 'nama_barang', 'kode_barang', 'harga_dasar', 'harga_jual', 'selled');
+        $results = Products::with('stocks') ->select('id', 'nama_barang', 'kode_barang', 'harga_jual', 'selled');
         $results->orderBy('kode_barang', 'ASC');
         if($nama != "") {
             if($kode != "") {
@@ -92,8 +93,8 @@ class ProductsService
                 'harga_dasar' => $stocks['harga_dasar'],
                 'tgl_update' => date('Y-m-d H:i:s')
             ]);
-            \Log::info('nama agen '.json_encode($typeHarga['data']));
-            if($typeHarga['typeHarga']) {
+            if($typeHarga['typeHarga'] != "false") {
+                Log::info('masuk sini '. json_encode($typeHarga));
                 $nama_agen = explode(',', $typeHarga['data']['nama_agen']);
                 $harga = explode(',', $typeHarga['data']['harga']);
                 for ($i=0; $i < count($nama_agen); $i++) { 

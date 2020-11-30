@@ -21,6 +21,7 @@
               <ul class="nav nav-tabs" role="tablist">
                 <li class="nav-item"><a class="nav-link active" data-toggle="tab" href="#home" role="tab" aria-controls="home">Data</a></li>
                 <li class="nav-item"><a class="nav-link" data-toggle="tab" href="#profile" role="tab" aria-controls="profile">Images</a></li>
+                <li class="nav-item"><a class="nav-link" data-toggle="tab" href="#type_harga" role="tab" aria-controls="type_harga">Type Harga</a></li>
               </ul>
               <div class="tab-content">
                 <div class="tab-pane active" id="home" role="tabpanel">
@@ -105,6 +106,13 @@
                 <div class="tab-pane" id="profile" role="tabpanel">
                   <div class="row" id="fieldImage">
                     
+                  </div>
+                </div>
+                <div class="tab-pane" id="type_harga" role="tabpanel">
+                  <div class="d-flex justify-content-center flex-column align-items-center mb-2">
+                    <div id="listTypeHarga" style="width: 100%">
+                      
+                    </div>
                   </div>
                 </div>
               </div>

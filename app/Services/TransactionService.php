@@ -25,14 +25,26 @@ class TransactionService
                 'qyt' => $data['qyt']
             ]);
         } else {
+            $data['harga_product'] = $queryForProd->harga_jual;
             $create = Carts::create($data);
         }
         return response(['message' => 'Pesanan berhasil ditambahkan', 'no_invoice' => $data['no_invoice']]);
     }
 
+    public function changePrice($price, $id_cart)
+    {
+        $cart = Carts::find($id_cart);
+        if(!$cart) return response(['message' => 'terjadi kesalahan. silahkan coba kembali'], 406);
+        $update = $cart->update([
+            'harga_product' => $price
+        ]);
+        if(!$update) return response(['message' => 'Harga gagal diupdate'], 406);
+        return response(['message' => 'Harga berhasil diupdate']);
+    }
+
     public function getCarts($no_invoice)
     {
-        $results = Carts::with('product.stocks')->where('no_invoice', $no_invoice)->select('id','product_id', 'qyt', 'diskon_product')->get();
+        $results = Carts::with('product.stocks', 'product.typePrices')->where('no_invoice', $no_invoice)->select('id','product_id', 'qyt', 'harga_product', 'diskon_product')->get();
         return response($results);
     }
 

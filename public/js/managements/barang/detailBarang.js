@@ -58,6 +58,29 @@ const getDetail = {
             })
             $('#fieldImage').html(listImage)
         }
+        if(response.type_prices.length > 0) {
+            $('#listTypeHarga').empty()
+            response.type_prices.map(price => {
+                $('#listTypeHarga').append(`
+                <div class="border rounded p-2 mb-2 listTypeHarga">
+                    <div class="d-flex justify-content-between align-items-center">
+                    <span class="text-muted">Type : ${price.nama_agen}</span>
+                    <input type="hidden" name="nama_agent[]" value="${price.nama_agen}" />
+                    </div>
+                    <div class="dropdown-divider"></div>
+                    <div class="row">
+                    <div class="col-3">
+                        1
+                    </div>
+                    <div class="col-9">
+                        <span id="harga">${Functions.prototype.formatRupiah(price.harga.toString(), 'Rp. ')}</span>
+                        <input type="hidden" name="type_harga[]" value="${price.harga}" />
+                    </div>
+                    </div>
+                </div>
+                `)
+            })
+        }
     },
     set errorData(err) {
         console.log(err);

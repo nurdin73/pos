@@ -82,6 +82,15 @@ class TransaksiController extends Controller
         return $this->transactionService->transactions($date);
     }
 
+    public function changePrice(Request $request, $id)
+    {
+        $request->validate([
+            'price' => 'required'
+        ]);
+        $price = $request->input('price');
+        return $this->transactionService->changePrice($price, $id);
+    }
+
     public function getTransactionPerHours()
     {
         return $this->transactionService->getTrxPerHours();

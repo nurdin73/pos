@@ -56,10 +56,9 @@
                   <div class="form-group row">
                     <label class="col-md-3 col-form-label"></label>
                     <div class="col-md-9">
-                      <button class="btn btn-primary btn-sm" type="submit">Tambah</button>
+                      <small class="text-info">klik kolom ini</small>
                     </div>
                   </div>
-  
                 </form>
               </div>
             </div>
@@ -86,9 +85,9 @@
                     <th style="width:5%">No.</th>
                     <th>Kode Barang</th>
                     <th>Nama barang</th>
-                    <th>Harga</th>
+                    <th style="width: 17%">Harga</th>
                     <th style="width:5%">Qyt</th>
-                    <th>Diskon</th>
+                    <th>Total Diskon</th>
                     <th>Total</th>
                     <th style="width: 10%">Actions</th>
                   </tr>
@@ -182,7 +181,7 @@
               </div>
               <div class="col-md-9">
                 <div class="form-group">
-                  <label for="dicount_barang_update">Diskon</label>
+                  <label for="dicount_barang_update">Diskon Transaksi</label>
                   <input type="text" name="dicount_barang_update" id="dicount_barang_update" class="form-control">
                 </div>
               </div>

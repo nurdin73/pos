@@ -103,6 +103,17 @@
           <div class="row">
             <div class="col-md-8">
               <div class="form-group">
+                <label for="kode_barang">Kode Barang</label>
+                <div class="row">
+                  <div class="col-6 col-md-10">
+                    <input type="text" name="kode_barang" id="kode_barang" class="form-control">
+                  </div>
+                  <div class="col-6 col-md-2">
+                    <button type="button" class="btn btn-success btn-block"><i class="fas fa-image"></i></button>
+                  </div>
+                </div>
+              </div>
+              <div class="form-group">
                 <label for="nama_barang">Nama Barang</label>
                 <input type="text" name="nama_barang" id="nama_barang" class="form-control">
               </div>

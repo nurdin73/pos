@@ -129,6 +129,7 @@ Route::group(['prefix' => 'api/'], function () {
                 Route::put('/pajak/{id}', 'Api\Managements\PajakController@update');
                 Route::put('/cart/{id}', 'Api\Managements\TransaksiController@updateCart');
                 Route::put('/type-price/{id}', 'Api\Managements\BarangController@updateTypePrice');
+                Route::put('/price-cart/{id}', 'Api\Managements\TransaksiController@changePrice');
             });
 
             // delete 

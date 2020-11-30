@@ -4,31 +4,42 @@ $(document).ready(function () {
     actionDelAndUpdate()
     processPayment()
     updateCart()
+    changeHarga()
 });
 
 function getData() {
     var totalPriceNoDisc = 0
     $('#noInvoice').text(noInvoice)
     $('#kasir').val(name).attr('disabled', true).addClass('disabled')
-    $('#addProduct').validate({
-      rules: {
-        barcode: {
-          required: true
-        },
-      },
-      errorClass: "is-invalid",
-      validClass: "is-valid",
-      errorElement: "small",
-      submitHandler: function(form, e) {
-        e.preventDefault()
-        const id_product = $('#barcode').val()
-        const no_invoice = noInvoice
-        const data = {
-          product_id: id_product,
-          no_invoice: no_invoice
-        }
-        addDataCart.loadData = data
+    // $('#addProduct').validate({
+    //   rules: {
+    //     barcode: {
+    //       required: true
+    //     },
+    //   },
+    //   errorClass: "is-invalid",
+    //   validClass: "is-valid",
+    //   errorElement: "small",
+    //   submitHandler: function(form, e) {
+    //     e.preventDefault()
+    //     const id_product = $('#barcode').val()
+    //     const no_invoice = noInvoice
+    //     const data = {
+    //       product_id: id_product,
+    //       no_invoice: no_invoice
+    //     }
+    //     addDataCart.loadData = data
+    //   }
+    // })
+    $('#barcode').on('change', function(e) {
+      e.preventDefault()
+      const id_product = $(this).val()
+      const no_invoice = noInvoice
+      const data = {
+        product_id : id_product,
+        no_invoice : no_invoice
       }
+      addDataCart.loadData = data
     })
 
     $('#barcode').select2({
@@ -127,36 +138,61 @@ const getCarts = {
     $('#listCarts').empty()
     if(response.length > 0) {
       var i = 1
+      var lists = ""
       response.map(result => {
-        const diskonProduk = result.product.diskon != null ? result.product.harga_jual * (result.product.diskon / 100) : 0
-        const hargaProduk = result.product.harga_jual - diskonProduk
-        const total = (result.qyt * hargaProduk) - result.diskon_product
-        subTotal += (hargaProduk * result.qyt) - result.diskon_product
-        $('#listCarts').append(`
-        <tr data-id="${result.id}">
-          <td>${i++}</td>
-          <td>${result.product.kode_barang}</td>
-          <td>${result.product.nama_barang}</td>
-          <td>${Functions.prototype.formatRupiah(hargaProduk.toString(), 'Rp. ')}</td>
-          <td>${result.qyt}</td>
-          <td>${Functions.prototype.formatRupiah(result.diskon_product.toString(), 'Rp. ')}</td>
-          <td>${Functions.prototype.formatRupiah(total.toString(), 'Rp. ')}</td>
-          <td>
-            <div class="btn-group">
-              <button class="btn btn-sm btn-danger delete" data-id="${result.id}">Hapus</button>
-              <button class="btn btn-sm btn-info update" data-toggle="modal" data-target="#detailCart" data-id="${result.id}">Edit</button>
-            </div>
-          </td>
-        </tr>
-        `)
+        var harga_product = result.harga_product
+        var diskonProduk = result.product.diskon != null ? harga_product * (result.product.diskon / 100) : 0,
+            diskon = diskonProduk + result.diskon_product
+            hargaProduk = harga_product,
+            total = ((result.qyt * hargaProduk) - diskon)
+        const typeHarga = result.product.type_prices
+        subTotal += ((hargaProduk * result.qyt) - diskon)
+        lists += `
+          <tr data-id="${result.id}">
+            <td>${i++}</td>
+            <td>${result.product.kode_barang}</td>
+            <td>${result.product.nama_barang}</td>
+            <td>`
+            if(typeHarga.length > 0) {
+            lists += `<select name="typePrice" class="form-control TypeHarga" data-id-cart="${result.id}">`
+            typeHarga.map(price => {
+              if(hargaProduk == price.harga) {
+                lists += `<option value="${price.harga}" selected>${price.harga} - ${price.nama_agen}</option>`
+              } else {
+                lists += `<option value="${price.harga}">${price.harga} - ${price.nama_agen}</option>`
+              }
+            })
+            if(hargaProduk == result.product.harga_jual) {
+              lists += `<option value="${result.product.harga_jual}" selected>${result.product.harga_jual} - default</option>`
+            } else {
+              lists += `<option value="${result.product.harga_jual}">${result.product.harga_jual} - default</option>`
+            }
+            lists +=  `</select>`
+            } else {
+            lists += Functions.prototype.formatRupiah(hargaProduk.toString(), 'Rp. ')
+            }
+            lists += `</td>
+            <td>${result.qyt}</td>
+            <td>${Functions.prototype.formatRupiah(diskon.toString(), 'Rp. ')}</td>
+            <td>${Functions.prototype.formatRupiah(total.toString(), 'Rp. ')}</td>
+            <td>
+              <div class="btn-group">
+                <button class="btn btn-sm btn-danger delete" data-id="${result.id}">Hapus</button>
+                <button class="btn btn-sm btn-info update" data-toggle="modal" data-target="#detailCart" data-id="${result.id}">Edit</button>
+              </div>
+            </td>
+          </tr>
+          `
       })
     } else {
-      $('#listCarts').append(`
+      lists += `
         <tr>
           <td colspan="8" align="center">keranjang masih kosong</td>
         </tr>
-      `)
+      `
     }
+
+    $('#listCarts').html(lists)
     $('#subTotalBadge').text(Functions.prototype.formatRupiah(subTotal.toString(), 'Rp. '))
     $('#sub_total').val(subTotal).attr('readonly', true).addClass('disabled')
     $('#grand_total').val(subTotal)
@@ -164,6 +200,20 @@ const getCarts = {
   set errorData(err) {
     toastr.error(err.responseJSON.message, 'error')
   }
+}
+
+function changeHarga() {  
+  $('#listCarts').on('change', 'tr td .TypeHarga', function(e) {
+    e.preventDefault()
+    $(this).attr('selected')
+    var val = $(this).val()
+    const urlUpdatePrice = URL_API + "/managements/update/price-cart/" + $(this).data('id-cart')
+    const data = {
+      price: val
+    }
+    Functions.prototype.updateData(urlUpdatePrice, data, 'put')
+    getCarts.loadData = noInvoice
+  })
 }
 
 function actionDelAndUpdate() {  
