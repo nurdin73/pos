@@ -36,7 +36,7 @@ class Functions
                 toastr.success(response.message, "success")
                 setTimeout(() => {
                     window.location.reload()
-                }, 3000);
+                }, 500);
             },
             error: function(err) {
                 $('.loading').hide()
@@ -154,7 +154,7 @@ class Functions
             }
         
             rupiah = split[1] != undefined ? rupiah + ',' + split[1] : rupiah;
-            return prefix == undefined ? rupiah : (rupiah ? 'Rp. ' + rupiah + ",-" : '');
+            return prefix == undefined ? rupiah : (rupiah ? prefix + rupiah + ",-" : '');
         } catch (err) {
             return prefix + angka
         }

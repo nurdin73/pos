@@ -31,7 +31,11 @@ const getTransactionsNow = {
         const keuntungan = total - modal
         keuntunganHariIni = keuntungan
         pendapatanHariIni = total
-        $('#keuntungan').text(Functions.prototype.formatRupiah(keuntunganHariIni.toString(), 'Rp. '))
+        if(keuntunganHariIni < 0) {
+            $('#keuntungan').text(Functions.prototype.formatRupiah(keuntunganHariIni.toString(), 'Rp. -'))
+        } else {
+            $('#keuntungan').text(Functions.prototype.formatRupiah(keuntunganHariIni.toString(), 'Rp. '))
+        }
         $('#pendapatan').text(Functions.prototype.formatRupiah(pendapatanHariIni.toString(), 'Rp. '))
         $('#countTransaction').text(response.length)
     },

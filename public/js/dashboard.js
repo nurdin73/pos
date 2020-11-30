@@ -20,7 +20,11 @@ const getTransactions = {
     set successData(response) {
         $('#countTransaction').text(response.total_trx)
         $('#countPendapatan').text(Functions.prototype.formatRupiah(response.total.toString(), 'Rp. '))
-        $('#countKeuntungan').text(Functions.prototype.formatRupiah(response.keuntungan.toString(), 'Rp. '))
+        if(response.keuntungan < 0) {
+            $('#countKeuntungan').text(Functions.prototype.formatRupiah(response.keuntungan.toString(), 'Rp. -'))
+        } else {
+            $('#countKeuntungan').text(Functions.prototype.formatRupiah(response.keuntungan.toString(), 'Rp. '))
+        }
     },
     set errorData(err) {
         toastr.error(err.responseJSON.message, 'Error')
