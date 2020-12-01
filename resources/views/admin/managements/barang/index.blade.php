@@ -103,7 +103,7 @@
           <div class="row">
             <div class="col-md-8">
               <div class="form-group">
-                <label for="kode_barang">Kode Barang</label>
+                <label for="kode_barang">Kode Barang *</label>
                 <div class="row">
                   <div class="col-6 col-md-10">
                     <input type="text" name="kode_barang" id="kode_barang" class="form-control">
@@ -114,14 +114,23 @@
                 </div>
               </div>
               <div class="form-group">
-                <label for="nama_barang">Nama Barang</label>
+                <div class="d-flex justify-content-between align-items-center">
+                  <label for="suplier_id">Suplier <sub class="text-info">Optional</sub></label>
+                  <small><a href="{{ route('managementSuplier') . "?redirect=" . route('managementBarang') }}" class="btn-link">Tambah Suplier</a></small>
+                </div>
+                <select name="suplier_id" id="suplier_id" class="form-control" style="width: 100%">
+                  
+                </select>
+              </div>
+              <div class="form-group">
+                <label for="nama_barang">Nama Barang *</label>
                 <input type="text" name="nama_barang" id="nama_barang" class="form-control">
               </div>
               
               <div class="row">
                 <div class="col-6">
                   <div class="form-group">
-                    <label for="type_barang">Type Barang</label>
+                    <label for="type_barang">Type Barang *</label>
                     <select name="type_barang" id="type_barang" class="form-control">
                       <option value="baru">Baru</option>
                       <option value="bekas">Bekas</option>
@@ -130,7 +139,7 @@
                 </div>
                 <div class="col-6">
                   <div class="form-group">
-                    <label for="stok">Stok Barang</label>
+                    <label for="stok">Stok Barang *</label>
                     <input type="text" name="stok" id="stok" class="form-control">
                   </div>
                 </div>
@@ -138,20 +147,20 @@
               <div class="row">
                 <div class="col-md-6">
                   <div class="form-group">
-                    <label for="harga_dasar">Harga dasar</label>
+                    <label for="harga_dasar">Harga dasar *</label>
                     <input type="text" name="harga_dasar" id="harga_dasar" class="form-control">
                   </div>
                 </div>
                 <div class="col-md-6">
                   <div class="form-group">
-                    <label for="harga_jual">Harga jual</label>
+                    <label for="harga_jual">Harga jual *</label>
                     <input type="text" name="harga_jual" id="harga_jual" class="form-control">
                   </div>
                 </div>
               </div>
               <div class="form-group">
                 <div class="d-flex justify-content-between align-items-center">
-                  <label for="kategori">Kategori Barang</label>
+                  <label for="kategori">Kategori Barang *</label>
                   <small class="btn-link" id="addCategory" style="cursor: pointer; font-weight: bold;">Tambah kategori</small>
                 </div>
                 <div id="formAdd" style="display: none">

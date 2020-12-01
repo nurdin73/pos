@@ -35,6 +35,15 @@
         <span class="sr-only">Kategori Barang</span>
       </li>
       <li class="c-sidebar-nav-item">
+        <a class="c-sidebar-nav-link" href="{{ route('managementSuplier') }}">
+          <svg class="c-sidebar-nav-icon">
+            <use xlink:href="{{ asset('vendors/@coreui/icons/svg/free.svg#cil-truck') }}"></use>
+          </svg> Suplier
+          <span class="badge badge-info">On going</span>
+        </a>
+        <span class="sr-only">Suplier</span>
+      </li>
+      <li class="c-sidebar-nav-item">
         <a class="c-sidebar-nav-link" href="{{ route('managementStok') }}">
           <svg class="c-sidebar-nav-icon">
             <use xlink:href="{{ asset('vendors/@coreui/icons/svg/free.svg#cil-equalizer') }}"></use>
@@ -65,6 +74,15 @@
           </svg> Kasbon
         </a>
         <span class="sr-only">Kasbon</span>
+      </li>
+      <li class="c-sidebar-nav-item">
+        <a class="c-sidebar-nav-link" href="{{ route('managementCabang') }}">
+          <svg class="c-sidebar-nav-icon">
+            <use xlink:href="{{ asset('vendors/@coreui/icons/svg/free.svg#cil-industry') }}"></use>
+          </svg> Cabang
+          <span class="badge badge-danger">Soon</span>
+        </a>
+        <span class="sr-only">Cabang</span>
       </li>
       {{-- <li class="c-sidebar-nav-item">
         <a class="c-sidebar-nav-link" href="{{ route('managementPajak') }}">

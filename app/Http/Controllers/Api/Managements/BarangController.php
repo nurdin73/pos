@@ -74,6 +74,7 @@ class BarangController extends Controller
         $keterangan = $request->input('keterangan');
         $kategori = $request->input('kategori');
         $kode_barang = $request->input('kode_barang');
+        $suplier_id = $request->input('suplier_id');
         $files = $request->file('files');
         // ------------------------------- //
         if($satuan) {
@@ -89,6 +90,7 @@ class BarangController extends Controller
         if(!$files) return response(['message' => 'gada']);
 
         $data = [
+            'suplier_id' => $suplier_id,
             'nama_barang' => $nama_barang,
             'type_barang' => $type_barang,
             'kode_barang' => $kode_barang,
@@ -152,6 +154,7 @@ class BarangController extends Controller
         $rak = $request->input('rak');
         $keterangan = $request->input('keterangan');
         $kategori = $request->input('kategori');
+        $suplier_id = $request->input('suplier_id');
         // ------------------------------- //
         if($satuan) {
             if($satuan != "gram" && $satuan != "pcs") {
@@ -165,6 +168,7 @@ class BarangController extends Controller
         }
 
         $data = [
+            'suplier_id' => $suplier_id,
             'nama_barang' => $nama_barang,
             'type_barang' => $type_barang,
             'harga_jual' => $harga_jual,

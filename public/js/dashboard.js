@@ -127,7 +127,7 @@ const listBestSeller = {
         } else {
             $('#listBestSeller').append(`
                 <tr>
-                    <td colspan="4">Tidak ada produk terlaris</td>
+                    <td colspan="4" align="center">Tidak ada produk terlaris</td>
                 </tr>
             `)
         }
@@ -157,7 +157,7 @@ const listNewTransactions = {
         } else {
             $('#listNewTransactions').append(`
                 <tr>
-                    <td colspan="4">Tidak ada produk terlaris</td>
+                    <td colspan="4" align="center">Tidak ada transaksi</td>
                 </tr>
             `)
         }

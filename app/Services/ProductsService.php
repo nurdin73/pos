@@ -119,7 +119,7 @@ class ProductsService
 
     public function show($id)
     {
-        $result = Products::with('images:id,product_id,image', 'stocks', 'typePrices')->where('id', $id)->first();
+        $result = Products::with('images:id,product_id,image', 'stocks', 'typePrices', 'suplier')->where('id', $id)->first();
         return $result;
     }
 

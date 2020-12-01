@@ -35,6 +35,16 @@ class AdminController extends Controller
         return view('admin.managements.kategori.index');
     }
 
+    public function suplier()
+    {
+        return view('admin.managements.suplier.index');
+    }
+
+    public function managementCabang()
+    {
+        return view('admin.managements.cabang.index');
+    }
+
     public function managementTransaksi()
     {
         $data['no_invoice'] = GenerateCode::invoice();

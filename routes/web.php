@@ -38,7 +38,9 @@ Route::group(['prefix' => 'admin', 'middleware' => ['auth']], function () {
         });
 
         Route::get('/kategori', 'Admin\AdminController@kategori')->name('managementKategori');
+        Route::get('/suplier', 'Admin\AdminController@suplier')->name('managementSuplier');
         Route::get('/transaksi', 'Admin\AdminController@managementTransaksi')->name('managementTransaksi');
+        Route::get('/cabang', 'Admin\AdminController@managementCabang')->name('managementCabang');
         Route::get('/pelanggan', 'Admin\AdminController@pelanggan')->name('managementPelanggan');
         Route::get('/management-stok', 'Admin\AdminController@managementStok')->name('managementStok');
         Route::group(['prefix' => '/kasbon'], function () {

@@ -129,6 +129,7 @@ function addData() {
       const urlPostBarang = URL_API + "/managements/add/barang"
       const formData = new FormData()
       const data = {
+        suplier_id: $('#suplier_id').val(),
         nama_barang: $('#nama_barang').val(),
         type_barang: $('#type_barang').val(),
         stok: $('#stok').val(),
@@ -161,6 +162,7 @@ function addData() {
       formData.append('nama_agen', data.nama_agen)
       formData.append('harga', data.harga)
       formData.append('kode_barang', data.kode_barang)
+      formData.append('suplier_id', data.suplier_id)
       for (let i = 0; i < files.length; i++) {
         const element = files[i];
         formData.append('files[]', element)
