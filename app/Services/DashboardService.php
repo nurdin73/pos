@@ -211,14 +211,15 @@ class DashboardService
         return $sets;
     }
 
-    public function bestSeller($year)
+    public function bestSeller()
     {
-        $products = Products::where('selled', '>', 0)->select('id', 'nama_barang', 'type_barang', 'kode_barang', 'harga_jual', 'selled')->orderBy('selled', 'DESC')->limit(5)->get();
+        $products = Products::where('selled', '>', 10)->select('id', 'nama_barang', 'type_barang', 'kode_barang', 'harga_jual', 'selled')->orderBy('selled', 'DESC')->limit(5)->get();
         return response($products);
     }
 
-    public function newTransactions($year)
+    public function newTransactions()
     {
-        
+        $transactions = Transactions::with('customer')->orderBy('id', 'DESC')->limit(5)->get();
+        return response($transactions);
     }
 }

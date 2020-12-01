@@ -12,4 +12,9 @@ class Transactions extends Model
     {
         return $this->hasMany(Carts::class, 'no_invoice', 'no_invoice');
     }
+
+    public function customer()
+    {
+        return $this->belongsTo(Customers::class, 'customer_id', 'id');
+    }
 }

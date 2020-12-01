@@ -2,6 +2,7 @@
   <svg class="c-icon c-icon-lg">
     <use xlink:href="{{ asset('vendors/@coreui/icons/svg/free.svg#cil-menu') }}"></use>
   </svg>
+  <span class="sr-only">Sidebar</span>
 </button>
 <a class="c-header-brand d-lg-none" href="#">
   POS
@@ -10,6 +11,7 @@
   <svg class="c-icon c-icon-lg">
     <use xlink:href="{{ asset('vendors/@coreui/icons/svg/free.svg#cil-menu') }}"></use>
   </svg>
+  <span class="sr-only">Sidebar</span>
 </button>
 <ul class="c-header-nav ml-auto mr-4">
   <li class="c-header-nav-item d-md-down-none mx-2"><a class="c-header-nav-link" href="#">
@@ -21,7 +23,7 @@
         <use xlink:href="{{ asset('vendors/@coreui/icons/svg/free.svg#cil-envelope-open') }}"></use>
       </svg></a></li>
   <li class="c-header-nav-item dropdown"><a class="c-header-nav-link" data-toggle="dropdown" href="#" role="button" aria-haspopup="true" aria-expanded="false">
-      <div class="c-avatar"><img class="c-avatar-img" src="https://demo.getstisla.com/assets/img/avatar/avatar-1.png" alt="user@email.com"></div>
+      <div class="c-avatar"><img class="c-avatar-img" src="https://demo.getstisla.com/assets/img/avatar/avatar-1.png" width="50" height="50" alt="user@email.com"></div>
     </a>
     <div class="dropdown-menu dropdown-menu-right pt-0">
       <div class="dropdown-header bg-light py-2">

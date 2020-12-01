@@ -1,7 +1,8 @@
 $(document).ready(function () {
     getTransactions.loadData = ""
     getChartTransactions.loadData = ""
-    
+    listBestSeller.loadData = ""
+    listNewTransactions.loadData = ""
     $('.waktu').on('click', function(e) {
         e.preventDefault()
         const label = $(this).data('show')
@@ -105,3 +106,63 @@ var resetCanvas = function () {
     ctx = canvas.getContext('2d');
     return ctx
 };
+
+const listBestSeller = {
+    set loadData(data) {
+        const url = URL_API + "/dashboard/best-seller"
+        Functions.prototype.getRequest(listBestSeller, url)
+    },
+    set successData(response) {
+        if(response.length > 0) {
+            response.map(result => {
+                $('#listBestSeller').append(`
+                    <tr>
+                        <td>${result.kode_barang}</td>
+                        <td>${result.nama_barang.substr(0, 20)}</td>
+                        <td>${result.selled}</td>
+                        <td>${Functions.prototype.formatRupiah(result.harga_jual.toString(), 'Rp. ')}</td>
+                    </tr>
+                `)
+            })
+        } else {
+            $('#listBestSeller').append(`
+                <tr>
+                    <td colspan="4">Tidak ada produk terlaris</td>
+                </tr>
+            `)
+        }
+    },
+    set errorData(err) {
+        toastr.error(err.responseJSON.message, 'Error')
+    }
+}
+
+const listNewTransactions = {
+    set loadData(data) {
+        const url = URL_API + "/dashboard/new-transactions"
+        Functions.prototype.getRequest(listNewTransactions, url)
+    },
+    set successData(response) {
+        if(response.length > 0) {
+            response.map(result => {
+                $('#listNewTransactions').append(`
+                    <tr>
+                        <td>${result.no_invoice}</td>
+                        <td>${result.customer == null ? `<span class="badge badge-info">Umum</span>` : `<span class="badge badge-info">${result.customer.nama}</span>`}</td>
+                        <td>${moment(result.tgl_transaksi).format('D MMM YYYY')}</td>
+                        <td>${Functions.prototype.formatRupiah(result.total.toString(), 'Rp. ')}</td>
+                    </tr>
+                `)
+            })
+        } else {
+            $('#listNewTransactions').append(`
+                <tr>
+                    <td colspan="4">Tidak ada produk terlaris</td>
+                </tr>
+            `)
+        }
+    },
+    set errorData(err) {
+        toastr.error(err.responseJSON.message, 'Error')
+    }
+}

@@ -12,4 +12,9 @@ class Customers extends Model
     {
         return $this->hasMany(CashReceipts::class, 'pelanggan_id', 'id');
     }
+
+    public function transactions()
+    {
+        return $this->hasMany(Transactions::class, 'customer_id', 'id');
+    }
 }

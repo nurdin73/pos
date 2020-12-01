@@ -144,9 +144,9 @@ const getCarts = {
         var diskonProduk = result.product.diskon != null ? harga_product * (result.product.diskon / 100) : 0,
             diskon = diskonProduk + result.diskon_product
             hargaProduk = harga_product,
-            total = ((result.qyt * hargaProduk) - diskon)
+            total = ((result.qyt * hargaProduk) - (diskon * result.qyt))
         const typeHarga = result.product.type_prices
-        subTotal += ((hargaProduk * result.qyt) - diskon)
+        subTotal += ((hargaProduk * result.qyt) - (diskon * result.qyt))
         lists += `
           <tr data-id="${result.id}">
             <td>${i++}</td>
