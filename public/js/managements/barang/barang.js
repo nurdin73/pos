@@ -129,7 +129,7 @@ function addData() {
       const urlPostBarang = URL_API + "/managements/add/barang"
       const formData = new FormData()
       const data = {
-        suplier_id: $('#suplier_id').val(),
+        suplier_id: $('#suplier_id').val() != null ? $('#suplier_id').val() : 0,
         nama_barang: $('#nama_barang').val(),
         type_barang: $('#type_barang').val(),
         stok: $('#stok').val(),
