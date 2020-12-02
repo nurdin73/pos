@@ -29,14 +29,23 @@
                     <div class="row">
                       <div class="col-md-6">
                         <div class="form-group">
-                          <label for="nama_barang">Nama Barang</label>
+                          <label for="kode_barang">Kode Barang *</label>
+                          <input type="text" name="kode_barang" id="kode_barang" class="form-control">
+                        </div>
+                        <div class="form-group">
+                          <label for="suplier">Suplier <sub class="text-info">Optional</sub></label>
+                          <select id="suplier" style="width: 100%" class="custom-select"></select>
+                        </div>
+
+                        <div class="form-group">
+                          <label for="nama_barang">Nama Barang *</label>
                           <input type="text" name="nama_barang" id="nama_barang" class="form-control">
                         </div>
                         
                         <div class="row">
                           <div class="col-6">
                             <div class="form-group">
-                              <label for="type_barang">Type Barang</label>
+                              <label for="type_barang">Type Barang *</label>
                               <select name="type_barang" id="type_barang" class="form-control">
                                 <option value="baru">Baru</option>
                                 <option value="bekas">Bekas</option>
@@ -45,15 +54,15 @@
                           </div>
                           <div class="col-6">
                             <div class="form-group">
-                              <label for="harga_jual">Harga jual</label>
+                              <label for="harga_jual">Harga jual *</label>
                               <input type="text" name="harga_jual" id="harga_jual" class="form-control">
                             </div>
                           </div>
                         </div>
                         <div class="form-group">
                           <div class="d-flex justify-content-between align-items-center">
-                            <label for="kategori">Kategori Barang</label>
-                            <small class="btn-link" id="addCategory" style="cursor: pointer; font-weight: bold;">Tambah kategori</small>
+                            <label for="kategori">Kategori Barang *</label>
+                            <small class="btn-link text-info" id="addCategory" style="cursor: pointer; font-weight: bold;">Tambah kategori</small>
                           </div>
                           <div id="formAdd" style="display: none">
                             <div class="row">
@@ -67,13 +76,13 @@
                                 </div>
                             </div>
                           </div>
-                          <select name="kategori" id="kategori" style="width: 100%" class="form-control">
+                          <select name="kategori" id="kategori" style="width: 100%" class="custom-select">
                             
                           </select>
                         </div>
                       </div>
                       <div class="col-md-6">
-                        <small class="btn-link" id="btnShowOther" style="cursor: pointer; font-weight: bold;">Tampilkan lainnya</small>
+                        <small class="btn-link text-info" id="btnShowOther" style="cursor: pointer; font-weight: bold;">Tampilkan lainnya</small>
                         <div id="showOther" style="display: none">
                           <div class="row">
                             <div class="col-md-6">

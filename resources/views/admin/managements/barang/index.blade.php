@@ -161,7 +161,7 @@
               <div class="form-group">
                 <div class="d-flex justify-content-between align-items-center">
                   <label for="kategori">Kategori Barang *</label>
-                  <small class="btn-link" id="addCategory" style="cursor: pointer; font-weight: bold;">Tambah kategori</small>
+                  <small class="btn-link text-info" id="addCategory" style="cursor: pointer; font-weight: bold;">Tambah kategori</small>
                 </div>
                 <div id="formAdd" style="display: none">
                   <div class="row">
@@ -205,7 +205,7 @@
               </div>
             </div>
           </div>
-          <small class="btn-link" id="btnShowOther" style="cursor: pointer; font-weight: bold;">Tampilkan lainnya</small>
+          <small class="btn-link text-info" id="btnShowOther" style="cursor: pointer; font-weight: bold;">Tampilkan lainnya</small>
           <div id="showOther" style="display: none">
             <div class="row">
               <div class="col-md-6">

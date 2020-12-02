@@ -28,6 +28,7 @@ $(document).ready(function () {
   delProduct()
   getCategory()
   typeHarga()
+  getSuplier()
 
   $('#filteringData').on('submit', function(e) {
     e.preventDefault()
@@ -201,6 +202,30 @@ function getCategory() {
           results: data.map(result => {
             return {
               text: result.name,
+              id: result.id
+            }
+          })
+        }
+      },
+    }
+  })
+}
+
+function getSuplier() {
+  $('#suplier_id').select2({
+    theme:'bootstrap4',
+    ajax: {
+      url: URL_API + "/managements/supliers",
+      data: function (params) {
+        return {
+          search_nama_suplier: params.term,
+        }
+      },
+      processResults: function(data, params) {
+        return {
+          results: data.data.map(result => {
+            return {
+              text: result.nama_suplier,
               id: result.id
             }
           })

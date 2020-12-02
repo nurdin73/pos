@@ -28,6 +28,14 @@
                   <div class="row">
                     <div class="col-md-6">
                       <div class="form-group">
+                        <label for="kode_barang">Kode Barang</label>
+                        <input type="text" name="kode_barang" id="kode_barang" class="form-control" readonly>
+                      </div>
+                      <div class="form-group">
+                        <label for="suplier">Suplier</label>
+                        <select id="suplier" style="width: 100%" class="custom-select" disabled></select>
+                      </div>
+                      <div class="form-group">
                         <label for="nama_barang">Nama Barang</label>
                         <input type="text" name="nama_barang" id="nama_barang" class="form-control" readonly>
                       </div>

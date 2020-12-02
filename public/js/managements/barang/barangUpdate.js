@@ -45,6 +45,27 @@ $(document).ready(function () {
             },
         }
     })
+    $('#suplier').select2({
+        theme:'bootstrap4',
+        ajax: {
+            url: URL_API + "/managements/supliers",
+            data: function (params) {
+                return {
+                    search_nama_suplier: params.term,
+                }
+            },
+            processResults: function(data, params) {
+                return {
+                    results: data.data.map(result => {
+                        return {
+                            text: result.nama_suplier,
+                            id: result.id
+                        }
+                    })
+                }
+            },
+        }
+    })
 });
 
 // functions
@@ -56,7 +77,17 @@ const getDetail = {
     },
     set successData(response) {
         $('#idProdPrice').val(response.id)
+        $('#kode_barang').val(response.kode_barang)
         $('#nama_barang').val(response.nama_barang)
+        var option = response.suplier != null ? new Option(response.suplier.nama_suplier, response.suplier.id, true, true) : new Option("", "", true, true)
+        $("#suplier").append(option).trigger('change')
+
+        $("#suplier").trigger({
+            type: 'select2:select',
+            params: {
+                data : response.suplier != null ? response.suplier.nama_suplier : ""
+            }
+        })
         $('#type_barang').val(response.type_barang).trigger('change')
         $('#kode-barang').text(response.kode_barang)
         $('#harga_jual').val(response.harga_jual)
@@ -164,6 +195,9 @@ $('#fieldImage').on('click', 'div .delImage', function(e) {
 
 $('#updateProduct').validate({
     rules: {
+        kode_barang: {
+            required : true
+        },
         nama_barang: {
             required : true
         },
@@ -191,6 +225,8 @@ $('#updateProduct').validate({
       e.preventDefault()
       const urlUpdateProduct = URL_API + "/managements/update/barang/" + id
       const data = {
+        kode_barang: $('#kode_barang').val(),
+        suplier_id: $('#suplier').val() != null ? $('#suplier').val() : 0,
         nama_barang: $('#nama_barang').val(),
         type_barang: $('#type_barang').val(),
         harga_jual: $('#harga_jual').val(),
