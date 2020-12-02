@@ -248,6 +248,25 @@ class Functions
             }
         });
     }
+    putRequest(process, url, data) {
+        $.ajax({
+            type: "put",
+            url: url,
+            data: data,
+            headers: {'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')},
+            beforeSend: function() {
+                $('.loading').show()
+            },
+            success: function (response) {
+                $('.loading').hide()
+                process.successData = response;
+            },
+            error: function(err) {
+                $('.loading').hide()
+                process.errorData = err
+            }
+        });
+    }
 
     createPaginate(current_page, last_page, prev_page_url) {
         var paginations = ""

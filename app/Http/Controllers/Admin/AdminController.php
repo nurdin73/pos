@@ -40,6 +40,12 @@ class AdminController extends Controller
         return view('admin.managements.suplier.index');
     }
 
+    public function detailSuplier($id)
+    {
+        $data['id'] = $id;
+        return view('admin.managements.suplier.detail', $data);
+    }
+
     public function managementCabang()
     {
         return view('admin.managements.cabang.index');

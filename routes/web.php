@@ -37,8 +37,12 @@ Route::group(['prefix' => 'admin', 'middleware' => ['auth']], function () {
             Route::get('/detail/{id}', 'Admin\AdminController@detailProduct');
         });
 
+        Route::group(['prefix' => '/suplier'], function () {
+            Route::get('/', 'Admin\AdminController@suplier')->name('managementSuplier');
+            Route::get('/detail/{id}', 'Admin\AdminController@detailSuplier');
+        });
+
         Route::get('/kategori', 'Admin\AdminController@kategori')->name('managementKategori');
-        Route::get('/suplier', 'Admin\AdminController@suplier')->name('managementSuplier');
         Route::get('/transaksi', 'Admin\AdminController@managementTransaksi')->name('managementTransaksi');
         Route::get('/cabang', 'Admin\AdminController@managementCabang')->name('managementCabang');
         Route::get('/pelanggan', 'Admin\AdminController@pelanggan')->name('managementPelanggan');
@@ -96,6 +100,7 @@ Route::group(['prefix' => 'api/'], function () {
             Route::get('/transaksi-per-tahun', 'Api\Managements\TransaksiController@getTransactionPerYear');
             Route::get('/stocks/{id_product}', 'Api\Managements\StokController@listStok');
             Route::get('/modal', 'Api\Managements\StokController@modal');
+            Route::get('/supliers', 'Api\Managements\SuplierController@getAll');
 
             // get detail
             Route::get('barang/{id}', 'Api\Managements\BarangController@show');
@@ -106,6 +111,7 @@ Route::group(['prefix' => 'api/'], function () {
             Route::get('cart/{id}', 'Api\Managements\TransaksiController@detailCart');
             Route::get('stok-detail/{id}', 'Api\Managements\StokController@show');
             Route::get('type-price/{id}', 'Api\Managements\barangController@detailTypePrice');
+            Route::get('suplier/{id}', 'Api\Managements\SuplierController@getDetail');
 
             // add 
             Route::group(['prefix' => 'add', 'middleware' => ['auth']], function () {
@@ -118,6 +124,7 @@ Route::group(['prefix' => 'api/'], function () {
                 Route::post('/cart', 'Api\Managements\TransaksiController@store');
                 Route::post('/transaction', 'Api\Managements\TransaksiController@addTransaksi');
                 Route::post('/type-price', 'Api\Managements\BarangController@addTypePrice');
+                Route::post('/suplier', 'Api\Managements\SuplierController@addSuplier');
             });
 
             // update 
@@ -132,6 +139,7 @@ Route::group(['prefix' => 'api/'], function () {
                 Route::put('/cart/{id}', 'Api\Managements\TransaksiController@updateCart');
                 Route::put('/type-price/{id}', 'Api\Managements\BarangController@updateTypePrice');
                 Route::put('/price-cart/{id}', 'Api\Managements\TransaksiController@changePrice');
+                Route::put('/suplier/{id}', 'Api\Managements\SuplierController@updateSuplier');
             });
 
             // delete 
@@ -144,6 +152,7 @@ Route::group(['prefix' => 'api/'], function () {
                 Route::delete('/pajak/{id}', 'Api\Managements\PajakController@destroy');
                 Route::delete('/cart/{id}', 'Api\Managements\TransaksiController@deleteCart');
                 Route::delete('/type-price/{id}', 'Api\Managements\BarangController@deleteTypePrice');
+                Route::delete('/suplier/{id}', 'Api\Managements\SuplierController@deleteSuplier');
             });
 
         });

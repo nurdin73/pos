@@ -23,7 +23,7 @@
     @if ((count($explodeUrl) - 3) <= 3)
       <title>{{ ucfirst(Str::slug(explode("?", end($explodeUrl))[0], " ")) ?? ucfirst(Str::slug(end($explodeUrl), " ")) }} - {{ $settings->nama_toko ?? "" }} Point Of Sales</title>
     @else
-      <title>{{ ucfirst($explodeUrl[count($explodeUrl) - 2]) }} Barang - {{ $settings->nama_toko ?? "" }} Point Of Sales</title>
+      <title>{{ ucfirst($explodeUrl[count($explodeUrl) - 2]) }} - {{ $settings->nama_toko ?? "" }} Point Of Sales</title>
     @endif
     <!-- Main styles for this application-->
     <link href="{{ asset('css/styledark.min.css') }}" rel="stylesheet">
@@ -52,7 +52,7 @@
     </script>
   </head>
   {{-- <body class="c-app c-dark-theme"> --}}
-  <body class="c-app c-dark-theme">
+  <body class="c-app">
     @include('components.sidebar')
 
     <div class="c-wrapper c-fixed-components">
@@ -101,7 +101,43 @@
     <script src="{{ asset('js/functions.js') }}"></script>
     <script>
       $(function () {
+        var dark = localStorage.getItem('theme');
+        if(dark == "true") {
+          console.log('masuk sini');
+          $('.c-app').removeClass('c-dark-theme');
+          $('.changeTheme').html(`<svg class="c-icon">
+            <use xlink:href="{{ asset('vendors/@coreui/icons/svg/free.svg#cil-moon') }}"></use>
+          </svg>`)
+        } else {
+          $('.c-app').addClass('c-dark-theme');
+          $('.changeTheme').html(`<svg class="c-icon">
+            <use xlink:href="{{ asset('vendors/@coreui/icons/svg/free.svg#cil-sun') }}"></use>
+          </svg>`)
+        }
         $('[data-toggle="tooltip"]').tooltip()
+        $('.changeTheme').on('click', function(e) {
+          // $(this).empty()
+          e.preventDefault()
+          if(dark == "true") {
+            $('.c-app').addClass('c-dark-theme');
+            localStorage.setItem('theme', "false");
+            dark = localStorage.getItem('theme');
+            $(this).html(`<svg class="c-icon">
+              <use xlink:href="{{ asset('vendors/@coreui/icons/svg/free.svg#cil-sun') }}"></use>
+            </svg>`)
+          } else {
+            $('.c-app').removeClass('c-dark-theme');
+            localStorage.setItem('theme', "true")
+            dark = localStorage.getItem('theme')
+            // $(this).empty()
+            $(this).html(`<svg class="c-icon">
+              <use xlink:href="{{ asset('vendors/@coreui/icons/svg/free.svg#cil-moon') }}"></use>
+            </svg>`)
+          }
+        })
+        toastr.options = {
+          "progressBar": true,
+        }
       });
     </script>
     {{-- Templates --}}
