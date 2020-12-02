@@ -59,7 +59,7 @@ const getAll = {
         } else {
             $('#listSupliers').append(`
                 <tr>
-                    <td colspan="4" align="center>Tidak ada suplier</td>
+                    <td colspan="4" align="center">Tidak ada suplier</td>
                 </tr>
             `)
         }
