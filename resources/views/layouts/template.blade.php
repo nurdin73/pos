@@ -26,7 +26,7 @@
       <title>{{ ucfirst($explodeUrl[count($explodeUrl) - 2]) }} Barang - {{ $settings->nama_toko ?? "" }} Point Of Sales</title>
     @endif
     <!-- Main styles for this application-->
-    <link href="{{ asset('css/style.min.css') }}" rel="stylesheet">
+    <link href="{{ asset('css/styledark.min.css') }}" rel="stylesheet">
     {{-- <link rel="preload" href="{{ asset('css/style.min.css') }}" as="style" onload="this.onload=null;this.rel='stylesheet'">
     <noscript><link rel="stylesheet" href="{{ asset('css/style.min.css') }}"></noscript>   --}}
     <meta name="csrf-token" content="{{ csrf_token() }}">
@@ -41,9 +41,18 @@
     {{-- toastr --}}
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/toastr.js/latest/toastr.min.css" integrity="sha512-vKMx8UnXk60zUwyUnUPM3HbQo8QfmNx7+ltw8Pm5zLusl1XIfwcxo8DbWCqMGKaWeNxWA8yrx5v3SaVpMvR3CA==" crossorigin="anonymous" />
     @yield('css')
+    <!-- Global site tag (gtag.js) - Google Analytics -->
+    <script async src="https://www.googletagmanager.com/gtag/js?id=G-5DVJWELFJ3"></script>
+    <script>
+      window.dataLayer = window.dataLayer || [];
+      function gtag(){dataLayer.push(arguments);}
+      gtag('js', new Date());
+
+      gtag('config', 'G-5DVJWELFJ3');
+    </script>
   </head>
   {{-- <body class="c-app c-dark-theme"> --}}
-  <body class="c-app">
+  <body class="c-app c-dark-theme">
     @include('components.sidebar')
 
     <div class="c-wrapper c-fixed-components">
