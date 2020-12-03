@@ -57,6 +57,7 @@ const getDetail = {
         $('#diskon').val(response.diskon)
         $('#rak').val(response.rak)
         $('#keterangan').val(response.keterangan)
+        $('#point').val(response.point)
         getKategoriById.loadData = response.kategori_id
         if(response.images.length > 0) {
             var listImage = ""

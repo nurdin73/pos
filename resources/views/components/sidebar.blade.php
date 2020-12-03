@@ -44,6 +44,15 @@
         <span class="sr-only">Suplier</span>
       </li>
       <li class="c-sidebar-nav-item">
+        <a class="c-sidebar-nav-link" href="{{ route('managementCabang') }}">
+          <svg class="c-sidebar-nav-icon">
+            <use xlink:href="{{ asset('vendors/@coreui/icons/svg/free.svg#cil-industry') }}"></use>
+          </svg> Cabang
+          <span class="badge badge-warning">On Going</span>
+        </a>
+        <span class="sr-only">Cabang</span>
+      </li>
+      <li class="c-sidebar-nav-item">
         <a class="c-sidebar-nav-link" href="{{ route('managementStok') }}">
           <svg class="c-sidebar-nav-icon">
             <use xlink:href="{{ asset('vendors/@coreui/icons/svg/free.svg#cil-equalizer') }}"></use>
@@ -76,22 +85,22 @@
         <span class="sr-only">Kasbon</span>
       </li>
       <li class="c-sidebar-nav-item">
-        <a class="c-sidebar-nav-link" href="{{ route('managementCabang') }}">
-          <svg class="c-sidebar-nav-icon">
-            <use xlink:href="{{ asset('vendors/@coreui/icons/svg/free.svg#cil-industry') }}"></use>
-          </svg> Cabang
-          <span class="badge badge-info">On Going</span>
-        </a>
-        <span class="sr-only">Cabang</span>
-      </li>
-      {{-- <li class="c-sidebar-nav-item">
         <a class="c-sidebar-nav-link" href="{{ route('managementPajak') }}">
           <svg class="c-sidebar-nav-icon">
-            <use xlink:href="{{ asset('vendors/@coreui/icons/svg/free.svg#cil-dollar') }}"></use>
+            <use xlink:href="{{ asset('vendors/@coreui/icons/svg/free.svg#cil-fax') }}"></use>
           </svg> Pajak
-          <span class="badge badge-danger">PRO</span>
+          <span class="badge badge-danger">Soon</span>
         </a>
-      </li> --}}
+      </li>
+      <li class="c-sidebar-nav-item">
+        <a class="c-sidebar-nav-link" href="{{ route('loyalityProgram') }}">
+          <svg class="c-sidebar-nav-icon">
+            <use xlink:href="{{ asset('vendors/@coreui/icons/svg/free.svg#cil-dollar') }}"></use>
+          </svg> Loyality Program
+          <span class="badge badge-danger">Soon</span>
+        </a>
+        <span class="sr-only">Loyality Program</span>
+      </li>
       <li class="c-sidebar-nav-title">Laporan <span class="sr-only">Laporan</span></li>
       <li class="c-sidebar-nav-item c-sidebar-nav-dropdown">
         <a class="c-sidebar-nav-link c-sidebar-nav-dropdown-toggle" href="#">
@@ -108,6 +117,15 @@
         <span class="sr-only">Laporan</span>
       </li>
       <li class="c-sidebar-nav-item">
+        <a class="c-sidebar-nav-link" href="{{ route('reportBarang') }}">
+          <svg class="c-sidebar-nav-icon">
+            <use xlink:href="{{ asset('vendors/@coreui/icons/svg/free.svg#cil-storage') }}"></use>
+          </svg> Barang
+          <span class="badge badge-warning">On Going</span>
+        </a>
+        <span class="sr-only">Modal</span>
+      </li>
+      <li class="c-sidebar-nav-item">
         <a class="c-sidebar-nav-link" href="{{ route('reportModal') }}">
           <svg class="c-sidebar-nav-icon">
             <use xlink:href="{{ asset('vendors/@coreui/icons/svg/free.svg#cil-swap-horizontal') }}"></use>
@@ -115,21 +133,30 @@
         </a>
         <span class="sr-only">Modal</span>
       </li>
-      {{-- <li class="c-sidebar-nav-item">
+      <li class="c-sidebar-nav-item">
         <a class="c-sidebar-nav-link" href="{{ route('reportPajak') }}">
           <svg class="c-sidebar-nav-icon">
-            <use xlink:href="{{ asset('vendors/@coreui/icons/svg/free.svg#cil-dollar') }}"></use>
+            <use xlink:href="{{ asset('vendors/@coreui/icons/svg/free.svg#cil-fax') }}"></use>
           </svg> Pajak
-          <span class="badge badge-danger">PRO</span>
+          <span class="badge badge-danger">Soon</span>
         </a>
-      </li> --}}
-      {{-- <li class="c-sidebar-nav-item">
-        <a class="c-sidebar-nav-link" href="{{ route('reportPengunjung') }}">
+      </li>
+      <li class="c-sidebar-nav-item">
+        <a class="c-sidebar-nav-link" href="{{ route('reportKasbon') }}">
+          <svg class="c-sidebar-nav-icon">
+            <use xlink:href="{{ asset('vendors/@coreui/icons/svg/free.svg#cil-wallet') }}"></use>
+          </svg> Kasbon
+          <span class="badge badge-warning">On Going</span>
+        </a>
+      </li>
+      <li class="c-sidebar-nav-item">
+        <a class="c-sidebar-nav-link" href="{{ route('reportPelanggan') }}">
           <svg class="c-sidebar-nav-icon">
             <use xlink:href="{{ asset('vendors/@coreui/icons/svg/free.svg#cil-people') }}"></use>
-          </svg> Pengunjung
+          </svg> Pelanggan
+          <span class="badge badge-warning">On Going</span>
         </a>
-      </li> --}}
+      </li>
       <li class="c-sidebar-nav-title">Pengaturan <span class="sr-only">Pengaturan</span></li>
       <li class="c-sidebar-nav-item">
         <a class="c-sidebar-nav-link" href="{{ route('settingProfile') }}">
@@ -146,6 +173,15 @@
           </svg> Toko
         </a>
         <span class="sr-only">Toko</span>
+      </li>
+      <li class="c-sidebar-nav-item">
+        <a class="c-sidebar-nav-link" href="{{ route('settingApi') }}">
+          <svg class="c-sidebar-nav-icon">
+            <use xlink:href="{{ asset('vendors/@coreui/icons/svg/free.svg#cil-settings') }}"></use>
+          </svg> API
+          <span class="badge badge-danger">Soon</span>
+        </a>
+        <span class="sr-only">API</span>
       </li>
       {{-- <li class="c-sidebar-nav-item">
         <a class="c-sidebar-nav-link" href="{{ route('settingDatabase') }}">

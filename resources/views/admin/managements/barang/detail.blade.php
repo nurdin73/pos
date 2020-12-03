@@ -91,12 +91,24 @@
                           </div>
                         </div>
                         <div class="col-md-6">
-                          <div class="form-group">
-                            <label for="satuan">Satuan(gram,pcs)</label>
-                            <select name="satuan" id="satuan" class="form-control" readonly>
-                              <option value="gram">Gram</option>
-                              <option value="pcs">Pcs</option>
-                            </select>
+                          <div class="row">
+                            <div class="col-6">
+                              <div class="form-group">
+                                <label for="satuan">Satuan(gram,pcs)</label>
+                                <select name="satuan" id="satuan" class="form-control" readonly>
+                                  <option value="gram">Gram</option>
+                                  <option value="pcs">Pcs</option>
+                                </select>
+                              </div>
+                            </div>
+                            <div class="col-6">
+                              <div class="form-group">
+                                <div class="form-group">
+                                  <label for="point">Point</label>
+                                  <input type="number" name="point" id="point" class="form-control" readonly>
+                                </div>
+                              </div>
+                            </div>
                           </div>
                           <div class="form-group">
                             <label for="rak">Letak rak</label>

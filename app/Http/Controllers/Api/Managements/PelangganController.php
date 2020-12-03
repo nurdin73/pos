@@ -44,12 +44,14 @@ class PelangganController extends Controller
     public function store(Request $request)
     {
         $request->validate([
+            'nik'      => 'required|unique:customers',
             'nama'      => 'required',
             'email'     => 'required|email|unique:customers',
-            'no_telp'   => 'required|numeric|unique:customers',
+            'no_telp'   => 'required|unique:customers',
             'alamat'    => 'required'
         ]);
         $data = [
+            'nik' => $request->input('nik'),
             'nama' => $request->input('nama'),
             'email' => $request->input('email'),
             'no_telp' => $request->input('no_telp'),
@@ -79,14 +81,17 @@ class PelangganController extends Controller
     public function update(Request $request, $id)
     {
         $request->validate([
+            'nik'       => 'required',
             'nama'      => 'required',
-            'no_telp'   => 'required|numeric',
+            'no_telp'   => 'required',
             'alamat'    => 'required'
         ]);
         $data = [
+            'nik' => $request->input('nik'),
             'nama' => $request->input('nama'),
             'no_telp' => $request->input('no_telp'),
             'alamat' => $request->input('alamat'),
+            'point' => $request->input('point'),
         ];
 
         return $this->customerService->update($data, $id);

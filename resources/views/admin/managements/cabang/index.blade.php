@@ -9,7 +9,7 @@
             <button class="btn btn-sm btn-primary">Tambah Cabang</button>
           </div>
           <div class="card-body">
-            <h1 class="display-4 text-center">Comming Soon</h1>
+            <h1 class="display-4 text-center">Dalam Pengerjaan</h1>
           </div>
         </div>
       </div>

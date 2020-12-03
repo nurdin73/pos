@@ -97,6 +97,7 @@ const getDetail = {
         $('#diskon').val(response.diskon)
         $('#rak').val(response.rak)
         $('#keterangan').val(response.keterangan)
+        $('#point').val(response.point)
         getKategoriById.loadData = response.kategori_id
         if(response.images.length > 0) {
             var listImage = ""
@@ -221,6 +222,23 @@ $('#updateProduct').validate({
     errorClass: "is-invalid",
     validClass: "is-valid",
     errorElement: "small",
+    errorPlacement: function errorPlacement(error, element) {
+        error.addClass('invalid-feedback');
+    
+        if (element.prop('type') === 'checkbox') {
+          error.insertAfter(element.parent('label'));
+        } else {
+          error.insertAfter(element);
+        }
+    },
+    // eslint-disable-next-line object-shorthand
+    highlight: function highlight(element) {
+        $(element).addClass('is-invalid').removeClass('is-valid');
+    },
+    // eslint-disable-next-line object-shorthand
+    unhighlight: function unhighlight(element) {
+        $(element).addClass('is-valid').removeClass('is-invalid');
+    },
     submitHandler: function(form, e) {
       e.preventDefault()
       const urlUpdateProduct = URL_API + "/managements/update/barang/" + id
@@ -236,6 +254,7 @@ $('#updateProduct').validate({
         diskon: showAll ? $('#diskon').val() : "",
         rak: showAll ? $('#rak').val() : "",
         keterangan: showAll ? $('#keterangan').val() : "",
+        point: showAll ? $('#point').val() : "",
       }
       Functions.prototype.updateData(urlUpdateProduct, data, 'put')
     }

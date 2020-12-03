@@ -42,6 +42,10 @@ Route::group(['prefix' => 'admin', 'middleware' => ['auth']], function () {
             Route::get('/detail/{id}', 'Admin\AdminController@detailSuplier');
         });
 
+        Route::group(['prefix' => '/loyality-program'], function () {
+            Route::get('/', 'Admin\AdminController@loyalityProgram')->name('loyalityProgram');
+        });
+
         Route::get('/kategori', 'Admin\AdminController@kategori')->name('managementKategori');
         Route::get('/transaksi', 'Admin\AdminController@managementTransaksi')->name('managementTransaksi');
         Route::get('/cabang', 'Admin\AdminController@managementCabang')->name('managementCabang');
@@ -64,12 +68,22 @@ Route::group(['prefix' => 'admin', 'middleware' => ['auth']], function () {
         Route::get('/pembelian', 'Admin\ReportController@pembelian')->name('reportPembelian');
         Route::get('/modal', 'Admin\ReportController@modal')->name('reportModal');
         Route::get('/pajak', 'Admin\ReportController@pajak')->name('reportPajak');
-        Route::get('/pengunjung', 'Admin\ReportController@pengunjung')->name('reportPengunjung');
+        Route::get('/pelanggan', 'Admin\ReportController@reportPelanggan')->name('reportPelanggan');
+        Route::group(['prefix' => '/kasbon'], function () {
+            Route::get('/', 'Admin\ReportController@reportKasbon')->name('reportKasbon');
+        });
+
+        Route::group(['prefix' => '/barang'], function () {
+            Route::get('/', 'Admin\ReportController@barang')->name('reportBarang');
+        });
     });
 
     Route::group(['prefix' => 'settings'], function () {
         Route::get('/', 'Admin\SettingController@index')->name('settingProfile');
         Route::get('/toko', 'Admin\SettingController@toko')->name('settingToko');
+        Route::group(['prefix' => '/api'], function () {
+            Route::get('/', 'Admin\SettingController@api')->name('settingApi');
+        });
         // Route::get('/database', 'Admin\SettingController@database')->name('settingDatabase');
         // Route::get('/management-staff', 'Admin\SettingController@managementStaff')->name('settingManagementStaff');
     });

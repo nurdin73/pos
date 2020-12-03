@@ -5,7 +5,7 @@
       <div class="fade-in">
         <div class="card">
           <div class="card-header">
-            Pajak
+            Loyality Program
           </div>
           <div class="card-body">
             <h1 class="display-4 text-center">Comming soon</h1>

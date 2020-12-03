@@ -8,7 +8,7 @@ class CustomerService
 {
     public function getAll()
     {
-        $results = Customers::select('id','nama','email')->orderBy('id', 'ASC')->get();
+        $results = Customers::select('id', 'nik', 'nama', 'email', 'point')->orderBy('id', 'ASC')->get();
         return datatables()
         ->of($results)
         ->addIndexColumn()

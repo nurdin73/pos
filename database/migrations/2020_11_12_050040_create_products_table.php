@@ -27,6 +27,7 @@ class CreateProductsTable extends Migration
             $table->integer('diskon')->nullable();
             $table->string('rak')->nullable();
             $table->longText('keterangan')->nullable();
+            $table->bigInteger('point')->default(0);
             $table->timestamps();
         });
     }

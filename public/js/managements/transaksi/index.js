@@ -83,12 +83,12 @@ function getData() {
       const kembalian = val - grandTotal
       $('#change').val(kembalian)
     })
-    var option = new Option("Umum", 1, true, true)
+    var option = new Option("Umum", 0, true, true)
     $("#customer").append(option).trigger('change')
     $("#customer").trigger({
       type: 'select2:select',
       params: {
-        name : 1
+        name : null
       }
     })
     $('#customer').select2({
@@ -275,6 +275,23 @@ function updateCart() {
     errorClass: "is-invalid",
     validClass: "is-valid",
     errorElement: "small",
+    errorPlacement: function errorPlacement(error, element) {
+      error.addClass('invalid-feedback');
+  
+      if (element.prop('type') === 'checkbox') {
+        error.insertAfter(element.parent('label'));
+      } else {
+        error.insertAfter(element);
+      }
+    },
+    // eslint-disable-next-line object-shorthand
+    highlight: function highlight(element) {
+        $(element).addClass('is-invalid').removeClass('is-valid');
+    },
+    // eslint-disable-next-line object-shorthand
+    unhighlight: function unhighlight(element) {
+        $(element).addClass('is-valid').removeClass('is-invalid');
+    },
     submitHandler: function(form, e) {
       const id = $('#id_cart').val()
       const url = URL_API + "/managements/update/cart/" + id

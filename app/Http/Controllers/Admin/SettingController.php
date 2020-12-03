@@ -17,6 +17,11 @@ class SettingController extends Controller
         return view('admin.settings.toko');
     }
 
+    public function api()
+    {
+        return view('admin.settings.api.index');
+    }
+
     public function database()
     {
         return view('admin.settings.database');

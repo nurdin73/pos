@@ -2,6 +2,7 @@
 namespace App\Services;
 
 use App\Models\Carts;
+use App\Models\Customers;
 use App\Models\Products;
 use App\Models\Stocks;
 use App\Models\Transactions;
@@ -53,36 +54,37 @@ class TransactionService
         $data['tgl_transaksi'] = date('Y-m-d');
         $data['jam_transaksi'] = date('H') < 10 ? "0".date('H').":00:00" : date('H').":00:00";
         $returnQytProd = false;
+        $totalPoint = 0;
         $checkCart = Carts::with('product.stocks')->where('no_invoice', $data['no_invoice'])->get();
-        if($checkCart) {
-            foreach ($checkCart as $cc) {
-                $sisaStok = 0;
-                if(count($cc->product->stocks)) {
-                    foreach ($cc->product->stocks as $stock) {
-                        $sisaStok += $stock->stok;
-                    }
+        if(!$checkCart) return response(['message' => 'kerangjang masih kosong silahkan coba lagi'], 422);
+        foreach ($checkCart as $cc) {
+            $totalPoint += $cc->product->point;
+            $sisaStok = 0;
+            if(count($cc->product->stocks)) {
+                foreach ($cc->product->stocks as $stock) {
+                    $sisaStok += $stock->stok;
                 }
-                if($cc->qyt > $sisaStok) {
-                    $returnQytProd = true;
-                } else {
-                    Products::find($cc->product_id)->update([
-                        'selled' => $cc->product->selled + $cc->qyt
-                    ]);
-                    foreach ($cc->product->stocks as $stock) {
-                        if($cc->qyt > $stock->stok) {
-                            $idStok = $stock->id;
-                            $cc->qyt -= $stock->stok;
-                            $stock->stok = 0;
-                            $update = Stocks::find($idStok)->delete();
-                        } else {
-                            $idStok = $stock->id;
-                            $stock->stok -= $cc->qyt;
-                            $cc->qyt = 0;
-                            $update = Stocks::find($idStok)->update([
-                                'stok' => $stock->stok
-                            ]);
-                            break;
-                        }
+            }
+            if($cc->qyt > $sisaStok) {
+                $returnQytProd = true;
+            } else {
+                Products::find($cc->product_id)->update([
+                    'selled' => $cc->product->selled + $cc->qyt
+                ]);
+                foreach ($cc->product->stocks as $stock) {
+                    if($cc->qyt > $stock->stok) {
+                        $idStok = $stock->id;
+                        $cc->qyt -= $stock->stok;
+                        $stock->stok = 0;
+                        $update = Stocks::find($idStok)->delete();
+                    } else {
+                        $idStok = $stock->id;
+                        $stock->stok -= $cc->qyt;
+                        $cc->qyt = 0;
+                        $update = Stocks::find($idStok)->update([
+                            'stok' => $stock->stok
+                        ]);
+                        break;
                     }
                 }
             }
@@ -90,6 +92,14 @@ class TransactionService
         if($returnQytProd == false) {
             $create = Transactions::create($data);
             if(!$create) return response(['message' => 'transaksi gagal ditambahkan'], 500);
+            if($totalPoint > 0) {
+                $checkCust = Customers::find($data['customer_id']);
+                if($checkCust) {
+                    $checkCust->update([
+                        'point' => $checkCust->point + $totalPoint
+                    ]);
+                }
+            }
             return response(['message' => 'transaksi berhasil ditambahkan']);
         } else {
             return response(['message' => 'transaksi gagal ditambahkan'], 500);

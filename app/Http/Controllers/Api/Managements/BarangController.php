@@ -75,6 +75,7 @@ class BarangController extends Controller
         $kategori = $request->input('kategori');
         $kode_barang = $request->input('kode_barang');
         $suplier_id = $request->input('suplier_id');
+        $point = $request->input('point');
         $files = $request->file('files');
         // ------------------------------- //
         if($satuan) {
@@ -102,6 +103,7 @@ class BarangController extends Controller
             'diskon' => $diskon,
             'rak' => $rak,
             'keterangan' => $keterangan,
+            'point' => $point
         ];
         $stocks = [
             'harga_dasar' => $harga_dasar,
@@ -155,6 +157,7 @@ class BarangController extends Controller
         $keterangan = $request->input('keterangan');
         $kategori = $request->input('kategori');
         $suplier_id = $request->input('suplier_id');
+        $point = $request->input('point');
         // ------------------------------- //
         if($satuan) {
             if($satuan != "gram" && $satuan != "pcs") {
@@ -178,6 +181,7 @@ class BarangController extends Controller
             'diskon' => $diskon,
             'rak' => $rak,
             'keterangan' => $keterangan,
+            'point'     => $point
         ];
         return $this->productsService->updateProduct($data, $id);
     }

@@ -13,16 +13,25 @@ $(document).ready(function () {
 function getCustomers() {  
     const urlCust = URL_API + "/managements/pelanggan"
     const columns = [
+        {data : 'nik', name: 'nik'},
         {data : 'nama', name: 'nama'},
         {data : 'email', name: 'email'},
+        {data : 'point', name: 'point'},
         {data : 'actions', name: 'actions', orderable: false, searchable: false},
     ]
     Functions.prototype.tableResult("#dataTables", urlCust, columns)
 }
 
 function addCustomers() {
+    $('#no_telp').mask('0000-0000-0000')
     $('#formAddCustomer').validate({
         rules: {
+            nik: {
+                required: true,
+                number: true,
+                minlength: 16,
+                maxlength: 17
+            },
             nama: {
                 required: true
             },
@@ -32,7 +41,6 @@ function addCustomers() {
             },
             no_telp: {
                 required: true,
-                number:true
             },
             alamat: {
                 required: true
@@ -41,16 +49,40 @@ function addCustomers() {
         errorClass: "is-invalid",
         validClass: "is-valid",
         errorElement: "small",
+        errorPlacement: function errorPlacement(error, element) {
+            error.addClass('invalid-feedback');
+        
+            if (element.prop('type') === 'checkbox') {
+              error.insertAfter(element.parent('label'));
+            } else {
+              error.insertAfter(element);
+            }
+        },
+        // eslint-disable-next-line object-shorthand
+        highlight: function highlight(element) {
+            $(element).addClass('is-invalid').removeClass('is-valid');
+        },
+        // eslint-disable-next-line object-shorthand
+        unhighlight: function unhighlight(element) {
+            $(element).addClass('is-valid').removeClass('is-invalid');
+        },
         submitHandler: function(form, e) {
             e.preventDefault()
             const urlPost = URL_API + "/managements/add/pelanggan"
             const data = {
+                nik: $('#nik').val(),
                 nama: $('#nama').val(),
                 email: $('#email').val(),
                 no_telp: $('#no_telp').val(),
                 alamat: $('#alamat').val(),
             }
-            Functions.prototype.httpRequest(urlPost, data, 'post')
+            Functions.prototype.postRequest(postCustomer, urlPost, data)
+        }
+    })
+
+    const postCustomer = {
+        set successData(response) {
+            toastr.success(response.message, 'Success')
             if(window.location.search != "") {
                 const urlParams = new URLSearchParams(window.location.search)
                 if(urlParams.get('redirect') != "") {
@@ -60,39 +92,95 @@ function addCustomers() {
                 }
             } else {
                 getCustomers()
+                $('#formAddCustomer')[0].reset()
+                $('#addCustomerModal').modal('hide')
+                $('#nama').removeClass('is-valid')
+                $('#email').removeClass('is-valid')
+                $('#no_telp').removeClass('is-valid')
+                $('#alamat').removeClass('is-valid')
+                $('#nik').removeClass('is-valid')
             }
+        },
+        set errorData(err) {
+            toastr.error(err.responseJSON.message, 'Error')
         }
-    })
+    }
 }
 function updateCustomer() {
+    $('#update_no_telp').mask('0000-0000-0000')
+    $('#update_nik').mask('0000000000000000')
     $('#formUpdateCustomer').validate({
         rules: {
-            nama: {
+            update_nik: {
+                required: true,
+                number: true,
+                minlength: 16
+            },
+            update_nama: {
                 required: true
             },
-            no_telp: {
+            update_no_telp: {
                 required: true,
-                number:true
             },
-            alamat: {
+            update_point: {
+                required: true,
+                number:true,
+                min: 0
+            },
+            update_alamat: {
                 required: true
             }
         },
         errorClass: "is-invalid",
         validClass: "is-valid",
         errorElement: "small",
+        errorPlacement: function errorPlacement(error, element) {
+            error.addClass('invalid-feedback');
+        
+            if (element.prop('type') === 'checkbox') {
+              error.insertAfter(element.parent('label'));
+            } else {
+              error.insertAfter(element);
+            }
+        },
+        // eslint-disable-next-line object-shorthand
+        highlight: function highlight(element) {
+            $(element).addClass('is-invalid').removeClass('is-valid');
+        },
+        // eslint-disable-next-line object-shorthand
+        unhighlight: function unhighlight(element) {
+            $(element).addClass('is-valid').removeClass('is-invalid');
+        },
         submitHandler: function(form, e) {
             e.preventDefault()
             const urlPost = URL_API + "/managements/update/pelanggan/" + $('#id').val()
             const data = {
+                nik: $('#update_nik').val(),
                 nama: $('#update_nama').val(),
                 no_telp: $('#update_no_telp').val(),
                 alamat: $('#update_alamat').val(),
+                point: $('#update_point').val(),
             }
-            Functions.prototype.httpRequest(urlPost, data, 'put')
-            getCustomers()
+            Functions.prototype.putRequest(putDataCustomer, urlPost, data)
+            // Functions.prototype.httpRequest(urlPost, data, 'put')
         }
     })
+    const putDataCustomer = {
+        set successData(response) {
+            toastr.success(response.message, 'Success')
+            getCustomers()
+            $('#formUpdateCustomer')[0].reset()
+            $('#updateCustModal').modal('hide')
+            $('#nama_update').removeClass('is-valid')
+            $('#email_update').removeClass('is-valid')
+            $('#no_telp_update').removeClass('is-valid')
+            $('#alamat_update').removeClass('is-valid')
+            $('#nik_update').removeClass('is-valid')
+        },
+        set errorData(err) {
+            toastr.error(err.responseJSON.message, 'Error')
+        }
+    }
 }
 
 function getDetail() {  
@@ -107,10 +195,13 @@ function getDetail() {
             Functions.prototype.requestDetail(getDetail, urlDetail)
         },
         set successData(response) {
+            $('#detail_nik').val(response.nik)
             $('#detail_nama').val(response.nama)
             $('#detail_email').val(response.email)
             $('#detail_no_telp').val(response.no_telp)
             $('#detail_alamat').val(response.alamat)
+            $('#detail_alamat').val(response.alamat)
+            $('#detail_point').val(response.point)
         },
         set errorData(err) {
             toastr.error(err.responseJSON.message, 'error!!')
@@ -135,6 +226,8 @@ function getDetailForUpdate() {
             $('#update_email').val(response.email).attr('disabled', true)
             $('#update_no_telp').val(response.no_telp)
             $('#update_alamat').val(response.alamat)
+            $('#update_alamat').val(response.alamat)
+            $('#update_point').val(response.point)
         },
         set errorData(err) {
             toastr.error(err.responseJSON.message, 'error!!')

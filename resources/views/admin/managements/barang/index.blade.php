@@ -39,7 +39,7 @@
                 </div>
                 <div class="col-md-2">
                   <div class="form-group">
-                    <select name="sorting" id="sorting" class="form-control">
+                    <select name="sorting" id="sorting" class="custom-select">
                       <option value="10">10</option>
                       <option value="20">20</option>
                       <option value="30">30</option>
@@ -131,7 +131,7 @@
                 <div class="col-6">
                   <div class="form-group">
                     <label for="type_barang">Type Barang *</label>
-                    <select name="type_barang" id="type_barang" class="form-control">
+                    <select name="type_barang" id="type_barang" class="custom-select">
                       <option value="baru">Baru</option>
                       <option value="bekas">Bekas</option>
                     </select>
@@ -219,12 +219,22 @@
                 </div>
               </div>
               <div class="col-md-6">
-                <div class="form-group">
-                  <label for="satuan">Satuan(gram,pcs)</label>
-                  <select name="satuan" id="satuan" class="form-control">
-                    <option value="gram">Gram</option>
-                    <option value="pcs">Pcs</option>
-                  </select>
+                <div class="row">
+                  <div class="col-6">
+                    <div class="form-group">
+                      <label for="satuan">Satuan(gram,pcs)</label>
+                      <select name="satuan" id="satuan" class="custom-select">
+                        <option value="gram">Gram</option>
+                        <option value="pcs">Pcs</option>
+                      </select>
+                    </div>
+                  </div>
+                  <div class="col-6">
+                    <div class="form-group">
+                      <label for="point">Point</label>
+                      <input type="number" name="point" id="point" class="form-control">
+                    </div>
+                  </div>
                 </div>
                 <div class="form-group">
                   <label for="rak">Letak rak</label>

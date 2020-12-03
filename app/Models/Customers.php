@@ -6,7 +6,7 @@ use Illuminate\Database\Eloquent\Model;
 
 class Customers extends Model
 {
-    protected $fillable = ['nama', 'email', 'no_telp', 'alamat'];
+    protected $fillable = ['nik', 'nama', 'email', 'no_telp', 'alamat', 'point'];
 
     public function cashReceipts()
     {

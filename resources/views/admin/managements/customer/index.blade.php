@@ -19,8 +19,10 @@
               <table class="table table-bordered table-striped table-hover" id="dataTables">
                 <thead>
                   <tr>
-                    <th>Nama</th>
-                    <th>Email</th>
+                    <th>NIK</th>
+                    <th style="width: 20%">Nama</th>
+                    <th style="width: 20%">Email</th>
+                    <th style="width: 7%">Point</th>
                     <th style="width: 20%">Actions</th>
                   </tr>
                 </thead>
@@ -46,6 +48,10 @@
         </div>
         <form id="formAddCustomer" autocomplete="off">
           <div class="modal-body">
+            <div class="form-group">
+              <label for="nik">NIK</label>
+              <input type="text" name="nik" id="nik" class="form-control">
+            </div>
             <div class="form-group">
               <label for="nama">Nama</label>
               <input type="text" name="nama" id="nama" class="form-control">
@@ -93,8 +99,22 @@
           <input type="hidden" name="id" id="id">
           <div class="modal-body">
             <div class="form-group">
-              <label for="update_nama">Nama</label>
-              <input type="text" name="update_nama" id="update_nama" class="form-control">
+              <label for="update_nik">NIK</label>
+              <input type="text" name="update_nik" id="update_nik" class="form-control">
+            </div>
+            <div class="row">
+              <div class="col-6 col-md-9">
+                <div class="form-group">
+                  <label for="update_nama">Nama</label>
+                  <input type="text" name="update_nama" id="update_nama" class="form-control">
+                </div>
+              </div>
+              <div class="col-6 col-md-3">
+                <div class="form-group">
+                  <label for="update_point">Point</label>
+                  <input type="number" name="update_point" id="update_point" class="form-control">
+                </div>
+              </div>
             </div>
             <div class="row">
               <div class="col-md-6">
@@ -136,8 +156,22 @@
         </div>
         <div class="modal-body">
           <div class="form-group">
-            <label for="detail_nama">Nama</label>
-            <input type="text" name="detail_nama" id="detail_nama" class="form-control" disabled>
+            <label for="detail_nik">NIK</label>
+            <input type="text" name="detail_nik" id="detail_nik" class="form-control">
+          </div>
+          <div class="row">
+            <div class="col-6 col-md-9">
+              <div class="form-group">
+                <label for="detail_nama">Nama</label>
+                <input type="text" name="detail_nama" id="detail_nama" class="form-control" disabled>
+              </div>
+            </div>
+            <div class="col-6 col-md-3">
+              <div class="form-group">
+                <label for="detail_point">Point</label>
+                <input type="number" name="detail_point" id="detail_point" class="form-control" disabled>
+              </div>
+            </div>
           </div>
           <div class="row">
             <div class="col-md-6">
@@ -166,7 +200,7 @@
 @endsection
 
 @section('js')
-  <script src="https://cdnjs.cloudflare.com/ajax/libs/PgwSlider/2.3.0/pgwslider.min.js" integrity="sha512-Oz0WQx5ADiBluAj9vpDDLDKZRqMvawtS4jtgi4ebPahhvfB6pWlPdoDbr6gPndcVt4uPn/nX1/8rTuDA2B/qBQ==" crossorigin="anonymous"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery.mask/1.14.16/jquery.mask.min.js" integrity="sha512-pHVGpX7F/27yZ0ISY+VVjyULApbDlD0/X0rgGbTqCE7WFW5MezNTWG/dnhtbBuICzsd0WQPgpE4REBLv+UqChw==" crossorigin="anonymous"></script>
   <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery-validate/1.19.2/jquery.validate.min.js" integrity="sha512-UdIMMlVx0HEynClOIFSyOrPggomfhBKJE28LKl8yR3ghkgugPnG6iLfRfHwushZl1MOPSY6TsuBDGPK2X4zYKg==" crossorigin="anonymous"></script>
   <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery-validate/1.19.2/additional-methods.min.js" integrity="sha512-6Uv+497AWTmj/6V14BsQioPrm3kgwmK9HYIyWP+vClykX52b0zrDGP7lajZoIY1nNlX4oQuh7zsGjmF7D0VZYA==" crossorigin="anonymous"></script>
   <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery-validate/1.19.2/localization/messages_id.min.js" integrity="sha512-Pb0klMWnom+fUBpq+8ncvrvozi/TDwdAbzbICN8EBoaVXZo00q6tgWk+6k6Pd+cezWRwyu2cB+XvVamRsbbtBA==" crossorigin="anonymous"></script>

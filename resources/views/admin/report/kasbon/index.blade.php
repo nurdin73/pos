@@ -4,11 +4,11 @@
     <div class="container-fluid">
       <div class="fade-in">
         <div class="card">
-          <div class="card-header">
-            Pajak
+          <div class="card-header d-flex justify-content-between align-items-center">
+            <span class="lead">Kasbon</span>
           </div>
           <div class="card-body">
-            <h1 class="display-4 text-center">Comming soon</h1>
+            <h1 class="display-4 text-center">Dalam Pengerjaan</h1>
           </div>
         </div>
       </div>

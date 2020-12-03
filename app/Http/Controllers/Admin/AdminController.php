@@ -86,11 +86,16 @@ class AdminController extends Controller
     
     public function pajak()
     {
-        return view('admin.managements.pajak');
+        return view('admin.managements.pajak.index');
     }
 
     public function managementStok()
     {
-        return view('admin.managements.managementStok');
+        return view('admin.managements.stok.managementStok');
+    }
+
+    public function loyalityProgram()
+    {
+        return view('admin.managements.loyality-program.index');
     }
 }
