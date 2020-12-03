@@ -115,6 +115,7 @@ Route::group(['prefix' => 'api/'], function () {
             Route::get('/stocks/{id_product}', 'Api\Managements\StokController@listStok');
             Route::get('/modal', 'Api\Managements\StokController@modal');
             Route::get('/supliers', 'Api\Managements\SuplierController@getAll');
+            Route::get('/branch-stores', 'Api\Managements\BranchStoreController@getAll');
 
             // get detail
             Route::get('barang/{id}', 'Api\Managements\BarangController@show');
@@ -126,6 +127,7 @@ Route::group(['prefix' => 'api/'], function () {
             Route::get('stok-detail/{id}', 'Api\Managements\StokController@show');
             Route::get('type-price/{id}', 'Api\Managements\barangController@detailTypePrice');
             Route::get('suplier/{id}', 'Api\Managements\SuplierController@getDetail');
+            Route::get('branch-store/{id}', 'Api\Managements\BranchStoreController@show');
 
             // add 
             Route::group(['prefix' => 'add', 'middleware' => ['auth']], function () {
@@ -139,6 +141,7 @@ Route::group(['prefix' => 'api/'], function () {
                 Route::post('/transaction', 'Api\Managements\TransaksiController@addTransaksi');
                 Route::post('/type-price', 'Api\Managements\BarangController@addTypePrice');
                 Route::post('/suplier', 'Api\Managements\SuplierController@addSuplier');
+                Route::post('/branch-store', 'Api\Managements\BranchStoreController@add');
             });
 
             // update 
@@ -154,6 +157,7 @@ Route::group(['prefix' => 'api/'], function () {
                 Route::put('/type-price/{id}', 'Api\Managements\BarangController@updateTypePrice');
                 Route::put('/price-cart/{id}', 'Api\Managements\TransaksiController@changePrice');
                 Route::put('/suplier/{id}', 'Api\Managements\SuplierController@updateSuplier');
+                Route::put('/branch-store/{id}', 'Api\Managements\BranchStoreController@update');
             });
 
             // delete 
@@ -167,6 +171,7 @@ Route::group(['prefix' => 'api/'], function () {
                 Route::delete('/cart/{id}', 'Api\Managements\TransaksiController@deleteCart');
                 Route::delete('/type-price/{id}', 'Api\Managements\BarangController@deleteTypePrice');
                 Route::delete('/suplier/{id}', 'Api\Managements\SuplierController@deleteSuplier');
+                Route::delete('/branch-store/{id}', 'Api\Managements\BranchStoreController@delete');
             });
 
         });
