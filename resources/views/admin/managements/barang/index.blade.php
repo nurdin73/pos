@@ -4,6 +4,9 @@
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/select2/4.0.13/css/select2.min.css" integrity="sha512-nMNlpuaDPrqlEls3IX/Q56H36qvBASwb3ipuo3MxeWbsQB1881ox0cRv7UPTgBlriqoynt35KjEwgGUeUXIPnw==" crossorigin="anonymous" />
   <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap4-select2-theme@1.0.3/src/css/bootstrap4-select2-theme.css">
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/PgwSlider/2.3.0/pgwslider.min.css" integrity="sha512-J1G8iGNI7Vk77uSN3MCVgvfTYdKVmqXhNZRI/QdC4L0S6MRImg40OsfF+N95Hix1n/Mxu7PHvdE1ULW4Hgfxyw==" crossorigin="anonymous" />
+  <style>
+    .modal { overflow: auto !important; }
+  </style>
 @endsection
 
 @section('content')
