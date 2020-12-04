@@ -1,6 +1,7 @@
 $(document).ready(function () {
     var query_params = ""
     $('#no_telp').mask('0000-0000-0000')
+    $('#no_telp_update').mask('0000-0000-0000')
     getAll.loadData = query_params
     $('.pagination').on('click', '.page-item .page-link', function(e) {
         e.preventDefault()
@@ -155,9 +156,11 @@ function getDetail() {
 }
 
 function updateData() {
+    var idCabang = ""
     $('#listCabang').on('click', 'tr td div .edit', function(e) {
         e.preventDefault()
         const id = $(this).data('id')
+        idCabang = id
         const url = URL_API + "/managements/branch-store/" + id
         Functions.prototype.requestDetail(detailCabang, url)
     })
@@ -167,6 +170,64 @@ function updateData() {
             $('#nama_cabang_update').val(response.nama_cabang)
             $('#no_telp_update').val(response.no_telp)
             $('#alamat_update').val(response.alamat)
+        },
+        set errorData(err) {
+            toastr.error(err.responseJSON.message, 'Error')
+        }
+    }
+
+    $('#formUpdatebranchStore').validate({
+        rules: {
+            nama_cabang_update: {
+                required: true
+            },
+            no_telp_update: {
+                required: true
+            },
+            alamat_update: {
+                required: true
+            }
+        },
+        errorClass: "is-invalid",
+        validClass: "is-valid",
+        errorElement: "small",
+        errorPlacement: function errorPlacement(error, element) {
+            error.addClass('invalid-feedback');
+        
+            if (element.prop('type') === 'checkbox') {
+              error.insertAfter(element.parent('label'));
+            } else {
+              error.insertAfter(element);
+            }
+        },
+        // eslint-disable-next-line object-shorthand
+        highlight: function highlight(element) {
+            $(element).addClass('is-invalid').removeClass('is-valid');
+        },
+        // eslint-disable-next-line object-shorthand
+        unhighlight: function unhighlight(element) {
+            $(element).addClass('is-valid').removeClass('is-invalid');
+        },
+        submitHandler: function(form, e) {
+            const data = {
+                nama_cabang: $('#nama_cabang_update').val(),
+                no_telp: $('#no_telp_update').val(),
+                alamat: $('#alamat_update').val(),
+            }
+            const url = URL_API + "/managements/update/branch-store/" + idCabang
+            Functions.prototype.putRequest(updateCabang, url, data)
+        }
+    })
+
+    const updateCabang = {
+        set successData(response) {
+            toastr.success(response.message, 'Success')
+            $('#formUpdatebranchStore')[0].reset()
+            $('#updateBranchStoreModal').modal('hide')
+            $('#nama_cabang_update').removeClass('is-valid')
+            $('#no_telp_update').removeClass('is-valid')
+            $('#alamat_update').removeClass('is-valid')
+            getAll.loadData = ""
         },
         set errorData(err) {
             toastr.error(err.responseJSON.message, 'Error')

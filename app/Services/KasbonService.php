@@ -4,6 +4,7 @@ namespace App\Services;
 use App\Models\CashReceipts;
 use App\Models\Customers;
 use App\Models\Installments;
+use DateTime;
 
 class KasbonService
 {
@@ -83,5 +84,115 @@ class KasbonService
         $create = Installments::create($data);
         if(!$create) return response(['message' => 'Cicilan gagal ditambahkan'], 500);
         return response($message);
+    }
+
+    public function chartKasbon($query)
+    {
+        $labelTime = [];
+        $sets = [];
+        switch ($query) {
+            case 'days':
+                $dateAwal = date('j') > 5 ? date('j') - 5 : 1;
+                for ($i=$dateAwal; $i <= date('j') + 3; $i++) { 
+                    $i = $i < 10 ? "0".$i : $i;
+                    $tgl = date('Y-m'). "-" .$i;
+                    $labelTime[$tgl] = [];
+                }
+                foreach ($labelTime as $t => $value) {
+                    $results = CashReceipts::with('installments')->where('tgl_kasbon', 'like', '%'.$t.'%')->get();
+                    $sets[$t] = [];
+                    foreach ($results as $r) {
+                        $dibayar = 0;
+                        foreach ($r->installments as $installment) {
+                            $dibayar += $installment->cicilan;
+                        }
+                        $sisa = $r->jumlah - $dibayar;
+                        $data = [
+                            'dibayar' => $dibayar,
+                            'sisa'    => $sisa,
+                            'jumlah'  => $r->jumlah
+                        ];
+                        array_push($sets[$t], $data);
+                    }
+                }
+                break;
+            case 'months':
+                for ($i=1; $i <= 12; $i++) { 
+                    $i = $i < 10 ? "0".$i : $i;
+                    $bln = date('Y')."-".$i;
+                    $labelTime[$bln] = [];
+                }
+                foreach ($labelTime as $t => $value) {
+                    $results = CashReceipts::with('installments')->where('tgl_kasbon', 'like', '%'.$t.'%')->get();
+                    $monthName = explode('-', $t);
+                    $convertMonth = DateTime::createFromFormat('!m', $monthName[1]);
+                    $nameMonth = $convertMonth->format('F');
+                    $sets[$nameMonth] = [];
+                    foreach ($results as $r) {
+                        $dibayar = 0;
+                        foreach ($r->installments as $installment) {
+                            $dibayar += $installment->cicilan;
+                        }
+                        $sisa = $r->jumlah - $dibayar;
+                        $data = [
+                            'dibayar' => $dibayar,
+                            'sisa'    => $sisa,
+                            'jumlah'  => $r->jumlah
+                        ];
+                        array_push($sets[$nameMonth], $data);
+                    }
+                }
+                break;
+            case 'years':
+                for ($i=date('Y') - 2; $i <= date('Y') + 8; $i++) { 
+                    $i = $i < 10 ? "0".$i : $i;
+                    $labelTime[$i] = [];
+                }
+                foreach ($labelTime as $t => $value) {
+                    $results = CashReceipts::with('installments')->where('tgl_kasbon', 'like', '%'.$t.'%')->get();
+                    $sets[$t] = [];
+                    foreach ($results as $r) {
+                        $dibayar = 0;
+                        foreach ($r->installments as $installment) {
+                            $dibayar += $installment->cicilan;
+                        }
+                        $sisa = $r->jumlah - $dibayar;
+                        $data = [
+                            'dibayar' => $dibayar,
+                            'sisa'    => $sisa,
+                            'jumlah'  => $r->jumlah
+                        ];
+                        array_push($sets[$t], $data);
+                    }
+                }
+                break;
+            
+            default:
+                $dateAwal = date('j') > 5 ? date('j') - 5 : 1;
+                for ($i= $dateAwal; $i <= date('j') + 3; $i++) { 
+                    $i = $i < 10 ? "0".$i : $i;
+                    $tgl = date('Y-m'). "-" .$i;
+                    $labelTime[$tgl] = [];
+                }
+                foreach ($labelTime as $t => $value) {
+                    $results = CashReceipts::with('installments')->where('tgl_kasbon', 'like', '%'.$t.'%')->get();
+                    $sets[$t] = [];
+                    foreach ($results as $r) {
+                        $dibayar = 0;
+                        foreach ($r->installments as $installment) {
+                            $dibayar += $installment->cicilan;
+                        }
+                        $sisa = $r->jumlah - $dibayar;
+                        $data = [
+                            'dibayar' => $dibayar,
+                            'sisa'    => $sisa,
+                            'jumlah'  => $r->jumlah
+                        ];
+                        array_push($sets[$t], $data);
+                    }
+                }
+                break;
+        }
+        return $sets;
     }
 }

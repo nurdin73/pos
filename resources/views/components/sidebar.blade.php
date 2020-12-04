@@ -39,7 +39,6 @@
           <svg class="c-sidebar-nav-icon">
             <use xlink:href="{{ asset('vendors/@coreui/icons/svg/free.svg#cil-truck') }}"></use>
           </svg> Suplier
-          <span class="badge badge-info">New</span>
         </a>
         <span class="sr-only">Suplier</span>
       </li>
@@ -48,7 +47,7 @@
           <svg class="c-sidebar-nav-icon">
             <use xlink:href="{{ asset('vendors/@coreui/icons/svg/free.svg#cil-industry') }}"></use>
           </svg> Cabang
-          <span class="badge badge-warning">On Going</span>
+          <span class="badge badge-info">New</span>
         </a>
         <span class="sr-only">Cabang</span>
       </li>
