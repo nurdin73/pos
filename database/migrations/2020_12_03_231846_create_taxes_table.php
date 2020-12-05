@@ -15,13 +15,9 @@ class CreateTaxesTable extends Migration
     {
         Schema::create('taxes', function (Blueprint $table) {
             $table->id();
-            $table->string('nama_pajak')->nullable();
-            $table->bigInteger('persentase_pajak')->default(0);
-            $table->enum('harga_barang', ['N', 'Y'])->default('N');
-            $table->enum('biaya_pengiriman', ['N', 'Y'])->default('N');
-            $table->enum('pajak_ditiadakan', ['N', 'Y'])->default('N');
-            $table->bigInteger('biaya_layanan')->default(0);
-            $table->enum('biaya_ditiadakan', ['N', 'Y'])->default('N');
+            $table->string('nama_pajak');
+            $table->foreignId('barang_id')->constrained('products')->cascadeOnDelete();
+            $table->decimal('persentase_pajak', 8, 2)->default(0);
             $table->timestamps();
         });
     }
