@@ -209,7 +209,8 @@ class ProductsService
                         foreach ($r->stocks as $qyt) {
                             $data['totalStok'] += $qyt->stok;
                         }
-                        $data['totalProductIn'] = $data['totalStok'] - $r->selled;
+                        $data['totalProductIn'] = $data['totalStok'];
+                        $data['totalStok'] += $r->selled;
                         $data['totalProductOut'] = $r->selled;
                         array_push($sets['data'][$t], $data);
                     }
@@ -233,7 +234,8 @@ class ProductsService
                         foreach ($r->stocks as $qyt) {
                             $data['totalStok'] += $qyt->stok;
                         }
-                        $data['totalProductIn'] = $data['totalStok'] - $r->selled;
+                        $data['totalProductIn'] = $data['totalStok'];
+                        $data['totalStok'] += $r->selled;
                         $data['totalProductOut'] = $r->selled;
                         array_push($sets['data'][$nameMonth], $data);
                     }
@@ -254,7 +256,8 @@ class ProductsService
                         foreach ($r->stocks as $qyt) {
                             $data['totalStok'] += $qyt->stok;
                         }
-                        $data['totalProductIn'] = $data['totalStok'] - $r->selled;
+                        $data['totalProductIn'] = $data['totalStok'];
+                        $data['totalStok'] += $r->selled;
                         $data['totalProductOut'] = $r->selled;
                         array_push($sets['data'][$t], $data);
                     }
@@ -277,7 +280,8 @@ class ProductsService
                         foreach ($r->stocks as $qyt) {
                             $data['totalStok'] += $qyt->stok;
                         }
-                        $data['totalProductIn'] = $data['totalStok'] - $r->selled;
+                        $data['totalProductIn'] = $data['totalStok'];
+                        $data['totalStok'] += $r->selled;
                         $data['totalProductOut'] = $r->selled;
                         array_push($sets['data'][$t], $data);
                     }
