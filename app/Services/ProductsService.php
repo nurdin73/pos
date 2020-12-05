@@ -5,6 +5,8 @@ use App\Models\FileProducts;
 use App\Models\Products;
 use App\Models\Stocks;
 use App\Models\TypePrices;
+use DateTime;
+use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Log;
 use Illuminate\Support\Facades\Storage;
 use Spatie\ImageOptimizer\OptimizerChainFactory;
@@ -57,64 +59,71 @@ class ProductsService
 
     public function addProduct($data, $files, $typeHarga, $stocks)
     {
-        $return = false;
-        $path = 'images/products/';
-        $wm = public_path('wm.png');
-        $pathOfFile = [];
-        foreach ($files as $file) {
-            $optimizerChain = OptimizerChainFactory::create();
-            $filename = Str::random(20) .'.'. $file->getClientOriginalExtension();
-            $img = Image::make($file->getRealPath());
-            $img->resize(300, 300);
-            $img->insert($wm, 'center');
-            $img->encode('jpg', 60);
-            Storage::disk('local')->put($path . $filename, $img, 'public');
-            $storagePath = Storage::disk('local')->getDriver()->getAdapter()->getPathPrefix().$path.$filename;
-            $optimizerChain->optimize($storagePath);
-            array_push($pathOfFile, $path.$filename);
-        }
+        DB::beginTransaction();
+        try {
+            $return = false;
+            $path = 'images/products/';
+            $wm = public_path('wm.png');
+            $pathOfFile = [];
+            foreach ($files as $file) {
+                $optimizerChain = OptimizerChainFactory::create();
+                $filename = Str::random(20) .'.'. $file->getClientOriginalExtension();
+                $img = Image::make($file->getRealPath());
+                $img->resize(300, 300);
+                $img->insert($wm, 'center');
+                $img->encode('jpg', 60);
+                Storage::disk('local')->put($path . $filename, $img, 'public');
+                $storagePath = Storage::disk('local')->getDriver()->getAdapter()->getPathPrefix().$path.$filename;
+                $optimizerChain->optimize($storagePath);
+                array_push($pathOfFile, $path.$filename);
+            }
 
-        $create = Products::create($data);
-        if($create) {
-            foreach ($pathOfFile as $val) {
-                $addImage = FileProducts::create([
-                    'product_id' => $create->id,
-                    'image' => $val
-                ]);
-                if($addImage) {
-                    $return = true;
-                } else {
-                    Products::find($create->id)->delete();
-                }
-            }
-            $managementStok = Stocks::create([
-                'product_id' => $create->id,
-                'stok' => $stocks['stok'],
-                'harga_dasar' => $stocks['harga_dasar'],
-                'tgl_update' => date('Y-m-d H:i:s')
-            ]);
-            if($typeHarga['typeHarga'] != "false") {
-                Log::info('masuk sini '. json_encode($typeHarga));
-                $nama_agen = explode(',', $typeHarga['data']['nama_agen']);
-                $harga = explode(',', $typeHarga['data']['harga']);
-                for ($i=0; $i < count($nama_agen); $i++) { 
-                    $addTypePrice = TypePrices::create([
+            $create = Products::create($data);
+            if($create) {
+                foreach ($pathOfFile as $val) {
+                    $addImage = FileProducts::create([
                         'product_id' => $create->id,
-                        'nama_agen' => $nama_agen[$i],
-                        'harga' => $harga[$i],
+                        'image' => $val
                     ]);
+                    if($addImage) {
+                        $return = true;
+                    } else {
+                        Products::find($create->id)->delete();
+                    }
                 }
+                $managementStok = Stocks::create([
+                    'product_id' => $create->id,
+                    'stok' => $stocks['stok'],
+                    'harga_dasar' => $stocks['harga_dasar'],
+                    'tgl_update' => date('Y-m-d H:i:s')
+                ]);
+                if($typeHarga['typeHarga'] != "false") {
+                    Log::info('masuk sini '. json_encode($typeHarga));
+                    $nama_agen = explode(',', $typeHarga['data']['nama_agen']);
+                    $harga = explode(',', $typeHarga['data']['harga']);
+                    for ($i=0; $i < count($nama_agen); $i++) { 
+                        $addTypePrice = TypePrices::create([
+                            'product_id' => $create->id,
+                            'nama_agen' => $nama_agen[$i],
+                            'harga' => $harga[$i],
+                        ]);
+                    }
+                }
+                // foreach ($typeHarga['data'] as $th) {
+                //     $addTypePrice = TypePrices::create([
+                //         'product_id' => $create->id,
+                //         'nama_agen' => $th['nama_agen'],
+                //         'harga' => $th['harga'],
+                //     ]);
+                // }
             }
-            // foreach ($typeHarga['data'] as $th) {
-            //     $addTypePrice = TypePrices::create([
-            //         'product_id' => $create->id,
-            //         'nama_agen' => $th['nama_agen'],
-            //         'harga' => $th['harga'],
-            //     ]);
-            // }
+            if($return == false) return response(['message' => 'Produk gagal ditambahkan'], 500);
+            DB::commit();
+            return response(['message' => 'Produk berhasil ditambahkan']);
+        } catch (\Exception $e) {
+            DB::rollBack();
+            return response(['message' => $e->getMessage()]);
         }
-        if($return == false) return response(['message' => 'Produk gagal ditambahkan'], 500);
-        return response(['message' => 'Produk berhasil ditambahkan']);
     }
 
     public function show($id)
@@ -176,5 +185,118 @@ class ProductsService
         $delete = $checkTypePrice->delete();
         if(!$delete) return response(['message' => 'type harga gagal dihapus'], 500);
         return response(['message' => 'Type harga berhasil dihapus']);
+    }
+
+    public function chartBarang($query)
+    {
+        $sets = [];
+        $sets['data'] = [];
+        $labelTime = [];
+        switch ($query) {
+            case 'days':
+                $dateAwal = date('j') > 5 ? date('j') - 5 : 1;
+                for ($i=$dateAwal; $i <= date('j') + 3; $i++) { 
+                    $i = $i < 10 ? "0".$i : $i;
+                    $tgl = date('Y-m'). "-" .$i;
+                    $labelTime[$tgl] = [];
+                }
+                foreach ($labelTime as $t => $value) {
+                    $results = Products::with('stocks:id,product_id,stok')->select('id','selled')->where('created_at', 'like', '%'.$t.'%')->get();
+                    $sets['data'][$t] = [];
+                    foreach ($results as $r) {
+                        $data = [];
+                        $data['totalStok'] = 0;
+                        foreach ($r->stocks as $qyt) {
+                            $data['totalStok'] += $qyt->stok;
+                        }
+                        $data['totalProductIn'] = $data['totalStok'] - $r->selled;
+                        $data['totalProductOut'] = $r->selled;
+                        array_push($sets['data'][$t], $data);
+                    }
+                }
+                break;
+            case 'months':
+                for ($i=1; $i <= 12; $i++) { 
+                    $i = $i < 10 ? "0".$i : $i;
+                    $bln = date('Y')."-".$i;
+                    $labelTime[$bln] = [];
+                }
+                foreach ($labelTime as $t => $value) {
+                    $results = Products::with('stocks:id,product_id,stok')->select('id','selled')->where('created_at', 'like', '%'.$t.'%')->get();
+                    $monthName = explode('-', $t);
+                    $convertMonth = DateTime::createFromFormat('!m', $monthName[1]);
+                    $nameMonth = $convertMonth->format('F');
+                    $sets['data'][$nameMonth] = [];
+                    foreach ($results as $r) {
+                        $data = [];
+                        $data['totalStok'] = 0;
+                        foreach ($r->stocks as $qyt) {
+                            $data['totalStok'] += $qyt->stok;
+                        }
+                        $data['totalProductIn'] = $data['totalStok'] - $r->selled;
+                        $data['totalProductOut'] = $r->selled;
+                        array_push($sets['data'][$nameMonth], $data);
+                    }
+                }
+                break;
+
+            case 'years':
+                for ($i=date('Y') - 2; $i <= date('Y') + 8; $i++) { 
+                    $i = $i < 10 ? "0".$i : $i;
+                    $labelTime[$i] = [];
+                }
+                foreach ($labelTime as $t => $value) {
+                    $results = Products::with('stocks:id,product_id,stok')->select('id','selled')->where('created_at', 'like', '%'.$t.'%')->get();
+                    $sets['data'][$t] = [];
+                    foreach ($results as $r) {
+                        $data = [];
+                        $data['totalStok'] = 0;
+                        foreach ($r->stocks as $qyt) {
+                            $data['totalStok'] += $qyt->stok;
+                        }
+                        $data['totalProductIn'] = $data['totalStok'] - $r->selled;
+                        $data['totalProductOut'] = $r->selled;
+                        array_push($sets['data'][$t], $data);
+                    }
+                }
+                break;
+            
+            default:
+                $dateAwal = date('j') > 5 ? date('j') - 5 : 1;
+                for ($i=$dateAwal; $i <= date('j') + 3; $i++) { 
+                    $i = $i < 10 ? "0".$i : $i;
+                    $tgl = date('Y-m'). "-" .$i;
+                    $labelTime[$tgl] = [];
+                }
+                foreach ($labelTime as $t => $value) {
+                    $results = Products::with('stocks:id,product_id,stok')->select('id','selled')->where('created_at', 'like', '%'.$t.'%')->get();
+                    $sets['data'][$t] = [];
+                    foreach ($results as $r) {
+                        $data = [];
+                        $data['totalStok'] = 0;
+                        foreach ($r->stocks as $qyt) {
+                            $data['totalStok'] += $qyt->stok;
+                        }
+                        $data['totalProductIn'] = $data['totalStok'] - $r->selled;
+                        $data['totalProductOut'] = $r->selled;
+                        array_push($sets['data'][$t], $data);
+                    }
+                }
+                break;
+        }
+        $selectDB = Products::with('stocks:id,product_id,stok')->select('id','selled')->get();
+        $sets['totalStok'] = 0;
+        $sets['totalProductIn'] = 0;
+        $sets['totalProductOut'] = 0;
+        foreach ($selectDB as $prod) {
+            $total = 0;
+            foreach ($prod->stocks as $qyt) {
+                $total += $qyt->stok;
+            }
+            $sets['totalProductIn'] += $total - $r->selled;
+            $sets['totalProductOut'] += $prod->selled;
+            $sets['totalStok'] += $total;
+        }
+        return response($sets);
     }
 }

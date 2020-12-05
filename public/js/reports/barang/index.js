@@ -9,61 +9,62 @@ $(document).ready(function () {
 
 const getChart = {
     set loadData(data) {
-        const url = URL_API + "/reports/kasbon" + data
+        const url = URL_API + "/reports/barang" + data
         Functions.prototype.getRequest(getChart, url)
     },
     set successData(response) {
         const labels = Object.keys(response.data)
         const datasets = Object.values(response.data)
-        let totalKasbon = response.totalKasbon
-        let totalSisa = response.totalSisaKasbon
-        let totalDibayar = response.totalDibayar
-        let dibayar = []
-        let sisa = []
-        let jumlah = []
+        let totalStok = response.totalStok
+        let totalProductIn = response.totalProductIn
+        let totalProductOut = response.totalProductOut
+        let stokTotal = []
+        let stokProdIn = []
+        let stokProdOut = []
         datasets.map(ds => {
-            let terbayar = 0
-            let tersisa = 0
-            let total = 0
+            let total = 0,
+                prodIn = 0,
+                prodOut = 0
             ds.map(result => {
-                terbayar += result.dibayar
-                tersisa += result.sisa
-                total += result.jumlah
+                total += result.totalStok
+                prodIn += result.totalProductIn
+                prodOut += result.totalProductOut
             })
-            dibayar.push(terbayar)
-            jumlah.push(total)
-            sisa.push(tersisa)
+            stokTotal.push(total)
+            stokProdIn.push(prodIn)
+            stokProdOut.push(prodOut)
         })
 
-        $('#totalKasbon').text(Functions.prototype.formatRupiah(totalKasbon.toString(), 'Rp. '))
-        $('#totalDibayar').text(Functions.prototype.formatRupiah(totalDibayar.toString(), 'Rp. '))
-        $('#totalSisa').text(Functions.prototype.formatRupiah(totalSisa.toString(), 'Rp. '))
+
+        $('#totalBarang').text(totalStok)
+        $('#totalBarangMasuk').text(totalProductIn)
+        $('#totalBarangKeluar').text(totalProductOut)
 
         const data = [
             {
-                label: 'Total Kasbon',
+                label: 'Total Barang',
                 backgroundColor: coreui.Utils.hexToRgba(coreui.Utils.getStyle('--info', document.getElementsByClassName('c-app')[0]), 10),
                 borderColor: coreui.Utils.getStyle('--info', document.getElementsByClassName('c-app')[0]),
                 pointHoverBackgroundColor: '#fff',
                 borderWidth: 2,
-                data: jumlah,
+                data: stokTotal,
             },
             {
-                label: 'Telah dibayar',
+                label: 'Barang Tersedia',
                 backgroundColor: 'transparent',
                 borderColor: coreui.Utils.getStyle('--success', document.getElementsByClassName('c-app')[0]),
                 pointHoverBackgroundColor: '#fff',
                 borderWidth: 2,
-                data: dibayar,
+                data: stokProdIn,
             },
             {
-                label: 'Belum dibayar',
+                label: 'Barang Terjual',
                 backgroundColor: 'transparent',
                 borderColor: coreui.Utils.getStyle('--danger', document.getElementsByClassName('c-app')[0]),
                 pointHoverBackgroundColor: '#fff',
                 borderWidth: 1,
                 borderDash: [8, 5],
-                data: sisa,
+                data: stokProdOut,
             },
         ]
         const options = {

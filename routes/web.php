@@ -179,6 +179,8 @@ Route::group(['prefix' => 'api/'], function () {
         Route::group(['prefix' => 'reports'], function () {
             Route::get('/penjualan-barang', 'Api\Reports\PenjualanController@getAll');
             Route::get('/kasbon', 'Api\Managements\KasbonController@chartKasbon');
+            Route::get('/customer', 'Api\Managements\PelangganController@chartPelanggan');
+            Route::get('/barang', 'Api\Managements\BarangController@chartBarang');
         });
 
         Route::group(['prefix' => 'settings'], function () {

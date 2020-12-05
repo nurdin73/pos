@@ -107,4 +107,10 @@ class PelangganController extends Controller
     {
         return $this->customerService->destroy($id);
     }
+
+    public function chartPelanggan(Request $request)
+    {
+        $query = $request->get('query');
+        return $this->customerService->chartPelanggan($query);
+    }
 }

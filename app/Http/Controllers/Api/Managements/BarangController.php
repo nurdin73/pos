@@ -181,7 +181,7 @@ class BarangController extends Controller
             'diskon' => $diskon,
             'rak' => $rak,
             'keterangan' => $keterangan,
-            'point'     => $point
+            'point'     => $point != null ? $point : 0
         ];
         return $this->productsService->updateProduct($data, $id);
     }
@@ -237,5 +237,11 @@ class BarangController extends Controller
     public function deleteTypePrice($id)
     {
         return $this->productsService->deleteTypePrice($id);
+    }
+
+    public function chartBarang(Request $request)
+    {
+        $query = $request->get('query');
+        return $this->productsService->chartBarang($query);
     }
 }

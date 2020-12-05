@@ -3,6 +3,7 @@ namespace App\Services;
 
 use App\Models\CashReceipts;
 use App\Models\Customers;
+use DateTime;
 
 class CustomerService
 {
@@ -71,5 +72,70 @@ class CustomerService
         if(!$result) return response(['message' => 'Opps!. Terjadi kesalahan'], 406);
         $result->delete();
         return response(['message' => 'Pelanggan berhasil dihapus!']);
+    }
+
+    public function chartPelanggan($query)
+    {
+        $sets = [];
+        $sets['data'] = [];
+        $labelTime = [];
+        switch ($query) {
+            case 'days':
+                $dateAwal = date('j') > 5 ? date('j') - 5 : 1;
+                for ($i=$dateAwal; $i <= date('j') + 3; $i++) { 
+                    $i = $i < 10 ? "0".$i : $i;
+                    $tgl = date('Y-m'). "-" .$i;
+                    $labelTime[$tgl] = [];
+                }
+                foreach ($labelTime as $t => $val) {
+                    $results = Customers::where('created_at', 'like', '%'.$t.'%')->count();
+                    $sets['data'][$t] = $results;
+                }
+                break;
+            case 'months':
+                for ($i=1; $i <= 12; $i++) { 
+                    $i = $i < 10 ? "0".$i : $i;
+                    $bln = date('Y')."-".$i;
+                    $labelTime[$bln] = [];
+                }
+                foreach ($labelTime as $t => $value) {
+                    $results = Customers::where('created_at', 'like', '%'.$t.'%')->count();
+                    $monthName = explode('-', $t);
+                    $convertMonth = DateTime::createFromFormat('!m', $monthName[1]);
+                    $nameMonth = $convertMonth->format('F');
+                    $sets['data'][$nameMonth] = $results;
+                }
+                break;
+            case 'years':
+                for ($i=date('Y') - 2; $i <= date('Y') + 8; $i++) { 
+                    $i = $i < 10 ? "0".$i : $i;
+                    $labelTime[$i] = [];
+                }
+                foreach ($labelTime as $t => $value) {
+                    $results = Customers::where('created_at', 'like', '%'.$t.'%')->count();
+                    $sets['data'][$t] = $results;
+                }
+                break;
+
+            default:
+                $dateAwal = date('j') > 5 ? date('j') - 5 : 1;
+                for ($i=$dateAwal; $i <= date('j') + 3; $i++) { 
+                    $i = $i < 10 ? "0".$i : $i;
+                    $tgl = date('Y-m'). "-" .$i;
+                    $labelTime[$tgl] = [];
+                }
+                foreach ($labelTime as $t => $val) {
+                    $results = Customers::where('created_at', 'like', '%'.$t.'%')->count();
+                    $sets['data'][$t] = $results;
+                }
+                break;
+        }
+        $yesterday = date('Y-m-d', strtotime('-1 days'));
+        $now = date('Y-m-d');
+        $selectDB = Customers::select("*");
+        $sets['total'] = $selectDB->count();
+        $sets['totalCustYesterday'] = $selectDB->where('created_at', 'like', '%'.$yesterday.'%')->count();
+        $sets['totalCustNow'] = Customers::where('created_at', 'like', '%'.$now.'%')->count();
+        return response($sets);
     }
 }

@@ -90,6 +90,7 @@ class KasbonService
     {
         $labelTime = [];
         $sets = [];
+        $sets['data'] = [];
         switch ($query) {
             case 'days':
                 $dateAwal = date('j') > 5 ? date('j') - 5 : 1;
@@ -100,7 +101,7 @@ class KasbonService
                 }
                 foreach ($labelTime as $t => $value) {
                     $results = CashReceipts::with('installments')->where('tgl_kasbon', 'like', '%'.$t.'%')->get();
-                    $sets[$t] = [];
+                    $sets['data'][$t] = [];
                     foreach ($results as $r) {
                         $dibayar = 0;
                         foreach ($r->installments as $installment) {
@@ -112,7 +113,7 @@ class KasbonService
                             'sisa'    => $sisa,
                             'jumlah'  => $r->jumlah
                         ];
-                        array_push($sets[$t], $data);
+                        array_push($sets['data'][$t], $data);
                     }
                 }
                 break;
@@ -127,7 +128,7 @@ class KasbonService
                     $monthName = explode('-', $t);
                     $convertMonth = DateTime::createFromFormat('!m', $monthName[1]);
                     $nameMonth = $convertMonth->format('F');
-                    $sets[$nameMonth] = [];
+                    $sets['data'][$nameMonth] = [];
                     foreach ($results as $r) {
                         $dibayar = 0;
                         foreach ($r->installments as $installment) {
@@ -139,7 +140,7 @@ class KasbonService
                             'sisa'    => $sisa,
                             'jumlah'  => $r->jumlah
                         ];
-                        array_push($sets[$nameMonth], $data);
+                        array_push($sets['data'][$nameMonth], $data);
                     }
                 }
                 break;
@@ -150,7 +151,7 @@ class KasbonService
                 }
                 foreach ($labelTime as $t => $value) {
                     $results = CashReceipts::with('installments')->where('tgl_kasbon', 'like', '%'.$t.'%')->get();
-                    $sets[$t] = [];
+                    $sets['data'][$t] = [];
                     foreach ($results as $r) {
                         $dibayar = 0;
                         foreach ($r->installments as $installment) {
@@ -162,7 +163,7 @@ class KasbonService
                             'sisa'    => $sisa,
                             'jumlah'  => $r->jumlah
                         ];
-                        array_push($sets[$t], $data);
+                        array_push($sets['data'][$t], $data);
                     }
                 }
                 break;
@@ -176,7 +177,7 @@ class KasbonService
                 }
                 foreach ($labelTime as $t => $value) {
                     $results = CashReceipts::with('installments')->where('tgl_kasbon', 'like', '%'.$t.'%')->get();
-                    $sets[$t] = [];
+                    $sets['data'][$t] = [];
                     foreach ($results as $r) {
                         $dibayar = 0;
                         foreach ($r->installments as $installment) {
@@ -188,10 +189,24 @@ class KasbonService
                             'sisa'    => $sisa,
                             'jumlah'  => $r->jumlah
                         ];
-                        array_push($sets[$t], $data);
+                        array_push($sets['data'][$t], $data);
                     }
                 }
                 break;
+        }
+        $kasbon = CashReceipts::with('installments')->get();
+        $sets['totalKasbon'] = 0;
+        $sets['totalSisaKasbon'] = 0;
+        $sets['totalDibayar'] = 0;
+        foreach ($kasbon as $k) {
+            $dibayar = 0;
+            foreach ($k->installments as $installment) {
+                $dibayar += $installment->cicilan;
+            }
+            $sisa = $k->jumlah - $dibayar;
+            $sets['totalKasbon'] += $k->jumlah;
+            $sets['totalSisaKasbon'] += $sisa;
+            $sets['totalDibayar'] += $dibayar;
         }
         return $sets;
     }
