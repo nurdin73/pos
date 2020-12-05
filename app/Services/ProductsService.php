@@ -288,14 +288,14 @@ class ProductsService
         $sets['totalStok'] = 0;
         $sets['totalProductIn'] = 0;
         $sets['totalProductOut'] = 0;
-        foreach ($selectDB as $prod) {
+        foreach ($selectDB as $r) {
             $total = 0;
-            foreach ($prod->stocks as $qyt) {
+            foreach ($r->stocks as $qyt) {
                 $total += $qyt->stok;
             }
-            $sets['totalProductIn'] += $total - $r->selled;
-            $sets['totalProductOut'] += $prod->selled;
-            $sets['totalStok'] += $total;
+            $sets['totalStok'] += $total + $r->selled;
+            $sets['totalProductIn'] += $total;
+            $sets['totalProductOut'] += $r->selled;
         }
         return response($sets);
     }
