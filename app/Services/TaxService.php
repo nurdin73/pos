@@ -33,7 +33,7 @@ class TaxService
 
     public function addTax($data)
     {
-        $create = Taxes::create($data);
+        $create = Tax::create($data);
         if(!$create) return response(['message' => 'Pajak gagal ditambahkan'], 500);
         return response(['message' => 'Pajak berhasil ditambahkan']);
     }

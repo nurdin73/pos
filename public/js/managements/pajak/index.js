@@ -1,5 +1,4 @@
 $(document).ready(function () {
-    $('#no_telp_update').mask('0000-0000-0000')
     var query_params = ""
     getAll.loadData = query_params
     $('.pagination').on('click', '.page-item .page-link', function(e) {
@@ -107,7 +106,7 @@ function addTax() {
         submitHandler: function(form, e) {
             const data = {
                 nama_pajak : $('#nama_pajak').val(),
-                barang_id : $('#nama_barang').val(),
+                barang_id : $('#barang_id').val() != null ? $('#barang_id').val() : 1,
                 persentase_pajak : $('#persentase_pajak').val(),
             }
             const url = URL_API + "/managements/add/pajak"
@@ -117,20 +116,20 @@ function addTax() {
 }
 
 function getProduct() {
-    $('#nama_barang').select({
+    $('#barang_id').select2({
       theme:'bootstrap4',
       ajax: {
         url: URL_API + "/managements",
         data: function (params) {
           return {
-            search_pajak: params.term,
+            Search_kode_barang: params.term,
           }
         },
-        processResults: function(data, params) {
+        processResults: function(response, params) {
           return {
-            results: data.data.map(result => {
+            results: response.data.map(result => {
               return {
-                text: result.nama_barang,
+                text: result.kode_barang + " - " + result.nama_barang,
                 id: result.id
               }
             })
@@ -155,10 +154,6 @@ const postData = {
         toastr.error(err.responseJSON.message, 'Error')
     }
 }
-
-
-
-
 
 function updateSuplier() {
     $('#listSupliers').on('click', 'tr td div .edit', function(e) {
