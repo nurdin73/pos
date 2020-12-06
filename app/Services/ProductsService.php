@@ -194,7 +194,7 @@ class ProductsService
         $labelTime = [];
         switch ($query) {
             case 'days':
-                $dateAwal = date('j') > 5 ? date('j') - 5 : 1;
+                $dateAwal = date('j') > 3 ? date('j') - 3 : 1;
                 for ($i=$dateAwal; $i <= date('j') + 3; $i++) { 
                     $i = $i < 10 ? "0".$i : $i;
                     $tgl = date('Y-m'). "-" .$i;
@@ -205,12 +205,11 @@ class ProductsService
                     $sets['data'][$t] = [];
                     foreach ($results as $r) {
                         $data = [];
-                        $data['totalStok'] = 0;
+                        $totalStok = 0;
                         foreach ($r->stocks as $qyt) {
-                            $data['totalStok'] += $qyt->stok;
+                            $totalStok += $qyt->stok;
                         }
-                        $data['totalProductIn'] = $data['totalStok'];
-                        $data['totalStok'] += $r->selled;
+                        $data['totalProductIn'] = $totalStok;
                         $data['totalProductOut'] = $r->selled;
                         array_push($sets['data'][$t], $data);
                     }
@@ -230,12 +229,11 @@ class ProductsService
                     $sets['data'][$nameMonth] = [];
                     foreach ($results as $r) {
                         $data = [];
-                        $data['totalStok'] = 0;
+                        $totalStok = 0;
                         foreach ($r->stocks as $qyt) {
-                            $data['totalStok'] += $qyt->stok;
+                            $totalStok += $qyt->stok;
                         }
-                        $data['totalProductIn'] = $data['totalStok'];
-                        $data['totalStok'] += $r->selled;
+                        $data['totalProductIn'] = $totalStok;
                         $data['totalProductOut'] = $r->selled;
                         array_push($sets['data'][$nameMonth], $data);
                     }
@@ -252,12 +250,11 @@ class ProductsService
                     $sets['data'][$t] = [];
                     foreach ($results as $r) {
                         $data = [];
-                        $data['totalStok'] = 0;
+                        $totalStok = 0;
                         foreach ($r->stocks as $qyt) {
-                            $data['totalStok'] += $qyt->stok;
+                            $totalStok += $qyt->stok;
                         }
-                        $data['totalProductIn'] = $data['totalStok'];
-                        $data['totalStok'] += $r->selled;
+                        $data['totalProductIn'] = $totalStok;
                         $data['totalProductOut'] = $r->selled;
                         array_push($sets['data'][$t], $data);
                     }
@@ -265,7 +262,7 @@ class ProductsService
                 break;
             
             default:
-                $dateAwal = date('j') > 5 ? date('j') - 5 : 1;
+                $dateAwal = date('j') > 3 ? date('j') - 3 : 1;
                 for ($i=$dateAwal; $i <= date('j') + 3; $i++) { 
                     $i = $i < 10 ? "0".$i : $i;
                     $tgl = date('Y-m'). "-" .$i;
@@ -276,12 +273,11 @@ class ProductsService
                     $sets['data'][$t] = [];
                     foreach ($results as $r) {
                         $data = [];
-                        $data['totalStok'] = 0;
+                        $totalStok = 0;
                         foreach ($r->stocks as $qyt) {
-                            $data['totalStok'] += $qyt->stok;
+                            $totalStok += $qyt->stok;
                         }
-                        $data['totalProductIn'] = $data['totalStok'];
-                        $data['totalStok'] += $r->selled;
+                        $data['totalProductIn'] = $totalStok;
                         $data['totalProductOut'] = $r->selled;
                         array_push($sets['data'][$t], $data);
                     }

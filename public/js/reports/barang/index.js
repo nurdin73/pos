@@ -18,19 +18,15 @@ const getChart = {
         let totalStok = response.totalStok
         let totalProductIn = response.totalProductIn
         let totalProductOut = response.totalProductOut
-        let stokTotal = []
         let stokProdIn = []
         let stokProdOut = []
         datasets.map(ds => {
-            let total = 0,
-                prodIn = 0,
+            let prodIn = 0,
                 prodOut = 0
             ds.map(result => {
-                total += result.totalStok
                 prodIn += result.totalProductIn
                 prodOut += result.totalProductOut
             })
-            stokTotal.push(total)
             stokProdIn.push(prodIn)
             stokProdOut.push(prodOut)
         })
@@ -41,14 +37,6 @@ const getChart = {
         $('#totalBarangKeluar').text(totalProductOut)
 
         const data = [
-            {
-                label: 'Total Barang',
-                backgroundColor: coreui.Utils.hexToRgba(coreui.Utils.getStyle('--info', document.getElementsByClassName('c-app')[0]), 10),
-                borderColor: coreui.Utils.getStyle('--info', document.getElementsByClassName('c-app')[0]),
-                pointHoverBackgroundColor: '#fff',
-                borderWidth: 2,
-                data: stokTotal,
-            },
             {
                 label: 'Barang Tersedia',
                 backgroundColor: 'transparent',
