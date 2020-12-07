@@ -26,6 +26,7 @@ class AppServiceProvider extends ServiceProvider
         $this->app->singleton('DashboardService', \App\Services\DashboardService::class);
         $this->app->singleton('SuplierService', \App\Services\SuplierService::class);
         $this->app->singleton('BranchStoreService', \App\Services\BranchStoreService::class);
+        $this->app->singleton('TaxService', \App\Services\TaxService::class);
     }
 
     /**
