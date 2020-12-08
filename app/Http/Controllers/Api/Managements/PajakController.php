@@ -83,6 +83,6 @@ class PajakController extends Controller
      */
     public function destroy($id)
     {
-        //
+        return $this->taxService->deleteTax($id);
     }
 }
