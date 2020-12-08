@@ -1,83 +1,54 @@
 $(document).ready(function () {
-    getChart.loadData = ""
-    $('.timeBtn').on('click', function(e) {
+    getProducts.loadData = ""
+    $('.pagination').on('click', '.page-item .page-link', function(e) {
         e.preventDefault()
-        const query = $(this).data('query')
-        getChart.loadData = "?query=" + query
-    })
+        const id = $(this).data('id');
+        var query_params = "?page=" + id
+        getProducts.loadData = query_params
+    })  
 });
 
-const getChart = {
+const getProducts = {
     set loadData(data) {
-        const url = URL_API + "/reports/barang" + data
-        Functions.prototype.getRequest(getChart, url)
+        const urlListProd = URL_API + "/reports/barang" + data
+        Functions.prototype.getRequest(getProducts, urlListProd)
     },
     set successData(response) {
-        const labels = Object.keys(response.data)
-        const datasets = Object.values(response.data)
-        let totalStok = response.totalStok
-        let totalProductIn = response.totalProductIn
-        let totalProductOut = response.totalProductOut
-        let stokProdIn = []
-        let stokProdOut = []
-        datasets.map(ds => {
-            let prodIn = 0,
-                prodOut = 0
-            ds.map(result => {
-                prodIn += result.totalProductIn
-                prodOut += result.totalProductOut
+        $('#listProducts').empty()
+        const { current_page, last_page, prev_page_url, data } = response.data
+        if(data.length > 0) {
+            data.map(result => {
+                var stocks = 0
+                var harga_dasar = 0
+                result.stocks.map(dataStok => {
+                    stocks += dataStok.stok
+                    harga_dasar = dataStok.harga_dasar
+                })
+                $('#listProducts').append(`
+                    <tr>
+                        <td>${result.nama_barang}</td>
+                        <td>${Functions.prototype.formatRupiah(harga_dasar.toString(), 'Rp. ')}</td>
+                        <td>${stocks}</td>
+                        <td>${result.selled}</td>
+                    </tr>
+                `)
             })
-            stokProdIn.push(prodIn)
-            stokProdOut.push(prodOut)
-        })
-
-
-        $('#totalBarang').text(totalStok)
-        $('#totalBarangMasuk').text(totalProductIn)
-        $('#totalBarangKeluar').text(totalProductOut)
-
-        const data = [
-            {
-                label: 'Barang Tersedia',
-                backgroundColor: 'transparent',
-                borderColor: coreui.Utils.getStyle('--success', document.getElementsByClassName('c-app')[0]),
-                pointHoverBackgroundColor: '#fff',
-                borderWidth: 2,
-                data: stokProdIn,
-            },
-            {
-                label: 'Barang Terjual',
-                backgroundColor: 'transparent',
-                borderColor: coreui.Utils.getStyle('--danger', document.getElementsByClassName('c-app')[0]),
-                pointHoverBackgroundColor: '#fff',
-                borderWidth: 1,
-                borderDash: [8, 5],
-                data: stokProdOut,
-            },
-        ]
-        const options = {
-            responsive: true,
-            scales: {
-                yAxes: [{
-                    ticks: {
-                        beginAtZero: true,
-                        stepSize : 50000
-                    },
-
-                }]
-            }
+            var paginations = ""
+            paginations = Functions.prototype.createPaginate(current_page, last_page, prev_page_url)
+            $('.pagination').html(paginations)
+            paginations = ""
+            $('#totalBarangMasuk').text(response.totalStok)
+            $('#totalBarangKeluar').text(response.totalSelled)
+            $('#totalBarang').text(response.totalStok + response.totalSelled)
+        } else {
+            $('#listProducts').append(`
+                <tr>
+                    <td colspan="4" align="center">Barang Kosong</td>
+                </tr>
+            `)
         }
-        Functions.prototype.createManyChart(resetCanvas(), 'line', data, labels, options)
     },
     set errorData(err) {
         toastr.error(err.responseJSON.message, 'Error')
     }
 }
-
-var resetCanvas = function () {
-    $('#grafikTrx').remove(); // this is my <canvas> element
-    $('#grafik-field').append('<canvas id="grafikTrx"><canvas>');
-    canvas = document.querySelector('#grafikTrx'); // why use jQuery?
-    ctx = canvas.getContext('2d');
-    return ctx
-};
