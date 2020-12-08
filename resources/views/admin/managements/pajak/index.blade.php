@@ -23,7 +23,7 @@
           <div class="card-header">
             <div class="d-flex justify-content-between align-items-center">
               <span>Daftar Pajak</span>
-              <button class="btn btn-primary btn-sm d-flex justify-content-center align-items-center" data-toggle="modal" data-target="#myModal">
+              <button class="btn btn-primary btn-sm d-flex justify-content-center align-items-center" data-toggle="modal" data-target="#addTax">
                 <svg class="c-icon">
                   <use xlink:href="{{ asset('vendors/@coreui/icons/svg/free.svg#cil-plus') }}"></use>
                 </svg>
@@ -64,13 +64,13 @@
               </div>
             </form>
             <div class="table-responsive">
-              <table class="table table-borderless table-stripped table-hover">
+              <table class="table table-hover">
                 <thead>
                   <tr>
-                    <th>Nama Pajak</th>
-                    <th style="width: 30%">Nama Barang</th>
-                    <th style="width: 30%">Persentase Pajak</th>
-                    <th style="width: 10%">Aksi</th>
+                    <th style="width: 30%">Nama Pajak</th>
+                    <th style="width: 35%">Nama Barang</th>
+                    <th style="width: 20%">Persentase Pajak</th>
+                    <th style="width: 15%">Aksi</th>
                   </tr>
                 </thead>
                 <tbody id="listTaxes">
@@ -92,7 +92,7 @@
 @endsection 
 
 @section('modal')
-<div class="modal fade" id="myModal" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+<div class="modal fade" id="addTax" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
   <div class="modal-dialog modal-sm" role="document">
     <div class="modal-content">
       <div class="modal-header">

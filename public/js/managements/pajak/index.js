@@ -24,7 +24,7 @@ $(document).ready(function () {
     })
     addTax()
     updateSuplier()
-    deleteSuplier()
+    deleteTax()
     getProduct()
 });
 
@@ -37,17 +37,17 @@ const getAll = {
         $('#listTaxes').empty()
         const { last_page, current_page, data, prev_page_url } = response
         if(data.length > 0) {
-            data.map(tax => {
+            data.map(result => {
                 $('#listTaxes').append(`
                     <tr>
-                        <td>${tax.nama_pajak}</td>
-                        <td>${tax.barang_id}</td>
-                        <td>${tax.persentase_pajak + "%"}</td>
+                        <td>${result.nama_pajak}</td>
+                        <td>${result.product.nama_barang}</td>
+                        <td>${result.persentase_pajak + "%"}</td>
                         <td>
                             <div class="btn-group">
-                                <button class="btn btn-sm btn-info edit" data-toggle="modal" data-target="#updateSuplier" data-id="${tax.id}"><i class="fa fa-edit"></i></button>
+                                <button class="btn btn-sm btn-info edit" data-toggle="modal" data-target="#updateSuplier" data-id="${result.id}"><i class="fa fa-edit"></i></button>
                                 
-                                <button class="btn btn-sm btn-danger delete" data-id="${tax.id}"><i class="fa fa-trash"></i></button>
+                                <button class="btn btn-sm btn-danger delete" data-id="${result.id}"><i class="fa fa-trash"></i></button>
                             </div>
                         </td>
                     </tr>
@@ -59,7 +59,7 @@ const getAll = {
         } else {
             $('#listTaxes').append(`
                 <tr>
-                    <td colspan="4" align="center">Tidak ada suplier</td>
+                    <td colspan="4" align="center">Tidak ada pajak</td>
                 </tr>
             `)
         }
@@ -75,9 +75,9 @@ function addTax() {
             nama_pajak: {
                 required: true,
             },
-            // nama_barang: {
-            //     required: true,
-            // },
+            barang_id: {
+                required: true,
+            },
             persentase_pajak: {
                 required: true,
                 number: true,
@@ -106,7 +106,7 @@ function addTax() {
         submitHandler: function(form, e) {
             const data = {
                 nama_pajak : $('#nama_pajak').val(),
-                barang_id : $('#barang_id').val() != null ? $('#barang_id').val() : 1,
+                barang_id : $('#barang_id').val(),
                 persentase_pajak : $('#persentase_pajak').val(),
             }
             const url = URL_API + "/managements/add/pajak"
@@ -143,12 +143,11 @@ const postData = {
     set successData(response) {
         toastr.success(response.message, 'Success')
         getAll.loadData = ""
-        $('#formAddSuplier')[0].reset()
-        $('#no_telp').removeClass('is-valid')
-        $('#email_suplier').removeClass('is-valid')
-        $('#alamat').removeClass('is-valid')
-        $('#nama_suplier').removeClass('is-valid')
-        $('#addSuplier').modal('hide')
+        $('#formAddTax')[0].reset()
+        $('#nama_pajak').removeClass('is-valid')
+        $('#barang_id').removeClass('is-valid')
+        $('#persentase_pajak').removeClass('is-valid')
+        $('#addTax').modal('hide')
     },
     set errorData(err) {
         toastr.error(err.responseJSON.message, 'Error')
@@ -239,13 +238,13 @@ const detailSuplier = {
     }
 }
 
-function deleteSuplier() {  
-    $('#listSupliers').on('click', 'tr td div .delete', function(e) {
+function deleteTax() {  
+    $('#listTaxes').on('click', 'tr td div .delete', function(e) {
         e.preventDefault()
         const id = $(this).data('id')
         Swal.fire({
             title: 'Perhatian!',
-            text: "Suplier akan dihapus permanen!",
+            text: "Pajak akan dihapus permanen!",
             icon: 'warning',
             showCancelButton: true,
             confirmButtonColor: '#3085d6',
@@ -253,7 +252,7 @@ function deleteSuplier() {
             confirmButtonText: 'Ya, Hapus!'
         }).then((result) => {
             if (result.isConfirmed) {
-                const url = URL_API + "/managements/delete/suplier/" + id
+                const url = URL_API + "/managements/delete/pajak/" + id
                 Functions.prototype.deleteData(url)
                 getAll.loadData = ""
             }

@@ -2,12 +2,13 @@
 namespace App\Services;
 
 use App\Models\Tax;
+use App\Models\Products;
 
 class TaxService
 {
     protected function getTax()
     {
-        $results = Tax::select('*');
+        $results = Tax::with('product')->select('*');
         return $results;
     }
 
@@ -47,12 +48,12 @@ class TaxService
         return response(['message' => 'Update suplier berhasil']);
     }
 
-    public function deleteSuplier($id)
+    public function deleteTax($id)
     {
-        $checkSuplier = $this->getSuplier()->where('id', $id)->first();
-        if(!$checkSuplier) return response(['message' => 'Data Suplier tidak ditemukan'], 404);
-        $delete = $checkSuplier->delete();
-        if(!$delete) return response(['message' => 'Hapus Suplier tidak berhasil'], 500);
-        return response(['message' => 'Hapus suplier berhasil']);
+        $checkTax = $this->getTax()->where('id', $id)->first();
+        if(!$checkTax) return response(['message' => 'Data Pajak tidak ditemukan'], 404);
+        $delete = $checkTax->delete();
+        if(!$delete) return response(['message' => 'Hapus Pajak tidak berhasil'], 500);
+        return response(['message' => 'Hapus Pajak berhasil']);
     }
 }
