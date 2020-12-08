@@ -23,9 +23,10 @@ $(document).ready(function () {
         getAll.loadData = ""
     })
     addTax()
-    updateSuplier()
+    updateTax()
     deleteTax()
     getProduct()
+    getProductUpdate()
 });
 
 const getAll = {
@@ -45,7 +46,7 @@ const getAll = {
                         <td>${result.persentase_pajak + "%"}</td>
                         <td>
                             <div class="btn-group">
-                                <button class="btn btn-sm btn-info edit" data-toggle="modal" data-target="#updateSuplier" data-id="${result.id}"><i class="fa fa-edit"></i></button>
+                                <button class="btn btn-sm btn-info edit" data-toggle="modal" data-target="#updateTax" data-id="${result.id}"><i class="fa fa-edit"></i></button>
                                 
                                 <button class="btn btn-sm btn-danger delete" data-id="${result.id}"><i class="fa fa-trash"></i></button>
                             </div>
@@ -137,7 +138,7 @@ function getProduct() {
         },
       }
     })
-  }
+}
 
 const postData = {
     set successData(response) {
@@ -154,26 +155,24 @@ const postData = {
     }
 }
 
-function updateSuplier() {
-    $('#listSupliers').on('click', 'tr td div .edit', function(e) {
+function updateTax() {
+    $('#listTaxes').on('click', 'tr td div .edit', function(e) {
         e.preventDefault()
         const id = $(this).data('id')
-        const url = URL_API + "/managements/suplier/" + id
-        Functions.prototype.requestDetail(detailSuplier, url)
+        const url = URL_API + "/managements/pajak/" + id
+        Functions.prototype.requestDetail(detailTax, url)
     })
-    $('#formUpdateSuplier').validate({
+    $('#formUpdateTax').validate({
         rules: {
-            nama_suplier_update: {
+            nama_pajak_update: {
                 required: true,
             },
-            email_suplier_update: {
-                email: true,
-            },
-            no_telp_update: {
+            barang_id_update: {
                 required: true,
             },
-            alamat_update: {
-                required: true
+            persentase_pajak_update: {
+                required: true,
+                number: true,
             }
         },
         errorClass: "is-invalid",
@@ -198,14 +197,37 @@ function updateSuplier() {
         },
         submitHandler: function(form, e) {
             const data = {
-                nama_suplier : $('#nama_suplier_update').val(),
-                email : $('#email_suplier_update').val() != null ? $('#email_suplier_update').val() : "",
-                no_telp : $('#no_telp_update').val(),
-                alamat : $('#alamat_update').val(),
+                nama_pajak : $('#nama_pajak_update').val(),
+                barang_id : $('#barang_id_update').val(),
+                persentase_pajak : $('#persentase_pajak_update').val(),
             }
-            const url = URL_API + "/managements/update/suplier/" + $('#idSuplier').val()
+            const url = URL_API + "/managements/update/pajak/" + $('#idTax').val()
             Functions.prototype.putRequest(putData, url, data)
         }
+    })
+}
+
+function getProductUpdate() {
+    $('#barang_id_update').select2({
+      theme:'bootstrap4',
+      ajax: {
+        url: URL_API + "/managements",
+        data: function (params) {
+          return {
+            Search_kode_barang: params.term,
+          }
+        },
+        processResults: function(response, params) {
+          return {
+            results: response.data.map(result => {
+              return {
+                text: result.kode_barang + " - " + result.nama_barang,
+                id: result.id
+              }
+            })
+          }
+        },
+      }
     })
 }
 
@@ -213,25 +235,45 @@ const putData = {
     set successData(response) {
         toastr.success(response.message, 'Success')
         getAll.loadData = ""
-        $('#formUpdateSuplier')[0].reset()
-        $('#no_telp_update').removeClass('is-valid')
-        $('#email_suplier_update').removeClass('is-valid')
-        $('#alamat_update').removeClass('is-valid')
-        $('#nama_suplier_update').removeClass('is-valid')
-        $('#updateSuplier').modal('hide')
+        $('#formUpdateTax')[0].reset()
+        $('#nama_barang_update').removeClass('is-valid')
+        $('#barang_id_update').removeClass('is-valid')
+        $('#pajak_persentase_update').removeClass('is-valid')
+        $('#updateTax').modal('hide')
     },
     set errorData(err) {
         toastr.error(err.responseJSON.message, 'Error')
     }
 }
 
-const detailSuplier = {
+const detailTax = {
     set successData(response) {
-        $('#nama_suplier_update').val(response.nama_suplier)
-        $('#email_suplier_update').val(response.email)
-        $('#no_telp_update').val(response.no_telp)
-        $('#alamat_update').val(response.alamat)
-        $('#idSuplier').val(response.id)
+        $('#nama_pajak_update').val(response.nama_pajak)
+        $('#barang_id_update').val(response.barang_id)
+        $('#persentase_pajak_update').val(response.persentase_pajak)
+        $('#idTax').val(response.id)
+        getProductById.loadData = response.barang_id
+    },
+    set errorData(err) {
+        toastr.error(err.responseJSON.message, 'Error')
+    }
+}
+
+const getProductById = {
+    set loadData(data) {
+        var url_local = URL_API + "/managements/barang/" + data
+        Functions.prototype.requestDetail(getProductById, url_local)
+    },
+    set successData(result) {
+        var option = new Option(result.nama_barang, result.id, true, true)
+        $("#barang_id_update").append(option).trigger('change')
+
+        $("#barang_id_update").trigger({
+            type: 'select2:select',
+            params: {
+                data: result
+            }
+        })
     },
     set errorData(err) {
         toastr.error(err.responseJSON.message, 'Error')

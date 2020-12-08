@@ -27,8 +27,7 @@ class TaxService
 
     public function getDetail($id)
     {
-        $result = Supliers::where('id', $id)->first();
-        $result->setRelation('products', $result->products()->select('id', 'suplier_id', 'nama_barang', 'kode_barang', 'selled')->paginate(5));
+        $result = $this->getTax()->where('id', $id)->first();
         return response($result);
     }
 
@@ -39,13 +38,13 @@ class TaxService
         return response(['message' => 'Pajak berhasil ditambahkan']);
     }
 
-    public function updateSuplier($data, $id)
+    public function updateTax($data, $id)
     {
-        $checkSuplier = $this->getSuplier()->where('id', $id)->first();
-        if(!$checkSuplier) return response(['message' => 'Data Suplier tidak ditemukan'], 404);
-        $update = $checkSuplier->update($data);
-        if(!$update) return response(['message' => 'Update Suplier tidak berhasil'], 500);
-        return response(['message' => 'Update suplier berhasil']);
+        $checkTax = $this->getTax()->where('id', $id)->first();
+        if(!$checkTax) return response(['message' => 'Data Pajak tidak ditemukan'], 404);
+        $update = $checkTax->update($data);
+        if(!$update) return response(['message' => 'Update Pajak tidak berhasil'], 500);
+        return response(['message' => 'Update Pajak berhasil']);
     }
 
     public function deleteTax($id)

@@ -92,6 +92,7 @@
 @endsection 
 
 @section('modal')
+<!-- Modal Add Data -->
 <div class="modal fade" id="addTax" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
   <div class="modal-dialog modal-sm" role="document">
     <div class="modal-content">
@@ -122,7 +123,75 @@
               </div>
               <div class="form-group">
                 <label for="persentase_pajak">Persentase Pajak *</label>
-                <input type="text" name="persentase_pajak" id="persentase_pajak" class="form-control">
+                <div class="input-group mb-3">
+                  <input type="text" name="persentase_pajak" id="persentase_pajak" class="form-control" placeholder="0.00">
+                  <div class="input-group-append">
+                    <span class="input-group-text" id="basic-addon2">%</span>
+                  </div>
+                </div>
+              </div>
+
+            </div>
+            <div class="col-md-4">
+              <div class="row mb-2">
+                <div class="col-12">
+                  <ul class="pgwSlider">
+
+                  </ul>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+        <div class="modal-footer">
+          {{-- <button class="btn btn-primary" id="btn-submit" type="submit">Save changes</button> --}}
+          <button class="btn btn-primary" type="submit">Simpan</button>
+        </div>
+      </form>
+    </div>
+    <!-- /.modal-content-->
+  </div>
+  <!-- /.modal-dialog-->
+</div>
+
+<!-- Modal Update Data -->
+<div class="modal fade" id="updateTax" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+  <div class="modal-dialog modal-sm" role="document">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h4 class="modal-title">Update Pajak</h4>
+        <button class="close" type="button" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">×</span></button>
+      </div>
+      <form id="formUpdateTax" autocomplete="off">
+        <input type="hidden" name="id_tax" id="idTax">
+        <div class="modal-body">
+          <div class="row">
+            <div class="col-md-12">
+              <div class="form-group">
+                <label for="nama_pajak_update">Nama Pajak *</label>
+                <div class="row">
+                  <div class="col-6 col-md-12">
+                    <input type="text" name="nama_pajak_update" id="nama_pajak_update" class="form-control">
+                  </div>
+                </div>
+              </div>
+              <div class="form-group">
+                <div class="d-flex justify-content-between align-items-center">
+                  <label for="barang_id_update">Nama Barang *</label>
+                  <small><a href="{{ route('managementBarang') . "?redirect=" . route('managementPajak') }}" class="btn-link">Tambah Barang</a></small>
+                </div>
+                <select name="barang_id_update" id="barang_id_update" class="form-control" style="width: 100%">
+                  
+                </select>
+              </div>
+              <div class="form-group">
+                <label for="persentase_pajak_update">Persentase Pajak *</label>
+                <div class="input-group mb-3">
+                  <input type="text" name="persentase_pajak_update" id="persentase_pajak_update" class="form-control" placeholder="0.00">
+                  <div class="input-group-append">
+                    <span class="input-group-text" id="basic-addon2">%</span>
+                  </div>
+                </div>
               </div>
 
             </div>

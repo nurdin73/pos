@@ -60,7 +60,7 @@ class PajakController extends Controller
      */
     public function show($id)
     {
-        //
+        return $this->taxService->getDetail($id);
     }
 
     /**
@@ -72,7 +72,8 @@ class PajakController extends Controller
      */
     public function update(Request $request, $id)
     {
-        //
+        $this->validateTax($request);
+        return $this->taxService->updateTax($request->all(), $id);
     }
 
     /**
