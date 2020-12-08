@@ -44,15 +44,25 @@
             <button class="btn btn-sm btn-success">Export Excel</button>
           </div>
           <div class="card-body">
-            <div class="d-flex justify-content-end">
-              <div class="btn-group">
-                <button class="btn btn-sm btn-outline-primary timeBtn" data-query="days">Hari</button>
-                <button class="btn btn-sm btn-outline-primary timeBtn" data-query="months">Bulan</button>
-                <button class="btn btn-sm btn-outline-primary timeBtn" data-query="years">Tahun</button>
-              </div>
-            </div>
-            <div id="grafik-field">
-              <canvas id="grafikTrx"></canvas>
+            <div class="table-responsive">
+              <table class="table table-borderless table-striped table-hover">
+                <thead>
+                  <tr>
+                    <th>Nama Barang</th>
+                    <th style="width: 15%">Harga Dasar</th>
+                    <th style="width: 10%">Sisa Stok</th>
+                    <th style="width: 10%">Terjual</th>
+                  </tr>
+                </thead>
+                <tbody id="listProducts">
+                  
+                </tbody>
+              </table>
+              <nav aria-label="..." class="d-flex justify-content-end align-items-end">
+                <ul class="pagination">
+                  
+                </ul>
+              </nav>
             </div>
           </div>
         </div>
@@ -62,9 +72,6 @@
 @endsection 
 
 @section('js')
-  <script src="https://cdn.jsdelivr.net/npm/chart.js@2.8.0"></script>
-  <script src="{{ asset('vendors/@coreui/chartjs/js/coreui-chartjs.bundle.js') }}"></script>
-  <script src="{{ asset('vendors/@coreui/utils/js/coreui-utils.js') }}"></script>
   <script>
     const URL_API = '{{ url('api/v1') }}'
   </script>

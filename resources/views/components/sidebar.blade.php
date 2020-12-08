@@ -111,7 +111,7 @@
           <li class="c-sidebar-nav-item"><a class="c-sidebar-nav-link" href="{{ route('reportUmum') }}"><span class="c-sidebar-nav-icon"></span> Umum</a><span class="sr-only">Umum</span></li>
           <li class="c-sidebar-nav-item"><a class="c-sidebar-nav-link" href="{{ route('reportTransaksi') }}"><span class="c-sidebar-nav-icon"></span> Transaksi</a><span class="sr-only">Transaksi</span></li>
           <li class="c-sidebar-nav-item"><a class="c-sidebar-nav-link" href="{{ route('reportPenjualan') }}"><span class="c-sidebar-nav-icon"></span> Penjualan Barang</a><span class="sr-only">Penjualan Barang</span></li>
-          <li class="c-sidebar-nav-item"><a class="c-sidebar-nav-link" href="{{ route('reportPembelian') }}"><span class="c-sidebar-nav-icon"></span> Pembelian Barang <span class="badge badge-danger">Soon</span></a><span class="sr-only">Pembelian Barang</span></li>
+          <li class="c-sidebar-nav-item"><a class="c-sidebar-nav-link" href="{{ route('reportPembelian') }}"><span class="c-sidebar-nav-icon"></span> Pembelian Barang <span class="badge badge-warning">On Going</span></a><span class="sr-only">Pembelian Barang</span></li>
         </ul>
         <span class="sr-only">Laporan</span>
       </li>

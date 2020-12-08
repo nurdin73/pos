@@ -239,9 +239,8 @@ class BarangController extends Controller
         return $this->productsService->deleteTypePrice($id);
     }
 
-    public function chartBarang(Request $request)
+    public function reportProducts()
     {
-        $query = $request->get('query');
-        return $this->productsService->chartBarang($query);
+        return $this->productsService->reportProducts();
     }
 }

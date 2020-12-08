@@ -4,6 +4,7 @@ namespace App\Services;
 use App\Models\FileProducts;
 use App\Models\Products;
 use App\Models\Stocks;
+use App\Models\Transactions;
 use App\Models\TypePrices;
 use DateTime;
 use Illuminate\Support\Facades\DB;
@@ -187,120 +188,29 @@ class ProductsService
         return response(['message' => 'Type harga berhasil dihapus']);
     }
 
-    public function chartBarang($query)
+    public function reportProducts()
     {
-        $sets = [];
-        $sets['data'] = [];
-        $labelTime = [];
-        switch ($query) {
-            case 'days':
-                $dateAwal = date('j') > 5 ? date('j') - 5 : 1;
-                for ($i=$dateAwal; $i <= date('j') + 3; $i++) { 
-                    $i = $i < 10 ? "0".$i : $i;
-                    $tgl = date('Y-m'). "-" .$i;
-                    $labelTime[$tgl] = [];
-                }
-                foreach ($labelTime as $t => $value) {
-                    $results = Products::with('stocks:id,product_id,stok')->select('id','selled')->where('created_at', 'like', '%'.$t.'%')->get();
-                    $sets['data'][$t] = [];
-                    foreach ($results as $r) {
-                        $data = [];
-                        $data['totalStok'] = 0;
-                        foreach ($r->stocks as $qyt) {
-                            $data['totalStok'] += $qyt->stok;
-                        }
-                        $data['totalProductIn'] = $data['totalStok'];
-                        $data['totalStok'] += $r->selled;
-                        $data['totalProductOut'] = $r->selled;
-                        array_push($sets['data'][$t], $data);
-                    }
-                }
-                break;
-            case 'months':
-                for ($i=1; $i <= 12; $i++) { 
-                    $i = $i < 10 ? "0".$i : $i;
-                    $bln = date('Y')."-".$i;
-                    $labelTime[$bln] = [];
-                }
-                foreach ($labelTime as $t => $value) {
-                    $results = Products::with('stocks:id,product_id,stok')->select('id','selled')->where('created_at', 'like', '%'.$t.'%')->get();
-                    $monthName = explode('-', $t);
-                    $convertMonth = DateTime::createFromFormat('!m', $monthName[1]);
-                    $nameMonth = $convertMonth->format('F');
-                    $sets['data'][$nameMonth] = [];
-                    foreach ($results as $r) {
-                        $data = [];
-                        $data['totalStok'] = 0;
-                        foreach ($r->stocks as $qyt) {
-                            $data['totalStok'] += $qyt->stok;
-                        }
-                        $data['totalProductIn'] = $data['totalStok'];
-                        $data['totalStok'] += $r->selled;
-                        $data['totalProductOut'] = $r->selled;
-                        array_push($sets['data'][$nameMonth], $data);
-                    }
-                }
-                break;
-
-            case 'years':
-                for ($i=date('Y') - 2; $i <= date('Y') + 8; $i++) { 
-                    $i = $i < 10 ? "0".$i : $i;
-                    $labelTime[$i] = [];
-                }
-                foreach ($labelTime as $t => $value) {
-                    $results = Products::with('stocks:id,product_id,stok')->select('id','selled')->where('created_at', 'like', '%'.$t.'%')->get();
-                    $sets['data'][$t] = [];
-                    foreach ($results as $r) {
-                        $data = [];
-                        $data['totalStok'] = 0;
-                        foreach ($r->stocks as $qyt) {
-                            $data['totalStok'] += $qyt->stok;
-                        }
-                        $data['totalProductIn'] = $data['totalStok'];
-                        $data['totalStok'] += $r->selled;
-                        $data['totalProductOut'] = $r->selled;
-                        array_push($sets['data'][$t], $data);
-                    }
-                }
-                break;
-            
-            default:
-                $dateAwal = date('j') > 5 ? date('j') - 5 : 1;
-                for ($i=$dateAwal; $i <= date('j') + 3; $i++) { 
-                    $i = $i < 10 ? "0".$i : $i;
-                    $tgl = date('Y-m'). "-" .$i;
-                    $labelTime[$tgl] = [];
-                }
-                foreach ($labelTime as $t => $value) {
-                    $results = Products::with('stocks:id,product_id,stok')->select('id','selled')->where('created_at', 'like', '%'.$t.'%')->get();
-                    $sets['data'][$t] = [];
-                    foreach ($results as $r) {
-                        $data = [];
-                        $data['totalStok'] = 0;
-                        foreach ($r->stocks as $qyt) {
-                            $data['totalStok'] += $qyt->stok;
-                        }
-                        $data['totalProductIn'] = $data['totalStok'];
-                        $data['totalStok'] += $r->selled;
-                        $data['totalProductOut'] = $r->selled;
-                        array_push($sets['data'][$t], $data);
-                    }
-                }
-                break;
-        }
-        $selectDB = Products::with('stocks:id,product_id,stok')->select('id','selled')->get();
-        $sets['totalStok'] = 0;
-        $sets['totalProductIn'] = 0;
-        $sets['totalProductOut'] = 0;
-        foreach ($selectDB as $r) {
-            $total = 0;
-            foreach ($r->stocks as $qyt) {
-                $total += $qyt->stok;
+        $results = Products::with('stocks:id,product_id,stok,harga_dasar')
+        ->select('id', 'nama_barang', 'selled')
+        ->orderBy('id', 'ASC')->paginate(10);
+        $pagination = collect([
+            'data'          => $results
+        ]);
+        $results2 = Products::with('stocks:id,product_id,stok,harga_dasar')
+        ->select('id', 'nama_barang', 'selled')
+        ->orderBy('id', 'ASC')->get();
+        $data = [];
+        $data['totalStok'] = 0;
+        $data['totalSelled'] = 0;
+        foreach ($results2 as $r) {
+            $totalStok = 0;
+            foreach ($r->stocks as $s) {
+                $totalStok += $s->stok;
             }
-            $sets['totalStok'] += $total + $r->selled;
-            $sets['totalProductIn'] += $total;
-            $sets['totalProductOut'] += $r->selled;
+            $data['totalStok'] += $totalStok;
+            $data['totalSelled'] += $r->selled;
         }
-        return response($sets);
+        $response = $pagination->merge($data);
+        return response($response);
     }
 }
