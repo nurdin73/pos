@@ -174,6 +174,14 @@
         <span class="sr-only">Toko</span>
       </li>
       <li class="c-sidebar-nav-item">
+        <a class="c-sidebar-nav-link" href="{{ route('settingManagementStaff') }}">
+          <svg class="c-sidebar-nav-icon">
+            <use xlink:href="{{ asset('vendors/@coreui/icons/svg/free.svg#cil-contact') }}"></use>
+          </svg> Management Staff
+          <span class="badge badge-danger">Soon</span>
+        </a>
+      </li>
+      <li class="c-sidebar-nav-item">
         <a class="c-sidebar-nav-link" href="{{ route('settingApi') }}">
           <svg class="c-sidebar-nav-icon">
             <use xlink:href="{{ asset('vendors/@coreui/icons/svg/free.svg#cil-settings') }}"></use>
@@ -187,14 +195,6 @@
           <svg class="c-sidebar-nav-icon">
             <use xlink:href="{{ asset('vendors/@coreui/icons/svg/free.svg#cil-storage') }}"></use>
           </svg> Database
-        </a>
-      </li>
-      <li class="c-sidebar-nav-item">
-        <a class="c-sidebar-nav-link" href="{{ route('settingManagementStaff') }}">
-          <svg class="c-sidebar-nav-icon">
-            <use xlink:href="{{ asset('vendors/@coreui/icons/svg/free.svg#cil-contact') }}"></use>
-          </svg> Management Staff
-          <span class="badge badge-danger">PRO</span>
         </a>
       </li> --}}
       <span class="sr-only">Sidebar</span>
