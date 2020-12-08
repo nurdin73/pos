@@ -85,7 +85,7 @@ Route::group(['prefix' => 'admin', 'middleware' => ['auth']], function () {
             Route::get('/', 'Admin\SettingController@api')->name('settingApi');
         });
         // Route::get('/database', 'Admin\SettingController@database')->name('settingDatabase');
-        // Route::get('/management-staff', 'Admin\SettingController@managementStaff')->name('settingManagementStaff');
+        Route::get('/management-staff', 'Admin\SettingController@managementStaff')->name('settingManagementStaff');
     });
 });
 
