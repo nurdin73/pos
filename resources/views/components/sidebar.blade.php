@@ -47,7 +47,6 @@
           <svg class="c-sidebar-nav-icon">
             <use xlink:href="{{ asset('vendors/@coreui/icons/svg/free.svg#cil-industry') }}"></use>
           </svg> Cabang
-          <span class="badge badge-info">New</span>
         </a>
         <span class="sr-only">Cabang</span>
       </li>
@@ -178,7 +177,7 @@
           <svg class="c-sidebar-nav-icon">
             <use xlink:href="{{ asset('vendors/@coreui/icons/svg/free.svg#cil-contact') }}"></use>
           </svg> Management Staff
-          <span class="badge badge-danger">Soon</span>
+          <span class="badge badge-warning">On Going</span>
         </a>
       </li>
       <li class="c-sidebar-nav-item">

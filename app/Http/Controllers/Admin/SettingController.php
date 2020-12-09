@@ -29,6 +29,6 @@ class SettingController extends Controller
 
     public function managementStaff()
     {
-        return view('admin.settings.managementStaff');
+        return view('admin.settings.staff.managementStaff');
     }
 }
