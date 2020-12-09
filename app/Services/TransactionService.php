@@ -45,7 +45,7 @@ class TransactionService
 
     public function getCarts($no_invoice)
     {
-        $results = Carts::with('product.stocks', 'product.typePrices')->where('no_invoice', $no_invoice)->select('id','product_id', 'qyt', 'harga_product', 'diskon_product')->get();
+        $results = Carts::with('product.stocks', 'product.typePrices', 'tax')->where('no_invoice', $no_invoice)->select('id','product_id', 'qyt', 'harga_product', 'diskon_product')->get();
         return response($results);
     }
 

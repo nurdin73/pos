@@ -31,6 +31,12 @@ class TaxService
         return response($result);
     }
 
+    public function getPajak($barang_id)
+    {
+        $result = $this->getTax()->where('barang_id', $barang_id)->first();
+        return response($result);
+    }
+
     public function addTax($data)
     {
         $create = Tax::create($data);

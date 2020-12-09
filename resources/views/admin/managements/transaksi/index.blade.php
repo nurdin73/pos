@@ -51,12 +51,16 @@
                       <select name="barcode" id="barcode" style="width: 100%" class="form-control">
   
                       </select>
+                      {{-- <small class="text-info">klik kolom ini</small> --}}
                     </div>
                   </div>
                   <div class="form-group row">
-                    <label class="col-md-3 col-form-label"></label>
-                    <div class="col-md-9">
-                      <small class="text-info">klik kolom ini</small>
+                    <label class="col-md-3 col-form-label" for="pajak">Pajak</label>
+                    <div class="input-group col-md-9">
+                      <input class="form-control" id="pajak" type="text" name="pajak" placeholder="0.00">
+                      <div class="input-group-append">
+                        <span class="input-group-text" id="basic-addon2">%</span>
+                      </div>
                     </div>
                   </div>
                 </form>

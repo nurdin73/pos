@@ -39,6 +39,7 @@ function getData() {
         product_id : id_product,
         no_invoice : no_invoice
       }
+      getTax.loadData = id_product
       addDataCart.loadData = data
     })
 
@@ -112,6 +113,19 @@ function getData() {
         },
       }
     })
+}
+
+const getTax = {
+  set loadData(data) {
+    const url = URL_API + "/managements/tax/" + data
+    Functions.prototype.requestDetail(getTax, url)
+  },
+  set successData(response) {
+    $('#pajak').val(response.persentase_pajak).attr('disabled', true).addClass('disabled')
+  },
+  set errorData(err) {
+    toastr.error(err.responseJSON.message, 'Error')
+  }
 }
 
 const addDataCart = {
