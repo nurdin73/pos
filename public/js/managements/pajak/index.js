@@ -67,7 +67,7 @@ const getAll = {
             `)
         }
 
-        $('#listTaxUniv').empty()
+        $('#taxUniv').empty()
         if(data.length > 0) {
             data.map(result => {
                 if (result.type_pajak === 'universal') {
@@ -183,20 +183,27 @@ const postData = {
 }
 
 function updateTax() {
-    $('#listTaxes').on('click', 'tr td div .edit', function(e) {
+    $('#listTaxes, #taxUniv').on('click', 'tr td div .edit, div .edit', function(e) {
         e.preventDefault()
         const id = $(this).data('id')
         const url = URL_API + "/managements/pajak/" + id
         Functions.prototype.requestDetail(detailTax, url)
+    })
+    $('#type_pajak_update').on('change', function(e) {
+        if ($('#type_pajak_update').val() === 'universal') {
+            $('#barang_id_update').attr('disabled', true)
+        } else {
+            $('#barang_id_update').removeAttr('disabled', true)
+        }
     })
     $('#formUpdateTax').validate({
         rules: {
             nama_pajak_update: {
                 required: true,
             },
-            barang_id_update: {
-                required: true,
-            },
+            // barang_id_update: {
+            //     required: true,
+            // },
             persentase_pajak_update: {
                 required: true,
                 number: true,
@@ -225,9 +232,10 @@ function updateTax() {
         submitHandler: function(form, e) {
             const data = {
                 nama_pajak : $('#nama_pajak_update').val(),
-                barang_id : $('#barang_id_update').val(),
+                type_pajak : $('#type_pajak_update').val(),
+                barang_id : $('#type_pajak_update').val() == 'lokal' ? $('#barang_id_update').val() : null,
                 persentase_pajak : $('#persentase_pajak_update').val(),
-            }
+            }          
             const url = URL_API + "/managements/update/pajak/" + $('#idTax').val()
             Functions.prototype.putRequest(putData, url, data)
         }
@@ -276,6 +284,7 @@ const putData = {
 const detailTax = {
     set successData(response) {
         $('#nama_pajak_update').val(response.nama_pajak)
+        $('#type_pajak_update').val(response.type_pajak)
         $('#barang_id_update').val(response.barang_id)
         $('#persentase_pajak_update').val(response.persentase_pajak)
         $('#idTax').val(response.id)

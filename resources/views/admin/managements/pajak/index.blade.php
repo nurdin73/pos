@@ -199,6 +199,15 @@
               </div>
               <div class="form-group">
                 <div class="d-flex justify-content-between align-items-center">
+                  <label for="type_pajak_update">Tipe Pajak *</label>
+                </div>
+                <select name="type_pajak_update" id="type_pajak_update" class="custom-select" style="width: 100%">
+                  <option value="lokal">Lokal</option>
+                  <option value="universal">Universal</option>
+                </select>
+              </div>
+              <div class="form-group">
+                <div class="d-flex justify-content-between align-items-center">
                   <label for="barang_id_update">Nama Barang *</label>
                   <small><a href="{{ route('managementBarang') . "?redirect=" . route('managementPajak') }}" class="btn-link">Tambah Barang</a></small>
                 </div>
