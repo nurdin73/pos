@@ -39,7 +39,8 @@ const getAll = {
         const { last_page, current_page, data, prev_page_url } = response
         if(data.length > 0) {
             data.map(result => {
-                $('#listTaxes').append(`
+                if (result.type_pajak === 'lokal') {
+                    $('#listTaxes').append(`
                     <tr>
                         <td>${result.nama_pajak}</td>
                         <td>${result.product.nama_barang}</td>
@@ -52,7 +53,8 @@ const getAll = {
                             </div>
                         </td>
                     </tr>
-                `)
+                    `)
+                }
             })
             var paginations = ""
             paginations = Functions.prototype.createPaginate(current_page, last_page, prev_page_url)
@@ -64,6 +66,22 @@ const getAll = {
                 </tr>
             `)
         }
+
+        $('#listTaxUniv').empty()
+        if(data.length > 0) {
+            data.map(result => {
+                if (result.type_pajak === 'universal') {
+                    $('#taxUniv').append(`
+                    <span class="lead text-uppercase">Nama Pajak : ${result.nama_pajak}</span>
+                    <span id="persentase" class="lead text-uppercase">Persentase Pajak : ${result.persentase_pajak} %</span>
+                    <div class="btn-group">
+                        <button class="btn btn-sm btn-info edit" data-toggle="modal" data-target="#updateTax" data-id="${result.id}"><i class="fa fa-edit"></i></button>
+                        <button class="btn btn-sm btn-danger delete" data-id="${result.id}"><i class="fa fa-trash"></i></button>
+                    </div>
+                    `)
+                }
+            })
+        }
     },
     set errorData(err) {
         toastr.error(err.responseJSON.message, 'Error')
@@ -71,14 +89,22 @@ const getAll = {
 }
 
 function addTax() {
+    $('#type_pajak').on('change', function(e) {
+        if ($('#type_pajak').val() === 'universal') {
+            $('#barang_id').attr('disabled', true)
+        }
+    })
     $('#formAddTax').validate({
         rules: {
             nama_pajak: {
                 required: true,
             },
-            barang_id: {
+            btype_pajak: {
                 required: true,
             },
+            // barang_id: {
+            //     required: true,
+            // },
             persentase_pajak: {
                 required: true,
                 number: true,
@@ -107,6 +133,7 @@ function addTax() {
         submitHandler: function(form, e) {
             const data = {
                 nama_pajak : $('#nama_pajak').val(),
+                type_pajak : $('#type_pajak').val(),
                 barang_id : $('#barang_id').val(),
                 persentase_pajak : $('#persentase_pajak').val(),
             }
@@ -281,7 +308,7 @@ const getProductById = {
 }
 
 function deleteTax() {  
-    $('#listTaxes').on('click', 'tr td div .delete', function(e) {
+    $('.table').on('click', 'tr td div .delete', function(e) {
         e.preventDefault()
         const id = $(this).data('id')
         Swal.fire({

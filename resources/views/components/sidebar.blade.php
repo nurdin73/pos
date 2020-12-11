@@ -87,7 +87,7 @@
           <svg class="c-sidebar-nav-icon">
             <use xlink:href="{{ asset('vendors/@coreui/icons/svg/free.svg#cil-fax') }}"></use>
           </svg> Pajak
-          <span class="badge badge-info">New</span>
+          <span class="badge badge-warning">On Going</span>
         </a>
       </li>
       <li class="c-sidebar-nav-item">

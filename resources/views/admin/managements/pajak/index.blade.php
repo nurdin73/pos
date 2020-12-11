@@ -86,6 +86,13 @@
           </div>
         </div>
 
+        <div class="card">
+          <div class="card-header">Pajak Universal</div>
+          <div class="card-body d-flex justify-content-between align-items-center" id="taxUniv">
+            
+          </div>
+        </div>
+
       </div>
     </div>
   </main>
@@ -114,6 +121,15 @@
               </div>
               <div class="form-group">
                 <div class="d-flex justify-content-between align-items-center">
+                  <label for="type_pajak">Tipe Pajak *</label>
+                </div>
+                <select name="type_pajak" id="type_pajak" class="custom-select" style="width: 100%">
+                  <option value="lokal">Lokal</option>
+                  <option value="universal">Universal</option>
+                </select>
+              </div>
+              <div class="form-group">
+                <div class="d-flex justify-content-between align-items-center">
                   <label for="barang_id">Nama Barang *</label>
                   <small><a href="{{ route('managementBarang') . "?redirect=" . route('managementPajak') }}" class="btn-link">Tambah Barang</a></small>
                 </div>
@@ -130,6 +146,12 @@
                   </div>
                 </div>
               </div>
+              {{-- <div class="form-group">
+                <div class="custom-control custom-switch">
+                  <input type="checkbox" class="custom-control-input" id="type_pajak" name="type_pajak">
+                  <label class="custom-control-label" for="type_pajak">Universal</label>
+                </div>
+              </div> --}}
 
             </div>
             <div class="col-md-4">
