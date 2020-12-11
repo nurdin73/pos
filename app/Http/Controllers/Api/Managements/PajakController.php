@@ -17,7 +17,7 @@ class PajakController extends Controller
     {
         $request->validate([
             'nama_pajak'        => 'required',
-            'barang_id'         => 'required',
+            // 'barang_id'         => 'required',
             'persentase_pajak'  => 'required'
         ]);
     }

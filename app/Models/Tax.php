@@ -6,7 +6,7 @@ use Illuminate\Database\Eloquent\Model;
 
 class Tax extends Model
 {
-    protected $fillable = ['nama_pajak', 'barang_id', 'persentase_pajak'];
+    protected $fillable = ['nama_pajak', 'type_pajak', 'barang_id', 'persentase_pajak'];
 
     public function product()
     {
