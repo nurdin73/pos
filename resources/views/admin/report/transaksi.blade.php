@@ -8,7 +8,7 @@
             <div class="card">
               <div class="card-header d-flex justify-content-between align-items-center">
                 <span class="lead">Laporan transaksi hari ini(Per jam)</span>
-                <button class="btn btn-sm btn-success">Export Excel</button>
+                <a href="{{ route('exportTrxHours') }}" class="btn btn-sm btn-success">Export Excel</a>
               </div>
               <div class="card-body">
                 <div class="nav-tabs-boxed">
@@ -48,7 +48,7 @@
             <div class="card">
               <div class="card-header d-flex justify-content-between align-items-center">
                 <span class="lead">Laporan transaksi bulan ini(per hari)</span>
-                <button class="btn btn-sm btn-success">Export Excel</button>
+                <a href="{{ route('exportTrxDays') }}" class="btn btn-sm btn-success">Export Excel</a>
               </div>
               <div class="card-body">
                 <div class="nav-tabs-boxed">
@@ -88,7 +88,7 @@
             <div class="card">
               <div class="card-header d-flex justify-content-between align-items-center">
                 <span class="lead">Laporan transaksi tahun ini(Per bulan)</span>
-                <button class="btn btn-sm btn-success">Export Excel</button>
+                <a href="{{ route('exportTrxMonths') }}" class="btn btn-sm btn-success">Export Excel</a>
               </div>
               <div class="card-body">
                 <div class="nav-tabs-boxed">
@@ -128,7 +128,7 @@
             <div class="card">
               <div class="card-header d-flex justify-content-between align-items-center">
                 <span class="lead">Laporan transaksi semua(Per tahun)</span>
-                <button class="btn btn-sm btn-success">Export Excel</button>
+                <a href="{{ route('exportTrxYears') }}" class="btn btn-sm btn-success">Export Excel</a>
               </div>
               <div class="card-body">
                 <div class="nav-tabs-boxed">

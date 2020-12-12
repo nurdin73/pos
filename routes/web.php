@@ -185,6 +185,13 @@ Route::group(['prefix' => 'api/'], function () {
             Route::get('/barang', 'Api\Managements\BarangController@reportProducts');
         });
 
+        Route::group(['prefix' => 'exports'], function () {
+            Route::get('/transactions-hours', 'Api\Exports\TransactionsController@hours')->name('exportTrxHours');
+            Route::get('/transactions-days', 'Api\Exports\TransactionsController@days')->name('exportTrxDays');
+            Route::get('/transactions-months', 'Api\Exports\TransactionsController@months')->name('exportTrxMonths');
+            Route::get('/transactions-years', 'Api\Exports\TransactionsController@years')->name('exportTrxYears');
+        });
+
         Route::group(['prefix' => 'settings'], function () {
             // get all
 

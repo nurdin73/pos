@@ -1,11 +1,13 @@
 <?php
 namespace App\Services;
 
+use App\Exports\TransactionExport;
 use App\Models\Carts;
 use App\Models\Customers;
 use App\Models\Products;
 use App\Models\Stocks;
 use App\Models\Transactions;
+use Maatwebsite\Excel\Facades\Excel;
 
 class TransactionService
 {
@@ -163,7 +165,7 @@ class TransactionService
         }
     }
 
-    public function getTrxPerHours()
+    public function getTrxPerHours($type = "graph")
     {
         $dataset = [];
         $date = date('Y-m-d');
@@ -204,10 +206,15 @@ class TransactionService
                 array_push($dataset[$j], $trx);
             }
         }
-        return response($dataset);
+        if($type == "export") {
+            $fileName = "trx-hours-".date('ymd').".xlsx";
+            return Excel::download(new TransactionExport($dataset), $fileName);
+        } else {
+            return response($dataset);
+        }
     }
 
-    public function getTrxPerDays()
+    public function getTrxPerDays($type = "graph")
     {
         $days = [];
         for ($i=1; $i <= 31; $i++) { 
@@ -225,10 +232,15 @@ class TransactionService
                 array_push($days[$d], $trx);
             }
         }
-        return response($days);
+        if($type == "export") {
+            $fileName = "trx-days-".date('ymd').".xlsx";
+            return Excel::download(new TransactionExport($days), $fileName);
+        } else {
+            return response($days);
+        }
     }
 
-    public function getTrxPerMonth()
+    public function getTrxPerMonth($type = "graph")
     {
         $month = [];
         for ($i=1; $i <= 12; $i++) { 
@@ -245,10 +257,15 @@ class TransactionService
                 array_push($month[$m], $trx);
             }
         }
-        return $month;
+        if($type == "export") {
+            $fileName = "trx-months-".date('ymd').".xlsx";
+            return Excel::download(new TransactionExport($month), $fileName);
+        } else {
+            return $month;
+        }
     }
 
-    public function getTrxPerYear()
+    public function getTrxPerYear($type = "graph")
     {
         $years = [];
         for ($i=date('Y') - 2; $i <= date('Y') + 8; $i++) { 
@@ -264,6 +281,11 @@ class TransactionService
                 array_push($years[$y], $trx);
             }
         }
-        return $years;
+        if($type == "export") {
+            $fileName = "trx-year-".date('ymd').".xlsx";
+            return Excel::download(new TransactionExport($years), $fileName);
+        } else {
+            return $years;
+        }
     }
 }
