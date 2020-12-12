@@ -194,16 +194,30 @@ Route::group(['prefix' => 'api/'], function () {
 
         Route::group(['prefix' => 'settings'], function () {
             // get all
+            Route::get('/staffs', 'Api\Settings\StaffController@getall');
 
             // get detail
             Route::get('/profile', 'Api\Settings\ProfileController@detail');
             Route::get('/store', 'Api\Settings\StoreController@detail');
+            Route::get('/staff/{id}', 'Api\Settings\StaffController@get');
+
             // update
             Route::group(['prefix' => '/update'], function () {
                 Route::put('/profile/{id}', 'Api\Settings\ProfileController@update');
                 Route::put('/change-password', 'Api\Settings\ProfileController@changePassword');
                 Route::post('/change-logo', 'Api\Settings\StoreController@updateLogo');
                 Route::put('/change-detail-store', 'Api\Settings\StoreController@update');
+                Route::put('/staff/{id}', 'Api\Settings\StaffController@update');
+            });
+
+            // add
+            Route::group(['prefix' => '/add'], function () {
+                Route::post('/staff', 'Api\Settings\StaffController@add');
+            });
+
+            // delete
+            Route::group(['prefix' => '/delete'], function () {
+                Route::delete('/staff/{id}', 'Api\Settings\StaffController@destroy');
             });
         });
 

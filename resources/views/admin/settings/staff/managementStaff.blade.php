@@ -13,8 +13,8 @@
               <div class="row">
                 <div class="col-9 col-md-6">
                   <div class="form-group">
-                    <label for="nama_staff" class="sr-only">Nama Staff</label>
-                    <input type="text" name="nama_staff" id="nama_staff" class="form-control" placeholder="Nama staff">
+                    <label for="nama_staff_search" class="sr-only">Nama Staff</label>
+                    <input type="text" name="nama_staff_search" id="nama_staff_search" class="form-control" placeholder="Nama staff">
                   </div>
                 </div>
                 <div class="col-3 col-md-2">
@@ -53,20 +53,15 @@
                     <th style="width: 12%; text-align:center">Aksi</th>
                   </tr>
                 </thead>
-                <tbody>
-                  <tr>
-                    <td>Nurdin</td>
-                    <td>0832423412</td>
-                    <td><span class="badge badge-primary">Halo</span></td>
-                    <td>
-                      <div class="btn-group">
-                        <button class="btn btn-sm btn-info"><i class="fas fa-book"></i></button>
-                        <button class="btn btn-sm btn-info"><i class="fas fa-trash"></i></button>
-                      </div>
-                    </td>
-                  </tr>
+                <tbody id="listStaffs">
+                  
                 </tbody>
               </table>
+              <nav aria-label="..." class="d-flex justify-content-end align-items-end">
+                <ul class="pagination">
+                  
+                </ul>
+              </nav>
             </div>
           </div>
         </div>
@@ -86,7 +81,7 @@
             <span aria-hidden="true">&times;</span>
           </button>
         </div>
-        <form action="#" id="addStaffForm">
+        <form action="#" id="addStaffForm" autocomplete="off">
           <div class="modal-body">
             <div class="form-group">
               <label for="email_staff">Email Staff</label>
@@ -120,7 +115,7 @@
               <div class="col-md-6">
                 <div class="form-group">
                   <label for="password">Password Staff</label>
-                  <input type="password" name="password" id="password" class="form-control">
+                  <input type="password" name="password" id="password" class="form-control" autocomplete="off">
                 </div>
               </div>
             </div>
