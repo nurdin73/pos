@@ -138,3 +138,10 @@
     </div>
   </div>
 @endsection
+
+@section('js')
+  <script>
+    const URL_API = '{{ url('api/v1') }}'
+  </script>
+  <script src="{{ asset('js/settings/staff.js') }}"></script>
+@endsection
