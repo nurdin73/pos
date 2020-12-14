@@ -47,10 +47,10 @@
                   <div class="form-group row">
                     <label class="col-md-3 col-form-label" for="barcode">Kode</label>
                     <div class="col-md-9">
-                      {{-- <input class="form-control" id="barcode" type="text" name="barcode"> --}}
-                      <select name="barcode" id="barcode" style="width: 100%" class="form-control">
+                      <input class="form-control" id="barcode" type="text" name="barcode" autofocus>
+                      {{-- <select name="barcode" id="barcode" style="width: 100%" class="form-control">
   
-                      </select>
+                      </select> --}}
                       {{-- <small class="text-info">klik kolom ini</small> --}}
                     </div>
                   </div>

@@ -13,7 +13,9 @@ class TransactionService
 {
     public function store($data)
     {
-        $queryForProd = Products::with('stocks')->where('id', $data['product_id'])->first();
+        $queryForProd = Products::with('stocks')->where('kode_barang', $data['kode'])->first();
+        if(!$queryForProd) return response(['message' => 'kode produk tidak ditemukan'], 404);
+        $data['product_id'] = $queryForProd->id;
         $sisaStok = 0;
         if(count($queryForProd->stocks) > 0) {
             foreach ($queryForProd->stocks as $stock) {
@@ -21,7 +23,7 @@ class TransactionService
             }
         }
         if($sisaStok < 1) return response(['message' => 'stok barang ini sudah habis'], 404);
-        $checkCart = Carts::where(['no_invoice' => $data['no_invoice'], 'product_id' => $data['product_id']])->first();
+        $checkCart = Carts::where(['no_invoice' => $data['no_invoice'], 'product_id' => $queryForProd->id])->first();
         if($checkCart) {
             $data['qyt'] = $checkCart->qyt + $data['qyt'];
             $checkCart->update([

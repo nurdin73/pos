@@ -31,39 +31,49 @@ function getData() {
     //     addDataCart.loadData = data
     //   }
     // })
-    $('#barcode').on('change', function(e) {
-      e.preventDefault()
-      const id_product = $(this).val()
-      const no_invoice = noInvoice
-      const data = {
-        product_id : id_product,
-        no_invoice : no_invoice
-      }
-      getTax.loadData = id_product
-      addDataCart.loadData = data
-    })
-
-    $('#barcode').select2({
-      theme:'bootstrap4',
-      ajax: {
-        url: URL_API + "/managements",
-        data: function (params) {
-          return {
-              search_kode_barang: params.term,
-          }
-        },
-        processResults: function(response, params) {
-          return {
-            results: response.data.map(result => {
-              return {
-                text: result.kode_barang + " - " + result.nama_barang,
-                id: result.id
-              }
-            })
-          }
-        },
+    $('#addProduct').on('keyup', function(e) {
+      if(e.keyCode == 13) {
+        const kode = $('#barcode').val()
+        const no_invoice = noInvoice
+        const data = {
+          kode: kode,
+          no_invoice: no_invoice
+        }
+        addDataCart.loadData = data
       }
     })
+    // $('#barcode').on('change', function(e) {
+    //   e.preventDefault()
+    //   const id_product = $(this).val()
+    //   const no_invoice = noInvoice
+    //   const data = {
+    //     product_id : id_product,
+    //     no_invoice : no_invoice
+    //   }
+    //   getTax.loadData = id_product
+    //   addDataCart.loadData = data
+    // })
+    // $('#barcode').select2({
+    //   theme:'bootstrap4',
+    //   ajax: {
+    //     url: URL_API + "/managements",
+    //     data: function (params) {
+    //       return {
+    //           search_kode_barang: params.term,
+    //       }
+    //     },
+    //     processResults: function(response, params) {
+    //       return {
+    //         results: response.data.map(result => {
+    //           return {
+    //             text: result.kode_barang + " - " + result.nama_barang,
+    //             id: result.id
+    //           }
+    //         })
+    //       }
+    //     },
+    //   }
+    // })
 
     $('#diskon').on('keyup', function(e) {
       e.preventDefault()
@@ -136,9 +146,11 @@ const addDataCart = {
   set successData(response) {
     toastr.success(response.message, 'Success')
     getCarts.loadData = response.no_invoice
+    $('#barcode').val('')
   },
   set errorData(err) {
     toastr.error(err.responseJSON.message, 'error')
+    $('#barcode').val('')
   }
 }
 

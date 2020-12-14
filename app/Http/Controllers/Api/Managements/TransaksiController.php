@@ -23,11 +23,11 @@ class TransaksiController extends Controller
     {
         $request->validate([
             'no_invoice' => 'required',
-            'product_id' => 'required|numeric',
+            'kode' => 'required',
         ]);
         $data = [
             'no_invoice' => $request->input('no_invoice'),
-            'product_id' => $request->input('product_id'),
+            'kode' => $request->input('kode'),
             'qyt'        => 1
         ];
         return $this->transactionService->store($data);

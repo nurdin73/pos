@@ -29,6 +29,7 @@ $(document).ready(function () {
   getCategory()
   typeHarga()
   getSuplier()
+  addCodeBarang()
 
   $('#filteringData').on('submit', function(e) {
     e.preventDefault()
@@ -44,6 +45,15 @@ $(document).ready(function () {
 
   getListProducts.loadData = "";
 });
+
+function addCodeBarang() {
+  $('#formKodeBarang').on('submit', function(e) {
+    const values = $('#inputCodeBarang').val()
+    $('#kode_barang').val(values)
+    $('#modalKodeBarang').modal('hide')
+    $('#inputCodeBarang').val('')
+  })
+}
 
 function validateFile(input) {  
   var fileType = ['.jpg', '.jpeg', '.png']

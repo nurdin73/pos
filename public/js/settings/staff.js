@@ -1,5 +1,7 @@
 $(document).ready(function () {
     getAll.loadData = ""
+
+    addStaff()
 });
 
 const getAll = {
@@ -41,4 +43,52 @@ const getAll = {
     set errorData(err) {
         toastr.error(err.responseJSON.message, 'Error')
     }
+}
+
+function addStaff() {  
+    $('#no_telp_staff').mask('0000-0000-0000')
+    $('#addStaffForm').validate({
+        rules: {
+            email_staff: {
+                required: true,
+                email: true
+            },
+            nama_staff: {
+                required: true
+            },
+            no_telp_staff: {
+                required: true
+            },
+            jabatan: {
+                required: true
+            },
+            password: {
+                required: true,
+                minlength: 8
+            },
+        },
+        errorClass: "is-invalid",
+        validClass: "is-valid",
+        errorElement: "small",
+        errorPlacement: function errorPlacement(error, element) {
+            error.addClass('invalid-feedback');
+        
+            if (element.prop('type') === 'checkbox') {
+                error.insertAfter(element.parent('label'));
+            } else {
+                error.insertAfter(element);
+            }
+        },
+        // eslint-disable-next-line object-shorthand
+        highlight: function highlight(element) {
+            $(element).addClass('is-invalid').removeClass('is-valid');
+        },
+        // eslint-disable-next-line object-shorthand
+        unhighlight: function unhighlight(element) {
+            $(element).addClass('is-valid').removeClass('is-invalid');
+        },
+        submitHandler: function(form, e) {
+            
+        }
+    })
 }

@@ -112,7 +112,7 @@
                     <input type="text" name="kode_barang" id="kode_barang" class="form-control">
                   </div>
                   <div class="col-6 col-md-2">
-                    <button type="button" class="btn btn-success btn-block"><i class="fas fa-image"></i></button>
+                    <button type="button" class="btn btn-success btn-block" data-toggle="modal" data-target="#modalKodeBarang"><i class="fas fa-barcode"></i></button>
                   </div>
                 </div>
               </div>
@@ -309,6 +309,26 @@
             <input type="text" name="harga_type" id="harga_type" placeholder="harga 1 pcs" class="form-control">
           </div>
           <button class="btn btn-sm btn-block btn-primary">Tambahkan</button>
+        </form>
+      </div>
+    </div>
+  </div>
+</div>
+<!-- Modal -->
+<div class="modal fade" id="modalKodeBarang" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+  <div class="modal-dialog modal-sm shadow">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title" id="exampleModalLabel">Scan Kode barang</h5>
+        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+          <span aria-hidden="true">&times;</span>
+        </button>
+      </div>
+      <div class="modal-body">
+        <form action="#" id="formKodeBarang" autocomplete="off" onsubmit="return(false)">
+          <div class="form-group">
+            <input type="text" name="inputCodeBarang" id="inputCodeBarang"class="form-control">
+          </div>
         </form>
       </div>
     </div>
