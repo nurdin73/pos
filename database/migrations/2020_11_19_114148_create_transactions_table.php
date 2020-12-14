@@ -20,6 +20,8 @@ class CreateTransactionsTable extends Migration
             $table->bigInteger('customer_id')->nullable();
             $table->bigInteger('diskon_transaksi')->default(0);
             $table->bigInteger('total');
+            $table->bigInteger('cash');
+            $table->bigInteger('change');
             $table->longText('keterangan')->nullable();
             $table->date('tgl_transaksi');
             $table->time('jam_transaksi');

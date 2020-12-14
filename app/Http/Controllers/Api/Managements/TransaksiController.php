@@ -40,7 +40,9 @@ class TransaksiController extends Controller
             'no_invoice' => 'required|unique:transactions',
             'customer_id' => 'required',
             'createdBy' => 'required',
-            'total' => 'required'
+            'total' => 'required',
+            'cash' => 'required',
+            'change' => 'required'
         ]);
         return $this->transactionService->add($request->all());
     }

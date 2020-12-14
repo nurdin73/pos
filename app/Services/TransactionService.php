@@ -2,15 +2,19 @@
 namespace App\Services;
 
 use App\Exports\TransactionExport;
+use App\Helpers\PrintTrx;
 use App\Models\Carts;
 use App\Models\Customers;
 use App\Models\Products;
 use App\Models\Stocks;
 use App\Models\Transactions;
+use Illuminate\Support\Facades\DB;
+use Illuminate\Support\Facades\Log;
 use Maatwebsite\Excel\Facades\Excel;
 
 class TransactionService
 {
+
     public function store($data)
     {
         $queryForProd = Products::with('stocks')->where('kode_barang', $data['kode'])->first();
@@ -61,52 +65,63 @@ class TransactionService
         $totalPoint = 0;
         $checkCart = Carts::with('product.stocks')->where('no_invoice', $data['no_invoice'])->get();
         if(!$checkCart) return response(['message' => 'kerangjang masih kosong silahkan coba lagi'], 422);
-        foreach ($checkCart as $cc) {
-            $totalPoint += $cc->product->point;
-            $sisaStok = 0;
-            if(count($cc->product->stocks)) {
-                foreach ($cc->product->stocks as $stock) {
-                    $sisaStok += $stock->stok;
+        DB::beginTransaction();
+        try {
+            foreach ($checkCart as $cc) {
+                $totalPoint += $cc->product->point;
+                $sisaStok = 0;
+                if(count($cc->product->stocks)) {
+                    foreach ($cc->product->stocks as $stock) {
+                        $sisaStok += $stock->stok;
+                    }
                 }
-            }
-            if($cc->qyt > $sisaStok) {
-                $returnQytProd = true;
-            } else {
-                Products::find($cc->product_id)->update([
-                    'selled' => $cc->product->selled + $cc->qyt
-                ]);
-                foreach ($cc->product->stocks as $stock) {
-                    if($cc->qyt > $stock->stok) {
-                        $idStok = $stock->id;
-                        $cc->qyt -= $stock->stok;
-                        $stock->stok = 0;
-                        $update = Stocks::find($idStok)->delete();
-                    } else {
-                        $idStok = $stock->id;
-                        $stock->stok -= $cc->qyt;
-                        $cc->qyt = 0;
-                        $update = Stocks::find($idStok)->update([
-                            'stok' => $stock->stok
-                        ]);
-                        break;
+                if($cc->qyt > $sisaStok) {
+                    $returnQytProd = true;
+                } else {
+                    Products::find($cc->product_id)->update([
+                        'selled' => $cc->product->selled + $cc->qyt
+                    ]);
+                    foreach ($cc->product->stocks as $stock) {
+                        if($cc->qyt > $stock->stok) {
+                            $idStok = $stock->id;
+                            $cc->qyt -= $stock->stok;
+                            $stock->stok = 0;
+                            $update = Stocks::find($idStok)->delete();
+                        } else {
+                            $idStok = $stock->id;
+                            $stock->stok -= $cc->qyt;
+                            $cc->qyt = 0;
+                            $update = Stocks::find($idStok)->update([
+                                'stok' => $stock->stok
+                            ]);
+                            break;
+                        }
                     }
                 }
             }
-        }
-        if($returnQytProd == false) {
-            $create = Transactions::create($data);
-            if(!$create) return response(['message' => 'transaksi gagal ditambahkan'], 500);
-            if($totalPoint > 0) {
-                $checkCust = Customers::find($data['customer_id']);
-                if($checkCust) {
-                    $checkCust->update([
-                        'point' => $checkCust->point + $totalPoint
-                    ]);
+            if($returnQytProd == false) {
+                $create = Transactions::create($data);
+                if(!$create) return response(['message' => 'transaksi gagal ditambahkan'], 500);
+                if($totalPoint > 0) {
+                    $checkCust = Customers::find($data['customer_id']);
+                    if($checkCust) {
+                        $checkCust->update([
+                            'point' => $checkCust->point + $totalPoint
+                        ]);
+                    }
                 }
+                DB::commit();
+                // Print nota
+                $printTrx = new PrintTrx();
+                $printTrx->invoice($create->id);
+                return response(['message' => 'transaksi berhasil ditambahkan']);
+            } else {
+                return response(['message' => 'transaksi gagal ditambahkan'], 500);
             }
-            return response(['message' => 'transaksi berhasil ditambahkan']);
-        } else {
-            return response(['message' => 'transaksi gagal ditambahkan'], 500);
+        } catch (\Exception $e) {
+            DB::rollBack();
+            Log::error($e->getMessage());
+            return response(['message' => $e->getMessage()], 500);
         }
     }
 

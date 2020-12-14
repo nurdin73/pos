@@ -344,6 +344,8 @@ function processPayment() {
     const diskon = $('#diskon').val()
     const no_invoice = noInvoice
     const keterangan = $('#keterangan').val()
+    const cash = $('#cash').val()
+    const change = $('#change').val()
     if(grandTotal < 1) {
       Swal.fire({
         text: 'isi barang terlebih dahulu',
@@ -368,7 +370,9 @@ function processPayment() {
             customer_id: customer,
             diskon_transaksi: diskon != "" ? diskon : 0,
             keterangan: keterangan,
-            total: grandTotal
+            total: grandTotal,
+            cash: cash,
+            change: change
           }
           Functions.prototype.postRequest(addTransaction, urlAddTransaction, data)
         }
