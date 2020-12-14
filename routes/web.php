@@ -85,6 +85,7 @@ Route::group(['prefix' => 'admin', 'middleware' => ['auth']], function () {
             Route::get('/', 'Admin\SettingController@api')->name('settingApi');
         });
         // Route::get('/database', 'Admin\SettingController@database')->name('settingDatabase');
+        Route::get('/printer-settings', 'Admin\SettingController@printerSettings')->name('printerSettings');
         Route::get('/management-staff', 'Admin\SettingController@managementStaff')->name('settingManagementStaff');
     });
 });

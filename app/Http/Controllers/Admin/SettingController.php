@@ -31,4 +31,9 @@ class SettingController extends Controller
     {
         return view('admin.settings.staff.managementStaff');
     }
+
+    public function printerSettings()
+    {
+        return view('admin.settings.printer.index');
+    }
 }
