@@ -62,11 +62,7 @@ class PrintTrx
     {
         $PRINTER_DEVICE = env('PRINTER_DEVICE', "EPSON TM-U220 Receipt");
         $connector = "";
-        if(env('OS') == "windows") {
-            $connector = new WindowsPrintConnector($PRINTER_DEVICE); // ini untuk windows. ambil nama printer sharingnya
-        } else {
-            $connector = new FilePrintConnector($PRINTER_DEVICE); // /dev/usb/lp1 ini untuk linux
-        }
+        $connector = new WindowsPrintConnector($PRINTER_DEVICE); // ini untuk windows. ambil nama printer sharingnya
         $printer = new Printer($connector);
         $trx = Transactions::with('carts.product', 'customer')->where('id', $id)->first();
 
