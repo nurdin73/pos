@@ -64,7 +64,7 @@ class PrintTrx
         $connector = "";
         $connector = new WindowsPrintConnector($PRINTER_DEVICE); // ini untuk windows. ambil nama printer sharingnya
         $printer = new Printer($connector);
-        $trx = Transactions::with('carts.product', 'customer')->where('id', $id)->first();
+        $trx = Transactions::with('carts.product', 'customer', 'user')->where('id', $id)->first();
 
         // detail stores
         $store = $this->getDetailStore(1);
@@ -75,14 +75,21 @@ class PrintTrx
         $printer->initialize();
         $printer->selectPrintMode(Printer::MODE_DOUBLE_HEIGHT); // perbesar huruf
         $printer->setJustification(Printer::JUSTIFY_CENTER); // Setting teks menjadi rata tengah
+        $printer->text("$nameStore\n");
+                  
+        // alamat
+        $printer->initialize();
+        $printer->setJustification(Printer::JUSTIFY_CENTER); // Setting teks menjadi rata tengah
         $printer->text("$alamat\n");
         $printer->text("\n");
 
         // data transactions
         $printer->initialize();
-        $nameKasir = $trx->customer != null ? $trx->customer->name : "Nurdin";
+        $nameKasir = $trx->user != null ? $trx->user->name : "-";
+        $customer = $trx->customer != null ? $trx->customer->nama : "-";
         $printer->text("Kasir : ". $nameKasir . "\n");
         $printer->text("Waktu : ". $trx->tgl_transaksi . "\n");
+        $printer->text("Customer : ". $customer . "\n");
         $printer->text("No Invoice : ". $trx->no_invoice . "\n");
         
         // create table product
@@ -92,13 +99,17 @@ class PrintTrx
         $printer->text("----------------------------------------\n");
         foreach ($trx->carts as $cart) {
             $nameProd = $cart->product != null ? $cart->product->nama_barang : "tidak valid";
-            $subTotal = $cart->qyt * $cart->harga_product;
-            $printer->text($this->create4Column($nameProd, $cart->qyt, $cart->harga_product, $subTotal));
+            $subTotal = $cart->qyt * ($cart->harga_product - $cart->diskon_product);
+            $printer->text($this->create4Column($nameProd, $cart->qyt, $cart->harga_product . "-" . $cart->diskon_product, $subTotal));
         }
         $printer->text("----------------------------------------\n");
+        $printer->text($this->create4Column('', '', "Sub Total", $trx->total + $trx->diskon_transaksi));
+        $printer->text($this->create4Column('', '', "Diskon", $trx->diskon_transaksi));
         $printer->text($this->create4Column('', '', "Total", $trx->total));
         $printer->text($this->create4Column('', '', "Bayar", $trx->cash));
         $printer->text($this->create4Column('', '', "Kembalian", $trx->change));
+        $printer->text("Ket : " . $trx->keterangan ?? "-" . "\n");
+        $printer->text("\n");
 
         // Pesan penutup
         $printer->initialize();

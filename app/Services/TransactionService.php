@@ -110,10 +110,10 @@ class TransactionService
                         ]);
                     }
                 }
-                DB::commit();
                 // Print nota
                 $printTrx = new PrintTrx();
                 $printTrx->invoice($create->id);
+                DB::commit();
                 return response(['message' => 'transaksi berhasil ditambahkan']);
             } else {
                 return response(['message' => 'transaksi gagal ditambahkan'], 500);
