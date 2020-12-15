@@ -1,6 +1,7 @@
 <?php
 namespace App\Services;
 
+use App\Helpers\CreatePaginationLink;
 use App\Models\BranchStores;
 
 class BranchStoreService
@@ -14,7 +15,8 @@ class BranchStoreService
         } else {
             $results = $results->paginate($sorting);
         }
-        return response($results);
+        $data = new CreatePaginationLink($results->getCollection(), $results->links(), $results->currentPage());
+        return $data->crafting();
     }
 
     public function show($id)
