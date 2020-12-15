@@ -16,7 +16,7 @@ class SuplierSeeder extends Seeder
             Supliers::create([
                 'nama_suplier' => 'CV coba ' . $i,
                 'email' => 'email@email.com',
-                'no_telp' => '093722364234',
+                'no_telp' => '0937-2236-4234',
                 'alamat' => 'cirebon'
             ]);
         }

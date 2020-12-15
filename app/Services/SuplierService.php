@@ -1,6 +1,7 @@
 <?php
 namespace App\Services;
 
+use App\Helpers\CreatePaginationLink;
 use App\Models\Supliers;
 
 class SuplierService 
@@ -20,8 +21,8 @@ class SuplierService
         } else {
            $results = $results->paginate($paginate);
         }
-
-        return response($results);
+        $data = new CreatePaginationLink($results->getCollection(), $results->links(), $results->currentPage());
+        return $data->crafting();
     }
 
     public function getDetail($id)
