@@ -6,6 +6,7 @@
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/PgwSlider/2.3.0/pgwslider.min.css" integrity="sha512-J1G8iGNI7Vk77uSN3MCVgvfTYdKVmqXhNZRI/QdC4L0S6MRImg40OsfF+N95Hix1n/Mxu7PHvdE1ULW4Hgfxyw==" crossorigin="anonymous" />
   <style>
     .modal { overflow: auto !important; }
+    .page-link { cursor: pointer !important; }
   </style>
 @endsection
 
@@ -79,12 +80,9 @@
                   
                 </tbody>
               </table>
-              <nav aria-label="..." class="d-flex justify-content-between align-items-center">
-                <span class="text-muted">Menampilan <span id="fromData"></span> sampai <span id="toData"></span> dari <span id="totalData"></span> data</span>
-                <ul class="pagination">
-                  
-                </ul>
-              </nav>
+              <div class="paginate d-flex justify-content-end">
+
+              </div>
             </div>
           </div>
         </div>

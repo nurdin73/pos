@@ -12,7 +12,7 @@ $(document).ready(function () {
     $('#showOther').slideToggle()
   })
 
-  $('.pagination').on('click', '.page-item .page-link', function(e) {
+  $('.paginate').on('click', '.pagination .page-item a', function(e) {
     e.preventDefault()
     const id = $(this).data('id');
     if(query_params == "") {
@@ -299,8 +299,9 @@ const getListProducts = {
     Functions.prototype.getRequest(getListProducts, urlListProd)
   },
   set successData(response) {
+    $('.paginate').empty()
     $('#listProducts').empty()
-    const { current_page, last_page, prev_page_url, data, to, from, total } = response
+    const { data, currentPage, pagination } = response
     if(data.length > 0) {
       data.map(result => {
         var stocks = 0
@@ -333,13 +334,16 @@ const getListProducts = {
         </tr>
       `)
     }
-    $('#fromData').text(from)
-    $('#toData').text(to)
-    $('#totalData').text(total)
-    var paginations = ""
-    paginations = Functions.prototype.createPaginate(current_page, last_page, prev_page_url)
-    $('.pagination').html(paginations)
-    paginations = ""
+    $('.paginate').html(pagination)
+    $('.paginate').find('a').each(function() {
+      if($(this).text() === '‹'){
+        $(this).attr('data-id', currentPage - 1);
+      }else if($(this).text() === '›'){
+        $(this).attr('data-id', currentPage + 1);
+      }else{
+        $(this).attr('data-id', $(this).html());
+      }
+    })
   },
   set errorData(err) {
     toastr.error(err.responseJSON.message, 'Error')

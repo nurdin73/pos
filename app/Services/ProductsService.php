@@ -2,12 +2,11 @@
 namespace App\Services;
 
 use App\Exports\ProductsExport;
+use App\Helpers\CreatePaginationLink;
 use App\Models\FileProducts;
 use App\Models\Products;
 use App\Models\Stocks;
-use App\Models\Transactions;
 use App\Models\TypePrices;
-use DateTime;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Log;
 use Illuminate\Support\Facades\Storage;
@@ -57,7 +56,9 @@ class ProductsService
                 $results = $results->paginate($sorting);
             }
         }
-        return response($results);
+        $createData = new CreatePaginationLink($results->getCollection(), $results->links(), $results->currentPage());
+        return $createData->crafting();
+        // return response($results);
     }
 
     public function addProduct($data, $files, $typeHarga, $stocks)

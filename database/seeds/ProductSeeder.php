@@ -2,6 +2,8 @@
 
 use App\Helpers\GenerateCode;
 use App\Models\Products;
+use App\Models\Stocks;
+use Carbon\Carbon;
 use Illuminate\Database\Seeder;
 
 class ProductSeeder extends Seeder
@@ -13,16 +15,20 @@ class ProductSeeder extends Seeder
      */
     public function run()
     {
-        for ($i=0; $i < 40; $i++) { 
-            Products::create([
+        for ($i=0; $i < 300; $i++) { 
+            $product = Products::create([
                 'nama_barang' => 'produk '.$i,
                 'type_barang' => 'baru',
-                'kode_barang' => GenerateCode::kode(),
-                'harga_dasar' => 1000,
+                'kode_barang' => "COBA00".$i,
                 'harga_jual'  => 2000,
-                'stok'        => 100,
                 'selled'        => 0,
                 'kategori_id' => 1
+            ]);
+            $stock = Stocks::create([
+                'stok' => 100,
+                'product_id' => $product->id,
+                'harga_dasar' => 1500,
+                'tgl_update' => Carbon::now()
             ]);
         }
     }
