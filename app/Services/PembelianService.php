@@ -1,6 +1,7 @@
 <?php
 namespace App\Services;
 
+use App\Helpers\CreatePaginationLink;
 use App\Models\Products;
 
 class PembelianService
@@ -14,6 +15,7 @@ class PembelianService
         } else {
             $results = $results->paginate($sorting);
         }
-        return response($results);
+        $data = new CreatePaginationLink($results->getCollection(), $results->links(), $results->currentPage());
+        return $data->crafting();
     }
 }

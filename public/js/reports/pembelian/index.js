@@ -1,7 +1,7 @@
 $(document).ready(function() {
 	var query_params = ""
 	getDataPembelian.loadData = ""
-	$('.pagination').on('click', '.page-item .page-link', function(e) {
+	$('.paginate').on('click', '.pagination .page-item a', function(e) {
 		e.preventDefault()
 		const id = $(this).data('id');
 		if(query_params == "") {
@@ -31,7 +31,7 @@ const getDataPembelian = {
 	},
 	set successData(response) {
 		$('#listProducts').empty()
-		const { current_page, last_page, prev_page_url, data } = response
+		const { data, currentPage, pagination } = response
 		if(data.length > 0) {
 			data.map(result => {
 				var stocks = 0
@@ -53,8 +53,17 @@ const getDataPembelian = {
 				`)
 			})
 			var paginations = ""
-            paginations = Functions.prototype.createPaginate(current_page, last_page, prev_page_url)
-            $('.pagination').html(paginations)
+            paginations = pagination
+			$('.paginate').html(paginations)
+			$('.paginate').find('a').each(function() {
+                if($(this).text() === '‹'){
+                    $(this).attr('data-id', currentPage - 1);
+                }else if($(this).text() === '›'){
+                    $(this).attr('data-id', currentPage + 1);
+                }else{
+                    $(this).attr('data-id', $(this).html());
+                }
+            })
             paginations = ""
 		} else {
 			$('#listProducts').append(`
