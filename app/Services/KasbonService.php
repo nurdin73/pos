@@ -1,6 +1,7 @@
 <?php
 namespace App\Services;
 
+use App\Helpers\CreatePaginationLink;
 use App\Models\CashReceipts;
 use App\Models\Customers;
 use App\Models\Installments;
@@ -11,19 +12,18 @@ class KasbonService
     public function showAll($nama)
     {
         $data = [];
-        $customers = null;
+        $results = Customers::with('cashReceipts.installments')->select("*");
         if($nama != "") {
-            $customers = Customers::with('cashReceipts.installments')->where('nama', 'like', '%'.$nama.'%')->paginate(5);
+            $results = $results->where('nama', 'like', '%'.$nama.'%')->paginate(5);
         } else {
-            $customers = Customers::with('cashReceipts.installments')->paginate(5);
+            $results = $results->paginate(5);
         }
+        $convertData = new CreatePaginationLink($results->getCollection(), $results->links(), $results->currentPage());
         $pagination = collect([
-            'last_page' => $customers->lastPage(),
-            'current_page' => $customers->currentPage(),
-            'prev_page_url' => $customers->previousPageUrl()
+            'dataset' => $convertData->crafting()
         ]);
         $data['data'] = [];
-        foreach ($customers as $customer) {
+        foreach ($results as $customer) {
             if(count($customer->cashReceipts) > 0) {
                 $sub_array = [];
                 $sub_array['id'] = $customer->id;

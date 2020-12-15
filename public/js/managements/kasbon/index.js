@@ -8,7 +8,7 @@ $(document).ready(function () {
         getDataList.loadData = query_params
     })
 
-    $('.pagination').on('click', '.page-item .page-link', function(e) {
+    $('.paginate').on('click', '.pagination .page-item a', function(e) {
         e.preventDefault()
         const id = $(this).data('id');
         query_params += "&page=" + id
@@ -66,8 +66,18 @@ const getDataList = {
                 </tr>
             `)
         }
-        var paginations = Functions.prototype.createPaginate(response.current_page, response.last_page, response.prev_page_url)
-        $('.pagination').html(paginations)
+        const { currentPage, pagination } = response.dataset.original
+        var paginations = pagination
+        $('.paginate').html(paginations)
+        $('.paginate').find('a').each(function() {
+            if($(this).text() === '‹'){
+                $(this).attr('data-id', currentPage - 1);
+            }else if($(this).text() === '›'){
+                $(this).attr('data-id', currentPage + 1);
+            }else{
+                $(this).attr('data-id', $(this).html());
+            }
+        })
         paginations = ""
         $('#totalKasbon').text(Functions.prototype.formatRupiah(total_kasbon.toString(), 'Rp. '))
         $('#totalTransaksi').text(total_trx)
