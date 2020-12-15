@@ -1,6 +1,6 @@
 $(document).ready(function () {
     getProducts.loadData = ""
-    $('.pagination').on('click', '.page-item .page-link', function(e) {
+    $('.paginate').on('click', '.pagination .page-item a', function(e) {
         e.preventDefault()
         const id = $(this).data('id');
         var query_params = "?page=" + id
@@ -15,7 +15,7 @@ const getProducts = {
     },
     set successData(response) {
         $('#listProducts').empty()
-        const { current_page, last_page, prev_page_url, data } = response.data
+        const { data, currentPage, pagination } = response.data.original
         if(data.length > 0) {
             data.map(result => {
                 var stocks = 0
@@ -34,8 +34,17 @@ const getProducts = {
                 `)
             })
             var paginations = ""
-            paginations = Functions.prototype.createPaginate(current_page, last_page, prev_page_url)
-            $('.pagination').html(paginations)
+            paginations = pagination
+            $('.paginate').html(paginations)
+            $('.paginate').find('a').each(function() {
+                if($(this).text() === '‹'){
+                    $(this).attr('data-id', currentPage - 1);
+                }else if($(this).text() === '›'){
+                    $(this).attr('data-id', currentPage + 1);
+                }else{
+                    $(this).attr('data-id', $(this).html());
+                }
+            })
             paginations = ""
             $('#totalBarangMasuk').text(response.totalStok)
             $('#totalBarangKeluar').text(response.totalSelled)

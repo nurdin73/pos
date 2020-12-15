@@ -196,8 +196,9 @@ class ProductsService
         $results = Products::with('stocks:id,product_id,stok,harga_dasar')
         ->select('id', 'nama_barang', 'selled')
         ->orderBy('id', 'ASC')->paginate(10);
+        $convertData = new CreatePaginationLink($results->getCollection(), $results->links(), $results->currentPage());
         $pagination = collect([
-            'data'          => $results
+            'data' => $convertData->crafting()
         ]);
         $results2 = Products::with('stocks:id,product_id,stok,harga_dasar')
         ->select('id', 'nama_barang', 'selled')
@@ -214,6 +215,7 @@ class ProductsService
             $data['totalSelled'] += $r->selled;
         }
         $response = $pagination->merge($data);
+        // return $convertData->crafting();
         return response($response);
     }
 
