@@ -191,6 +191,8 @@ Route::group(['prefix' => 'api/'], function () {
             Route::get('/transactions-days', 'Api\Exports\TransactionsController@days')->name('exportTrxDays');
             Route::get('/transactions-months', 'Api\Exports\TransactionsController@months')->name('exportTrxMonths');
             Route::get('/transactions-years', 'Api\Exports\TransactionsController@years')->name('exportTrxYears');
+
+            Route::get('/products', 'Api\Exports\ProductController@index')->name('exportProduct');
         });
 
         Route::group(['prefix' => 'settings'], function () {

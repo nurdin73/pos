@@ -1,6 +1,7 @@
 <?php
 namespace App\Services;
 
+use App\Exports\ProductsExport;
 use App\Models\FileProducts;
 use App\Models\Products;
 use App\Models\Stocks;
@@ -13,6 +14,7 @@ use Illuminate\Support\Facades\Storage;
 use Spatie\ImageOptimizer\OptimizerChainFactory;
 use Illuminate\Support\Str;
 use Intervention\Image\Facades\Image;
+use Maatwebsite\Excel\Facades\Excel;
 use Yajra\DataTables\Facades\DataTables;
 
 class ProductsService
@@ -212,5 +214,14 @@ class ProductsService
         }
         $response = $pagination->merge($data);
         return response($response);
+    }
+
+    public function exportExcel()
+    {
+        $results = Products::with('stocks:id,product_id,stok,harga_dasar')
+        ->select('id', 'nama_barang', 'selled')
+        ->orderBy('id', 'ASC')->get();
+        $filename = "Products-". Str::random(20) . '.xlsx';
+        return Excel::download(new ProductsExport($results), $filename);
     }
 }

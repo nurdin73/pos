@@ -41,7 +41,7 @@
         <div class="card">
           <div class="card-header d-flex justify-content-between align-items-center">
             <span class="lead">Barang</span>
-            <button class="btn btn-sm btn-success">Export Excel</button>
+            <a href="{{ route('exportProduct') }}" class="btn btn-sm btn-success">Export Excel</a>
           </div>
           <div class="card-body">
             <div class="table-responsive">
