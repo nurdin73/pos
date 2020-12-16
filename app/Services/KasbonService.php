@@ -70,7 +70,7 @@ class KasbonService
     public function detail($id)
     {
         $result = CashReceipts::with('customer')->where('id', $id)->first();
-        $result->setRelation('installments', $result->installments()->paginate(5));
+        $result->setRelation('installments', $result->installments()->simplePaginate(5));
         return response($result);
     }
 

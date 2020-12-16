@@ -7,7 +7,7 @@ class CreatePaginationLink
     protected $links;
     protected $currentPage;
 
-    public function __construct($data, $links, $currentPage) {
+    public function __construct(Object $data, String $links, Int $currentPage) {
         $this->data = $data;
         $this->links = $links;
         $this->currentPage = $currentPage;

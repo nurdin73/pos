@@ -30,8 +30,8 @@ class KasbonSeeder extends Seeder
             CashReceipts::create([
                 'pelanggan_id' => 1,
                 'jumlah' => $data[$i],
-                'tgl_kasbon' => '2020-11-09 00:00:00',
-                'jatuh_tempo' => '2020-11-16 00:00:00',
+                'tgl_kasbon' => '2020-12-15 00:00:00',
+                'jatuh_tempo' => '2020-12-22 00:00:00',
                 'keterangan' => 'tes',
             ]);
         }

@@ -1,5 +1,5 @@
 $(document).ready(function () {
-    $('.pagination').on('click', '.page-item .page-link', function(e) {
+    $('.paginate').on('click', '.page-item a', function(e) {
         e.preventDefault()
         const id = $(this).data('id');
         query_params = "?page=" + id
@@ -15,10 +15,11 @@ const getListModal = {
     },
     set successData(response) {
         $('#listProduct').empty()
-        const {current_page, last_page, prev_page_url, total_modal} = response
+        const { total_modal, modal} = response
+        const { data, currentPage, pagination } = modal.original
         $('#sisaModal').text(Functions.prototype.formatRupiah(total_modal.toString(), 'Rp. '))
-        if(response.data.length > 0) {
-            response.data.map(result => {
+        if(data.length > 0) {
+            data.map(result => {
                 const totalModal = result.stok * result.harga_dasar
                 $('#listProduct').append(`
                     <tr>
@@ -32,8 +33,17 @@ const getListModal = {
             })
         }
         var paginations = ""
-        paginations = Functions.prototype.createPaginate(current_page, last_page, prev_page_url)
-        $('.pagination').html(paginations)
+        paginations = pagination
+        $('.paginate').html(paginations)
+        $('.paginate').find('a').each(function() {
+            if($(this).text() === '‹'){
+                $(this).attr('data-id', currentPage - 1);
+            }else if($(this).text() === '›'){
+                $(this).attr('data-id', currentPage + 1);
+            }else{
+                $(this).attr('data-id', $(this).html());
+            }
+        })
         paginations = ""
     },
     set errorData(err) {

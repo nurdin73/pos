@@ -268,7 +268,7 @@ class Functions
         });
     }
 
-    createPaginate(current_page, last_page, prev_page_url) {
+    createPaginate(current_page, last_page, prev_page_url, next_page_url = "") {
         var paginations = ""
         if(prev_page_url == null) {
             paginations += `<li class="page-item disabled">
@@ -288,7 +288,7 @@ class Functions
                 paginations += `<li class="page-item"><a class="page-link" data-id="${i}" href="#">${i}</a></li>`
             }
         }
-        if(current_page == last_page) {
+        if(next_page_url == null) {
             paginations += `<li class="page-item disabled">
                 <a class="page-link" href="#" tabindex="-1" data-id="${current_page}" aria-disabled="true">Next</a>
             </li>`

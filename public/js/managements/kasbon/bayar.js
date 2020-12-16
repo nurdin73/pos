@@ -51,8 +51,8 @@ const getDetail = {
 				`)
 			})
 		}
-		const { current_page, last_page, prev_page_url } = response.cash_receipts
-		var paginations = Functions.prototype.createPaginate(current_page, last_page, prev_page_url)
+		const { current_page, last_page, prev_page_url, next_page_url } = response.cash_receipts
+		var paginations = Functions.prototype.createPaginate(current_page, last_page, prev_page_url, next_page_url)
 		$('.pagination').html(paginations)
 		paginations = ""
 		$('#totalKasbon').text(Functions.prototype.formatRupiah(response.total_kasbon.toString(), 'Rp. '))

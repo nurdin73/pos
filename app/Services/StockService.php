@@ -1,6 +1,7 @@
 <?php
 namespace App\Services;
 
+use App\Helpers\CreatePaginationLink;
 use App\Models\Products;
 use App\Models\Stocks;
 
@@ -83,11 +84,14 @@ class StockService
         for ($i=0; $i < count($modal); $i++) { 
             $totalModal += $modal[$i];
         }
-        $resultModal = collect([
-            'total_modal' => $totalModal
-        ]);
         $stocks = Stocks::with('product:id,nama_barang')->select('id', 'product_id', 'stok', 'harga_dasar', 'tgl_update')->paginate(5);
-        $results = $resultModal->merge($stocks);
-        return response($results);
+        $dataBarang = new CreatePaginationLink($stocks->getCollection(), $stocks->links(), $stocks->currentPage());
+        $createPaginate = $dataBarang->crafting();
+        $resultModal = collect([
+            'total_modal' => $totalModal,
+            'modal'        => $createPaginate
+        ]);
+        // $results = $resultModal->merge($createPaginate);
+        return $resultModal;
     }
 }

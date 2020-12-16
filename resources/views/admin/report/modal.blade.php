@@ -1,4 +1,11 @@
 @extends('layouts.template')
+
+@section('css')
+  <style>
+    .page-link { cursor: pointer !important; }
+  </style>
+@endsection
+
 @section('content')
   <main class="c-main">
     <div class="container-fluid">
@@ -27,11 +34,9 @@
                   
                 </tbody>
               </table>
-              <nav aria-label="..." class="d-flex justify-content-end">
-                <ul class="pagination">
-                  
-                </ul>
-              </nav>
+              <div class="paginate d-flex justify-content-end">
+
+              </div>
             </div>
           </div>
         </div>
