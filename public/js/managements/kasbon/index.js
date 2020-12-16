@@ -39,13 +39,9 @@ const getDataList = {
     },
     set successData(response) {
         var paginations = ""
-        var total_kasbon = 0
-        var total_trx = 0
         $('#listData').empty()
         if(response.data.length > 0) {
             response.data.map(result => {
-                total_kasbon += result.jumlah
-                total_trx += result.total
                 $('#listData').append(`
                     <tr>
                         <td>${result.nama}</td>
@@ -79,8 +75,8 @@ const getDataList = {
             }
         })
         paginations = ""
-        $('#totalKasbon').text(Functions.prototype.formatRupiah(total_kasbon.toString(), 'Rp. '))
-        $('#totalTransaksi').text(total_trx)
+        $('#totalKasbon').text(Functions.prototype.formatRupiah(response.totalKasbon.toString(), 'Rp. '))
+        $('#totalTransaksi').text(response.totalTrx)
     },
     set errorData(err) {
         toastr.error(err.responseJSON.message, 'error')

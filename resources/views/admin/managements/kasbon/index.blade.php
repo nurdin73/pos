@@ -25,7 +25,7 @@
                 </div>
                 <div>
                   <div class="text-value text-primary" id="totalKasbon">0</div>
-                  <div class="text-muted text-uppercase font-weight-bold small">Total Kasbon</div>
+                  <div class="text-muted text-uppercase font-weight-bold small">Sisa Kasbon</div>
                 </div>
               </div>
             </div>

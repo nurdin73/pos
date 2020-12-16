@@ -13,6 +13,16 @@ class KasbonService
     {
         $data = [];
         $results = Customers::with('cashReceipts.installments')->select("*");
+        $countData = $results->count();
+        $totalKasbon = CashReceipts::with("installments")->get();
+        $totalSisa = 0;
+        foreach ($totalKasbon as $t) {
+            $cicilan = 0;
+            foreach ($t->installments as $i) {
+                $cicilan += $i->cicilan;
+            }
+            $totalSisa += $t->jumlah - $cicilan;
+        }
         if($nama != "") {
             $results = $results->where('nama', 'like', '%'.$nama.'%')->paginate(5);
         } else {
@@ -20,7 +30,9 @@ class KasbonService
         }
         $convertData = new CreatePaginationLink($results->getCollection(), $results->links(), $results->currentPage());
         $pagination = collect([
-            'dataset' => $convertData->crafting()
+            'dataset' => $convertData->crafting(),
+            'totalTrx' => $countData,
+            'totalKasbon' => $totalSisa
         ]);
         $data['data'] = [];
         foreach ($results as $customer) {
