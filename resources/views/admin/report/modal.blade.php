@@ -14,7 +14,7 @@
           <div class="card-header d-flex justify-content-between align-items-center">
             <span class="lead">Sisa Modal</span>
             <span id="sisaModal" class="text-uppercase text-primary font-weight-bold"></span>
-            <button class="btn btn-sm btn-success">Export Excel</button>
+            <a href="{{ route('exportModal') }}" class="btn btn-sm btn-success">Export Excel</a>
           </div>
         </div>
         <div class="card">

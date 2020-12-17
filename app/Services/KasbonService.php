@@ -1,11 +1,14 @@
 <?php
 namespace App\Services;
 
+use App\Exports\KasbonExport;
 use App\Helpers\CreatePaginationLink;
 use App\Models\CashReceipts;
 use App\Models\Customers;
 use App\Models\Installments;
 use DateTime;
+use Maatwebsite\Excel\Facades\Excel;
+use Illuminate\Support\Str;
 
 class KasbonService
 {
@@ -98,7 +101,7 @@ class KasbonService
         return response($message);
     }
 
-    public function chartKasbon($query)
+    public function chartKasbon($query, $type)
     {
         $labelTime = [];
         $sets = [];
@@ -220,6 +223,11 @@ class KasbonService
             $sets['totalSisaKasbon'] += $sisa;
             $sets['totalDibayar'] += $dibayar;
         }
-        return $sets;
+        if($type == "export") {
+            $filename = 'Kasbon-'.Str::random(20).'.xlsx';
+            return Excel::download(new KasbonExport($sets, $query), $filename);
+        } else {
+            return $sets;
+        }
     }
 }

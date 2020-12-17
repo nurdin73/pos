@@ -87,6 +87,7 @@ class KasbonController extends Controller
     public function chartKasbon(Request $request)
     {
         $query = $request->get('query');
-        return $this->kasbonService->chartKasbon($query);
+        $type = $request->get('type');
+        return $this->kasbonService->chartKasbon($query, $type);
     }
 }

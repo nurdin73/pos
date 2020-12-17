@@ -1,9 +1,12 @@
 <?php
 namespace App\Services;
 
+use App\Exports\ModalExport;
 use App\Helpers\CreatePaginationLink;
 use App\Models\Products;
 use App\Models\Stocks;
+use Maatwebsite\Excel\Facades\Excel;
+use Illuminate\Support\Str;
 
 class StockService 
 {
@@ -93,5 +96,26 @@ class StockService
         ]);
         // $results = $resultModal->merge($createPaginate);
         return $resultModal;
+    }
+
+    public function export()
+    {
+        $totalModal = 0;
+        $countModal = Stocks::select('stok', 'harga_dasar')->get();
+        $modal = [];
+        foreach ($countModal as $cm) {
+            $modal[] = $cm->stok * $cm->harga_dasar;
+        }
+        for ($i=0; $i < count($modal); $i++) { 
+            $totalModal += $modal[$i];
+        }
+        $stocks = Stocks::with('product:id,nama_barang')->select('id', 'product_id', 'stok', 'harga_dasar', 'tgl_update')->get();
+        $resultModal = collect([
+            'total_modal' => $totalModal,
+            'modal'        => $stocks
+        ]);
+        // $results = $resultModal->merge($createPaginate);
+        $filename = 'Modal-'. Str::random(20) . '.xlsx';
+        return Excel::download(new ModalExport($resultModal), $filename);
     }
 }
