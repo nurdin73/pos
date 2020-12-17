@@ -7,19 +7,17 @@ use Maatwebsite\Excel\Concerns\FromView;
 use Maatwebsite\Excel\Concerns\WithStyles;
 use PhpOffice\PhpSpreadsheet\Worksheet\Worksheet;
 
-class ProductsExport implements FromView, WithStyles
+class PembelianProductExport implements FromView, WithStyles
 {
     use Exportable;
-
     protected $data;
-
     public function __construct($data) {
         $this->data = $data;
     }
 
     public function styles(Worksheet $sheet)
     {
-        return [
+        return  [
             4    => [
                 'font' => ['bold' => true],
             ],
@@ -28,8 +26,6 @@ class ProductsExport implements FromView, WithStyles
 
     public function view() : View
     {
-        return view('exports.products', [
-            'products' => $this->data
-        ]);
+        return view('exports.pembelianProducts', ['products' => $this->data]);
     }
 }

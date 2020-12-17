@@ -1,13 +1,16 @@
 <?php
 namespace App\Services;
 
+use App\Exports\PenjualanProductExport;
 use App\Models\Products;
 use App\Models\Transactions;
 use DateTime;
+use Maatwebsite\Excel\Facades\Excel;
+use Illuminate\Support\Str;
 
 class PenjualanService
 {
-    public function getall($year)
+    public function getall($year, $type)
     {
         $month = [];
         $monthset = [];
@@ -54,20 +57,11 @@ class PenjualanService
                 array_push($monthset[$nameMonth], $data);
             }
         }
-        // $data = [];
-        // $transactions = Transactions::with('carts.product.stocks')->get();
-        // $products = Products::with('stocks:id,product_id,harga_dasar')->select('id', 'selled', 'harga_jual')->get();
-        // foreach ($products as $p) {
-        //     $harga_dasar = 0;
-        //     foreach ($p->stocks as $s) {
-        //         $harga_dasar = $s->harga_dasar;
-        //     }
-        //     $data[] = [
-        //         'modal' => $harga_dasar * $p->selled,
-        //         'pendapatan' => $p->harga_jual * $p->selled,
-        //         'keuntungan' => ($p->harga_jual * $p->selled) - ($harga_dasar * $p->selled)
-        //     ];
-        // }
-        return response($monthset);
+        if($type == "export") {
+            $filename = 'Penjualan-'.Str::random(20). '.xlsx';
+            return Excel::download(new PenjualanProductExport($monthset), $filename);
+        } else {
+            return response($monthset);
+        }
     }
 }

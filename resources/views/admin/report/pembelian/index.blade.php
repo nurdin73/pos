@@ -13,7 +13,7 @@
         <div class="card">
           <div class="card-header d-flex justify-content-between align-items-center">
             <span class="lead">Pembelian Barang</span>
-            <button class="btn btn-sm btn-success">Export Excel</button>
+            <a href="{{ route('exportPembelianProduct') }}" class="btn btn-sm btn-success">Export Excel</a>
           </div>
           <div class="card-body">
             <form id="filterExport">

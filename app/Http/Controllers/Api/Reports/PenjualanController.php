@@ -16,9 +16,13 @@ class PenjualanController extends Controller
     public function getAll(Request $request)
     {
         $year = $request->input('year');
+        $type = $request->input('type');
         if(!$year) {
             $year = date('Y');
         }
-        return $this->penjualanService->getall($year);
+        if(!$type) {
+            $type = "graph";
+        }
+        return $this->penjualanService->getall($year, $type);
     }
 }

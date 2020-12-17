@@ -19,4 +19,9 @@ class PembelianController extends Controller
         $sorting = $request->input('sorting') != null  ? $request->input('sorting') : 10;
         return $this->pembelianService->getAll($nama_barang, $sorting);
     }
+
+    public function export()
+    {
+        return $this->pembelianService->export();
+    }
 }

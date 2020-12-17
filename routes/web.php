@@ -179,7 +179,7 @@ Route::group(['prefix' => 'api/'], function () {
         });
 
         Route::group(['prefix' => 'reports'], function () {
-            Route::get('/penjualan-barang', 'Api\Reports\PenjualanController@getAll');
+            Route::get('/penjualan-barang', 'Api\Reports\PenjualanController@getAll')->name('reportPenjualanProduct');
             Route::get('/pembelian-barang', 'Api\Reports\PembelianController@getAll');
             Route::get('/kasbon', 'Api\Managements\KasbonController@chartKasbon');
             Route::get('/customer', 'Api\Managements\PelangganController@chartPelanggan');
@@ -193,6 +193,8 @@ Route::group(['prefix' => 'api/'], function () {
             Route::get('/transactions-years', 'Api\Exports\TransactionsController@years')->name('exportTrxYears');
 
             Route::get('/products', 'Api\Exports\ProductController@index')->name('exportProduct');
+
+            Route::get('/pembelian-products', 'Api\Reports\PembelianController@export')->name('exportPembelianProduct');
         });
 
         Route::group(['prefix' => 'settings'], function () {
