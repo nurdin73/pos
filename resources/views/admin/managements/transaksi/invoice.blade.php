@@ -25,10 +25,7 @@
         <div class="card">
           <div class="card-header d-flex justify-content-between align-items-center">
             <span class="lead">Invoice <span class="badge badge-pill badge-primary no_invoice">00000</span></span>
-            <div class="btn-group">
-              <button class="btn btn-sm btn-primary">Print</button>
-              <a href="{{ route('listTransaksi') }}" class="btn btn-sm btn-danger">Kembali</a>
-            </div>
+            <a href="{{ route('listTransaksi') }}" class="btn btn-sm btn-danger">Kembali</a>
           </div>
           <div class="card-body">
             <div class="row">
