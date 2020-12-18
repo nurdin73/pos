@@ -1,9 +1,12 @@
 <?php
 namespace App\Services;
 
+use App\Exports\CustomerExport;
 use App\Models\CashReceipts;
 use App\Models\Customers;
 use DateTime;
+use Maatwebsite\Excel\Facades\Excel;
+use Illuminate\Support\Str;
 
 class CustomerService
 {
@@ -38,7 +41,10 @@ class CustomerService
     public function kasbonCustomers($id)
     {
         $customer = Customers::find($id);
-        $total = collect(['total_kasbon' => CashReceipts::select("jumlah")->where('pelanggan_id', $id)->sum('jumlah')]); 
+        $total = collect([
+            'total_kasbon' => CashReceipts::select("jumlah")->where('pelanggan_id', $id)->sum('jumlah'),
+            'total_trx'    => CashReceipts::select("jumlah")->where('pelanggan_id', $id)->count()
+        ]); 
         $customer->setRelation('cashReceipts', $customer->cashReceipts()->with('installments')->simplePaginate(5));
         $results = $total->merge($customer);
         return response($results);
@@ -137,5 +143,19 @@ class CustomerService
         $sets['totalCustYesterday'] = $selectDB->where('created_at', 'like', '%'.$yesterday.'%')->count();
         $sets['totalCustNow'] = Customers::where('created_at', 'like', '%'.$now.'%')->count();
         return response($sets);
+    }
+
+    public function report()
+    {
+        $yesterday = date('Y-m-d', strtotime('-1 days'));
+        $now = date('Y-m-d');
+        $sets = [];
+        $selectDB = Customers::select("*");
+        $sets['total'] = $selectDB->count();
+        $sets['totalCustYesterday'] = $selectDB->where('created_at', 'like', '%'.$yesterday.'%')->count();
+        $sets['totalCustNow'] = Customers::where('created_at', 'like', '%'.$now.'%')->count();
+        $sets['data'] = Customers::select("*")->orderBy('id', 'ASC')->get();
+        $filename = 'Customers-'. Str::random(20) .'.xlsx';
+        return Excel::download(new CustomerExport($sets), $filename);
     }
 }

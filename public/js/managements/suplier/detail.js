@@ -2,8 +2,8 @@ $(document).ready(function () {
     getDetail.loadData = id
     $('.pagination').on('click', '.page-item .page-link', function(e) {
         e.preventDefault()
-        const id = $(this).data('id');
-        var query_params = "?page=" + id
+        const page = $(this).data('id');
+        var query_params = "?page=" + page
         getDetail.loadData = id + query_params
     })
 });
@@ -14,7 +14,7 @@ const getDetail = {
         Functions.prototype.requestDetail(getDetail, url)
     },
     set successData(response) {
-        const { last_page, current_page, data, prev_page_url } = response.products
+        const { current_page, data, prev_page_url, next_page_url } = response.products
         $('#nameSuplier').text(response.nama_suplier)
         $('#emailSuplier').text(response.email != null ? response.email : "-")
         $('#addressSuplier').text(response.alamat.length > 70 ? response.alamat.substr(0, 70) : response.alamat)
@@ -33,7 +33,7 @@ const getDetail = {
                 `)
             })
             var paginations = ""
-            paginations = Functions.prototype.createPaginate(current_page, last_page, prev_page_url)
+            paginations = Functions.prototype.createPaginate(current_page, prev_page_url, next_page_url)
             $('.pagination').html(paginations)
         } else {
             $('#listProducts').append(`

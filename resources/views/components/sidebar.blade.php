@@ -150,7 +150,6 @@
           <svg class="c-sidebar-nav-icon">
             <use xlink:href="{{ asset('vendors/@coreui/icons/svg/free.svg#cil-people') }}"></use>
           </svg> Pelanggan
-          <span class="badge badge-warning">On Going</span>
         </a>
       </li>
       <li class="c-sidebar-nav-title">Pengaturan <span class="sr-only">Pengaturan</span></li>

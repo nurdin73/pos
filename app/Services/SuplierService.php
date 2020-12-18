@@ -28,7 +28,7 @@ class SuplierService
     public function getDetail($id)
     {
         $result = Supliers::where('id', $id)->first();
-        $result->setRelation('products', $result->products()->select('id', 'suplier_id', 'nama_barang', 'kode_barang', 'selled')->paginate(5));
+        $result->setRelation('products', $result->products()->select('id', 'suplier_id', 'nama_barang', 'kode_barang', 'selled')->simplePaginate(10));
         return response($result);
     }
 

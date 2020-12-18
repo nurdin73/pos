@@ -51,12 +51,12 @@ const getDetail = {
 				`)
 			})
 		}
-		const { current_page, last_page, prev_page_url, next_page_url } = response.cash_receipts
-		var paginations = Functions.prototype.createPaginate(current_page, last_page, prev_page_url, next_page_url)
+		const { current_page, prev_page_url, next_page_url } = response.cash_receipts
+		var paginations = Functions.prototype.createPaginate(current_page, prev_page_url, next_page_url)
 		$('.pagination').html(paginations)
 		paginations = ""
 		$('#totalKasbon').text(Functions.prototype.formatRupiah(response.total_kasbon.toString(), 'Rp. '))
-		$('#total_transaksi').text(response.cash_receipts.total)
+		$('#total_transaksi').text(response.total_trx)
 	},
 	set errorData(err) {
 		toastr.error(err.responseJSON.message, 'error')

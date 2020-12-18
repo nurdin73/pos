@@ -196,6 +196,8 @@ Route::group(['prefix' => 'api/'], function () {
 
             Route::get('/pembelian-products', 'Api\Reports\PembelianController@export')->name('exportPembelianProduct');
             Route::get('/modal', 'Api\Exports\ModalController@export')->name('exportModal');
+
+            Route::get('/pelanggan', 'Api\Exports\CustomerController@report')->name('exportCustomer');
         });
 
         Route::group(['prefix' => 'settings'], function () {

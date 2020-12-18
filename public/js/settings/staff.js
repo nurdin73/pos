@@ -11,7 +11,7 @@ const getAll = {
     },
     set successData(response) {
         $('#listStaffs').empty()
-        const { current_page, last_page, data, prev_page_url } = response
+        const { current_page, data, prev_page_url, next_page_url } = response
         if(data.length > 0) {
             data.map(result => {
                 $('#listStaffs').append(`
@@ -29,7 +29,7 @@ const getAll = {
                 `)
             })
             var paginations = ""
-            paginations = Functions.prototype.createPaginate(current_page, last_page, prev_page_url)
+            paginations = Functions.prototype.createPaginate(current_page, prev_page_url, next_page_url)
             $('.pagination').html(paginations)
             paginations = ""
         } else {

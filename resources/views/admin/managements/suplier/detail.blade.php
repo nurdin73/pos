@@ -48,7 +48,7 @@
                   
                 </tbody>
               </table>
-              <nav aria-label="..." class="d-flex justify-content-end align-items-end">
+              <nav aria-label="..." class="d-flex justify-content-end">
                 <ul class="pagination">
                   
                 </ul>
