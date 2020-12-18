@@ -2,6 +2,7 @@
 namespace App\Services;
 
 use App\Exports\TransactionExport;
+use App\Helpers\CreatePaginationLink;
 use App\Helpers\PrintTrx;
 use App\Models\Carts;
 use App\Models\Customers;
@@ -306,5 +307,25 @@ class TransactionService
         } else {
             return $years;
         }
+    }
+
+    public function listTransaksi($no_invoice, $sorting)
+    {
+        $results = Transactions::with('user', 'customer')->select("*");
+        if($no_invoice != "") {
+            $results = $results->where('no_invoice', 'like', '%'.$no_invoice.'%')->paginate($sorting);
+        } else {
+            $results = $results->paginate($sorting);
+        }
+        $results = new CreatePaginationLink($results->getCollection(), $results->links(), $results->currentPage());
+        $results = $results->crafting();
+        return $results;
+    }
+
+    public function invoice($id)
+    {
+        $result = Transactions::with('user:id,name', 'customer:id,nama', 'carts:id,no_invoice,qyt,harga_product,diskon_product,product_id', 'carts.product:id,nama_barang,kode_barang')->where('id', $id)->first();
+        if(!$result) return response(['message' => 'Invoice tidak ditemukan'], 404);
+        return response($result);
     }
 }

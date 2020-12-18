@@ -47,7 +47,13 @@ Route::group(['prefix' => 'admin', 'middleware' => ['auth']], function () {
         });
 
         Route::get('/kategori', 'Admin\AdminController@kategori')->name('managementKategori');
-        Route::get('/transaksi', 'Admin\AdminController@managementTransaksi')->name('managementTransaksi');
+        
+        Route::group(['prefix' => '/transaksi'], function () {
+            Route::get('/', 'Admin\AdminController@managementTransaksi')->name('managementTransaksi');
+            Route::get('/list-transaksi', 'Admin\AdminController@listTransaksi')->name('listTransaksi');
+            Route::get('/invoice/{id}', 'Admin\AdminController@invoice');
+        });
+
         Route::get('/cabang', 'Admin\AdminController@managementCabang')->name('managementCabang');
         Route::get('/pelanggan', 'Admin\AdminController@pelanggan')->name('managementPelanggan');
         Route::get('/management-stok', 'Admin\AdminController@managementStok')->name('managementStok');
@@ -108,6 +114,7 @@ Route::group(['prefix' => 'api/'], function () {
             Route::get('/kasbon-pelanggan/{id}', 'Api\Managements\PelangganController@getKasbon');
             Route::get('/pajak', 'Api\Managements\PajakController@index');
             Route::get('/carts/{no_invoice}', 'Api\Managements\TransaksiController@getCarts');
+            Route::get('/list-transaction', 'Api\Managements\TransaksiController@listTransaksi');
             Route::get('/transaksi', 'Api\Managements\TransaksiController@transactions');
             Route::get('/transaksi-per-jam', 'Api\Managements\TransaksiController@getTransactionPerHours');
             Route::get('/transaksi-per-hari', 'Api\Managements\TransaksiController@getTransactionPerDays');
@@ -130,6 +137,7 @@ Route::group(['prefix' => 'api/'], function () {
             Route::get('type-price/{id}', 'Api\Managements\barangController@detailTypePrice');
             Route::get('suplier/{id}', 'Api\Managements\SuplierController@getDetail');
             Route::get('branch-store/{id}', 'Api\Managements\BranchStoreController@show');
+            Route::get('invoice/{id}', 'Api\Managements\TransaksiController@invoice');
 
             // add 
             Route::group(['prefix' => 'add', 'middleware' => ['auth']], function () {

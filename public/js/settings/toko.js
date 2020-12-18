@@ -16,6 +16,7 @@ const getDetail = {
         $('#owner').val(response.owner)
         $('#no_telp').val(response.no_telp)
         $('#alamat').val(response.alamat)
+        $('#npwp').val(response.npwp)
     },
     set errorData(err) {
         toastr.error(err.responseJSON.message, 'Error')
@@ -56,6 +57,8 @@ function updateLogo() {
 }
 
 function updateDetailStore() {
+    $('#no_telp').mask('0000-0000-0000')
+    $('#npwp').mask('00.000.000.0-000.000')
     $('#updateStoreDetail').validate({
         rules: {
             nama_toko: {
@@ -69,9 +72,11 @@ function updateDetailStore() {
             },
             no_telp: {
                 required: true,
-                number:true
             },
             alamat: {
+                required: true
+            },
+            npwp: {
                 required: true
             }
         },
@@ -105,6 +110,7 @@ function updateDetailStore() {
             $('#owner').removeClass('is-valid')
             $('#no_telp').removeClass('is-valid')
             $('#alamat').removeClass('is-valid')
+            $('#npwp').removeClass('is-valid')
         }
     })
 }

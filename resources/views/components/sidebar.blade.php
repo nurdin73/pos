@@ -58,12 +58,16 @@
         </a>
         <span class="sr-only">Management Stok</span>
       </li>
-      <li class="c-sidebar-nav-item">
-        <a class="c-sidebar-nav-link" href="{{ route('managementTransaksi') }}">
+      <li class="c-sidebar-nav-item c-sidebar-nav-dropdown">
+        <a class="c-sidebar-nav-link c-sidebar-nav-dropdown-toggle" href="#">
           <svg class="c-sidebar-nav-icon">
             <use xlink:href="{{ asset('vendors/@coreui/icons/svg/free.svg#cil-chart') }}"></use>
           </svg> Transaksi
         </a>
+        <ul class="c-sidebar-nav-dropdown-items">
+          <li class="c-sidebar-nav-item"><a class="c-sidebar-nav-link" href="{{ route('listTransaksi') }}"><span class="c-sidebar-nav-icon"></span> List Transaksi</a><span class="sr-only">List Transaksi</span></li>
+          <li class="c-sidebar-nav-item"><a class="c-sidebar-nav-link" href="{{ route('managementTransaksi') }}"><span class="c-sidebar-nav-icon"></span> Tambah Transaksi</a><span class="sr-only">Tambah Transaksi</span></li>
+        </ul>
         <span class="sr-only">Transaksi</span>
       </li>
       <li class="c-sidebar-nav-item">

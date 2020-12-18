@@ -57,6 +57,16 @@ class AdminController extends Controller
         return view('admin.managements.transaksi.index', $data);
     }
 
+    public function listTransaksi()
+    {
+        return view('admin.managements.transaksi.list');
+    }
+
+    public function invoice($id)
+    {
+        return view('admin.managements.transaksi.invoice', ['id' => $id]);
+    }
+
     public function pelanggan()
     {
         return view('admin.managements.customer.index');

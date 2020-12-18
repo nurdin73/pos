@@ -13,6 +13,10 @@ class Transactions extends Model
         return $this->hasMany(Carts::class, 'no_invoice', 'no_invoice');
     }
 
+    protected $hidden = [
+        'createdBy', 'customer_id', 'created_at', 'updated_at'
+    ];
+
     public function customer()
     {
         return $this->belongsTo(Customers::class, 'customer_id', 'id');

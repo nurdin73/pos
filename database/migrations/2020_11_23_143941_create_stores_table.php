@@ -19,7 +19,8 @@ class CreateStoresTable extends Migration
             $table->string('jenis_usaha')->nullable();
             $table->string('nama_toko')->nullable();
             $table->string('owner')->nullable();
-            $table->bigInteger('no_telp')->nullable();
+            $table->string('no_telp')->nullable();
+            $table->string('npwp')->nullable();
             $table->text('alamat')->nullable();
             $table->timestamps();
         });

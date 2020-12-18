@@ -112,4 +112,16 @@ class TransaksiController extends Controller
     {
         return $this->transactionService->getTrxPerYear();
     }
+
+    public function listTransaksi(Request $request)
+    {
+        $no_invoice = $request->input('no_invoice') != null ? $request->input('no_invoice') : "";
+        $sorting = $request->input('sorting') != null ? $request->input('sorting') : 10;
+        return $this->transactionService->listTransaksi($no_invoice, $sorting);
+    }
+
+    public function invoice($id)
+    {
+        return $this->transactionService->invoice($id);
+    }
 }

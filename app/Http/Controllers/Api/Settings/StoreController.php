@@ -33,7 +33,7 @@ class StoreController extends Controller
             'jenis_usaha' => 'required',
             'nama_toko' => 'required',
             'owner' => 'required',
-            'no_telp' => 'required|numeric',
+            'no_telp' => 'required',
             'alamat' => 'required',
         ]);
         return $this->settingService->updateStore($request->all());
