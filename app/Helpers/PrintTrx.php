@@ -95,12 +95,12 @@ class PrintTrx
         // create table product
         $printer->initialize();
         $printer->text("----------------------------------------\n");
-        $printer->text($this->create4Column("Barang", "qty", "Harga", "Subtotal"));
+        $printer->text($this->create4Column("Barang", "Harga", "Diskon", "Subtotal"));
         $printer->text("----------------------------------------\n");
         foreach ($trx->carts as $cart) {
             $nameProd = $cart->product != null ? $cart->product->nama_barang : "tidak valid";
             $subTotal = $cart->qyt * ($cart->harga_product - $cart->diskon_product);
-            $printer->text($this->create4Column($nameProd, $cart->qyt, $cart->harga_product . "-" . $cart->diskon_product, $subTotal));
+            $printer->text($this->create4Column($nameProd, $cart->qyt . ' x ' . $cart->harga_product, $cart->diskon_product, $subTotal));
         }
         $printer->text("----------------------------------------\n");
         $printer->text($this->create4Column('', '', "Sub Total", $trx->total + $trx->diskon_transaksi));

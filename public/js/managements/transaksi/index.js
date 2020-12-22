@@ -168,11 +168,11 @@ const getCarts = {
       response.map(result => {
         var harga_product = result.harga_product
         var diskonProduk = result.product.diskon != null ? harga_product * (result.product.diskon / 100) : 0,
-            diskon = diskonProduk + result.diskon_product
+            diskon = diskonProduk + result.diskon_product * result.qyt
             hargaProduk = harga_product,
-            total = ((result.qyt * hargaProduk) - (diskon * result.qyt))
+            total = ((result.qyt * hargaProduk) - diskon)
         const typeHarga = result.product.type_prices
-        subTotal += ((hargaProduk * result.qyt) - (diskon * result.qyt))
+        subTotal += ((hargaProduk * result.qyt) - diskon)
         lists += `
           <tr data-id="${result.id}">
             <td>${i++}</td>

@@ -185,7 +185,7 @@
               </div>
               <div class="col-md-9">
                 <div class="form-group">
-                  <label for="dicount_barang_update">Diskon Transaksi</label>
+                  <label for="dicount_barang_update">Diskon Produk</label>
                   <input type="text" name="dicount_barang_update" id="dicount_barang_update" class="form-control">
                 </div>
               </div>
