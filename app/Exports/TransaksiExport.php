@@ -5,6 +5,7 @@ use Illuminate\Contracts\View\View;
 use Maatwebsite\Excel\Concerns\Exportable;
 use Maatwebsite\Excel\Concerns\FromView;
 use Maatwebsite\Excel\Concerns\WithStyles;
+use PhpOffice\PhpSpreadsheet\Style\Border;
 use PhpOffice\PhpSpreadsheet\Worksheet\Worksheet;
 
 class TransaksiExport implements FromView, WithStyles
@@ -20,12 +21,43 @@ class TransaksiExport implements FromView, WithStyles
 
     public function styles(Worksheet $sheet)
     {
-        return [
+        $dataset = [
             8    => [
                 'font' => ['bold' => true, 'color' => ['rgb' => 'f1f1f1'], 'name' => 'Arial'],
-                'fill' => ['fillType' => 'solid', 'startColor' => ['rgb' => '21209c']]
+                'fill' => ['fillType' => 'solid', 'startColor' => ['rgb' => '21209c']],
             ],
         ];
+        for ($i=1; $i <= count($this->data); $i++) { 
+            $row = 8 + $i;
+            $dataset[$row] = [
+                'borders' => [
+                    'allBorders' => [
+                        'borderStyle' => Border::BORDER_THIN,
+                        'color' => [
+                            'rgb' => '808080'
+                        ]
+                    ]
+                ]
+            ];
+        }
+        return $dataset;
+        // return [
+        //     8    => [
+        //         'font' => ['bold' => true, 'color' => ['rgb' => 'f1f1f1'], 'name' => 'Arial'],
+        //         'fill' => ['fillType' => 'solid', 'startColor' => ['rgb' => '21209c']],
+        //     ],
+        //     9 => [
+        //         'borders' => [
+        //             'allBorders' => [
+        //                 'borderStyle' => Border::BORDER_THIN,
+        //                 'color' => [
+        //                     'rgb' => '808080'
+        //                 ]
+        //             ]
+        //         ]
+        //     ],
+        //     $dataset
+        // ];
     }
 
     public function view() : View
