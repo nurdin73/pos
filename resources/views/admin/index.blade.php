@@ -56,7 +56,7 @@
             <div class="card">
               <div class="card-header d-flex justify-content-between align-items-center">
                 <span>Produk terlaris</span>
-                <button class="btn btn-sm btn-success" type="button">Export Excel</button>
+                <a href="{{ route('reportPenjualan') }}" class="btn-link">Show All</a>
               </div>
               <div class="card-body">
                 <div class="table-responsive">
@@ -81,7 +81,7 @@
             <div class="card">
               <div class="card-header d-flex justify-content-between align-items-center">
                 <span>Transaksi Terbaru</span>
-                <button class="btn btn-sm btn-success" type="button">Export Excel</button>
+                <a href="{{ route('listTransaksi') }}" class="btn-link">Show All</a>
               </div>
               <div class="card-body">
                 <div class="table-responsive">
