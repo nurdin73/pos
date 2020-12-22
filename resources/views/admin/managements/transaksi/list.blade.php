@@ -6,7 +6,21 @@
         <div class="card">
           <div class="card-header d-flex justify-content-between align-items-center">
             <span class="lead">List Transaksi</span>
-            <a href="#" class="btn btn-sm btn-success">Export Excel</a>
+            <div class="btn-group">
+              <button type="button" class="btn btn-sm btn-success">Export Excel</button>
+              <button type="button" class="btn btn-sm btn-success dropdown-toggle dropdown-toggle-split" id="dropdownMenuReference" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false" data-reference="parent">
+                <span class="sr-only">Toggle Dropdown</span>
+              </button>
+              <div class="dropdown-menu" aria-labelledby="dropdownMenuReference">
+                @for ($i = date('Y') - 5; $i <= date('Y'); $i++)
+                    @if ($i == date('Y'))
+                    <a class="dropdown-item active" href="{{ route('exportTrx')."?year=".$i }}">{{ $i }}</a>
+                    @else
+                    <a class="dropdown-item" href="{{ route('exportTrx')."?year=".$i }}">{{ $i }}</a>
+                    @endif
+                @endfor
+              </div>
+            </div>
           </div>
           <div class="card-body">
             <div class="table-responsive">

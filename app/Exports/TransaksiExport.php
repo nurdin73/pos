@@ -2,24 +2,26 @@
 namespace App\Exports;
 
 use Illuminate\Contracts\View\View;
+use Maatwebsite\Excel\Concerns\Exportable;
 use Maatwebsite\Excel\Concerns\FromView;
 use Maatwebsite\Excel\Concerns\WithStyles;
 use PhpOffice\PhpSpreadsheet\Worksheet\Worksheet;
 
-class KasbonExport implements FromView, WithStyles
+class TransaksiExport implements FromView, WithStyles
 {
-    protected $data;
-    protected $query;
+    use Exportable;
 
-    public function __construct($data, $query) {
+    protected $data;
+    protected $year;
+    public function __construct(Object $data, String $year) {
         $this->data = $data;
-        $this->query = $query;
+        $this->year = $year;
     }
 
     public function styles(Worksheet $sheet)
     {
         return [
-            12    => [
+            8    => [
                 'font' => ['bold' => true, 'color' => ['rgb' => 'f1f1f1'], 'name' => 'Arial'],
                 'fill' => ['fillType' => 'solid', 'startColor' => ['rgb' => '21209c']]
             ],
@@ -28,6 +30,6 @@ class KasbonExport implements FromView, WithStyles
 
     public function view() : View
     {
-        return view('exports.kasbon', ['kasbon' => $this->data, 'query' => $this->query]);
+        return view('exports.transaksi-list', ['transactions' => $this->data, 'year' => $this->year]);
     }
 }

@@ -10,6 +10,12 @@
             <th colspan="16">No Telp : {{ $settings->no_telp ?? "0823-1231-2312" }}</th>
         </tr>
         <tr>
+            <th colspan="16">NPWP : {{ $settings->npwp ?? "-" }}</th>
+        </tr>
+        <tr>
+            <th colspan="16">Alamat : {{ $settings->alamat ?? "Cirebon" }}</th>
+        </tr>
+        <tr>
             <th colspan="16"></th>
         </tr>
         <tr>

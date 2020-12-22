@@ -2,6 +2,7 @@
 namespace App\Services;
 
 use App\Exports\TransactionExport;
+use App\Exports\TransaksiExport;
 use App\Helpers\CreatePaginationLink;
 use App\Helpers\PrintTrx;
 use App\Models\Carts;
@@ -327,5 +328,12 @@ class TransactionService
         $result = Transactions::with('user:id,name', 'customer:id,nama', 'carts:id,no_invoice,qyt,harga_product,diskon_product,product_id', 'carts.product:id,nama_barang,kode_barang')->where('id', $id)->first();
         if(!$result) return response(['message' => 'Invoice tidak ditemukan'], 404);
         return response($result);
+    }
+
+    public function exportTransactions($years)
+    {
+        $results = Transactions::with('user:id,name', 'customer:id,nama')->where('tgl_transaksi', 'like', '%'.$years.'%')->get();
+        $fileName = "transaksi-".$years.".xlsx";
+        return Excel::download(new TransaksiExport($results, $years), $fileName);
     }
 }

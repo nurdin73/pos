@@ -206,6 +206,8 @@ Route::group(['prefix' => 'api/'], function () {
             Route::get('/modal', 'Api\Exports\ModalController@export')->name('exportModal');
 
             Route::get('/pelanggan', 'Api\Exports\CustomerController@report')->name('exportCustomer');
+
+            Route::get('/transaksi', 'Api\Exports\TransactionsController@transactions')->name('exportTrx');
         });
 
         Route::group(['prefix' => 'settings'], function () {

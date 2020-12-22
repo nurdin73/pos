@@ -17,9 +17,10 @@ class ModalExport implements FromView, WithStyles
     public function styles(Worksheet $sheet)
     {
         return [
-            8 => [
-                'font' => ['bold' => true],
-            ]
+            10    => [
+                'font' => ['bold' => true, 'color' => ['rgb' => 'f1f1f1'], 'name' => 'Arial'],
+                'fill' => ['fillType' => 'solid', 'startColor' => ['rgb' => '21209c']]
+            ],
         ];
     }
 
