@@ -97,7 +97,7 @@ Route::group(['prefix' => 'admin', 'middleware' => ['auth']], function () {
 });
 
 Route::group(['prefix' => 'api/'], function () {
-    Route::group(['prefix' => 'v1/'], function () {
+    Route::group(['prefix' => 'v1/', 'middleware' => ['checkLogin']], function () {
         Route::group(['prefix' => 'managements'], function () {
 
             // uploadImage
@@ -140,7 +140,7 @@ Route::group(['prefix' => 'api/'], function () {
             Route::get('invoice/{id}', 'Api\Managements\TransaksiController@invoice');
 
             // add 
-            Route::group(['prefix' => 'add', 'middleware' => ['auth']], function () {
+            Route::group(['prefix' => 'add'], function () {
                 Route::post('/barang', 'Api\Managements\BarangController@store');
                 Route::post('/kategori', 'Api\Managements\KategoriController@store');
                 Route::post('/pelanggan', 'Api\Managements\PelangganController@store');
@@ -171,7 +171,7 @@ Route::group(['prefix' => 'api/'], function () {
             });
 
             // delete 
-            Route::group(['prefix' => 'delete', 'middleware' => ['auth']], function () {
+            Route::group(['prefix' => 'delete'], function () {
                 Route::delete('/barang/{id}', 'Api\Managements\BarangController@destroy');
                 Route::delete('/stok/{id}', 'Api\Managements\StokController@destroy');
                 Route::delete('/kategori/{id}', 'Api\Managements\KategoriController@destroy');
