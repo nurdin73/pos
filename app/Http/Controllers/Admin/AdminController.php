@@ -94,9 +94,14 @@ class AdminController extends Controller
         return view('admin.managements.kasbon.bayar', $data);
     }
     
-    public function pajak()
+    public function pajakBarang()
     {
-        return view('admin.managements.pajak.index');
+        return view('admin.managements.pajak.barang');
+    }
+
+    public function pajakUniversal()
+    {
+        return view('admin.managements.pajak.universal');
     }
 
     public function managementStok()

@@ -131,7 +131,7 @@
               <div class="form-group">
                 <div class="d-flex justify-content-between align-items-center">
                   <label for="barang_id">Nama Barang *</label>
-                  <small><a href="{{ route('managementBarang') . "?redirect=" . route('managementPajak') }}" class="btn-link">Tambah Barang</a></small>
+                  <small><a href="{{ route('managementBarang') . "?redirect=" . route('pajakBarang') }}" class="btn-link">Tambah Barang</a></small>
                 </div>
                 <select name="barang_id" id="barang_id" class="form-control" style="width: 100%">
                   
@@ -209,7 +209,7 @@
               <div class="form-group">
                 <div class="d-flex justify-content-between align-items-center">
                   <label for="barang_id_update">Nama Barang *</label>
-                  <small><a href="{{ route('managementBarang') . "?redirect=" . route('managementPajak') }}" class="btn-link">Tambah Barang</a></small>
+                  <small><a href="{{ route('managementBarang') . "?redirect=" . route('pajakBarang') }}" class="btn-link">Tambah Barang</a></small>
                 </div>
                 <select name="barang_id_update" id="barang_id_update" class="form-control" style="width: 100%">
                   

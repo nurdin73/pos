@@ -64,7 +64,10 @@ Route::group(['prefix' => 'admin', 'middleware' => ['auth']], function () {
             // bayar kasbon
             Route::get('/bayar/{id}/{id_kasbon}', 'Admin\AdminController@payment');
         });
-        Route::get('/pajak', 'Admin\AdminController@pajak')->name('managementPajak');
+        Route::group(['prefix' => '/pajak'], function () {
+            Route::get('/barang', 'Admin\AdminController@pajakBarang')->name('pajakBarang');
+            Route::get('/universal', 'Admin\AdminController@pajakUniversal')->name('pajakUniversal');
+        });
     });
 
     Route::group(['prefix' => 'reports'], function () {
