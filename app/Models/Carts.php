@@ -12,9 +12,4 @@ class Carts extends Model
     {
         return $this->belongsTo(Products::class, 'product_id', 'id');
     }
-
-    public function tax()
-    {
-        return $this->belongsTo(Tax::class, 'product_id', 'barang_id');
-    }
 }

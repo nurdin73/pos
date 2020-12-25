@@ -15,9 +15,12 @@ class CreateTaxesTable extends Migration
     {
         Schema::create('taxes', function (Blueprint $table) {
             $table->id();
-            $table->string('nama_pajak');
-            $table->foreignId('barang_id')->constrained('products')->cascadeOnDelete();
-            $table->decimal('persentase_pajak', 8, 2)->default(0);
+            $table->string('nama_pajak')->nullable();
+            $table->integer('persentasePajak')->nullable();
+            $table->integer('persentaseLayanan')->nullable();
+            $table->boolean('hargaBarang')->default(0);
+            $table->boolean('pajakAktif')->default(0);
+            $table->boolean('layananAktif')->default(0);
             $table->timestamps();
         });
     }

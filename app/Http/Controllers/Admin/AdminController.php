@@ -4,6 +4,7 @@ namespace App\Http\Controllers\Admin;
 
 use App\Helpers\GenerateCode;
 use App\Http\Controllers\Controller;
+use App\Models\Tax;
 use Illuminate\Http\Request;
 
 class AdminController extends Controller
@@ -54,6 +55,7 @@ class AdminController extends Controller
     public function managementTransaksi()
     {
         $data['no_invoice'] = GenerateCode::invoice();
+        $data['tax'] = Tax::find(1);
         return view('admin.managements.transaksi.index', $data);
     }
 

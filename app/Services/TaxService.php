@@ -8,7 +8,7 @@ class TaxService
 {
     protected function getTax()
     {
-        $results = Tax::with('product')->select('*');
+        $results = Tax::select('*');
         return $results;
     }
 
@@ -46,9 +46,13 @@ class TaxService
 
     public function updateTax($data, $id)
     {
-        $checkTax = $this->getTax()->where('id', $id)->first();
-        if(!$checkTax) return response(['message' => 'Data Pajak tidak ditemukan'], 404);
-        $update = $checkTax->update($data);
+        $checkTax = Tax::find($id);
+        $update = null;
+        if(!$checkTax) {
+            $update = Tax::create($data);
+        } else {
+            $update = $checkTax->update($data);
+        }
         if(!$update) return response(['message' => 'Update Pajak tidak berhasil'], 500);
         return response(['message' => 'Update Pajak berhasil']);
     }

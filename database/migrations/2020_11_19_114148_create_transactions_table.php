@@ -22,6 +22,7 @@ class CreateTransactionsTable extends Migration
             $table->bigInteger('total');
             $table->bigInteger('cash');
             $table->bigInteger('change');
+            $table->bigInteger('pajak');
             $table->longText('keterangan')->nullable();
             $table->date('tgl_transaksi');
             $table->time('jam_transaksi');

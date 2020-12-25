@@ -120,7 +120,7 @@
             </div>
           </div>
           <div class="col-md-3">
-            <div class="card">
+            <div class="card" style="height: 180px">
               <div class="card-body">
                 <div class="form-group">
                   <input type="text" name="cash" id="cash" placeholder="Cash" class="form-control">
@@ -215,6 +215,11 @@
     const name = '{{ auth()->user()->name }}'
     const idUserInput = '{{ auth()->user()->id }}'
     const noInvoice = '{{ $no_invoice }}'
+    const persentasePajak = '{{ $tax->persentasePajak ?? 0 }}'
+    const presentaseLayanan = '{{ $tax->presentaseLayanan ?? 0 }}'
+    const hargaBarangPajak = '{{ $tax->hargaBarang ?? 0 }}'
+    const pajakAktif = '{{ $tax->pajakAktif ?? 0 }}'
+    const layananAktif = '{{ $tax->layananAktif ?? 0 }}'
   </script>
   <script src="{{ asset('js/managements/transaksi/index.js') }}"></script>
 @endsection

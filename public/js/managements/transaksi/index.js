@@ -166,6 +166,7 @@ const getCarts = {
       var i = 1
       var lists = ""
       response.map(result => {
+        const pajak = result.harga_product * (persentasePajak / 100)
         var harga_product = result.harga_product
         var diskonProduk = result.product.diskon != null ? harga_product * (result.product.diskon / 100) : 0,
             diskon = diskonProduk + result.diskon_product * result.qyt

@@ -77,7 +77,7 @@ class PajakController extends Controller
      */
     public function update(Request $request, $id)
     {
-        $this->validateTax($request);
+        // $this->validateTax($request);
         return $this->taxService->updateTax($request->all(), $id);
     }
 
