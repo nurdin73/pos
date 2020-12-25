@@ -2,10 +2,20 @@ $(document).ready(function () {
     getData()
     getCarts.loadData = noInvoice
     actionDelAndUpdate()
-    processPayment()
+    // processPayment()
     updateCart()
     changeHarga()
+    cacl()
 });
+
+function cacl() {
+  $('.btn-number').on('click', function (e) {  
+    e.preventDefault()
+    const number = $(this).data('number')
+    var valueField = $('#fieldCash').val()
+    $('#fieldCash').val(valueField + number)
+  })
+}
 
 function getData() {
     var totalPriceNoDisc = 0

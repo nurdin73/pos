@@ -103,7 +103,42 @@
             </div>
           </div>
         </div>
-        <div class="row">
+        <div class="row mb-4">
+          <div class="col-md-8">
+            <textarea name="keterangan" id="keterangan" cols="30" rows="5" class="form-control" placeholder="keterangan"></textarea>
+          </div>
+          <div class="col-md-4">
+            <ul class="list-group list-group-flush">
+              <li class="list-group-item d-flex justify-content-lg-between align-items-center">
+                <span class="font-weight-bold text-uppercase">Subtotal</span>
+                <small class="text-muted">Rp. 1.000.000 ,-</small>
+              </li>
+              <li class="list-group-item d-flex justify-content-lg-between align-items-center">
+                <span class="font-weight-bold text-uppercase">Pajak</span>
+                <small class="text-muted">Rp. 200.000 ,-</small>
+              </li>
+              <li class="list-group-item d-flex justify-content-lg-between align-items-center">
+                <span class="font-weight-bold text-uppercase">Layanan</span>
+                <small class="text-muted">Rp. 200.000 ,-</small>
+              </li>
+              <li class="list-group-item d-flex justify-content-lg-between align-items-center">
+                <span class="font-weight-bold text-uppercase">Diskon</span>
+                <div class="row justify-content-lg-end">
+                  <div class="col-12">
+                    <input type="text" name="diskon" id="diskon" class="form-control" placeholder="Diskon" value="0">
+                  </div>
+                </div>
+              </li>
+              <li class="list-group-item d-flex justify-content-lg-between align-items-center">
+                <span class="font-weight-bold text-uppercase">Total</span>
+                <small class="text-muted">Rp. 1.400.000 ,-</small>
+              </li>
+            </ul>
+            <button class="btn btn-block btn-danger">Cancel</button>
+            <button class="btn btn-block btn-success btn-lg" id="btn-proccess-payment" data-target="#processPaymentModal" data-toggle="modal">Prosess</button>
+          </div>
+        </div>
+        {{-- <div class="row">
           <div class="col-md-3">
             <div class="card" style="height: 180px">
               <div class="card-body">
@@ -144,7 +179,7 @@
             <button class="btn btn-block btn-danger">Cancel</button>
             <button class="btn btn-block btn-success btn-lg" id="btn-proccess-payment">Prosess</button>
           </div>
-        </div>
+        </div> --}}
       </div>
     </div>
   </main>
@@ -201,6 +236,54 @@
     </div>
     <!-- /.modal-dialog-->
   </div>
+
+  <!-- Modal -->
+<div class="modal fade" id="processPaymentModal" tabindex="-1" aria-labelledby="paymentModal" aria-hidden="true">
+  <div class="modal-dialog modal-sm">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title" id="paymentModal">Total Belanja : Rp. 100.000 ,-</h5>
+        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+          <span aria-hidden="true">&times;</span>
+        </button>
+      </div>
+      <div class="modal-body">
+        <textarea name="cash" id="fieldCash" cols="30" rows="2" class="form-control mb-2" readonly></textarea>
+        <div class="container-fluid">
+          <div class="row">
+            @for ($i = 1; $i < 10; $i++)
+            <div class="col-4 d-flex justify-content-center align-items-center border border-primary btn-number" data-number="{{ $i }}" style="height: 50px; cursor: pointer">
+              <span class="lead font-weight-bold text-uppercase">{{ $i }}</span>
+            </div>
+            @endfor
+            <div class="col-4 d-flex justify-content-center align-items-center border border-primary btn-number" data-number="0" style="height: 50px; cursor: pointer">
+              <span class="lead font-weight-bold text-uppercase">0</span>
+            </div>
+            <div class="col-4 d-flex justify-content-center align-items-center border border-primary btn-number" data-number="000" style="height: 50px; cursor: pointer">
+              <span class="lead font-weight-bold text-uppercase">000</span>
+            </div>
+            <div class="col-4 d-flex justify-content-center align-items-center border border-primary btn-number" data-number="." style="height: 50px; cursor: pointer">
+              <span class="lead font-weight-bold text-uppercase">.</span>
+            </div>
+            <div class="col-4 d-flex justify-content-center align-items-center border border-primary btn-number" data-number="0" style="height: 50px; cursor: pointer">
+              <span class="lead font-weight-bold text-uppercase">0</span>
+            </div>
+            <div class="col-4 d-flex justify-content-center align-items-center border border-primary btn-number" data-number="000" style="height: 50px; cursor: pointer">
+              <span class="lead font-weight-bold text-uppercase">000</span>
+            </div>
+            <div class="col-4 d-flex justify-content-center align-items-center border border-primary btn-number" data-number="." style="height: 50px; cursor: pointer">
+              <span class="lead font-weight-bold text-uppercase">.</span>
+            </div>
+          </div>
+        </div>
+      </div>
+      <div class="modal-footer">
+        <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+        <button type="button" class="btn btn-primary">Prosess</button>
+      </div>
+    </div>
+  </div>
+</div>
 @endsection
 
 @section('js')
