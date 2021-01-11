@@ -26,7 +26,7 @@
       <title>{{ ucfirst($explodeUrl[count($explodeUrl) - 2]) }} - {{ $settings->nama_toko ?? "" }} Point Of Sales</title>
     @endif
     <!-- Main styles for this application-->
-    <link href="{{ asset('css/styledark.min.css') }}" rel="stylesheet">
+    <link href="{{ asset('css/style.min.css') }}" rel="stylesheet">
     {{-- <link rel="preload" href="{{ asset('css/style.min.css') }}" as="style" onload="this.onload=null;this.rel='stylesheet'">
     <noscript><link rel="stylesheet" href="{{ asset('css/style.min.css') }}"></noscript>   --}}
     <meta name="csrf-token" content="{{ csrf_token() }}">
