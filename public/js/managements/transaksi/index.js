@@ -21,6 +21,9 @@ function getData() {
     var totalPriceNoDisc = 0
     $('#noInvoice').text(noInvoice)
     $('#kasir').val(name).attr('disabled', true).addClass('disabled')
+    $('#barcode').on('change', function(e) {
+      $('#pajak').val(getTax.loadData = 1).attr('disabled', true).addClass('disabled')
+    })
     // $('#addProduct').validate({
     //   rules: {
     //     barcode: {
@@ -141,7 +144,7 @@ const getTax = {
     Functions.prototype.requestDetail(getTax, url)
   },
   set successData(response) {
-    $('#pajak').val(response.persentase_pajak).attr('disabled', true).addClass('disabled')
+    $('#pajak').val(response.persentasePajak).attr('disabled', true).addClass('disabled')
   },
   set errorData(err) {
     toastr.error(err.responseJSON.message, 'Error')

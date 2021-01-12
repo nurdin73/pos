@@ -63,9 +63,9 @@ class PajakController extends Controller
         return $this->taxService->getDetail($id);
     }
 
-    public function getTax($barang_id)
+    public function getTax($id)
     {
-        return $this->taxService->getPajak($barang_id);
+        return $this->taxService->getPajak($id);
     }
 
     /**

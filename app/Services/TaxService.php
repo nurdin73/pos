@@ -31,9 +31,9 @@ class TaxService
         return response($result);
     }
 
-    public function getPajak($barang_id)
+    public function getPajak($id)
     {
-        $result = $this->getTax()->where('barang_id', $barang_id)->first();
+        $result = $this->getTax()->where('id', $id)->first();
         return response($result);
     }
 

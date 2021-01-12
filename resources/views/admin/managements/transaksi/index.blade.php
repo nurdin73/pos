@@ -57,7 +57,7 @@
                   <div class="form-group row">
                     <label class="col-md-3 col-form-label" for="pajak">Pajak</label>
                     <div class="input-group col-md-9">
-                      <input class="form-control" id="pajak" type="text" name="pajak" placeholder="0.00">
+                      <input class="form-control" id="pajak" type="text" name="pajak" placeholder="0.00" disabled>
                       <div class="input-group-append">
                         <span class="input-group-text" id="basic-addon2">%</span>
                       </div>
