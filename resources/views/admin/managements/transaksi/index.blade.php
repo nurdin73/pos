@@ -111,15 +111,15 @@
             <ul class="list-group list-group-flush">
               <li class="list-group-item d-flex justify-content-lg-between align-items-center">
                 <span class="font-weight-bold text-uppercase">Subtotal</span>
-                <small class="text-muted">Rp. 1.000.000 ,-</small>
+                <small class="text-muted" id="sub_total">Rp. 0 ,-</small>
               </li>
               <li class="list-group-item d-flex justify-content-lg-between align-items-center">
                 <span class="font-weight-bold text-uppercase">Pajak</span>
-                <small class="text-muted">Rp. 200.000 ,-</small>
+                <small class="text-muted" id="total_pajak">Rp. 0 ,-</small>
               </li>
               <li class="list-group-item d-flex justify-content-lg-between align-items-center">
                 <span class="font-weight-bold text-uppercase">Layanan</span>
-                <small class="text-muted">Rp. 200.000 ,-</small>
+                <small class="text-muted" id="layanan">Rp. 0 ,-</small>
               </li>
               <li class="list-group-item d-flex justify-content-lg-between align-items-center">
                 <span class="font-weight-bold text-uppercase">Diskon</span>
@@ -131,7 +131,7 @@
               </li>
               <li class="list-group-item d-flex justify-content-lg-between align-items-center">
                 <span class="font-weight-bold text-uppercase">Total</span>
-                <small class="text-muted">Rp. 1.400.000 ,-</small>
+                <small class="text-muted" id="total">Rp. 0 ,-</small>
               </li>
             </ul>
             <button class="btn btn-block btn-danger">Cancel</button>
@@ -299,7 +299,7 @@
     const idUserInput = '{{ auth()->user()->id }}'
     const noInvoice = '{{ $no_invoice }}'
     const persentasePajak = '{{ $tax->persentasePajak ?? 0 }}'
-    const presentaseLayanan = '{{ $tax->presentaseLayanan ?? 0 }}'
+    const persentaseLayanan = '{{ $tax->persentaseLayanan ?? 0 }}'
     const hargaBarangPajak = '{{ $tax->hargaBarang ?? 0 }}'
     const pajakAktif = '{{ $tax->pajakAktif ?? 0 }}'
     const layananAktif = '{{ $tax->layananAktif ?? 0 }}'

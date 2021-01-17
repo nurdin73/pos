@@ -21,9 +21,7 @@ function getData() {
     var totalPriceNoDisc = 0
     $('#noInvoice').text(noInvoice)
     $('#kasir').val(name).attr('disabled', true).addClass('disabled')
-    $('#barcode').on('change', function(e) {
-      $('#pajak').val(getTax.loadData = 1).attr('disabled', true).addClass('disabled')
-    })
+    $('#pajak').val(persentasePajak).attr('disabled', true).addClass('disabled')
     // $('#addProduct').validate({
     //   rules: {
     //     barcode: {
@@ -87,7 +85,7 @@ function getData() {
     //     },
     //   }
     // })
-
+    
     $('#diskon').on('keyup', function(e) {
       e.preventDefault()
       const subTotal = $('#sub_total').val()
@@ -138,19 +136,6 @@ function getData() {
     })
 }
 
-const getTax = {
-  set loadData(data) {
-    const url = URL_API + "/managements/tax/" + data
-    Functions.prototype.requestDetail(getTax, url)
-  },
-  set successData(response) {
-    $('#pajak').val(response.persentasePajak).attr('disabled', true).addClass('disabled')
-  },
-  set errorData(err) {
-    toastr.error(err.responseJSON.message, 'Error')
-  }
-}
-
 const addDataCart = {
   set loadData(data) {
     const url = URL_API + "/managements/add/cart"
@@ -179,42 +164,46 @@ const getCarts = {
       var i = 1
       var lists = ""
       response.map(result => {
-        const pajak = result.harga_product * (persentasePajak / 100)
         var harga_product = result.harga_product
         var diskonProduk = result.product.diskon != null ? harga_product * (result.product.diskon / 100) : 0,
-            diskon = diskonProduk + result.diskon_product * result.qyt
+            diskon = diskonProduk * result.qyt
             hargaProduk = harga_product,
-            total = ((result.qyt * hargaProduk) - diskon)
+            totalHargaProduk = ((result.qyt * hargaProduk) - diskon)
+        const pajak = totalHargaProduk * (persentasePajak / 100)
+        const layanan = totalHargaProduk * (persentaseLayanan / 100)
         const typeHarga = result.product.type_prices
-        subTotal += ((hargaProduk * result.qyt) - diskon)
+        subTotal += (totalHargaProduk - pajak - layanan)
+        subTotalBadge += (totalHargaProduk)
+        const total = subTotal + pajak + layanan
         lists += `
           <tr data-id="${result.id}">
             <td>${i++}</td>
             <td>${result.product.kode_barang}</td>
             <td>${result.product.nama_barang}</td>
             <td>`
-            if(typeHarga.length > 0) {
-            lists += `<select name="typePrice" class="form-control TypeHarga" data-id-cart="${result.id}">`
-            typeHarga.map(price => {
-              if(hargaProduk == price.harga) {
-                lists += `<option value="${price.harga}" selected>${price.harga} - ${price.nama_agen}</option>`
+              if(typeHarga.length > 0) {
+                lists += `<select name="typePrice" class="form-control TypeHarga" data-id-cart="${result.id}">`
+                typeHarga.map(price => {
+                  if(hargaProduk == price.harga) {
+                    lists += `<option value="${price.harga}" selected>${price.harga} - ${price.nama_agen}</option>`
+                  } else {
+                    lists += `<option value="${price.harga}">${price.harga} - ${price.nama_agen}</option>`
+                  }
+                })
+                if(hargaProduk == result.product.harga_jual) {
+                  lists += `<option value="${result.product.harga_jual}" selected>${result.product.harga_jual} - default</option>`
+                } else {
+                  lists += `<option value="${result.product.harga_jual}">${result.product.harga_jual} - default</option>`
+                }
+                lists +=  `</select>`
               } else {
-                lists += `<option value="${price.harga}">${price.harga} - ${price.nama_agen}</option>`
+                lists += Functions.prototype.formatRupiah(hargaProduk.toString(), 'Rp. ')
               }
-            })
-            if(hargaProduk == result.product.harga_jual) {
-              lists += `<option value="${result.product.harga_jual}" selected>${result.product.harga_jual} - default</option>`
-            } else {
-              lists += `<option value="${result.product.harga_jual}">${result.product.harga_jual} - default</option>`
-            }
-            lists +=  `</select>`
-            } else {
-            lists += Functions.prototype.formatRupiah(hargaProduk.toString(), 'Rp. ')
-            }
-            lists += `</td>
+              lists +=
+            `</td>
             <td>${result.qyt}</td>
             <td>${Functions.prototype.formatRupiah(diskon.toString(), 'Rp. ')}</td>
-            <td>${Functions.prototype.formatRupiah(total.toString(), 'Rp. ')}</td>
+            <td>${Functions.prototype.formatRupiah(totalHargaProduk.toString(), 'Rp. ')}</td>
             <td>
               <div class="btn-group">
                 <button class="btn btn-sm btn-danger delete" data-id="${result.id}">Hapus</button>
@@ -222,7 +211,11 @@ const getCarts = {
               </div>
             </td>
           </tr>
-          `
+        `
+        $('#sub_total').text(Functions.prototype.formatRupiah(subTotal.toString(), 'Rp. '))
+        $('#total_pajak').text(Functions.prototype.formatRupiah(pajak.toString(), 'Rp. '))
+        $('#layanan').text(Functions.prototype.formatRupiah(layanan.toString(), 'Rp. '))
+        $('#total').text(Functions.prototype.formatRupiah(total.toString(), 'Rp. '))
       })
     } else {
       lists += `
@@ -233,7 +226,7 @@ const getCarts = {
     }
 
     $('#listCarts').html(lists)
-    $('#subTotalBadge').text(Functions.prototype.formatRupiah(subTotal.toString(), 'Rp. '))
+    $('#subTotalBadge').text(Functions.prototype.formatRupiah(subTotalBadge.toString(), 'Rp. '))
     $('#sub_total').val(subTotal).attr('readonly', true).addClass('disabled')
     $('#grand_total').val(subTotal)
   },
@@ -272,6 +265,9 @@ function actionDelAndUpdate() {
       if (result.isConfirmed) {
         const url = URL_API + "/managements/delete/cart/" + id
         Functions.prototype.deleteData(url)
+        $('#sub_total').text("Rp. 0 ,-")
+        $('#total_pajak').text("Rp. 0 ,-")
+        $('#total').text("Rp. 0 ,-")
         getCarts.loadData = noInvoice
       }
     })

@@ -134,7 +134,6 @@ Route::group(['prefix' => 'api/'], function () {
             Route::get('pelanggan/{id}', 'Api\Managements\PelangganController@show');
             Route::get('kasbon/{id}', 'Api\Managements\KasbonController@show');
             Route::get('pajak/{id}', 'Api\Managements\PajakController@show');
-            Route::get('tax/{id}', 'Api\Managements\PajakController@getTax');
             Route::get('cart/{id}', 'Api\Managements\TransaksiController@detailCart');
             Route::get('stok-detail/{id}', 'Api\Managements\StokController@show');
             Route::get('type-price/{id}', 'Api\Managements\barangController@detailTypePrice');

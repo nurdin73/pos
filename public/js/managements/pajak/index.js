@@ -25,8 +25,6 @@ $(document).ready(function () {
     addTax()
     updateTax()
     deleteTax()
-    getProduct()
-    getProductUpdate()
 });
 
 const getAll = {
@@ -143,30 +141,6 @@ function addTax() {
     })
 }
 
-function getProduct() {
-    $('#barang_id').select2({
-      theme:'bootstrap4',
-      ajax: {
-        url: URL_API + "/managements",
-        data: function (params) {
-          return {
-            Search_kode_barang: params.term,
-          }
-        },
-        processResults: function(response, params) {
-          return {
-            results: response.data.map(result => {
-              return {
-                text: result.kode_barang + " - " + result.nama_barang,
-                id: result.id
-              }
-            })
-          }
-        },
-      }
-    })
-}
-
 const postData = {
     set successData(response) {
         toastr.success(response.message, 'Success')
@@ -242,30 +216,6 @@ function updateTax() {
     })
 }
 
-function getProductUpdate() {
-    $('#barang_id_update').select2({
-      theme:'bootstrap4',
-      ajax: {
-        url: URL_API + "/managements",
-        data: function (params) {
-          return {
-            Search_kode_barang: params.term,
-          }
-        },
-        processResults: function(response, params) {
-          return {
-            results: response.data.map(result => {
-              return {
-                text: result.kode_barang + " - " + result.nama_barang,
-                id: result.id
-              }
-            })
-          }
-        },
-      }
-    })
-}
-
 const putData = {
     set successData(response) {
         toastr.success(response.message, 'Success')
@@ -289,27 +239,6 @@ const detailTax = {
         $('#persentase_pajak_update').val(response.persentase_pajak)
         $('#idTax').val(response.id)
         getProductById.loadData = response.barang_id
-    },
-    set errorData(err) {
-        toastr.error(err.responseJSON.message, 'Error')
-    }
-}
-
-const getProductById = {
-    set loadData(data) {
-        var url_local = URL_API + "/managements/barang/" + data
-        Functions.prototype.requestDetail(getProductById, url_local)
-    },
-    set successData(result) {
-        var option = new Option(result.nama_barang, result.id, true, true)
-        $("#barang_id_update").append(option).trigger('change')
-
-        $("#barang_id_update").trigger({
-            type: 'select2:select',
-            params: {
-                data: result
-            }
-        })
     },
     set errorData(err) {
         toastr.error(err.responseJSON.message, 'Error')

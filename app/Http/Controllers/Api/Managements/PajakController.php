@@ -63,11 +63,6 @@ class PajakController extends Controller
         return $this->taxService->getDetail($id);
     }
 
-    public function getTax($id)
-    {
-        return $this->taxService->getPajak($id);
-    }
-
     /**
      * Update the specified resource in storage.
      *
