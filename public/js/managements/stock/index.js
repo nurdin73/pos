@@ -254,7 +254,7 @@ const getDetailProduct = {
         harga_dasar = result.harga_dasar
       })
     } 
-    $('#imageProduct').attr('src', response.images != null ? BASE_URL + "/" + response.images[0].image : "https://demo.getstisla.com/assets/img/avatar/avatar-1.png")
+    $('#imageProduct').attr('src', response.images.length > 0 ? response.images[0].image : "https://demo.getstisla.com/assets/img/avatar/avatar-1.png")
     $('#nameProduct').text(response.nama_barang)
     $('#kodeProduct').text(response.kode_barang)
     $('#stokProduct').text(stocks)
