@@ -7,36 +7,15 @@ use Illuminate\Http\Request;
 
 class StokController extends Controller
 {
-    /**
-     * Display a listing of the resource.
-     *
-     * @return \Illuminate\Http\Response
-     */
-    public function index()
-    {
-        //
+    protected $stockService;
+
+    public function __construct() {
+        $this->stockService = app()->make('StockService');
     }
 
-    /**
-     * Store a newly created resource in storage.
-     *
-     * @param  \Illuminate\Http\Request  $request
-     * @return \Illuminate\Http\Response
-     */
-    public function store(Request $request)
+    public function listStok($id_product)
     {
-        //
-    }
-
-    /**
-     * Display the specified resource.
-     *
-     * @param  int  $id
-     * @return \Illuminate\Http\Response
-     */
-    public function show($id)
-    {
-        //
+        return $this->stockService->listStok($id_product);
     }
 
     /**
@@ -48,7 +27,37 @@ class StokController extends Controller
      */
     public function update(Request $request, $id)
     {
-        //
+        $request->validate([
+            'harga_dasar' => 'numeric',
+            'jumlah' => 'required|numeric',
+            'method' => 'required'
+        ]);
+
+        $data = [
+            'harga_dasar' => $request->input('harga_dasar'),
+            'jumlah' => $request->input('jumlah'),
+            'method' => $request->input('method')
+        ];
+
+        return $this->stockService->updateStok($data, $id);
+    }
+
+    public function show($id)
+    {
+        return $this->stockService->detail($id);
+    }
+
+    public function updateStok(Request $request, $id)
+    {
+        $request->validate([
+            'harga_dasar' => 'required|numeric',
+            'stok' => 'required|numeric'
+        ]);
+        $data = [
+            'harga_dasar' => $request->input('harga_dasar'),
+            'stok' => $request->input('stok')
+        ];
+        return $this->stockService->update($data, $id);
     }
 
     /**
@@ -59,6 +68,11 @@ class StokController extends Controller
      */
     public function destroy($id)
     {
-        //
+        return $this->stockService->destroy($id);
+    }
+
+    public function modal()
+    {
+        return $this->stockService->modal();
     }
 }

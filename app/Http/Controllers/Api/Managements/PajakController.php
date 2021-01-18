@@ -7,14 +7,37 @@ use Illuminate\Http\Request;
 
 class PajakController extends Controller
 {
+    protected $taxService;
+
+    public function __construct() {
+        $this->taxService = app()->make('TaxService');
+    }
+
+    protected function validateTax($request)
+    {
+        $request->validate([
+            'nama_pajak'        => 'required',
+            // 'barang_id'         => 'required',
+            'persentase_pajak'  => 'required'
+        ]);
+    }
+
     /**
      * Display a listing of the resource.
      *
      * @return \Illuminate\Http\Response
      */
-    public function index()
+    public function index(Request $request)
     {
-        //
+        $nama = $request->input('search_pajak');
+        if($nama == null) {
+            $nama = "";
+        }
+        $sorting = $request->input('sorting');
+        if($sorting == null) {
+            $sorting = 10;
+        }
+        return $this->taxService->getAll($nama, $sorting);
     }
 
     /**
@@ -25,7 +48,8 @@ class PajakController extends Controller
      */
     public function store(Request $request)
     {
-        //
+        $this->validateTax($request);
+        return $this->taxService->addTax($request->all());
     }
 
     /**
@@ -36,7 +60,7 @@ class PajakController extends Controller
      */
     public function show($id)
     {
-        //
+        return $this->taxService->getDetail($id);
     }
 
     /**
@@ -48,7 +72,8 @@ class PajakController extends Controller
      */
     public function update(Request $request, $id)
     {
-        //
+        // $this->validateTax($request);
+        return $this->taxService->updateTax($request->all(), $id);
     }
 
     /**
@@ -59,6 +84,6 @@ class PajakController extends Controller
      */
     public function destroy($id)
     {
-        //
+        return $this->taxService->deleteTax($id);
     }
 }

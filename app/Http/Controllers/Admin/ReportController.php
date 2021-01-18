@@ -24,7 +24,12 @@ class ReportController extends Controller
 
     public function pembelian()
     {
-        return view('admin.report.pembelian');
+        return view('admin.report.pembelian.index');
+    }
+    
+    public function barang()
+    {
+        return view('admin.report.barang.index');
     }
 
     public function modal()
@@ -34,11 +39,16 @@ class ReportController extends Controller
 
     public function pajak()
     {
-        return view('admin.report.pajak');
+        return view('admin.report.pajak.index');
     }
 
-    public function pengunjung()
+    public function reportPelanggan()
     {
-        return view('admin.report.pengunjung');
+        return view('admin.report.pelanggan.index');
+    }
+
+    public function reportKasbon()
+    {
+        return view('admin.report.kasbon.index');
     }
 }

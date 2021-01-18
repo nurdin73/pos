@@ -10,6 +10,13 @@ use Illuminate\Support\Str;
 
 class KategoriController extends Controller
 {
+
+    protected $categoriesService;
+
+    public function __construct() {
+        $this->categoriesService = app()->make('CategoriesService');
+    }
+
     /**
      * Display a listing of the resource.
      *
@@ -17,7 +24,7 @@ class KategoriController extends Controller
      */
     public function index(Request $request)
     {
-        
+        return $this->categoriesService->getAll();
     }
 
     public function getLike(Request $request)
@@ -65,7 +72,8 @@ class KategoriController extends Controller
      */
     public function show($id)
     {
-        //
+        $result = Categories::find($id);
+        return response($result);
     }
 
 
@@ -78,7 +86,7 @@ class KategoriController extends Controller
      */
     public function update(Request $request, $id)
     {
-        //
+        return $this->categoriesService->update($request->input('name'), $id);
     }
 
     /**
@@ -89,6 +97,6 @@ class KategoriController extends Controller
      */
     public function destroy($id)
     {
-        //
+        return $this->categoriesService->destroy($id);
     }
 }

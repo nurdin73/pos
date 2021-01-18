@@ -20,6 +20,9 @@ class CreateUsersTable extends Migration
             $table->timestamp('email_verified_at')->nullable();
             $table->string('password');
             $table->rememberToken();
+            $table->boolean('isLocked')->default(0);
+            $table->enum('role', ['owner', 'karyawan'])->default('karyawan');
+            $table->longText('alamat')->nullable();
             $table->timestamps();
         });
     }

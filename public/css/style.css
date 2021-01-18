@@ -17244,3 +17244,31 @@ a.text-dark:hover, a.text-dark:focus {
   z-index: 2000;
   transition: 0.3s ease-in-out all;
 }
+.labelMax {
+  position: absolute;
+  left: 50%;
+  top: 50%;
+  transform: translate(-50%, -50%);
+  color: #fff;
+  font-weight: bold;
+}
+.delImage {
+  position: absolute;
+  right: 25px;
+  top: 10px;
+}
+#logo {
+  display: none;
+}
+#logo + label {
+  background-color: #00002c67;
+  padding: 15px 15px;
+  position: absolute;
+  bottom: -8px;
+  left: 0;
+  right: 0;
+  text-align: center;
+  cursor: pointer;
+  color: #ffffff;
+  font-weight: bold;
+}

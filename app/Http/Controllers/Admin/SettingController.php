@@ -17,6 +17,11 @@ class SettingController extends Controller
         return view('admin.settings.toko');
     }
 
+    public function api()
+    {
+        return view('admin.settings.api.index');
+    }
+
     public function database()
     {
         return view('admin.settings.database');
@@ -24,6 +29,11 @@ class SettingController extends Controller
 
     public function managementStaff()
     {
-        return view('admin.settings.managementStaff');
+        return view('admin.settings.staff.managementStaff');
+    }
+
+    public function printerSettings()
+    {
+        return view('admin.settings.printer.index');
     }
 }
