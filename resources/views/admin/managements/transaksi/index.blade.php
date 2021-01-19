@@ -57,7 +57,7 @@
                   <div class="form-group row">
                     <label class="col-md-3 col-form-label" for="pajak">Pajak</label>
                     <div class="input-group col-md-9">
-                      <input class="form-control" id="pajak" type="text" name="pajak" placeholder="0.00" disabled>
+                      <input class="form-control" id="persentasePajak" type="text" name="persentasePajak" placeholder="0.00" disabled>
                       <div class="input-group-append">
                         <span class="input-group-text" id="basic-addon2">%</span>
                       </div>
@@ -113,14 +113,7 @@
                 <span class="font-weight-bold text-uppercase">Subtotal</span>
                 <small class="text-muted" id="sub_total">Rp. 0 ,-</small>
               </li>
-              <li class="list-group-item d-flex justify-content-lg-between align-items-center">
-                <span class="font-weight-bold text-uppercase">Pajak</span>
-                <small class="text-muted" id="total_pajak">Rp. 0 ,-</small>
-              </li>
-              <li class="list-group-item d-flex justify-content-lg-between align-items-center">
-                <span class="font-weight-bold text-uppercase">Layanan</span>
-                <small class="text-muted" id="layanan">Rp. 0 ,-</small>
-              </li>
+              <input type="hidden" name="pajak" id="pajak">
               <li class="list-group-item d-flex justify-content-lg-between align-items-center">
                 <span class="font-weight-bold text-uppercase">Diskon</span>
                 <div class="row justify-content-lg-end">
@@ -131,7 +124,7 @@
               </li>
               <li class="list-group-item d-flex justify-content-lg-between align-items-center">
                 <span class="font-weight-bold text-uppercase">Total</span>
-                <small class="text-muted" id="total">Rp. 0 ,-</small>
+                <small class="text-muted" id="grand_total">Rp. 0 ,-</small>
               </li>
             </ul>
             <button class="btn btn-block btn-danger">Cancel</button>
