@@ -118,10 +118,6 @@ function addData() {
         required : true,
         number : true
       },
-      files: {
-        required: true,
-        accept: "image/jpeg, image/png, image/jpg"
-      },
       kategori: {
         required : true
       },

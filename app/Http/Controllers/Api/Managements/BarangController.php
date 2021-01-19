@@ -88,7 +88,7 @@ class BarangController extends Controller
                 return response(['message' => 'type barang tidak valid'], 406);
             }
         }
-        if(!$files) return response(['message' => 'gada']);
+        // if(!$files) return response(['message' => 'gada']);
 
         $data = [
             'suplier_id' => $suplier_id,
