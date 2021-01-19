@@ -2,7 +2,7 @@ $(document).ready(function () {
     getData()
     getCarts.loadData = noInvoice
     actionDelAndUpdate()
-    // processPayment()
+    processPayment()
     updateCart()
     changeHarga()
     cacl()
@@ -12,8 +12,12 @@ function cacl() {
   $('.btn-number').on('click', function (e) {  
     e.preventDefault()
     const number = $(this).data('number')
-    var valueField = $('#fieldCash').val()
-    $('#fieldCash').val(valueField + number)
+    if(number == "C") {
+      $('#fieldCash').val('')
+    } else {
+      var valueField = $('#fieldCash').val()
+      $('#fieldCash').val(valueField + number)
+    }
   })
 }
 
@@ -92,8 +96,10 @@ function getData() {
       const val = $(this).val()
       const cash = $('#cash').val()
       const grandTotal = subTotal - val
-      $('#grand_total').val(grandTotal)
+      $('#grand_total').text(Functions.prototype.formatRupiah(grandTotal.toString(), 'Rp. '))
       $('#subTotalBadge').text(Functions.prototype.formatRupiah(grandTotal.toString(), 'Rp. '))
+      $('#grandTotal').val(grandTotal)
+      $('#paymentModal').text(Functions.prototype.formatRupiah(grandTotal.toString(), 'Rp. '))
       if(cash > 0) {
         $('#change').val(cash - grandTotal)
       }
@@ -226,7 +232,9 @@ const getCarts = {
     $('#listCarts').html(lists)
     $('#subTotalBadge').text(Functions.prototype.formatRupiah(subTotal.toString(), 'Rp. '))
     $('#sub_total').val(subTotal).attr('readonly', true).addClass('disabled')
-    $('#grand_total').val(subTotal)
+    $('#grand_total').text(Functions.prototype.formatRupiah(subTotal.toString(), 'Rp. '))
+    $('#grandTotal').val(subTotal)
+    $('#paymentModal').text(Functions.prototype.formatRupiah(subTotal.toString(), 'Rp. '))
   },
   set errorData(err) {
     toastr.error(err.responseJSON.message, 'error')
@@ -348,12 +356,12 @@ function processPayment() {
     e.preventDefault()
     const idUser = idUserInput
     const customer = $('#customer').val()
-    const grandTotal = $('#grand_total').val()
+    const grandTotal = $('#grandTotal').val()
     const diskon = $('#diskon').val()
     const no_invoice = noInvoice
     const keterangan = $('#keterangan').val()
-    const cash = $('#cash').val()
-    const change = $('#change').val()
+    const cash = $('#fieldCash').val()
+    const change = cash - grandTotal
     const pajak = $('#pajak').val()
     if(grandTotal < 1) {
       Swal.fire({
