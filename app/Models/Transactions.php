@@ -6,7 +6,7 @@ use Illuminate\Database\Eloquent\Model;
 
 class Transactions extends Model
 {
-    protected $fillable = ['no_invoice', 'createdBy', 'customer_id', 'diskon_transaksi', 'total', 'cash', 'change', 'tgl_transaksi', 'jam_transaksi', 'keterangan'];
+    protected $fillable = ['no_invoice', 'createdBy', 'customer_id', 'diskon_transaksi', 'total', 'cash', 'pajak', 'change', 'tgl_transaksi', 'jam_transaksi', 'keterangan'];
 
     public function carts()
     {

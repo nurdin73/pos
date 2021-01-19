@@ -57,7 +57,7 @@
                   <div class="form-group row">
                     <label class="col-md-3 col-form-label" for="pajak">Pajak</label>
                     <div class="input-group col-md-9">
-                      <input class="form-control" id="pajak" type="text" name="pajak" placeholder="0.00" disabled>
+                      <input class="form-control" id="persentasePajak" type="text" name="persentasePajak" placeholder="0.00" disabled>
                       <div class="input-group-append">
                         <span class="input-group-text" id="basic-addon2">%</span>
                       </div>
@@ -108,19 +108,14 @@
             <textarea name="keterangan" id="keterangan" cols="30" rows="5" class="form-control" placeholder="keterangan"></textarea>
           </div>
           <div class="col-md-4">
+            <input type="hidden" id="grandTotal">
+            <input type="hidden" id="subTotal">
             <ul class="list-group list-group-flush">
               <li class="list-group-item d-flex justify-content-lg-between align-items-center">
                 <span class="font-weight-bold text-uppercase">Subtotal</span>
                 <small class="text-muted" id="sub_total">Rp. 0 ,-</small>
               </li>
-              <li class="list-group-item d-flex justify-content-lg-between align-items-center">
-                <span class="font-weight-bold text-uppercase">Pajak</span>
-                <small class="text-muted" id="total_pajak">Rp. 0 ,-</small>
-              </li>
-              <li class="list-group-item d-flex justify-content-lg-between align-items-center">
-                <span class="font-weight-bold text-uppercase">Layanan</span>
-                <small class="text-muted" id="layanan">Rp. 0 ,-</small>
-              </li>
+              <input type="hidden" name="pajak" id="pajak">
               <li class="list-group-item d-flex justify-content-lg-between align-items-center">
                 <span class="font-weight-bold text-uppercase">Diskon</span>
                 <div class="row justify-content-lg-end">
@@ -131,11 +126,12 @@
               </li>
               <li class="list-group-item d-flex justify-content-lg-between align-items-center">
                 <span class="font-weight-bold text-uppercase">Total</span>
-                <small class="text-muted" id="total">Rp. 0 ,-</small>
+                <small class="text-muted" id="grand_total">Rp. 0 ,-</small>
               </li>
             </ul>
             <button class="btn btn-block btn-danger">Cancel</button>
-            <button class="btn btn-block btn-success btn-lg" id="btn-proccess-payment" data-target="#processPaymentModal" data-toggle="modal">Prosess</button>
+            <button class="btn btn-block btn-success btn-lg" data-target="#processPaymentModal" data-toggle="modal">Prosess</button>
+            {{-- <button class="btn btn-block btn-success btn-lg" id="btn-proccess-payment">Prosess</button> --}}
           </div>
         </div>
         {{-- <div class="row">
@@ -242,7 +238,7 @@
   <div class="modal-dialog modal-sm">
     <div class="modal-content">
       <div class="modal-header">
-        <h5 class="modal-title" id="paymentModal">Total Belanja : Rp. 100.000 ,-</h5>
+        <h5 class="modal-title">Total Belanja : <span id="paymentModal"></span></h5>
         <button type="button" class="close" data-dismiss="modal" aria-label="Close">
           <span aria-hidden="true">&times;</span>
         </button>
@@ -262,24 +258,15 @@
             <div class="col-4 d-flex justify-content-center align-items-center border border-primary btn-number" data-number="000" style="height: 50px; cursor: pointer">
               <span class="lead font-weight-bold text-uppercase">000</span>
             </div>
-            <div class="col-4 d-flex justify-content-center align-items-center border border-primary btn-number" data-number="." style="height: 50px; cursor: pointer">
-              <span class="lead font-weight-bold text-uppercase">.</span>
-            </div>
-            <div class="col-4 d-flex justify-content-center align-items-center border border-primary btn-number" data-number="0" style="height: 50px; cursor: pointer">
-              <span class="lead font-weight-bold text-uppercase">0</span>
-            </div>
-            <div class="col-4 d-flex justify-content-center align-items-center border border-primary btn-number" data-number="000" style="height: 50px; cursor: pointer">
-              <span class="lead font-weight-bold text-uppercase">000</span>
-            </div>
-            <div class="col-4 d-flex justify-content-center align-items-center border border-primary btn-number" data-number="." style="height: 50px; cursor: pointer">
-              <span class="lead font-weight-bold text-uppercase">.</span>
+            <div class="col-4 d-flex justify-content-center align-items-center border border-primary btn-number" data-number="C" style="height: 50px; cursor: pointer">
+              <span class="lead font-weight-bold text-uppercase">C</span>
             </div>
           </div>
         </div>
       </div>
       <div class="modal-footer">
         <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
-        <button type="button" class="btn btn-primary">Prosess</button>
+        <button type="button" class="btn btn-primary" id="btn-proccess-payment">Prosess</button>
       </div>
     </div>
   </div>

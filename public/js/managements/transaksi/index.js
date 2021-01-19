@@ -2,7 +2,7 @@ $(document).ready(function () {
     getData()
     getCarts.loadData = noInvoice
     actionDelAndUpdate()
-    // processPayment()
+    processPayment()
     updateCart()
     changeHarga()
     cacl()
@@ -12,8 +12,12 @@ function cacl() {
   $('.btn-number').on('click', function (e) {  
     e.preventDefault()
     const number = $(this).data('number')
-    var valueField = $('#fieldCash').val()
-    $('#fieldCash').val(valueField + number)
+    if(number == "C") {
+      $('#fieldCash').val('')
+    } else {
+      var valueField = $('#fieldCash').val()
+      $('#fieldCash').val(valueField + number)
+    }
   })
 }
 
@@ -21,7 +25,7 @@ function getData() {
     var totalPriceNoDisc = 0
     $('#noInvoice').text(noInvoice)
     $('#kasir').val(name).attr('disabled', true).addClass('disabled')
-    $('#pajak').val(persentasePajak).attr('disabled', true).addClass('disabled')
+    $('#persentasePajak').val(persentasePajak).attr('disabled', true).addClass('disabled')
     // $('#addProduct').validate({
     //   rules: {
     //     barcode: {
@@ -92,8 +96,10 @@ function getData() {
       const val = $(this).val()
       const cash = $('#cash').val()
       const grandTotal = subTotal - val
-      $('#grand_total').val(grandTotal)
+      $('#grand_total').text(Functions.prototype.formatRupiah(grandTotal.toString(), 'Rp. '))
       $('#subTotalBadge').text(Functions.prototype.formatRupiah(grandTotal.toString(), 'Rp. '))
+      $('#grandTotal').val(grandTotal)
+      $('#paymentModal').text(Functions.prototype.formatRupiah(grandTotal.toString(), 'Rp. '))
       if(cash > 0) {
         $('#change').val(cash - grandTotal)
       }
@@ -172,9 +178,8 @@ const getCarts = {
         const pajak = totalHargaProduk * (persentasePajak / 100)
         const layanan = totalHargaProduk * (persentaseLayanan / 100)
         const typeHarga = result.product.type_prices
-        subTotal += (totalHargaProduk - pajak - layanan)
-        subTotalBadge += (totalHargaProduk)
-        const total = subTotal + pajak + layanan
+        subTotal += totalHargaProduk
+        const total = subTotal
         lists += `
           <tr data-id="${result.id}">
             <td>${i++}</td>
@@ -213,8 +218,7 @@ const getCarts = {
           </tr>
         `
         $('#sub_total').text(Functions.prototype.formatRupiah(subTotal.toString(), 'Rp. '))
-        $('#total_pajak').text(Functions.prototype.formatRupiah(pajak.toString(), 'Rp. '))
-        $('#layanan').text(Functions.prototype.formatRupiah(layanan.toString(), 'Rp. '))
+        $('#pajak').val(pajak)
         $('#total').text(Functions.prototype.formatRupiah(total.toString(), 'Rp. '))
       })
     } else {
@@ -226,9 +230,11 @@ const getCarts = {
     }
 
     $('#listCarts').html(lists)
-    $('#subTotalBadge').text(Functions.prototype.formatRupiah(subTotalBadge.toString(), 'Rp. '))
+    $('#subTotalBadge').text(Functions.prototype.formatRupiah(subTotal.toString(), 'Rp. '))
     $('#sub_total').val(subTotal).attr('readonly', true).addClass('disabled')
-    $('#grand_total').val(subTotal)
+    $('#grand_total').text(Functions.prototype.formatRupiah(subTotal.toString(), 'Rp. '))
+    $('#grandTotal').val(subTotal)
+    $('#paymentModal').text(Functions.prototype.formatRupiah(subTotal.toString(), 'Rp. '))
   },
   set errorData(err) {
     toastr.error(err.responseJSON.message, 'error')
@@ -350,12 +356,13 @@ function processPayment() {
     e.preventDefault()
     const idUser = idUserInput
     const customer = $('#customer').val()
-    const grandTotal = $('#grand_total').val()
+    const grandTotal = $('#grandTotal').val()
     const diskon = $('#diskon').val()
     const no_invoice = noInvoice
     const keterangan = $('#keterangan').val()
-    const cash = $('#cash').val()
-    const change = $('#change').val()
+    const cash = $('#fieldCash').val()
+    const change = cash - grandTotal
+    const pajak = $('#pajak').val()
     if(grandTotal < 1) {
       Swal.fire({
         text: 'isi barang terlebih dahulu',
@@ -382,7 +389,8 @@ function processPayment() {
             keterangan: keterangan,
             total: grandTotal,
             cash: cash,
-            change: change
+            change: change,
+            pajak: pajak
           }
           Functions.prototype.postRequest(addTransaction, urlAddTransaction, data)
         }
