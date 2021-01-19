@@ -21,7 +21,7 @@ function getData() {
     var totalPriceNoDisc = 0
     $('#noInvoice').text(noInvoice)
     $('#kasir').val(name).attr('disabled', true).addClass('disabled')
-    $('#pajak').val(persentasePajak).attr('disabled', true).addClass('disabled')
+    $('#persentasePajak').val(persentasePajak).attr('disabled', true).addClass('disabled')
     // $('#addProduct').validate({
     //   rules: {
     //     barcode: {
@@ -172,9 +172,8 @@ const getCarts = {
         const pajak = totalHargaProduk * (persentasePajak / 100)
         const layanan = totalHargaProduk * (persentaseLayanan / 100)
         const typeHarga = result.product.type_prices
-        subTotal += (totalHargaProduk - pajak - layanan)
-        subTotalBadge += (totalHargaProduk)
-        const total = subTotal + pajak + layanan
+        subTotal += totalHargaProduk
+        const total = subTotal
         lists += `
           <tr data-id="${result.id}">
             <td>${i++}</td>
@@ -213,8 +212,7 @@ const getCarts = {
           </tr>
         `
         $('#sub_total').text(Functions.prototype.formatRupiah(subTotal.toString(), 'Rp. '))
-        $('#total_pajak').text(Functions.prototype.formatRupiah(pajak.toString(), 'Rp. '))
-        $('#layanan').text(Functions.prototype.formatRupiah(layanan.toString(), 'Rp. '))
+        $('#pajak').val(pajak)
         $('#total').text(Functions.prototype.formatRupiah(total.toString(), 'Rp. '))
       })
     } else {
@@ -226,7 +224,7 @@ const getCarts = {
     }
 
     $('#listCarts').html(lists)
-    $('#subTotalBadge').text(Functions.prototype.formatRupiah(subTotalBadge.toString(), 'Rp. '))
+    $('#subTotalBadge').text(Functions.prototype.formatRupiah(subTotal.toString(), 'Rp. '))
     $('#sub_total').val(subTotal).attr('readonly', true).addClass('disabled')
     $('#grand_total').val(subTotal)
   },
@@ -356,6 +354,7 @@ function processPayment() {
     const keterangan = $('#keterangan').val()
     const cash = $('#cash').val()
     const change = $('#change').val()
+    const pajak = $('#pajak').val()
     if(grandTotal < 1) {
       Swal.fire({
         text: 'isi barang terlebih dahulu',
@@ -382,7 +381,8 @@ function processPayment() {
             keterangan: keterangan,
             total: grandTotal,
             cash: cash,
-            change: change
+            change: change,
+            pajak: pajak
           }
           Functions.prototype.postRequest(addTransaction, urlAddTransaction, data)
         }
