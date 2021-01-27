@@ -86,4 +86,9 @@ class PajakController extends Controller
     {
         return $this->taxService->deleteTax($id);
     }
+
+    public function reportTaxes()
+    {
+        return $this->taxService->reportTaxes();
+    }
 }

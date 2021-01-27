@@ -3,6 +3,7 @@ namespace App\Services;
 
 use App\Models\Tax;
 use App\Models\Products;
+use App\Models\Transactions;
 
 class TaxService
 {
@@ -58,5 +59,16 @@ class TaxService
         $delete = $checkTax->delete();
         if(!$delete) return response(['message' => 'Hapus Pajak tidak berhasil'], 500);
         return response(['message' => 'Hapus Pajak berhasil']);
+    }
+
+    public function reportTaxes()
+    {
+        $results = Transactions::select('id', 'pajak', 'total');
+        $data = [];
+        $data['totalPenjualan'] = $results->sum('total');
+        $data['totalPajak'] = $results->sum('pajak');
+        
+        $response = $data;
+        return response($response);
     }
 }
