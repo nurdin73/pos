@@ -114,8 +114,8 @@ class TransactionService
                 }
                 // Print nota
                 
-                // $printTrx = new PrintTrx();
-                // $printTrx->invoice($create->id);
+                $printTrx = new PrintTrx();
+                $printTrx->invoice($create->id);
 
                 DB::commit();
                 return response(['message' => 'transaksi berhasil ditambahkan']);

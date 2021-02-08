@@ -106,7 +106,7 @@
         </ul>
         <span class="sr-only">Pajak</span>
       </li> --}}
-      <li class="c-sidebar-nav-item">
+      {{-- <li class="c-sidebar-nav-item">
         <a class="c-sidebar-nav-link" href="{{ route('loyalityProgram') }}">
           <svg class="c-sidebar-nav-icon">
             <use xlink:href="{{ asset('vendors/@coreui/icons/svg/free.svg#cil-dollar') }}"></use>
@@ -114,7 +114,7 @@
           <span class="badge badge-danger">Soon</span>
         </a>
         <span class="sr-only">Loyality Program</span>
-      </li>
+      </li> --}}
       <li class="c-sidebar-nav-title">Laporan <span class="sr-only">Laporan</span></li>
       <li class="c-sidebar-nav-item c-sidebar-nav-dropdown">
         <a class="c-sidebar-nav-link c-sidebar-nav-dropdown-toggle" href="#">
@@ -185,22 +185,22 @@
         </a>
         <span class="sr-only">Toko</span>
       </li>
-      <li class="c-sidebar-nav-item">
+      {{-- <li class="c-sidebar-nav-item">
         <a class="c-sidebar-nav-link" href="{{ route('printerSettings') }}">
           <div class="c-sidebar-nav-icon">
             <i class="fa fa-fw fa-print"></i>
           </div> Printer Settings
         </a>
         <span class="sr-only">Toko</span>
-      </li>
-      <li class="c-sidebar-nav-item">
+      </li> --}}
+      {{-- <li class="c-sidebar-nav-item">
         <a class="c-sidebar-nav-link" href="{{ route('settingManagementStaff') }}">
           <svg class="c-sidebar-nav-icon">
             <use xlink:href="{{ asset('vendors/@coreui/icons/svg/free.svg#cil-contact') }}"></use>
           </svg> Management Staff
           <span class="badge badge-warning">On Going</span>
         </a>
-      </li>
+      </li> --}}
       {{-- <li class="c-sidebar-nav-item">
         <a class="c-sidebar-nav-link" href="{{ route('settingApi') }}">
           <svg class="c-sidebar-nav-icon">
