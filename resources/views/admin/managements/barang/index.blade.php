@@ -124,6 +124,15 @@
                 </select>
               </div>
               <div class="form-group">
+                <div class="d-flex justify-content-between align-items-center">
+                  <label for="cabang_id">Cabang <sub class="text-info">Optional</sub></label>
+                  <small><a href="{{ route('managementCabang') . "?redirect=" . route('managementBarang') }}" class="btn-link">Tambah Cabang</a></small>
+                </div>
+                <select name="cabang_id" id="cabang_id" class="form-control" style="width: 100%">
+                  
+                </select>
+              </div>
+              <div class="form-group">
                 <label for="nama_barang">Nama Barang *</label>
                 <input type="text" name="nama_barang" id="nama_barang" class="form-control">
               </div>

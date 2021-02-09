@@ -30,6 +30,7 @@ $(document).ready(function () {
   typeHarga()
   getSuplier()
   addCodeBarang()
+  getCabang()
 
   $('#filteringData').on('submit', function(e) {
     e.preventDefault()
@@ -158,6 +159,7 @@ function addData() {
       const formData = new FormData()
       const data = {
         suplier_id: $('#suplier_id').val() != null ? $('#suplier_id').val() : 0,
+        cabang_id: $('#cabang_id').val() != null ? $('#cabang_id').val() : 0,
         nama_barang: $('#nama_barang').val(),
         type_barang: $('#type_barang').val(),
         stok: $('#stok').val(),
@@ -192,6 +194,7 @@ function addData() {
       formData.append('harga', data.harga)
       formData.append('kode_barang', data.kode_barang)
       formData.append('suplier_id', data.suplier_id)
+      formData.append('cabang_id', data.cabang_id)
       formData.append('point', data.point)
       for (let i = 0; i < files.length; i++) {
         const element = files[i];
@@ -255,6 +258,29 @@ function getSuplier() {
           results: data.data.map(result => {
             return {
               text: result.nama_suplier,
+              id: result.id
+            }
+          })
+        }
+      },
+    }
+  })
+}
+function getCabang() {
+  $('#cabang_id').select2({
+    theme:'bootstrap4',
+    ajax: {
+      url: URL_API + "/managements/branch-stores",
+      data: function (params) {
+        return {
+          search_cabang: params.term,
+        }
+      },
+      processResults: function(data, params) {
+        return {
+          results: data.data.map(result => {
+            return {
+              text: result.nama_cabang,
               id: result.id
             }
           })

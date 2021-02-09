@@ -7,7 +7,7 @@
           <div class="col-md-6">
             <div class="card">
               <div class="card-body">
-                <div class="text-value-lg" id="totalPenjualan"></div>
+                <div class="text-value-lg text-info" id="totalPenjualan"></div>
                 <div>Total Penjualan</div>
                 <div class="progress progress-xs my-2">
                   <div class="progress-bar bg-warning" role="progressbar"></div>
@@ -18,12 +18,30 @@
           <div class="col-md-6">
             <div class="card">
               <div class="card-body">
-                <div class="text-value-lg" id="totalPajak"></div>
+                <div class="text-value-lg text-success" id="totalPajak"></div>
                 <div>Total Pajak</div>
                 <div class="progress progress-xs my-2">
                   <div class="progress-bar bg-warning" role="progressbar"></div>
                 </div>
               </div>
+            </div>
+          </div>
+        </div>
+        <div class="card">
+          <div class="card-header d-flex justify-content-between align-items-center">
+            <span class="lead">Pajak</span>
+            {{-- <a href="{{ route('reportKasbonChart') }}?type=export&query=months" class="btn btn-sm btn-success">Export Excel</a> --}}
+          </div>
+          <div class="card-body">
+            <div class="d-flex justify-content-end">
+              <div class="btn-group">
+                <button class="btn btn-sm btn-outline-primary timeBtn" data-query="days">Hari</button>
+                <button class="btn btn-sm btn-outline-primary timeBtn" data-query="months">Bulan</button>
+                <button class="btn btn-sm btn-outline-primary timeBtn" data-query="years">Tahun</button>
+              </div>
+            </div>
+            <div id="grafik-field">
+              <canvas id="grafikPajak"></canvas>
             </div>
           </div>
         </div>

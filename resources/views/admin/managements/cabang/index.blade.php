@@ -178,6 +178,7 @@
   <script src="https://cdn.jsdelivr.net/npm/sweetalert2@10"></script>
   <script>
     const URL_API = '{{ url('api/v1') }}'
+    const thisUrl = '{{ route('managementCabang') }}'
   </script>
   <script src="{{ asset('js/managements/cabang/index.js') }}"></script>
 @endsection

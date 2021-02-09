@@ -91,4 +91,14 @@ class PajakController extends Controller
     {
         return $this->taxService->reportTaxes();
     }
+
+    public function cartPajak(Request $request)
+    {
+        $query = $request->input('query');
+        if($query == null) {
+            $query = "days";
+        }
+        $type = $request->input('type');
+        return $this->taxService->cartPajak($query, $type);
+    }
 }

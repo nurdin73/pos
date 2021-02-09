@@ -66,6 +66,27 @@ $(document).ready(function () {
             },
         }
     })
+    $('#cabang').select2({
+        theme:'bootstrap4',
+        ajax: {
+            url: URL_API + "/managements/branch-stores",
+            data: function (params) {
+                return {
+                    search_cabang: params.term,
+                }
+            },
+            processResults: function(data, params) {
+                return {
+                    results: data.data.map(result => {
+                        return {
+                            text: result.nama_cabang,
+                            id: result.id
+                        }
+                    })
+                }
+            },
+        }
+    })
 });
 
 // functions
@@ -86,6 +107,15 @@ const getDetail = {
             type: 'select2:select',
             params: {
                 data : response.suplier != null ? response.suplier.nama_suplier : ""
+            }
+        })
+        var option2 = response.branch != null ? new Option(response.branch.nama_cabang, response.branch.id, true, true) : new Option("", "", true, true)
+        $("#cabang").append(option2).trigger('change')
+
+        $("#cabang").trigger({
+            type: 'select2:select',
+            params: {
+                data : response.branch != null ? response.branch.nama_cabang : ""
             }
         })
         $('#type_barang').val(response.type_barang).trigger('change')
@@ -245,6 +275,7 @@ $('#updateProduct').validate({
       const data = {
         kode_barang: $('#kode_barang').val(),
         suplier_id: $('#suplier').val() != null ? $('#suplier').val() : 0,
+        cabang_id: $('#cabang').val() != null ? $('#cabang').val() : 0,
         nama_barang: $('#nama_barang').val(),
         type_barang: $('#type_barang').val(),
         harga_jual: $('#harga_jual').val(),

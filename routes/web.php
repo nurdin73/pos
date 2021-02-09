@@ -55,6 +55,7 @@ Route::group(['prefix' => 'admin', 'middleware' => ['auth']], function () {
         });
 
         Route::get('/cabang', 'Admin\AdminController@managementCabang')->name('managementCabang');
+        Route::get('/cabang/detail/{id}', 'Admin\AdminController@detailCabang');
         Route::get('/pelanggan', 'Admin\AdminController@pelanggan')->name('managementPelanggan');
         Route::get('/management-stok', 'Admin\AdminController@managementStok')->name('managementStok');
         Route::group(['prefix' => '/kasbon'], function () {
@@ -127,6 +128,7 @@ Route::group(['prefix' => 'api/'], function () {
             Route::get('/modal', 'Api\Managements\StokController@modal');
             Route::get('/supliers', 'Api\Managements\SuplierController@getAll');
             Route::get('/branch-stores', 'Api\Managements\BranchStoreController@getAll');
+            Route::get('/chart-pajak', 'Api\Managements\PajakController@cartPajak');
 
             // get detail
             Route::get('barang/{id}', 'Api\Managements\BarangController@show');

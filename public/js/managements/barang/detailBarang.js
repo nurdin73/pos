@@ -46,6 +46,15 @@ const getDetail = {
                 data : response.suplier != null ? response.suplier.nama_suplier : ""
             }
         })
+        var option2 = response.branch != null ? new Option(response.branch.nama_cabang, response.branch.id, true, true) : new Option("", null, true, true)
+        $("#cabang").append(option2).trigger('change')
+
+        $("#cabang").trigger({
+            type: 'select2:select',
+            params: {
+                data : response.branch != null ? response.branch.nama_cabang : ""
+            }
+        })
         $('#type_barang').val(response.type_barang).trigger('change').attr('disabled', true)
         $('#stok').val(stocks)
         $('#kode-barang').text(response.kode_barang)

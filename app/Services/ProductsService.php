@@ -39,10 +39,13 @@ class ProductsService
                 ->make(true);
     }
 
-    public function showAll($nama, $kode, $sorting)
+    public function showAll($nama, $kode, $sorting, $byBranch)
     {
         $results = Products::with('stocks') ->select('id', 'nama_barang', 'kode_barang', 'harga_jual', 'selled');
         $results->orderBy('kode_barang', 'ASC');
+        if($byBranch !== null) {
+            $results = $results->where('cabang_id', $byBranch);
+        }
         if($nama != "") {
             if($kode != "") {
                 $results = $results->where('kode_barang', 'like', '%'.$kode.'%')->where('nama_barang', 'like', '%'.$nama.'%')->paginate($sorting);
@@ -136,7 +139,7 @@ class ProductsService
 
     public function show($id)
     {
-        $result = Products::with('images:id,product_id,image', 'stocks', 'typePrices', 'suplier')->where('id', $id)->first();
+        $result = Products::with('images:id,product_id,image', 'stocks', 'typePrices', 'suplier', 'branch')->where('id', $id)->first();
         return $result;
     }
 
