@@ -3,6 +3,8 @@ namespace App\Services;
 
 use App\Models\Tax;
 use App\Models\Products;
+use App\Models\Transactions;
+use DateTime;
 
 class TaxService
 {
@@ -58,5 +60,112 @@ class TaxService
         $delete = $checkTax->delete();
         if(!$delete) return response(['message' => 'Hapus Pajak tidak berhasil'], 500);
         return response(['message' => 'Hapus Pajak berhasil']);
+    }
+
+    public function reportTaxes()
+    {
+        $results = Transactions::select('id', 'pajak', 'total');
+        $data = [];
+        $data['totalPenjualan'] = $results->sum('total');
+        $data['totalPajak'] = $results->sum('pajak');
+        
+        $response = $data;
+        return response($response);
+    }
+
+    public function cartPajak($query)
+    {
+        $labelTime = [];
+        $sets = [];
+        switch ($query) {
+            case 'days':
+                $dateAwal = date('j') > 5 ? date('j') - 5 : 1;
+                for ($i=$dateAwal; $i <= date('j') + 3; $i++) { 
+                    $i = $i < 10 ? "0".$i : $i;
+                    $tgl = date('Y-m'). "-" .$i;
+                    $labelTime[$tgl] = [];
+                }
+                foreach ($labelTime as $t => $value) {
+                    $result = Transactions::where('created_at', 'like', "%$t%")->get();
+                    $totalTransaksi = 0;
+                    $totalPajak = 0;
+                    foreach ($result as $r) {
+                        $totalPajak += $r->pajak;
+                        $totalTransaksi += $r->total;
+                    }
+                    $sets[$t] = [
+                        'total_transaksi' => $totalTransaksi,
+                        'total_pajak' => $totalPajak
+                    ];
+                }
+                break;
+            
+            case 'months':
+                for ($i=1; $i <= 12; $i++) { 
+                    $i = $i < 10 ? "0".$i : $i;
+                    $bln = date('Y')."-".$i;
+                    $labelTime[$bln] = [];
+                }
+                foreach ($labelTime as $t => $value) {
+                    $result = Transactions::where('created_at', 'like', "%$t%")->get();
+                    $monthName = explode('-', $t);
+                    $convertMonth = DateTime::createFromFormat('!m', $monthName[1]);
+                    $nameMonth = $convertMonth->format('F');
+                    $totalTransaksi = 0;
+                    $totalPajak = 0;
+                    foreach ($result as $r) {
+                        $totalPajak += $r->pajak;
+                        $totalTransaksi += $r->total;
+                    }
+                    $sets[$nameMonth] = [
+                        'total_transaksi' => $totalTransaksi,
+                        'total_pajak' => $totalPajak
+                    ];
+                }
+                break;
+            
+            case 'years':
+                for ($i=date('Y') - 2; $i <= date('Y') + 8; $i++) { 
+                    $i = $i < 10 ? "0".$i : $i;
+                    $labelTime[$i] = [];
+                }
+                foreach ($labelTime as $t => $value) {
+                    $result = Transactions::where('created_at', 'like', "%$t%")->get();
+                    $totalTransaksi = 0;
+                    $totalPajak = 0;
+                    foreach ($result as $r) {
+                        $totalPajak += $r->pajak;
+                        $totalTransaksi += $r->total;
+                    }
+                    $sets[$t] = [
+                        'total_transaksi' => $totalTransaksi,
+                        'total_pajak' => $totalPajak
+                    ];
+                }
+                break;
+            
+            default:
+                $dateAwal = date('j') > 5 ? date('j') - 5 : 1;
+                for ($i=$dateAwal; $i <= date('j') + 3; $i++) { 
+                    $i = $i < 10 ? "0".$i : $i;
+                    $tgl = date('Y-m'). "-" .$i;
+                    $labelTime[$tgl] = [];
+                }
+                foreach ($labelTime as $t => $value) {
+                    $result = Transactions::where('created_at', 'like', "%$t%")->get();
+                    $totalTransaksi = 0;
+                    $totalPajak = 0;
+                    foreach ($result as $r) {
+                        $totalPajak += $r->pajak;
+                        $totalTransaksi += $r->total;
+                    }
+                    $sets[$t] = [
+                        'total_transaksi' => $totalTransaksi,
+                        'total_pajak' => $totalPajak
+                    ];
+                }
+                break;
+        }
+        return response($sets);
     }
 }

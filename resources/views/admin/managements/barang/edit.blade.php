@@ -36,6 +36,10 @@
                           <label for="suplier">Suplier <sub class="text-info">Optional</sub></label>
                           <select id="suplier" style="width: 100%" class="custom-select"></select>
                         </div>
+                        <div class="form-group">
+                          <label for="cabang">Cabang <sub class="text-info">Optional</sub></label>
+                          <select id="cabang" style="width: 100%" class="custom-select"></select>
+                        </div>
 
                         <div class="form-group">
                           <label for="nama_barang">Nama Barang *</label>

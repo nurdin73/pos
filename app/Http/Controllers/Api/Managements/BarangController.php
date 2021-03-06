@@ -38,8 +38,9 @@ class BarangController extends Controller
         if($sorting == null) {
             $sorting = 10;
         }
+        $byBranch = $request->input('branch');
         // return $this->productsService->getAll();
-        return $this->productsService->showAll($nama, $kode, $sorting);
+        return $this->productsService->showAll($nama, $kode, $sorting, $byBranch);
     }
 
 
@@ -75,6 +76,7 @@ class BarangController extends Controller
         $kategori = $request->input('kategori');
         $kode_barang = $request->input('kode_barang');
         $suplier_id = $request->input('suplier_id');
+        $cabang_id = $request->input('cabang_id');
         $point = $request->input('point');
         $files = $request->file('files');
         // ------------------------------- //
@@ -88,10 +90,11 @@ class BarangController extends Controller
                 return response(['message' => 'type barang tidak valid'], 406);
             }
         }
-        if(!$files) return response(['message' => 'gada']);
+        // if(!$files) return response(['message' => 'gada']);
 
         $data = [
             'suplier_id' => $suplier_id,
+            'cabang_id' => $cabang_id,
             'nama_barang' => $nama_barang,
             'type_barang' => $type_barang,
             'kode_barang' => $kode_barang,
@@ -157,6 +160,7 @@ class BarangController extends Controller
         $keterangan = $request->input('keterangan');
         $kategori = $request->input('kategori');
         $suplier_id = $request->input('suplier_id');
+        $cabang_id = $request->input('cabang_id');
         $point = $request->input('point');
         // ------------------------------- //
         if($satuan) {
@@ -172,6 +176,7 @@ class BarangController extends Controller
 
         $data = [
             'suplier_id' => $suplier_id,
+            'cabang_id' => $cabang_id,
             'nama_barang' => $nama_barang,
             'type_barang' => $type_barang,
             'harga_jual' => $harga_jual,

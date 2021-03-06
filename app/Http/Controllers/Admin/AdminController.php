@@ -52,6 +52,11 @@ class AdminController extends Controller
         return view('admin.managements.cabang.index');
     }
 
+    public function detailCabang($id)
+    {
+        return view('admin.managements.cabang.detail', ['id' => $id]);
+    }
+
     public function managementTransaksi()
     {
         $data['no_invoice'] = GenerateCode::invoice();
