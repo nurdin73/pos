@@ -38,12 +38,10 @@ const getInvoice = {
         }
         const subTotal = response.total + response.diskon_transaksi,
               diskonTrx = response.diskon_transaksi,
-              pajakTrx = 0,
-              totalTrx = response.total
+              pajakTrx = response.pajak
         $('#subTotal').text(Functions.prototype.formatRupiah(subTotal.toString(), 'Rp. '))
         $('#diskonTrx').text(Functions.prototype.formatRupiah(diskonTrx.toString(), 'Rp. '))
         $('#pajakTrx').text(Functions.prototype.formatRupiah(pajakTrx.toString(), 'Rp. '))
-        $('#totalTrx').text(Functions.prototype.formatRupiah(totalTrx.toString(), 'Rp. '))
     },
     set errorData(err) {
         toastr.error(err.responseJSON.message, 'Error')

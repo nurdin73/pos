@@ -16,6 +16,7 @@ class CreateProductsTable extends Migration
         Schema::create('products', function (Blueprint $table) {
             $table->id();
             $table->bigInteger('suplier_id')->nullable();
+            $table->bigInteger('cabang_id')->nullable();
             $table->string('nama_barang');
             $table->enum('type_barang', ['baru', 'bekas']);
             $table->string('kode_barang');

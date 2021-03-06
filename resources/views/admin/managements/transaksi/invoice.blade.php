@@ -76,10 +76,6 @@
                     <th>Pajak</th>
                     <td id="pajakTrx">Rp. 0 ,-</td>
                   </tr>
-                  <tr>
-                    <th>Total</th>
-                    <td id="totalTrx">Rp. 0 ,-</td>
-                  </tr>
                 </table>
               </div>
             </div>

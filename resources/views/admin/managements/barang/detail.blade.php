@@ -36,6 +36,10 @@
                         <select id="suplier" style="width: 100%" class="custom-select" disabled></select>
                       </div>
                       <div class="form-group">
+                        <label for="cabang">Cabang</label>
+                        <select id="cabang" style="width: 100%" class="custom-select" disabled></select>
+                      </div>
+                      <div class="form-group">
                         <label for="nama_barang">Nama Barang</label>
                         <input type="text" name="nama_barang" id="nama_barang" class="form-control" readonly>
                       </div>

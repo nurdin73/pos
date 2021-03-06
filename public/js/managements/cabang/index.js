@@ -51,7 +51,7 @@ const getAll = {
                         <td>
                             <div class="btn-group">
                                 <button class="btn btn-sm btn-info edit" data-toggle="modal" data-target="#updateBranchStoreModal" data-id="${branch.id}"><i class="fa fa-edit"></i></button>
-                                <button class="btn btn-sm btn-primary detail" data-toggle="modal" data-target="#detailBranchStoreModal" data-id="${branch.id}"><i class="fa fa-book"></i></button>
+                                <a class="btn btn-sm btn-primary" href="${thisUrl + "/detail/" + branch.id}"><i class="fa fa-book"></i></a>
                                 <button class="btn btn-sm btn-danger delete" data-id="${branch.id}"><i class="fa fa-trash"></i></button>
                             </div>
                         </td>

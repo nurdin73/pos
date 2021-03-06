@@ -39,10 +39,13 @@ class ProductsService
                 ->make(true);
     }
 
-    public function showAll($nama, $kode, $sorting)
+    public function showAll($nama, $kode, $sorting, $byBranch)
     {
         $results = Products::with('stocks') ->select('id', 'nama_barang', 'kode_barang', 'harga_jual', 'selled');
         $results->orderBy('kode_barang', 'ASC');
+        if($byBranch !== null) {
+            $results = $results->where('cabang_id', $byBranch);
+        }
         if($nama != "") {
             if($kode != "") {
                 $results = $results->where('kode_barang', 'like', '%'.$kode.'%')->where('nama_barang', 'like', '%'.$nama.'%')->paginate($sorting);
@@ -69,30 +72,34 @@ class ProductsService
             $path = 'images/products/';
             $wm = public_path('wm.png');
             $pathOfFile = [];
-            foreach ($files as $file) {
-                $optimizerChain = OptimizerChainFactory::create();
-                $filename = Str::random(20) .'.'. $file->getClientOriginalExtension();
-                $img = Image::make($file->getRealPath());
-                $img->resize(300, 300);
-                $img->insert($wm, 'center');
-                $img->encode('jpg', 60);
-                Storage::disk('local')->put($path . $filename, $img, 'public');
-                $storagePath = Storage::disk('local')->getDriver()->getAdapter()->getPathPrefix().$path.$filename;
-                $optimizerChain->optimize($storagePath);
-                array_push($pathOfFile, $path.$filename);
+            if(!is_null($files)) {
+                foreach ($files as $file) {
+                    $optimizerChain = OptimizerChainFactory::create();
+                    $filename = Str::random(20) .'.'. $file->getClientOriginalExtension();
+                    $img = Image::make($file->getRealPath());
+                    $img->resize(300, 300);
+                    $img->insert($wm, 'center');
+                    $img->encode('jpg', 60);
+                    Storage::disk('local')->put($path . $filename, $img, 'public');
+                    $storagePath = Storage::disk('local')->getDriver()->getAdapter()->getPathPrefix().$path.$filename;
+                    $optimizerChain->optimize($storagePath);
+                    array_push($pathOfFile, $path.$filename);
+                }
             }
 
             $create = Products::create($data);
             if($create) {
-                foreach ($pathOfFile as $val) {
-                    $addImage = FileProducts::create([
-                        'product_id' => $create->id,
-                        'image' => $val
-                    ]);
-                    if($addImage) {
-                        $return = true;
-                    } else {
-                        Products::find($create->id)->delete();
+                if(count($pathOfFile) > 0) {
+                    foreach ($pathOfFile as $val) {
+                        $addImage = FileProducts::create([
+                            'product_id' => $create->id,
+                            'image' => $val
+                        ]);
+                        if($addImage) {
+                            $return = true;
+                        } else {
+                            Products::find($create->id)->delete();
+                        }
                     }
                 }
                 $managementStok = Stocks::create([
@@ -121,7 +128,7 @@ class ProductsService
                 //     ]);
                 // }
             }
-            if($return == false) return response(['message' => 'Produk gagal ditambahkan'], 500);
+            // if($return == false) return response(['message' => 'Produk gagal ditambahkan'], 500);
             DB::commit();
             return response(['message' => 'Produk berhasil ditambahkan']);
         } catch (\Exception $e) {
@@ -132,7 +139,7 @@ class ProductsService
 
     public function show($id)
     {
-        $result = Products::with('images:id,product_id,image', 'stocks', 'typePrices', 'suplier')->where('id', $id)->first();
+        $result = Products::with('images:id,product_id,image', 'stocks', 'typePrices', 'suplier', 'branch')->where('id', $id)->first();
         return $result;
     }
 
