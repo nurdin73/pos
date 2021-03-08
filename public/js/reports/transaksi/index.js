@@ -11,29 +11,7 @@ const getTrxPerJam = {
         Functions.prototype.getRequest(getTrxPerJam, url)
     },
     set successData(response) {
-        const dataset = Object.values(response)
-        var totalTrx = [];
-        var totalKeuntungan = [];
-        var totalPendapatan = []
-        dataset.map(ds => {
-            totalTrx.push(ds.length)
-            var totalModal = 0
-            var totalPembelian = 0
-            ds.map(trx => {
-                totalPembelian += trx.total
-                trx.carts.map(cart => {
-                    var harga_dasar = 0
-                    cart.product.stocks.map(stock => {
-                        harga_dasar = stock.harga_dasar
-                    })
-                    totalModal += harga_dasar * cart.qyt
-                })
-            })
-            const keuntunganTotal = totalPembelian - totalModal
-            const pendapatan = totalPembelian
-            totalKeuntungan.push(keuntunganTotal)
-            totalPendapatan.push(pendapatan)
-        })
+        const gettingData = gettingCharts(response)
         var jam = Object.keys(response)
         var ctx = document.getElementById('myChart').getContext('2d');
         const optionsTotalTrx = {
@@ -60,15 +38,14 @@ const getTrxPerJam = {
                 }]
             }
         }
-        Functions.prototype.createChart(ctx, 'line', 'Total Transaksi', totalTrx, jam, optionsTotalTrx)
-        Functions.prototype.createChart($('#keuntunganChart'), 'line', 'Total Keuntungan', totalKeuntungan, jam, optionsTotal)
-        Functions.prototype.createChart($('#pendapatanChart'), 'line', 'Total Pendapatan', totalPendapatan, jam, optionsTotal)
+        Functions.prototype.createChart(ctx, 'line', 'Total Transaksi', gettingData.totalTrx, jam, optionsTotalTrx)
+        Functions.prototype.createChart($('#keuntunganChart'), 'line', 'Total Keuntungan', gettingData.totalKeuntungan, jam, optionsTotal)
+        Functions.prototype.createChart($('#pendapatanChart'), 'line', 'Total Pendapatan', gettingData.totalPendapatan, jam, optionsTotal)
     },
     errorData(err) {
         toastr.error(err.responseJSON.message, 'Error')
     }
 }
-
 
 const getTrxPerDays = {
     set loadData(data) {
@@ -76,29 +53,7 @@ const getTrxPerDays = {
         Functions.prototype.getRequest(getTrxPerDays, url)
     },
     set successData(response) {
-        const dataset = Object.values(response)
-        var totalTrx = [];
-        var totalKeuntungan = [];
-        var totalPendapatan = []
-        dataset.map(ds => {
-            totalTrx.push(ds.length)
-            var totalModal = 0
-            var totalPembelian = 0
-            ds.map(trx => {
-                totalPembelian += trx.total
-                trx.carts.map(cart => {
-                    var harga_dasar = 0
-                    cart.product.stocks.map(stock => {
-                        harga_dasar = stock.harga_dasar
-                    })
-                    totalModal += harga_dasar * cart.qyt
-                })
-            })
-            const keuntunganTotal = totalPembelian - totalModal
-            const pendapatan = totalPembelian
-            totalKeuntungan.push(keuntunganTotal)
-            totalPendapatan.push(pendapatan)
-        })
+        const gettingData = gettingCharts(response)
         var jam = Object.keys(response)
         const optionsTotalTrx = {
             responsive: true,
@@ -124,9 +79,9 @@ const getTrxPerDays = {
                 }]
             }
         }
-        Functions.prototype.createChart($('#jmlTrxDays'), 'line', 'Total Transaksi', totalTrx, jam, optionsTotalTrx)
-        Functions.prototype.createChart($('#keuntunganPerHari'), 'line', 'Total Keuntungan', totalKeuntungan, jam, optionsTotal)
-        Functions.prototype.createChart($('#pendapatanPerHari'), 'line', 'Total Pendapatan', totalPendapatan, jam, optionsTotal)
+        Functions.prototype.createChart($('#jmlTrxDays'), 'line', 'Total Transaksi', gettingData.totalTrx, jam, optionsTotalTrx)
+        Functions.prototype.createChart($('#keuntunganPerHari'), 'line', 'Total Keuntungan', gettingData.totalKeuntungan, jam, optionsTotal)
+        Functions.prototype.createChart($('#pendapatanPerHari'), 'line', 'Total Pendapatan', gettingData.totalPendapatan, jam, optionsTotal)
     },
     errorData(err) {
         toastr.error(err.responseJSON.message, 'Error')
@@ -139,29 +94,7 @@ const getTrxPerMonth = {
         Functions.prototype.getRequest(getTrxPerMonth, url)
     },
     set successData(response) {
-        const dataset = Object.values(response)
-        var totalTrx = [];
-        var totalKeuntungan = [];
-        var totalPendapatan = []
-        dataset.map(ds => {
-            totalTrx.push(ds.length)
-            var totalModal = 0
-            var totalPembelian = 0
-            ds.map(trx => {
-                totalPembelian += trx.total
-                trx.carts.map(cart => {
-                    var harga_dasar = 0
-                    cart.product.stocks.map(stock => {
-                        harga_dasar = stock.harga_dasar
-                    })
-                    totalModal += harga_dasar * cart.qyt
-                })
-            })
-            const keuntunganTotal = totalPembelian - totalModal
-            const pendapatan = totalPembelian
-            totalKeuntungan.push(keuntunganTotal)
-            totalPendapatan.push(pendapatan)
-        })
+        const gettingData = gettingCharts(response)
         var jam = Object.keys(response)
         const optionsTotalTrx = {
             responsive: true,
@@ -187,9 +120,9 @@ const getTrxPerMonth = {
                 }]
             }
         }
-        Functions.prototype.createChart($('#jmlTrxMonth'), 'line', 'Total Transaksi', totalTrx, jam, optionsTotalTrx)
-        Functions.prototype.createChart($('#keuntunganPerBulan'), 'line', 'Total Keuntungan', totalKeuntungan, jam, optionsTotal)
-        Functions.prototype.createChart($('#pendapatanPerBulan'), 'line', 'Total Pendapatan', totalPendapatan, jam, optionsTotal)
+        Functions.prototype.createChart($('#jmlTrxMonth'), 'line', 'Total Transaksi', gettingData.totalTrx, jam, optionsTotalTrx)
+        Functions.prototype.createChart($('#keuntunganPerBulan'), 'line', 'Total Keuntungan', gettingData.totalKeuntungan, jam, optionsTotal)
+        Functions.prototype.createChart($('#pendapatanPerBulan'), 'line', 'Total Pendapatan', gettingData.totalPendapatan, jam, optionsTotal)
     },
     errorData(err) {
         toastr.error(err.responseJSON.message, 'Error')
@@ -202,29 +135,7 @@ const getTrxPerYears = {
         Functions.prototype.getRequest(getTrxPerYears, url)
     },
     set successData(response) {
-        const dataset = Object.values(response)
-        var totalTrx = [];
-        var totalKeuntungan = [];
-        var totalPendapatan = []
-        dataset.map(ds => {
-            totalTrx.push(ds.length)
-            var totalModal = 0
-            var totalPembelian = 0
-            ds.map(trx => {
-                totalPembelian += trx.total
-                trx.carts.map(cart => {
-                    var harga_dasar = 0
-                    cart.product.stocks.map(stock => {
-                        harga_dasar = stock.harga_dasar
-                    })
-                    totalModal += harga_dasar * cart.qyt
-                })
-            })
-            const keuntunganTotal = totalPembelian - totalModal
-            const pendapatan = totalPembelian
-            totalKeuntungan.push(keuntunganTotal)
-            totalPendapatan.push(pendapatan)
-        })
+        const gettingData = gettingCharts(response)
         var jam = Object.keys(response)
         const optionsTotalTrx = {
             responsive: true,
@@ -250,11 +161,46 @@ const getTrxPerYears = {
                 }]
             }
         }
-        Functions.prototype.createChart($('#jmlTrxYears'), 'line', 'Total Transaksi', totalTrx, jam, optionsTotalTrx)
-        Functions.prototype.createChart($('#keuntunganPerYears'), 'line', 'Total Keuntungan', totalKeuntungan, jam, optionsTotal)
-        Functions.prototype.createChart($('#pendapatanPerYears'), 'line', 'Total Pendapatan', totalPendapatan, jam, optionsTotal)
+        Functions.prototype.createChart($('#jmlTrxYears'), 'line', 'Total Transaksi', gettingData.totalTrx, jam, optionsTotalTrx)
+        Functions.prototype.createChart($('#keuntunganPerYears'), 'line', 'Total Keuntungan', gettingData.totalKeuntungan, jam, optionsTotal)
+        Functions.prototype.createChart($('#pendapatanPerYears'), 'line', 'Total Pendapatan', gettingData.totalPendapatan, jam, optionsTotal)
     },
     errorData(err) {
         toastr.error(err.responseJSON.message, 'Error')
+    }
+}
+
+
+
+
+function gettingCharts(data = {}) {
+    const dataset = Object.values(data)
+    var totalTrx = [];
+    var totalKeuntungan = [];
+    var totalPendapatan = []
+    dataset.map(ds => {
+        totalTrx.push(ds.length)
+        var totalModal = 0
+        var totalPembelian = 0
+        if(ds.length > 0) {
+            ds.map(trx => {
+                totalPembelian += trx.total
+                trx.carts.map(cart => {
+                    var harga_dasar = 0
+                    cart.product.stocks.map(stock => {
+                        harga_dasar = stock.harga_dasar
+                    })
+                    totalModal += harga_dasar * cart.qyt
+                })
+            })
+        }
+        const keuntunganTotal = totalPembelian - totalModal
+        totalKeuntungan.push(keuntunganTotal)
+        totalPendapatan.push(totalPembelian)
+    })
+    return {
+        totalTrx,
+        totalKeuntungan,
+        totalPendapatan
     }
 }

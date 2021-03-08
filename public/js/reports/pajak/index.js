@@ -15,8 +15,10 @@ const getTrx = {
         Functions.prototype.getRequest(getTrx, url)
     },
     set successData(response) {
+        const totalBersih = response.totalPenjualan - response.totalPajak
         $('#totalPenjualan').text(Functions.prototype.formatRupiah(response.totalPenjualan.toString(), 'Rp. '))
         $('#totalPajak').text(Functions.prototype.formatRupiah(response.totalPajak.toString(), 'Rp. '))
+        $('#totalBersih').text(Functions.prototype.formatRupiah(totalBersih.toString(), 'Rp. '))
     },
     set errorData(err) {
         toastr.error(err.responseJSON.message, 'Error')

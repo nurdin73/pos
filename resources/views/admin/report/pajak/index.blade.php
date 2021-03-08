@@ -4,7 +4,7 @@
     <div class="container-fluid">
       <div class="fade-in">
         <div class="row">
-          <div class="col-md-6">
+          <div class="col-md-4">
             <div class="card">
               <div class="card-body">
                 <div class="text-value-lg text-info" id="totalPenjualan"></div>
@@ -15,11 +15,22 @@
               </div>
             </div>
           </div>
-          <div class="col-md-6">
+          <div class="col-md-4">
             <div class="card">
               <div class="card-body">
-                <div class="text-value-lg text-success" id="totalPajak"></div>
+                <div class="text-value-lg text-danger" id="totalPajak"></div>
                 <div>Total Pajak</div>
+                <div class="progress progress-xs my-2">
+                  <div class="progress-bar bg-warning" role="progressbar"></div>
+                </div>
+              </div>
+            </div>
+          </div>
+          <div class="col-md-4">
+            <div class="card">
+              <div class="card-body">
+                <div class="text-value-lg text-success" id="totalBersih"></div>
+                <div>Total Pendapatan Bersih</div>
                 <div class="progress progress-xs my-2">
                   <div class="progress-bar bg-warning" role="progressbar"></div>
                 </div>

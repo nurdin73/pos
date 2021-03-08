@@ -35,10 +35,12 @@ class PenjualanService
                     foreach ($cart->product->stocks as $stock) {
                         $harga_dasar = $stock->harga_dasar;
                     }
+                    $earning = ($cart->harga_product - $cart->diskon_product) * $cart->qyt;
+                    $cap = $harga_dasar * $cart->qyt;
                     $dataset[] = [
-                        'modal' => $harga_dasar * $cart->qyt,
-                        'pendapatan' => $trx->total,
-                        'keuntungan' => ($trx->total) - ($harga_dasar * $cart->qyt)
+                        'modal' => $cap,
+                        'pendapatan' => $earning,
+                        'keuntungan' => $earning - $cap
                     ];
                 }
                 $modal = 0;

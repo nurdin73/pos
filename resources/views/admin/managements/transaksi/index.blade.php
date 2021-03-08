@@ -106,6 +106,7 @@
         <div class="row mb-4">
           <div class="col-md-8">
             <textarea name="keterangan" id="keterangan" cols="30" rows="5" class="form-control" placeholder="keterangan"></textarea>
+            <small class="text-muted font-weight-bold" id="pajakDetail">-</small>
           </div>
           <div class="col-md-4">
             <input type="hidden" id="grandTotal">
@@ -119,8 +120,8 @@
               <li class="list-group-item d-flex justify-content-lg-between align-items-center">
                 <span class="font-weight-bold text-uppercase">Diskon</span>
                 <div class="row justify-content-lg-end">
-                  <div class="col-12">
-                    <input type="text" name="diskon" id="diskon" class="form-control" placeholder="Diskon" value="0">
+                  <div class="col-7">
+                    <input type="number" name="diskon" id="diskon" class="form-control" placeholder="Diskon" value="0">
                   </div>
                 </div>
               </li>
@@ -217,7 +218,7 @@
               <div class="col-md-9">
                 <div class="form-group">
                   <label for="dicount_barang_update">Diskon Produk</label>
-                  <input type="text" name="dicount_barang_update" id="dicount_barang_update" class="form-control">
+                  <input type="number" min="0" name="dicount_barang_update" id="dicount_barang_update" class="form-control">
                 </div>
               </div>
             </div>
@@ -287,6 +288,7 @@
     const noInvoice = '{{ $no_invoice }}'
     const persentasePajak = '{{ $tax->persentasePajak ?? 0 }}'
     const persentaseLayanan = '{{ $tax->persentaseLayanan ?? 0 }}'
+    const namaPajak = '{{ $tax->nama_pajak ?? "PPN" }}'
     const hargaBarangPajak = '{{ $tax->hargaBarang ?? 0 }}'
     const pajakAktif = '{{ $tax->pajakAktif ?? 0 }}'
     const layananAktif = '{{ $tax->layananAktif ?? 0 }}'

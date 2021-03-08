@@ -15,7 +15,7 @@ class ProductSeeder extends Seeder
      */
     public function run()
     {
-        for ($i=0; $i < 300; $i++) { 
+        for ($i=301; $i < 40000; $i++) { 
             $product = Products::create([
                 'nama_barang' => 'produk '.$i,
                 'type_barang' => 'baru',

@@ -6,6 +6,11 @@ $(document).ready(function () {
     updateCart()
     changeHarga()
     cacl()
+    if(hargaBarangPajak == 0) {
+      $('#pajakDetail').text('* harga belum termasuk ' + namaPajak + `(${persentasePajak}%)`)
+    } else {
+      $('#pajakDetail').text('* harga termasuk ' + namaPajak + `(${persentasePajak}%)`)
+    }
 });
 
 function cacl() {
@@ -170,14 +175,24 @@ const getCarts = {
       var i = 1
       var lists = ""
       response.map(result => {
-        var harga_product = result.harga_product
-        var diskonProduk = result.product.diskon != null ? harga_product * (result.product.diskon / 100) : 0,
-            diskon = diskonProduk * result.qyt
-            hargaProduk = harga_product,
-            totalHargaProduk = ((result.qyt * hargaProduk) - diskon)
-        const pajak = totalHargaProduk * (persentasePajak / 100)
+        // var hargaAsal = result.harga_product,
+        //     diskonProduk = result.product.diskon != null ? result.harga_product * (result.product.diskon / 100) : 0,
+        //     harga_product = result.harga_product - diskonProduk,
+        //     diskon = result.diskon_product * result.qyt,
+        //     hargaProduk = harga_product,
+        //     totalHargaProduk = ((result.qyt * hargaProduk) - diskon),
+        // var hargaAsal = result.harga_product,
+        //     diskonProduk = result.product.diskon != null ? result.harga_product * (result.product.diskon / 100) : 0,
+        //     totalDiskon = (result.diskon_product + diskonProduk) * result.qyt,
+        //     totalHargaProduk = (result.qyt * hargaAsal) - totalDiskon, 
+        //     pajak = totalHargaProduk * (persentasePajak / 100)
+        var hargaAsal = result.harga_product,
+            totalDiskon = result.diskon_product * result.qyt,
+            totalHargaProduk = (result.qyt * hargaAsal) - totalDiskon,
+            pajak = totalHargaProduk * (persentasePajak / 100)
         const layanan = totalHargaProduk * (persentaseLayanan / 100)
         const typeHarga = result.product.type_prices
+        // const isIn = hargaBarangPajak == 0 ? pajak : 0;
         subTotal += totalHargaProduk
         const total = subTotal
         lists += `
@@ -189,25 +204,25 @@ const getCarts = {
               if(typeHarga.length > 0) {
                 lists += `<select name="typePrice" class="form-control TypeHarga" data-id-cart="${result.id}">`
                 typeHarga.map(price => {
-                  if(hargaProduk == price.harga) {
+                  if(hargaAsal == price.harga) {
                     lists += `<option value="${price.harga}" selected>${price.harga} - ${price.nama_agen}</option>`
                   } else {
                     lists += `<option value="${price.harga}">${price.harga} - ${price.nama_agen}</option>`
                   }
                 })
-                if(hargaProduk == result.product.harga_jual) {
+                if(hargaAsal == result.product.harga_jual) {
                   lists += `<option value="${result.product.harga_jual}" selected>${result.product.harga_jual} - default</option>`
                 } else {
                   lists += `<option value="${result.product.harga_jual}">${result.product.harga_jual} - default</option>`
                 }
                 lists +=  `</select>`
               } else {
-                lists += Functions.prototype.formatRupiah(hargaProduk.toString(), 'Rp. ')
+                lists += Functions.prototype.formatRupiah(hargaAsal.toString(), 'Rp. ')
               }
               lists +=
             `</td>
             <td>${result.qyt}</td>
-            <td>${Functions.prototype.formatRupiah(diskon.toString(), 'Rp. ')}</td>
+            <td>${Functions.prototype.formatRupiah(totalDiskon.toString(), 'Rp. ')}</td>
             <td>${Functions.prototype.formatRupiah(totalHargaProduk.toString(), 'Rp. ')}</td>
             <td>
               <div class="btn-group">
@@ -242,7 +257,7 @@ const getCarts = {
 }
 
 function changeHarga() {  
-  $('#listCarts').on('change', 'tr td .TypeHarga', function(e) {
+  $('#listCarts').on('change', 'tr td .TypeHarga', async function(e) {
     e.preventDefault()
     $(this).attr('selected')
     var val = $(this).val()
@@ -251,6 +266,7 @@ function changeHarga() {
       price: val
     }
     Functions.prototype.updateData(urlUpdatePrice, data, 'put')
+    await new Promise(resolve => setTimeout(resolve, 500));
     getCarts.loadData = noInvoice
   })
 }
@@ -288,11 +304,11 @@ function actionDelAndUpdate() {
   const detailCart = {
     set successData(response) {
       $('#kodeBarangUpdate').text(response.product.kode_barang)
-      $('#hargaBarangUpdate').text(Functions.prototype.formatRupiah(response.product.harga_jual.toString(), 'Rp. '))
+      $('#hargaBarangUpdate').text(Functions.prototype.formatRupiah(response.harga_product.toString(), 'Rp. '))
       $('#namaBarangUpdate').text(response.product.nama_barang)
       $('#id_cart').val(response.id)
       $('#qyt_update').val(response.qyt)
-      $('#dicount_barang_update').val(response.diskon_product)
+      $('#dicount_barang_update').val(response.diskon_product).attr('max', response.harga_product)
     },
     set errorData(err) {
       toastr.error(err.responseJSON.message, 'Error')
@@ -334,7 +350,8 @@ function updateCart() {
     unhighlight: function unhighlight(element) {
         $(element).addClass('is-valid').removeClass('is-invalid');
     },
-    submitHandler: function(form, e) {
+    submitHandler: async function(form, e) {
+      e.preventDefault()
       const id = $('#id_cart').val()
       const url = URL_API + "/managements/update/cart/" + id
       const data = {
@@ -342,6 +359,7 @@ function updateCart() {
         diskon_product: $('#dicount_barang_update').val()
       }
       Functions.prototype.updateData(url, data, 'put')
+      await new Promise(resolve => setTimeout(resolve, 500))
       getCarts.loadData = noInvoice
       $('#formUpdateCart')[0].reset()
       $('#detailCart').modal('hide')

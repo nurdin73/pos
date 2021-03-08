@@ -31,6 +31,18 @@ class TransactionService
         if($sisaStok < 1) return response(['message' => 'stok barang ini sudah habis'], 404);
         $checkCart = Carts::where(['no_invoice' => $data['no_invoice'], 'product_id' => $queryForProd->id])->first();
         if($checkCart) {
+            $discountProduct = $queryForProd->diskon !== null ? $checkCart->harga_product * ($queryForProd->diskon / 100) : 0;
+            $discountBefore = $checkCart->diskon_product ?? 0;
+            $data['diskon_product'] = ($discountBefore + $discountProduct) * $checkCart->qyt;
+            // return $discountProduct;
+        } else {
+            $discountProduct = $queryForProd->diskon !== null ? $queryForProd->harga_jual * ($queryForProd->diskon / 100) : 0;
+            $discountBefore = $checkCart->diskon_product ?? 0;
+            $data['diskon_product'] = ($discountBefore + $discountProduct) * $data['qyt'];
+            // return $discountProduct;
+        }
+        // return $checkCart;
+        if($checkCart) {
             $data['qyt'] = $checkCart->qyt + $data['qyt'];
             $checkCart->update([
                 'qyt' => $data['qyt']
@@ -44,10 +56,12 @@ class TransactionService
 
     public function changePrice($price, $id_cart)
     {
-        $cart = Carts::find($id_cart);
+        $cart = Carts::with('product')->find($id_cart);
         if(!$cart) return response(['message' => 'terjadi kesalahan. silahkan coba kembali'], 406);
+        $discountProduct = ($cart->product->diskon / 100) * $price;
         $update = $cart->update([
-            'harga_product' => $price
+            'harga_product' => $price,
+            'diskon_product' => $discountProduct
         ]);
         if(!$update) return response(['message' => 'Harga gagal diupdate'], 406);
         return response(['message' => 'Harga berhasil diupdate']);
@@ -114,8 +128,8 @@ class TransactionService
                 }
                 // Print nota
                 
-                $printTrx = new PrintTrx();
-                $printTrx->invoice($create->id);
+                // $printTrx = new PrintTrx();
+                // $printTrx->invoice($create->id);
 
                 DB::commit();
                 return response(['message' => 'transaksi berhasil ditambahkan']);
@@ -156,10 +170,10 @@ class TransactionService
                 $sisaStok += $stock->stok;
             }
         }
-        $diskonProduk = $checkStok->diskon != null ? $checkStok->harga_jual * ($checkStok->diskon / 100) : 0;
-        $totalHarga = $checkStok->harga_jual - $diskonProduk;
+        // $diskonProduk = $checkStok->diskon != null ? $checkStok->harga_jual * ($checkStok->diskon / 100) : 0;
+        // $totalHarga = $checkStok->harga_jual - $diskonProduk;
         if($data['qyt'] > $sisaStok) return response(['message' => 'jumlah barang melebihi batas. silahkan masukkan jumlah barang dibawah '.$sisaStok], 422);
-        if($data['diskon_product'] > $totalHarga) return response(['message' => 'diskon yang dimasukkan melebihi total pembelian.'], 422);
+        if($data['diskon_product'] > $cart->harga_product) return response(['message' => 'diskon yang dimasukkan melebihi total pembelian.'], 422);
         $update = $cart->update($data);
         if(!$update) return response(['message' => 'Keranjang gagal diupdate'], 500);
         return response(['message' => 'keranjang berhasil diupdate']);

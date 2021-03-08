@@ -13,20 +13,20 @@ class DashboardService
         $data = [
             'total_trx' => count($transactions),
         ];
-        $data['total'] = 0;
-        $data['keuntungan'] = 0;
+        $totalModal = 0;
+        $totalPembelian = 0;
         foreach ($transactions as $trx) {
-            $data['total'] += $trx->total;
-            $totalKeuntungan = 0;
+            $totalPembelian += $trx->total;
             foreach ($trx->carts as $cart) {
                 $harga_dasar = 0;
                 foreach ($cart->product->stocks as $stock) {
                     $harga_dasar = $stock->harga_dasar;
                 }
-                $totalKeuntungan += ($trx->total)  - ($harga_dasar * $cart->qyt);
+                $totalModal += $harga_dasar * $cart->qyt;
             }
-            $data['keuntungan'] += $totalKeuntungan;
         }
+        $data['total'] = $totalPembelian;
+        $data['keuntungan'] = $totalPembelian - $totalModal;
         return response($data);
     }
 
@@ -54,10 +54,12 @@ class DashboardService
                             foreach ($cart->product->stocks as $stock) {
                                 $harga_dasar = $stock->harga_dasar;
                             }
+                            $earning = ($cart->harga_product - $cart->diskon_product) * $cart->qyt;
+                            $cap = $harga_dasar * $cart->qyt;
                             $dataset[] = [
-                                'modal' => $harga_dasar * $cart->qyt,
-                                'pendapatan' => $trx->total,
-                                'keuntungan' => ($trx->total) - ($harga_dasar * $cart->qyt)
+                                'modal' => $cap,
+                                'pendapatan' => $earning,
+                                'keuntungan' => $earning - $cap
                             ];
                         }
                         $modal = 0;
@@ -100,10 +102,12 @@ class DashboardService
                             foreach ($cart->product->stocks as $stock) {
                                 $harga_dasar = $stock->harga_dasar;
                             }
+                            $earning = ($cart->harga_product - $cart->diskon_product) * $cart->qyt;
+                            $cap = $harga_dasar * $cart->qyt;
                             $dataset[] = [
-                                'modal' => $harga_dasar * $cart->qyt,
-                                'pendapatan' => $trx->total,
-                                'keuntungan' => ($trx->total) - ($harga_dasar * $cart->qyt)
+                                'modal' => $cap,
+                                'pendapatan' => $earning,
+                                'keuntungan' => $earning - $cap
                             ];
                         }
                         $modal = 0;
@@ -141,10 +145,12 @@ class DashboardService
                             foreach ($cart->product->stocks as $stock) {
                                 $harga_dasar = $stock->harga_dasar;
                             }
+                            $earning = ($cart->harga_product - $cart->diskon_product) * $cart->qyt;
+                            $cap = $harga_dasar * $cart->qyt;
                             $dataset[] = [
-                                'modal' => $harga_dasar * $cart->qyt,
-                                'pendapatan' => $trx->total,
-                                'keuntungan' => ($trx->total) - ($harga_dasar * $cart->qyt)
+                                'modal' => $cap,
+                                'pendapatan' => $earning,
+                                'keuntungan' => $earning - $cap
                             ];
                         }
                         $modal = 0;
@@ -184,10 +190,12 @@ class DashboardService
                             foreach ($cart->product->stocks as $stock) {
                                 $harga_dasar = $stock->harga_dasar;
                             }
+                            $earning = ($cart->harga_product - $cart->diskon_product) * $cart->qyt;
+                            $cap = $harga_dasar * $cart->qyt;
                             $dataset[] = [
-                                'modal' => $harga_dasar * $cart->qyt,
-                                'pendapatan' => $trx->total,
-                                'keuntungan' => ($trx->total) - ($harga_dasar * $cart->qyt)
+                                'modal' => $cap,
+                                'pendapatan' => $earning,
+                                'keuntungan' => $earning - $cap
                             ];
                         }
                         $modal = 0;
