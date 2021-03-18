@@ -102,7 +102,7 @@
       <form id="formAddbarang" enctype="multipart/form-data" autocomplete="off">
         <div class="modal-body">
           <div class="row">
-            <div class="col-md-8">
+            <div class="col-md-7">
               <div class="form-group">
                 <label for="kode_barang">Kode Barang *</label>
                 <div class="row">
@@ -190,7 +190,7 @@
                 </select>
               </div>
             </div>
-            <div class="col-md-4">
+            <div class="col-md-5">
               <div class="row mb-2">
                 <div class="col-12">
                   <ul class="pgwSlider">
@@ -211,6 +211,36 @@
                   <div class="progress" style="display: none">
                     <div class="progress-bar progress-bar-striped progress-bar-animated" role="progressbar" aria-valuenow="0" aria-valuemin="0" aria-valuemax="100" style="width: 0%"></div>
                   </div>
+                </div>
+                <div class="col-12">
+                  <div class="form-group">
+                    <label for="eceranOpsi">Barang bisa di jual eceran?</label>
+                    <div class="custom-control custom-switch">
+                      <input type="checkbox" class="custom-control-input" name="eceranOpsi" id="eceranOpsi">
+                      <label class="custom-control-label" for="eceranOpsi">Ya</label>
+                    </div>
+                  </div>
+                </div>
+                <div class="col-12" id="showEceran" style="display: none;">
+                  <div class="row">
+                    <div class="col-md-4">
+                      <div class="form-group">
+                        <label for="jumlah_persatuan">Jumlah</label>
+                        <input type="text" class="form-control" id="jumlah_persatuan" placeholder="Ex. 12">
+                      </div>
+                    </div>
+                    <div class="col-md-8">
+                      <div class="form-group">
+                        <label for="harga_persatuan">Harga satuan</label>
+                        <input type="text" class="form-control" id="harga_persatuan" placeholder="Rp. 1000">
+                      </div>
+                    </div>
+                  </div>
+                  <small class="text-muted text-justify">
+                    <strong>* note</strong> <br/>
+                    <strong>* Jumlah</strong> <span>adalah isi dari 1 bungkus atau 1 dusbox pada setiap barang. contohnya dalam 1 bungkus rokok berisi 12 batang rokok didalamnya dsb.</span><br/>
+                    <strong>* Harga Satuan</strong> <span>adalah harga dari 1 satuan. contohnya adalah harga dari 1 batang rokok adalah Rp.1.500 ,- dsb.</span> <br/>
+                  </small>
                 </div>
               </div>
             </div>

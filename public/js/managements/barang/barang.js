@@ -12,6 +12,16 @@ $(document).ready(function () {
     $('#showOther').slideToggle()
   })
 
+  $('#eceranOpsi').change(function(e) {
+    var value
+    var checked = $('input[name=eceranOpsi]:checked').length
+    if(checked <= 0) {
+      $('#showEceran').fadeOut()
+    } else {
+      $('#showEceran').fadeIn()
+    }
+  })
+
   $('.paginate').on('click', '.pagination .page-item a', function(e) {
     e.preventDefault()
     const id = $(this).data('id');
@@ -130,7 +140,7 @@ function addData() {
       },
       point: {
         number: true,
-        min: 0
+        min: 0,
       },
     },
     errorClass: "is-invalid",

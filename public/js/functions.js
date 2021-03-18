@@ -32,6 +32,7 @@ class Functions
                 $('.loading').show()
             },
             success: function (response) {
+                console.log(response);
                 $('.loading').hide()
                 toastr.success(response.message, "success")
                 setTimeout(() => {
