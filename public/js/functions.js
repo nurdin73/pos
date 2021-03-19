@@ -41,7 +41,12 @@ class Functions
             },
             error: function(err) {
                 $('.loading').hide()
-                toastr.error(err.responseJSON.message, "error")
+                if(err.status == 413) {
+                    toastr.error(err.responseText, "error")
+                } else {
+                    toastr.error(err.responseJSON.message, "error")
+                }
+                console.log(err);
             }
         });
     }

@@ -54,14 +54,15 @@ class TransactionService
         return response(['message' => 'Pesanan berhasil ditambahkan', 'no_invoice' => $data['no_invoice']]);
     }
 
-    public function changePrice($price, $id_cart)
+    public function changePrice($price, $id_cart, $eceran)
     {
         $cart = Carts::with('product')->find($id_cart);
         if(!$cart) return response(['message' => 'terjadi kesalahan. silahkan coba kembali'], 406);
         $discountProduct = ($cart->product->diskon / 100) * $price;
         $update = $cart->update([
             'harga_product' => $price,
-            'diskon_product' => $discountProduct
+            'diskon_product' => $discountProduct,
+            'eceran' => $eceran ?? 0
         ]);
         if(!$update) return response(['message' => 'Harga gagal diupdate'], 406);
         return response(['message' => 'Harga berhasil diupdate']);
@@ -84,13 +85,20 @@ class TransactionService
         DB::beginTransaction();
         try {
             foreach ($checkCart as $cc) {
-                $totalPoint += $cc->product->point;
+                $totalPoint += $cc->product->point; // total point
+                
+                // check sisa stok
+
                 $sisaStok = 0;
                 if(count($cc->product->stocks)) {
                     foreach ($cc->product->stocks as $stock) {
                         $sisaStok += $stock->stok;
                     }
                 }
+
+                
+                // check jika stok nya cukup atau tidak
+                
                 if($cc->qyt > $sisaStok) {
                     $returnQytProd = true;
                 } else {

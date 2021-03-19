@@ -19,6 +19,7 @@ class CreateCartsTable extends Migration
             $table->foreignId('product_id')->constrained('products')->cascadeOnDelete();
             $table->bigInteger('qyt')->default(1);
             $table->bigInteger('harga_product')->default(0);
+            $table->boolean('eceran')->default(0);
             $table->bigInteger('diskon_product')->default(0);
             $table->timestamps();
         });

@@ -24,11 +24,13 @@ class CreateProductsTable extends Migration
             $table->bigInteger('selled')->default(0);
             $table->foreignId('kategori_id')->constrained('categories')->cascadeOnDelete();
             $table->bigInteger('berat')->nullable();
-            $table->enum('satuan', ['gram', 'pcs'])->nullable();
+            $table->enum('satuan', ['bungkus', 'box', 'pack'])->nullable();
             $table->integer('diskon')->nullable();
-            $table->string('rak')->nullable();
             $table->longText('keterangan')->nullable();
-            $table->bigInteger('point')->default(0);
+            $table->bigInteger('point')->default(0)->nullable();
+            $table->boolean('isRetail')->default(0);
+            $table->integer('jumlah')->nullable();
+            $table->string('harga_satuan')->nullable();
             $table->timestamps();
         });
     }

@@ -41,7 +41,7 @@ class ProductsService
 
     public function showAll($nama, $kode, $sorting, $byBranch)
     {
-        $results = Products::with('stocks') ->select('id', 'nama_barang', 'kode_barang', 'harga_jual', 'selled');
+        $results = Products::with('stocks') ->select('id', 'nama_barang', 'kode_barang', 'harga_jual', 'selled', 'isRetail', 'jumlah');
         $results->orderBy('kode_barang', 'ASC');
         if($byBranch !== null) {
             $results = $results->where('cabang_id', $byBranch);

@@ -5,6 +5,7 @@ $(document).ready(function () {
     processPayment()
     updateCart()
     changeHarga()
+    eceran()
     cacl()
     if(hargaBarangPajak == 0) {
       $('#pajakDetail').text('* harga belum termasuk ' + namaPajak + `(${persentasePajak}%)`)
@@ -172,32 +173,20 @@ const getCarts = {
     var subTotal = 0
     $('#listCarts').empty()
     if(response.length > 0) {
-      var i = 1
+      var x = 1
       var lists = ""
-      response.map(result => {
-        // var hargaAsal = result.harga_product,
-        //     diskonProduk = result.product.diskon != null ? result.harga_product * (result.product.diskon / 100) : 0,
-        //     harga_product = result.harga_product - diskonProduk,
-        //     diskon = result.diskon_product * result.qyt,
-        //     hargaProduk = harga_product,
-        //     totalHargaProduk = ((result.qyt * hargaProduk) - diskon),
-        // var hargaAsal = result.harga_product,
-        //     diskonProduk = result.product.diskon != null ? result.harga_product * (result.product.diskon / 100) : 0,
-        //     totalDiskon = (result.diskon_product + diskonProduk) * result.qyt,
-        //     totalHargaProduk = (result.qyt * hargaAsal) - totalDiskon, 
-        //     pajak = totalHargaProduk * (persentasePajak / 100)
+      response.map((result, i) => {
         var hargaAsal = result.harga_product,
             totalDiskon = result.diskon_product * result.qyt,
             totalHargaProduk = (result.qyt * hargaAsal) - totalDiskon,
             pajak = totalHargaProduk * (persentasePajak / 100)
         const layanan = totalHargaProduk * (persentaseLayanan / 100)
         const typeHarga = result.product.type_prices
-        // const isIn = hargaBarangPajak == 0 ? pajak : 0;
         subTotal += totalHargaProduk
         const total = subTotal
         lists += `
           <tr data-id="${result.id}">
-            <td>${i++}</td>
+            <td>${x++}</td>
             <td>${result.product.kode_barang}</td>
             <td>${result.product.nama_barang}</td>
             <td>`
@@ -222,6 +211,12 @@ const getCarts = {
               lists +=
             `</td>
             <td>${result.qyt}</td>
+            <td>
+              <div class="custom-control custom-switch">
+                <input type="checkbox" ${hargaAsal == result.product.harga_satuan ? "checked" : ""} class="custom-control-input eceran" data-id="${result.id}" data-harga-eceran="${result.product.harga_satuan}" data-harga-jual="${result.product.harga_jual}" name="eceranOpsi" id="eceranOpsi${i}" ${result.product.isRetail == 0 ? "disabled" : ""}>
+                <label class="custom-control-label" for="eceranOpsi${i}">Ya</label>
+              </div>
+            </td>
             <td>${Functions.prototype.formatRupiah(totalDiskon.toString(), 'Rp. ')}</td>
             <td>${Functions.prototype.formatRupiah(totalHargaProduk.toString(), 'Rp. ')}</td>
             <td>
@@ -233,6 +228,7 @@ const getCarts = {
           </tr>
         `
         $('#sub_total').text(Functions.prototype.formatRupiah(subTotal.toString(), 'Rp. '))
+        $('#diskon').attr('max', subTotal)
         $('#pajak').val(pajak)
         $('#total').text(Functions.prototype.formatRupiah(total.toString(), 'Rp. '))
       })
@@ -254,6 +250,30 @@ const getCarts = {
   set errorData(err) {
     toastr.error(err.responseJSON.message, 'error')
   }
+}
+
+function eceran() {
+  $('#listCarts').on('change', 'tr td div .eceran', async function(e) {
+    // e.preventDefault()
+    const check = $('input[name=eceranOpsi]:checked').length
+    const id = $(this).data('id')
+    const urlUpdatePrice = URL_API + "/managements/update/price-cart/" + id
+    if(check > 0) {
+      const data = {
+        price: $(this).data('harga-eceran'),
+        eceran: 1
+      }
+      Functions.prototype.updateData(urlUpdatePrice, data, 'put')
+    } else {
+      const data = {
+        price: $(this).data('harga-jual'),
+        eceran: 0
+      }
+      Functions.prototype.updateData(urlUpdatePrice, data, 'put')
+    }
+    await new Promise(resolve => setTimeout(resolve, 500));
+    getCarts.loadData = noInvoice
+  })
 }
 
 function changeHarga() {  

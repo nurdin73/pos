@@ -90,7 +90,8 @@ class TransaksiController extends Controller
             'price' => 'required'
         ]);
         $price = $request->input('price');
-        return $this->transactionService->changePrice($price, $id);
+        $eceran = $request->input('eceran');
+        return $this->transactionService->changePrice($price, $id, $eceran);
     }
 
     public function getTransactionPerHours()

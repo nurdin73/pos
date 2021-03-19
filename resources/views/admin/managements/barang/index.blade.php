@@ -70,7 +70,7 @@
                   <tr>
                     <th style="width: 15%">Kode Barang</th>
                     <th>Nama Barang</th>
-                    <th style="width: 5%">Stok</th>
+                    <th style="width: 8%">Stok</th>
                     <th style="width: 15%">Harga Dasar</th>
                     <th style="width: 15%">Harga Jual</th>
                     <th align="center" style="width: 20%">Aksi</th>
@@ -132,9 +132,23 @@
                   
                 </select>
               </div>
-              <div class="form-group">
-                <label for="nama_barang">Nama Barang *</label>
-                <input type="text" name="nama_barang" id="nama_barang" class="form-control">
+              <div class="row">
+                <div class="col-md-8">
+                  <div class="form-group">
+                    <label for="nama_barang">Nama Barang *</label>
+                    <input type="text" name="nama_barang" id="nama_barang" class="form-control">
+                  </div>
+                </div>
+                <div class="col-md-4">
+                  <div class="form-group">
+                    <label for="satuan">Satuan</label>
+                    <select name="satuan" id="satuan" class="custom-select">
+                      <option value="bungkus">Bungkus</option>
+                      <option value="box">Box</option>
+                      <option value="pack">Pack</option>
+                    </select>
+                  </div>
+                </div>
               </div>
               
               <div class="row">
@@ -226,13 +240,13 @@
                     <div class="col-md-4">
                       <div class="form-group">
                         <label for="jumlah_persatuan">Jumlah</label>
-                        <input type="text" class="form-control" id="jumlah_persatuan" placeholder="Ex. 12">
+                        <input type="text" class="form-control" name="jumlah_persatuan" id="jumlah_persatuan" placeholder="Ex. 12">
                       </div>
                     </div>
                     <div class="col-md-8">
                       <div class="form-group">
                         <label for="harga_persatuan">Harga satuan</label>
-                        <input type="text" class="form-control" id="harga_persatuan" placeholder="Rp. 1000">
+                        <input type="text" class="form-control" name="harga_persatuan" id="harga_persatuan" placeholder="Rp. 1000">
                       </div>
                     </div>
                   </div>
@@ -253,20 +267,14 @@
                   <label for="berat">Berat</label>
                   <input type="text" name="berat" id="berat" class="form-control">
                 </div>
-                <div class="form-group">
-                  <label for="diskon">Diskon(%)</label>
-                  <input type="text" name="diskon" id="diskon" class="form-control">
-                </div>
+                
               </div>
               <div class="col-md-6">
                 <div class="row">
                   <div class="col-6">
                     <div class="form-group">
-                      <label for="satuan">Satuan(gram,pcs)</label>
-                      <select name="satuan" id="satuan" class="custom-select">
-                        <option value="gram">Gram</option>
-                        <option value="pcs">Pcs</option>
-                      </select>
+                      <label for="diskon">Diskon(%)</label>
+                      <input type="text" name="diskon" id="diskon" class="form-control">
                     </div>
                   </div>
                   <div class="col-6">
@@ -276,10 +284,10 @@
                     </div>
                   </div>
                 </div>
-                <div class="form-group">
+                {{-- <div class="form-group">
                   <label for="rak">Letak rak</label>
                   <input type="text" name="rak" id="rak" class="form-control">
-                </div>
+                </div> --}}
               </div>
             </div>
             <div class="form-group">

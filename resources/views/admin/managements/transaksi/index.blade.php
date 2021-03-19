@@ -48,10 +48,6 @@
                     <label class="col-md-3 col-form-label" for="barcode">Kode</label>
                     <div class="col-md-9">
                       <input class="form-control" id="barcode" type="text" name="barcode" autofocus>
-                      {{-- <select name="barcode" id="barcode" style="width: 100%" class="form-control">
-  
-                      </select> --}}
-                      {{-- <small class="text-info">klik kolom ini</small> --}}
                     </div>
                   </div>
                   <div class="form-group row">
@@ -91,6 +87,7 @@
                     <th>Nama barang</th>
                     <th style="width: 17%">Harga</th>
                     <th style="width:5%">Qyt</th>
+                    <th>Eceran</th>
                     <th>Total Diskon</th>
                     <th>Total</th>
                     <th style="width: 10%">Actions</th>
@@ -135,48 +132,6 @@
             {{-- <button class="btn btn-block btn-success btn-lg" id="btn-proccess-payment">Prosess</button> --}}
           </div>
         </div>
-        {{-- <div class="row">
-          <div class="col-md-3">
-            <div class="card" style="height: 180px">
-              <div class="card-body">
-                <div class="form-group">
-                  <input type="text" name="sub_total" id="sub_total" placeholder="Sub total" class="form-control">
-                </div>
-                <div class="form-group">
-                  <input type="text" name="diskon" id="diskon" placeholder="Diskon" class="form-control">
-                </div>
-                <div class="form-group">
-                  <input type="text" name="grand_total" id="grand_total" placeholder="grand total" class="form-control" readonly>
-                </div>
-              </div>
-            </div>
-          </div>
-          <div class="col-md-3">
-            <div class="card" style="height: 180px">
-              <div class="card-body">
-                <div class="form-group">
-                  <input type="text" name="cash" id="cash" placeholder="Cash" class="form-control">
-                </div>
-                <div class="form-group">
-                  <input type="text" name="change" id="change" placeholder="Kembalian" class="form-control" readonly>
-                </div>
-              </div>
-            </div>
-          </div>
-          <div class="col-md-3">
-            <div class="card">
-              <div class="card-body">
-                <div class="form-group">
-                  <textarea name="keterangan" id="keterangan" cols="30" rows="2" class="form-control" placeholder="Keterangan"></textarea>
-                </div>
-              </div>
-            </div>
-          </div>
-          <div class="col-md-3">
-            <button class="btn btn-block btn-danger">Cancel</button>
-            <button class="btn btn-block btn-success btn-lg" id="btn-proccess-payment">Prosess</button>
-          </div>
-        </div> --}}
       </div>
     </div>
   </main>

@@ -13,7 +13,6 @@ $(document).ready(function () {
   })
 
   $('#eceranOpsi').change(function(e) {
-    var value
     var checked = $('input[name=eceranOpsi]:checked').length
     if(checked <= 0) {
       $('#showEceran').fadeOut()
@@ -121,6 +120,9 @@ function addData() {
         required : true,
         number : true
       },
+      satuan: {
+        required: true,
+      },
       harga_dasar: {
         required : true,
         number : true
@@ -142,6 +144,14 @@ function addData() {
         number: true,
         min: 0,
       },
+      jumlah_persatuan: {
+        number: true,
+        min: 1,
+      },
+      harga_persatuan: {
+        number: true,
+        min: 0
+      }
     },
     errorClass: "is-invalid",
     validClass: "is-valid",
@@ -171,15 +181,14 @@ function addData() {
         suplier_id: $('#suplier_id').val() != null ? $('#suplier_id').val() : 0,
         cabang_id: $('#cabang_id').val() != null ? $('#cabang_id').val() : 0,
         nama_barang: $('#nama_barang').val(),
+        satuan: $('#satuan').val(),
         type_barang: $('#type_barang').val(),
         stok: $('#stok').val(),
         harga_dasar: $('#harga_dasar').val(),
         harga_jual: $('#harga_jual').val(),
         kategori: $('#kategori').val(),
         berat: showAll ? $('#berat').val() : "",
-        satuan: showAll ? $('#satuan').val() : "",
         diskon: showAll ? $('#diskon').val() : "",
-        rak: showAll ? $('#rak').val() : "",
         keterangan: showAll ? $('#keterangan').val() : "",
         point: showAll ? $('#point').val() : 0,
         kode_barang: $('#kode_barang').val(),
@@ -187,6 +196,7 @@ function addData() {
         nama_agen: showAll ? (typeHargaAdd ? $('input[name^=nama_agent]').map((id, el) => { return $(el).val() }).get() : "") : "",
         harga: showAll ? (typeHargaAdd ? $('input[name^=type_harga]').map((id, el) => { return $(el).val() }).get() : "") : "",
       }
+      
       const files = $('.custom-file-input')[0].files
       formData.append('nama_barang', data.nama_barang)
       formData.append('type_barang', data.type_barang)
@@ -197,7 +207,6 @@ function addData() {
       formData.append('berat', data.berat)
       formData.append('satuan', data.satuan)
       formData.append('diskon', data.diskon)
-      formData.append('rak', data.rak)
       formData.append('keterangan', data.keterangan)
       formData.append('typeHarga', data.typeHarga)
       formData.append('nama_agen', data.nama_agen)
@@ -210,6 +219,12 @@ function addData() {
         const element = files[i];
         formData.append('files[]', element)
       }
+      var checked = $('input[name=eceranOpsi]:checked').length
+      if(checked > 0) {
+        formData.append('isRetail', checked)
+        formData.append('jumlah', $('#jumlah_persatuan').val())
+        formData.append('harga_satuan', $('#harga_persatuan').val())
+      } 
       const sendData = Functions.prototype.uploadFile(urlPostBarang, formData, 'post')
     }
   })
@@ -346,7 +361,7 @@ const getListProducts = {
           <tr>
             <td>${result.kode_barang}</td>
             <td>${result.nama_barang}</td>
-            <td>${stocks}</td>
+            <td>${result.isRetail == 1 ? `${stocks - 1}(${result.jumlah})` : stocks}</td>
             <td>${Functions.prototype.formatRupiah(harga_dasar.toString(), 'Rp. ')}</td>
             <td>${Functions.prototype.formatRupiah(result.harga_jual.toString(), 'Rp. ')}</td>
             <td>
