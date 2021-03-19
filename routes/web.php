@@ -17,6 +17,43 @@ Route::get('/', function () {
     return view('welcome');
 });
 
+Route::get('tes', function() {
+    $carts = [
+        [
+            'produk' => [
+                'nama' => 'a',
+                'jumlah' => 12,
+                'stocks' => [ 
+                    ['stok' => 10],
+                    ['stok' => 10],
+                    ['stok' => 10],
+                ],
+                'harga' => 12000
+            ],
+            'eceran' => 1,
+            'qyt' => 28,
+            'harga' => 1000
+        ],
+        [
+            'produk' => [
+                'nama' => 'a',
+                'jumlah' => 0,
+                'stocks' => [ 
+                    ['stok' => 8],
+                    ['stok' => 9],
+                    ['stok' => 10],
+                ],
+                'harga' => 12000
+            ],
+            'eceran' => 0,
+            'qyt' => 5,
+            'harga' => 12000
+        ],
+    ];
+
+    return $carts;  
+});
+
 // Auth::routes([
 //     'login' => 
 // ]);
