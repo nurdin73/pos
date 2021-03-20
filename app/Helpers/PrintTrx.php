@@ -2,6 +2,7 @@
 namespace App\Helpers;
 
 use App\Models\Stores;
+use App\Models\Tax;
 use App\Models\Transactions;
 use Carbon\Carbon;
 use Mike42\Escpos\PrintConnectors\FilePrintConnector;
@@ -13,6 +14,12 @@ class PrintTrx
     protected function getDetailStore($id)
     {
         $result = Stores::find($id);
+        return $result;
+    }
+
+    protected function getPajakDetail()
+    {
+        $result = Tax::find(1);
         return $result;
     }
     
@@ -60,16 +67,24 @@ class PrintTrx
 
     function invoice($id)
     {
-        $PRINTER_DEVICE = env('PRINTER_DEVICE', "EPSON TM-U220 Receipt");
-        $connector = "";
-        $connector = new WindowsPrintConnector($PRINTER_DEVICE); // ini untuk windows. ambil nama printer sharingnya
+        // $PRINTER_DEVICE = env('PRINTER_DEVICE', "EPSON TM-U220 Receipt");
+        // $connector = "";
+        // $connector = new WindowsPrintConnector($PRINTER_DEVICE); // ini untuk windows. ambil nama printer sharingnya
+        // $printer = new Printer($connector);
+        $PRINTER_DEVICE = "/dev/usb/lp1";
+        $connector = new FilePrintConnector($PRINTER_DEVICE);
         $printer = new Printer($connector);
         $trx = Transactions::with('carts.product', 'customer', 'user')->where('id', $id)->first();
 
         // detail stores
         $store = $this->getDetailStore(1);
+        $pajak = $this->getPajakDetail();
         $nameStore = $store->nama_toko ?? "RitterCoding";
         $alamat = $store->alamat ?? "Cirebon";
+
+        // pajak
+        $namaPajak = $pajak->nama_pajak ?? "-";
+        $totalPajak = $trx->pajak ?? "-";
 
         // heading
         $printer->initialize();
@@ -108,6 +123,7 @@ class PrintTrx
         $printer->text($this->create4Column('', '', "Total", $trx->total));
         $printer->text($this->create4Column('', '', "Bayar", $trx->cash));
         $printer->text($this->create4Column('', '', "Kembalian", $trx->change));
+        $printer->text("$namaPajak ($totalPajak)" . "\n");
         $printer->text("Ket : " . $trx->keterangan ?? "-" . "\n");
         $printer->text("\n");
 
