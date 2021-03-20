@@ -5,6 +5,7 @@ use App\Models\Stores;
 use App\Models\Transactions;
 use Carbon\Carbon;
 use Mike42\Escpos\PrintConnectors\FilePrintConnector;
+use Mike42\Escpos\PrintConnectors\NetworkPrintConnector;
 use Mike42\Escpos\PrintConnectors\WindowsPrintConnector;
 use Mike42\Escpos\Printer;
 
@@ -60,9 +61,19 @@ class PrintTrx
 
     function invoice($id)
     {
+        $os = env('OS', 'linux');
         $PRINTER_DEVICE = env('PRINTER_DEVICE', "EPSON TM-U220 Receipt");
-        $connector = "";
-        $connector = new WindowsPrintConnector($PRINTER_DEVICE); // ini untuk windows. ambil nama printer sharingnya
+        $connector = null;
+        $connection = env('CONNECTION', 'usb');
+        if($connection == "usb") {
+            if($os == "windows") {
+                $connector = new WindowsPrintConnector($PRINTER_DEVICE); // ini untuk windows. ambil nama printer sharingnya
+            } elseif($os == "linux") {
+                $connector = new FilePrintConnector($PRINTER_DEVICE);
+            } 
+        } elseif($connection == "ethernet") {
+            $connector = new NetworkPrintConnector(env('IP_PRINTER_SHARING', "10.x.x.x"), env('PORT_PRINTER_SHARING', "9100"));
+        }
         $printer = new Printer($connector);
         $trx = Transactions::with('carts.product', 'customer', 'user')->where('id', $id)->first();
 
