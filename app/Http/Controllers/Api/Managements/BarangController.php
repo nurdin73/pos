@@ -109,6 +109,7 @@ class BarangController extends Controller
             'point' => $point,
             'isRetail' => $request->input('isRetail') ?? 0,
             'jumlah' => $jumlah,
+            'jumlahEceranPermanent' => $jumlah,
             'harga_satuan' => $harga_satuan
         ];
         $stocks = [

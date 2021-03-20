@@ -30,6 +30,7 @@ class CreateProductsTable extends Migration
             $table->bigInteger('point')->default(0)->nullable();
             $table->boolean('isRetail')->default(0);
             $table->integer('jumlah')->nullable();
+            $table->integer('jumlahEceranPermanent')->nullable();
             $table->string('harga_satuan')->nullable();
             $table->timestamps();
         });

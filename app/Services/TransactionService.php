@@ -102,23 +102,70 @@ class TransactionService
                 if($cc->qyt > $sisaStok) {
                     $returnQytProd = true;
                 } else {
-                    Products::find($cc->product_id)->update([
-                        'selled' => $cc->product->selled + $cc->qyt
-                    ]);
-                    foreach ($cc->product->stocks as $stock) {
-                        if($cc->qyt > $stock->stok) {
-                            $idStok = $stock->id;
-                            $cc->qyt -= $stock->stok;
-                            $stock->stok = 0;
-                            $update = Stocks::find($idStok)->delete();
+                    if($cc->eceran == 1) {
+                        $qyt = $cc->qyt;
+                        $jumlahEceran = $cc->product->jumlah;
+                        $penguranganStok = floor($qyt / $jumlahEceran);
+                        $sisanya = null;
+                        if($qyt <= $jumlahEceran) {
+                            $sisanya = $jumlahEceran - $qyt;
+                            if($sisanya == 0) {
+                                Products::find($cc->product_id)->update([
+                                    'jumlah' => $jumlahEceran
+                                ]);
+                            } else {
+                                Products::find($cc->product_id)->update([
+                                    'jumlah' => $sisanya
+                                ]);
+                            }
                         } else {
-                            $idStok = $stock->id;
-                            $stock->stok -= $cc->qyt;
-                            $cc->qyt = 0;
-                            $update = Stocks::find($idStok)->update([
-                                'stok' => $stock->stok
+                            if($penguranganStok == 1) {
+                                $sisanya = $qyt % $jumlahEceran;
+                                $sisanya = $cc->product->jumlahEceranPermanent - $sisanya;
+                            } else {
+                                $jumlahEceran = $jumlahEceran * $penguranganStok;
+                                $sisanya = $qyt % $jumlahEceran;
+                            }
+
+                            Products::find($cc->product_id)->update([
+                                'jumlah' => $sisanya
                             ]);
-                            break;
+                            foreach ($cc->product->stocks as $stock) {
+                                if($cc->qyt > $stock->stok) {
+                                    $idStok = $stock->id;
+                                    $penguranganStok -= $stock->stok;
+                                    $stock->stok = 0;
+                                    $update = Stocks::find($idStok)->delete();
+                                } else {
+                                    $idStok = $stock->id;
+                                    $stock->stok -= $penguranganStok;
+                                    $penguranganStok = 0;
+                                    $update = Stocks::find($idStok)->update([
+                                        'stok' => $stock->stok
+                                    ]);
+                                    break;
+                                }
+                            }
+                        }
+                    } else {
+                        Products::find($cc->product_id)->update([
+                            'selled' => $cc->product->selled + $cc->qyt
+                        ]);
+                        foreach ($cc->product->stocks as $stock) {
+                            if($cc->qyt > $stock->stok) {
+                                $idStok = $stock->id;
+                                $cc->qyt -= $stock->stok;
+                                $stock->stok = 0;
+                                $update = Stocks::find($idStok)->delete();
+                            } else {
+                                $idStok = $stock->id;
+                                $stock->stok -= $cc->qyt;
+                                $cc->qyt = 0;
+                                $update = Stocks::find($idStok)->update([
+                                    'stok' => $stock->stok
+                                ]);
+                                break;
+                            }
                         }
                     }
                 }
