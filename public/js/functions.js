@@ -307,8 +307,10 @@ class Functions
                 labels: labels,
                 datasets: [{
                     label: nameLabel,
-                    backgroundColor: '#321fdb',
-                    borderColor: 'rgb(255, 99, 132)',
+                    backgroundColor: coreui.Utils.hexToRgba(coreui.Utils.getStyle('--info', document.getElementsByClassName('c-app')[0]), 10),
+                    borderColor: coreui.Utils.getStyle('--info', document.getElementsByClassName('c-app')[0]),
+                    pointHoverBackgroundColor: '#fff',
+                    borderWidth: 2,
                     data: data,
                 }]
             },

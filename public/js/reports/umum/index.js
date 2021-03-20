@@ -10,34 +10,9 @@ const getTransactionsNow = {
         Functions.prototype.getRequest(getTransactionsNow, url)
     },
     set successData(response) {
-        var total = 0
-        var modal = 0
-        if(response.length > 0) {
-            response.map(result => {
-                total += result.total
-                if(result.carts.length > 0) {
-                    result.carts.map(cart => {
-                        var harga_dasar = 0
-                        if(cart.product.stocks.length > 0) {
-                            cart.product.stocks.map(stock => {
-                                harga_dasar = stock.harga_dasar
-                            })
-                            modal += harga_dasar * cart.qyt
-                        }
-                    })  
-                }
-            })
-        }
-        const keuntungan = total - modal
-        keuntunganHariIni = keuntungan
-        pendapatanHariIni = total
-        if(keuntunganHariIni < 0) {
-            $('#keuntungan').text(Functions.prototype.formatRupiah(keuntunganHariIni.toString(), 'Rp. -'))
-        } else {
-            $('#keuntungan').text(Functions.prototype.formatRupiah(keuntunganHariIni.toString(), 'Rp. '))
-        }
-        $('#pendapatan').text(Functions.prototype.formatRupiah(pendapatanHariIni.toString(), 'Rp. '))
-        $('#countTransaction').text(response.length)
+        $('#keuntungan').text(Functions.prototype.formatRupiah(response.keuntungan.toString(), 'Rp. '))
+        $('#pendapatan').text(Functions.prototype.formatRupiah(response.total.toString(), 'Rp. '))
+        $('#countTransaction').text(response.total_trx)
     },
     set errorData(err) {
         toastr.error(err.responseJSON.message, 'Error')
@@ -66,8 +41,13 @@ const getTrxPerJam = {
                         cart.product.stocks.map(stok => {
                             harga_dasar = stok.harga_dasar
                         })
-                        totalModal += harga_dasar * cart.qyt
                     }
+                    if(cart.eceran == 1) {
+                        var hargaEcerModal = Math.floor(harga_dasar / cart.product.jumlahEceranPermanent)
+                        totalModal += Math.floor(hargaEcerModal * cart.qyt)
+                    } else {
+                        totalModal += harga_dasar * cart.qyt
+                    }                 
                 })
             })
             const keuntunganTotal = totalPembelian - totalModal
@@ -85,9 +65,20 @@ const getTrxPerJam = {
                         beginAtZero: true,
                         stepSize : 10
                     },
-
                 }]
-            }
+            },
+            maintainAspectRatio: false,
+			spanGaps: false,
+			elements: {
+				line: {
+					tension: 0.000001
+				}
+			},
+			plugins: {
+				filler: {
+					propagate: false
+				}
+			},
         }
         const optionsTotal = {
             responsive: true,
@@ -99,7 +90,7 @@ const getTrxPerJam = {
                     },
 
                 }]
-            }
+            },
         }
         Functions.prototype.createChart(ctx, 'line', 'Total Transaksi', totalTrx, jam, optionsTotalTrx)
         Functions.prototype.createChart($('#keuntunganChart'), 'line', 'Total Keuntungan', totalKeuntungan, jam, optionsTotal)

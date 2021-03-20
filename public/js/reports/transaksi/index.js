@@ -190,7 +190,12 @@ function gettingCharts(data = {}) {
                     cart.product.stocks.map(stock => {
                         harga_dasar = stock.harga_dasar
                     })
-                    totalModal += harga_dasar * cart.qyt
+                    if(cart.eceran == 1) {
+                        var hargaEcerModal = Math.floor(harga_dasar / cart.product.jumlahEceranPermanent)
+                        totalModal += Math.floor(hargaEcerModal * cart.qyt)
+                    } else {
+                        totalModal += harga_dasar * cart.qyt
+                    }   
                 })
             })
         }

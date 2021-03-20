@@ -128,7 +128,8 @@ class TransactionService
                             }
 
                             Products::find($cc->product_id)->update([
-                                'jumlah' => $sisanya
+                                'jumlah' => $sisanya,
+                                'selled' => $cc->product->selled + $penguranganStok
                             ]);
                             foreach ($cc->product->stocks as $stock) {
                                 if($cc->qyt > $stock->stok) {
@@ -236,6 +237,7 @@ class TransactionService
 
     public function transactions($hari)
     {
+        $transactions = null;
         if($hari == "hari ini") {
             $date = date('Y-m-d');
             $transactions = Transactions::with('carts.product.stocks')
@@ -243,7 +245,6 @@ class TransactionService
             ->where('tgl_transaksi', 'like', '%'.$date.'%')
             ->orderBy('jam_transaksi', 'ASC')
             ->get();
-            return $transactions;
         } else {
             $date = date('Y-m-d', strtotime("-1 days"));
             $transactions = Transactions::with('carts.product.stocks')
@@ -251,8 +252,30 @@ class TransactionService
             ->where('tgl_transaksi', 'like', '%'.$date.'%')
             ->orderBy('jam_transaksi', 'ASC')
             ->get();
-            return $transactions;
         }
+        $data = [
+            'total_trx' => count($transactions),
+        ];
+        $totalModal = 0;
+        $totalPembelian = 0;
+        foreach ($transactions as $trx) {
+            $totalPembelian += $trx->total;
+            foreach ($trx->carts as $cart) {
+                $harga_dasar = 0;
+                foreach ($cart->product->stocks as $stock) {
+                    $harga_dasar = $stock->harga_dasar;
+                }
+                if($cart->eceran == 1) {
+                    $hargaEcerModal = floor($harga_dasar / $cart->product->jumlahEceranPermanent);
+                    $totalModal += floor($hargaEcerModal * $cart->qyt);
+                } else {
+                    $totalModal += $harga_dasar * $cart->qyt;
+                }
+            }
+        }
+        $data['total'] = $totalPembelian;
+        $data['keuntungan'] = $totalPembelian - $totalModal;
+        return response($data);
     }
 
     public function getTrxPerHours($type = "graph")

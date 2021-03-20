@@ -35,8 +35,14 @@ class PenjualanService
                     foreach ($cart->product->stocks as $stock) {
                         $harga_dasar = $stock->harga_dasar;
                     }
+                    $cap = 0;
                     $earning = ($cart->harga_product - $cart->diskon_product) * $cart->qyt;
-                    $cap = $harga_dasar * $cart->qyt;
+                    if($cart->eceran == 1) {
+                        $hargaEcerModal = floor($harga_dasar / $cart->product->jumlahEceranPermanent);
+                        $cap = floor($hargaEcerModal * $cart->qyt);
+                    } else {
+                        $cap = $harga_dasar * $cart->qyt;
+                    }
                     $dataset[] = [
                         'modal' => $cap,
                         'pendapatan' => $earning,

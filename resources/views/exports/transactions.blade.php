@@ -48,7 +48,12 @@
                         @endphp
                     @endforeach
                     @php
-                        $totalModal += $hargaDasar * $cart->qyt;
+                        if ($cart->eceran == 1) {
+                            $hargaEcerModal = floor($hargaDasar / $cart->product->jumlahEceranPermanent);
+                            $totalModal += floor($hargaEcerModal * $cart->qyt);
+                        } else {
+                            $totalModal += $hargaDasar * $cart->qyt;
+                        }
                     @endphp
                 @endforeach
                 @php

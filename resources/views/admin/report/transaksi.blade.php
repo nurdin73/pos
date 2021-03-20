@@ -173,6 +173,8 @@
 @section('js')
 
   <script src="https://cdn.jsdelivr.net/npm/chart.js@2.8.0"></script>
+  <script src="{{ asset('vendors/@coreui/chartjs/js/coreui-chartjs.bundle.js') }}"></script>
+  <script src="{{ asset('vendors/@coreui/utils/js/coreui-utils.js') }}"></script>
   <script>
     const URL_API = '{{ url('api/v1') }}'
   </script>
