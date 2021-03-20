@@ -125,7 +125,6 @@ const getDetail = {
         $('#berat').val(response.berat)
         $('#satuan').val(response.satuan).trigger('change')
         $('#diskon').val(response.diskon)
-        $('#rak').val(response.rak)
         $('#keterangan').val(response.keterangan)
         $('#point').val(response.point)
         getKategoriById.loadData = response.kategori_id
@@ -248,6 +247,9 @@ $('#updateProduct').validate({
         diskon: {
             number: true
         },
+        satuan: {
+            required: true
+        }
     },
     errorClass: "is-invalid",
     validClass: "is-valid",
@@ -281,9 +283,8 @@ $('#updateProduct').validate({
         harga_jual: $('#harga_jual').val(),
         kategori: $('#kategori').val(),
         berat: showAll ? $('#berat').val() : "",
-        satuan: showAll ? $('#satuan').val() : "",
+        satuan: $('#satuan').val(),
         diskon: showAll ? $('#diskon').val() : "",
-        rak: showAll ? $('#rak').val() : "",
         keterangan: showAll ? $('#keterangan').val() : "",
         point: showAll ? $('#point').val() : "",
       }

@@ -101,6 +101,11 @@ const getDetail = {
                 `)
             })
         }
+        if(response.isRetail == 1) {
+            $('#infoEceran').text(`Barang ini bisa dijual eceran`)
+        } else {
+            $('#infoEceran').text(`Barang ini tidak bisa dijual eceran`)
+        }
     },
     set errorData(err) {
         console.log(err);

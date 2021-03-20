@@ -209,6 +209,9 @@ class Functions
             success: function(response) {
                 $('.loading').hide()
                 toastr.success(response.message, 'Success!')
+                setTimeout(() => {
+                    window.location.reload()
+                }, 1000);
             },
             error: function(err) {
                 $('.loading').hide()

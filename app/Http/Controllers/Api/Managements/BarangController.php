@@ -150,6 +150,7 @@ class BarangController extends Controller
             'nama_barang' => 'required',
             'type_barang' => 'required',
             'harga_jual' => 'required',
+            'satuan' => 'required'
         ]);
 
         // ----------------------------- //
@@ -160,7 +161,6 @@ class BarangController extends Controller
         $harga_jual = $request->input('harga_jual');
         $berat = $request->input('berat');
         $diskon = $request->input('diskon');
-        $rak = $request->input('rak');
         $keterangan = $request->input('keterangan');
         $kategori = $request->input('kategori');
         $suplier_id = $request->input('suplier_id');
@@ -168,7 +168,7 @@ class BarangController extends Controller
         $point = $request->input('point');
         // ------------------------------- //
         if($satuan) {
-            if($satuan != "gram" && $satuan != "pcs") {
+            if($satuan != "bungkus" && $satuan != "box" && $satuan != "pack") {
                 return response(['message' => 'value satuan tidak valid'], 406);
             }
         }
@@ -188,7 +188,6 @@ class BarangController extends Controller
             'berat' => $berat,
             'satuan' => $satuan,
             'diskon' => $diskon,
-            'rak' => $rak,
             'keterangan' => $keterangan,
             'point'     => $point != null ? $point : 0
         ];

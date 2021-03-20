@@ -39,9 +39,23 @@
                         <label for="cabang">Cabang</label>
                         <select id="cabang" style="width: 100%" class="custom-select" disabled></select>
                       </div>
-                      <div class="form-group">
-                        <label for="nama_barang">Nama Barang</label>
-                        <input type="text" name="nama_barang" id="nama_barang" class="form-control" readonly>
+                      <div class="row">
+                        <div class="col-md-8">
+                          <div class="form-group">
+                            <label for="nama_barang">Nama Barang</label>
+                            <input type="text" name="nama_barang" id="nama_barang" class="form-control" readonly>
+                          </div>
+                        </div>
+                        <div class="col-md-4">
+                          <div class="form-group">
+                            <label for="satuan">Satuan(gram,pcs)</label>
+                            <select name="satuan" id="satuan" class="form-control" readonly>
+                              <option value="bungkus">Bungkus</option>
+                              <option value="box">Box</option>
+                              <option value="pack">Pack</option>
+                            </select>
+                          </div>
+                        </div>
                       </div>
                       
                       <div class="row">
@@ -84,45 +98,33 @@
                     </div>
                     <div class="col-md-6">
                       <div class="row">
-                        <div class="col-md-6">
+                        <div class="col-md-4">
                           <div class="form-group">
                             <label for="berat">Berat</label>
                             <input type="text" name="berat" id="berat" class="form-control" readonly>
                           </div>
+                        </div>
+                        <div class="col-md-4">
                           <div class="form-group">
                             <label for="diskon">Diskon(%)</label>
                             <input type="text" name="diskon" id="diskon" class="form-control" readonly>
                           </div>
                         </div>
-                        <div class="col-md-6">
-                          <div class="row">
-                            <div class="col-6">
-                              <div class="form-group">
-                                <label for="satuan">Satuan(gram,pcs)</label>
-                                <select name="satuan" id="satuan" class="form-control" readonly>
-                                  <option value="gram">Gram</option>
-                                  <option value="pcs">Pcs</option>
-                                </select>
-                              </div>
-                            </div>
-                            <div class="col-6">
-                              <div class="form-group">
-                                <div class="form-group">
-                                  <label for="point">Point</label>
-                                  <input type="number" name="point" id="point" class="form-control" readonly>
-                                </div>
-                              </div>
-                            </div>
-                          </div>
+                        <div class="col-md-4">
                           <div class="form-group">
-                            <label for="rak">Letak rak</label>
-                            <input type="text" name="rak" id="rak" class="form-control" readonly>
+                            <div class="form-group">
+                              <label for="point">Point</label>
+                              <input type="number" name="point" id="point" class="form-control" readonly>
+                            </div>
                           </div>
                         </div>
                       </div>
                       <div class="form-group">
                         <label for="keterangan">Keterangan</label>
                         <textarea name="keterangan" id="keterangan" cols="30" rows="2" class="form-control" readonly></textarea>
+                      </div>
+                      <div class="alert alert-info" id="infoEceran">
+                        
                       </div>
                     </div>
                   </div>
