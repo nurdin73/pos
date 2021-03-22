@@ -116,7 +116,7 @@ class SettingService
             $printer = new PrintTrx();
             return $printer->testConnection();
         } catch (\Exception $e) {
-            return ['message' => $e->getMessage()];
+            return response(['message' => $e->getMessage()], 500);
         }
     }
 }
