@@ -4,8 +4,9 @@ namespace App\Helpers;
 use App\Models\PrinterSettings;
 use App\Models\Stores;
 use App\Models\Transactions;
-use Carbon\Carbon;
 use Illuminate\Support\Facades\Log;
+use Mike42\Escpos\CapabilityProfile;
+use Mike42\Escpos\PrintConnectors\DummyPrintConnector;
 use Mike42\Escpos\PrintConnectors\FilePrintConnector;
 use Mike42\Escpos\PrintConnectors\NetworkPrintConnector;
 use Mike42\Escpos\PrintConnectors\WindowsPrintConnector;
@@ -40,7 +41,7 @@ class PrintTrx
             } 
         } elseif($connection == "ethernet") {
             $connector = new NetworkPrintConnector(env('IP_PRINTER_SHARING', "10.x.x.x"), env('PORT_PRINTER_SHARING', "9100"));
-        }
+        } 
         $printer = new Printer($connector);
         return $printer;
     }
@@ -150,12 +151,29 @@ class PrintTrx
 
     public function testConnection()
     {
-        $printer = $this->printer();
-        $printer->initialize();
-        $printer->text("Tes koneksi berhasil. :) \n");
-        $printer->feed(5);
-        $printer->close();
+        if($this->getPrinterSetting(1)->koneksi == "bluetooth") {
+            $connector = new DummyPrintConnector();
+            $profile = CapabilityProfile::load($this->getPrinterSetting(1)->name_printer);
+            $printer = new Printer($connector);
+            $printer->initialize();
+            $printer->text("Hello world!\n");
+            $printer->cut();
+            
+            $data = $connector->getData();
 
+            header('Content-type: application/octet-stream');
+            header('Content-Length: '.strlen($data));
+            echo base64_encode($data);
+
+            $printer->close();
+        } else {
+            $printer = $this->printer();
+            $printer->initialize();
+            $printer->text("Tes koneksi berhasil. :) \n");
+            $printer->feed(5);
+            $printer->close();
+        }
         return ['message' => 'tes koneksi berhasil'];
+
     }
 }
