@@ -159,11 +159,9 @@ class PrintTrx
             $printer->text("Hello world!\n");
             
             $data = $connector->getData();
-            header('Content-type: application/octet-stream');
-            header('Content-Length: '.strlen($data));
-            return base64_encode($data);
             $printer->feed(4);
             $printer->close();
+            // return response(['message' => base64_encode($data)]);
         } else {
             $printer = $this->printer();
             $printer->initialize();
