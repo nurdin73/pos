@@ -1,9 +1,11 @@
 <?php
 namespace App\Helpers;
 
+use App\Models\PrinterSettings;
 use App\Models\Stores;
 use App\Models\Transactions;
 use Carbon\Carbon;
+use Illuminate\Support\Facades\Log;
 use Mike42\Escpos\PrintConnectors\FilePrintConnector;
 use Mike42\Escpos\PrintConnectors\NetworkPrintConnector;
 use Mike42\Escpos\PrintConnectors\WindowsPrintConnector;
@@ -15,6 +17,32 @@ class PrintTrx
     {
         $result = Stores::find($id);
         return $result;
+    }
+
+    protected function getPrinterSetting($id)
+    {
+        $result = PrinterSettings::find($id);
+        return $result;
+    }
+
+    protected function printer()
+    {
+        $getPrinterSettings = $this->getPrinterSetting(1);
+        $os = $getPrinterSettings->os ?? env('OS', 'linux');
+        $PRINTER_DEVICE = $getPrinterSettings->name_printer ?? env('PRINTER_DEVICE', "EPSON TM-U220 Receipt");
+        $connector = null;
+        $connection = $getPrinterSettings->koneksi ?? env('CONNECTION', 'usb');
+        if($connection == "usb") {
+            if($os == "windows") {
+                $connector = new WindowsPrintConnector($PRINTER_DEVICE); // ini untuk windows. ambil nama printer sharingnya
+            } elseif($os == "linux") {
+                $connector = new FilePrintConnector($PRINTER_DEVICE);
+            } 
+        } elseif($connection == "ethernet") {
+            $connector = new NetworkPrintConnector(env('IP_PRINTER_SHARING', "10.x.x.x"), env('PORT_PRINTER_SHARING', "9100"));
+        }
+        $printer = new Printer($connector);
+        return $printer;
     }
     
     protected function create4Column($column1, $column2, $column3, $column4)
@@ -61,20 +89,7 @@ class PrintTrx
 
     function invoice($id)
     {
-        $os = env('OS', 'linux');
-        $PRINTER_DEVICE = env('PRINTER_DEVICE', "EPSON TM-U220 Receipt");
-        $connector = null;
-        $connection = env('CONNECTION', 'usb');
-        if($connection == "usb") {
-            if($os == "windows") {
-                $connector = new WindowsPrintConnector($PRINTER_DEVICE); // ini untuk windows. ambil nama printer sharingnya
-            } elseif($os == "linux") {
-                $connector = new FilePrintConnector($PRINTER_DEVICE);
-            } 
-        } elseif($connection == "ethernet") {
-            $connector = new NetworkPrintConnector(env('IP_PRINTER_SHARING', "10.x.x.x"), env('PORT_PRINTER_SHARING', "9100"));
-        }
-        $printer = new Printer($connector);
+        $printer = $this->printer();
         $trx = Transactions::with('carts.product', 'customer', 'user')->where('id', $id)->first();
 
         // detail stores
@@ -130,5 +145,17 @@ class PrintTrx
 
         $printer->feed(5); // mencetak 5 baris kosong agar terangkat (pemotong kertas saya memiliki jarak 5 baris dari toner)
         $printer->close();
+    }
+
+
+    public function testConnection()
+    {
+        $printer = $this->printer();
+        $printer->initialize();
+        $printer->text("Tes koneksi berhasil. :) \n");
+        $printer->feed(5);
+        $printer->close();
+
+        return ['message' => 'tes koneksi berhasil'];
     }
 }

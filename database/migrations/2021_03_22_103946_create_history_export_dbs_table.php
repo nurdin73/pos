@@ -4,7 +4,7 @@ use Illuminate\Database\Migrations\Migration;
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Support\Facades\Schema;
 
-class CreatePrinterSettingsTable extends Migration
+class CreateHistoryExportDbsTable extends Migration
 {
     /**
      * Run the migrations.
@@ -13,11 +13,10 @@ class CreatePrinterSettingsTable extends Migration
      */
     public function up()
     {
-        Schema::create('printer_settings', function (Blueprint $table) {
+        Schema::create('history_export_dbs', function (Blueprint $table) {
             $table->id();
-            $table->enum('os', ['windows', 'linux', 'mac'])->default('windows');
-            $table->enum('koneksi', ['usb', 'ethernet', 'bluetooth'])->default('usb');
-            $table->string('name_printer');
+            $table->string('whoExport');
+            $table->string('nama_file');
             $table->timestamps();
         });
     }
@@ -29,6 +28,6 @@ class CreatePrinterSettingsTable extends Migration
      */
     public function down()
     {
-        Schema::dropIfExists('printer_settings');
+        Schema::dropIfExists('history_export_dbs');
     }
 }

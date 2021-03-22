@@ -185,14 +185,21 @@
         </a>
         <span class="sr-only">Toko</span>
       </li>
-      {{-- <li class="c-sidebar-nav-item">
+      <li class="c-sidebar-nav-item">
+        <a class="c-sidebar-nav-link" href="{{ route('settingDatabase') }}">
+          <svg class="c-sidebar-nav-icon">
+            <use xlink:href="{{ asset('vendors/@coreui/icons/svg/free.svg#cil-storage') }}"></use>
+          </svg> Database
+        </a>
+      </li>
+      <li class="c-sidebar-nav-item">
         <a class="c-sidebar-nav-link" href="{{ route('printerSettings') }}">
-          <div class="c-sidebar-nav-icon">
-            <i class="fa fa-fw fa-print"></i>
-          </div> Printer Settings
+          <svg class="c-sidebar-nav-icon">
+            <use xlink:href="{{ asset('vendors/@coreui/icons/svg/free.svg#cil-print') }}"></use>
+          </svg> Printer Settings
         </a>
         <span class="sr-only">Toko</span>
-      </li> --}}
+      </li>
       {{-- <li class="c-sidebar-nav-item">
         <a class="c-sidebar-nav-link" href="{{ route('settingManagementStaff') }}">
           <svg class="c-sidebar-nav-icon">
@@ -210,14 +217,6 @@
         </a>
         <span class="sr-only">API</span>
       </li> --}}
-      {{-- <li class="c-sidebar-nav-item">
-        <a class="c-sidebar-nav-link" href="{{ route('settingDatabase') }}">
-          <svg class="c-sidebar-nav-icon">
-            <use xlink:href="{{ asset('vendors/@coreui/icons/svg/free.svg#cil-storage') }}"></use>
-          </svg> Database
-        </a>
-      </li> --}}
-      <span class="sr-only">Sidebar</span>
     </ul>
     <button class="c-sidebar-minimizer c-class-toggler" type="button" data-target="_parent" data-class="c-sidebar-minimized"></button>
   </div>

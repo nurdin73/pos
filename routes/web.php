@@ -95,7 +95,7 @@ Route::group(['prefix' => 'admin', 'middleware' => ['auth']], function () {
         Route::group(['prefix' => '/api'], function () {
             Route::get('/', 'Admin\SettingController@api')->name('settingApi');
         });
-        // Route::get('/database', 'Admin\SettingController@database')->name('settingDatabase');
+        Route::get('/database', 'Admin\SettingController@database')->name('settingDatabase');
         Route::get('/printer-settings', 'Admin\SettingController@printerSettings')->name('printerSettings');
         Route::get('/management-staff', 'Admin\SettingController@managementStaff')->name('settingManagementStaff');
     });
@@ -214,6 +214,10 @@ Route::group(['prefix' => 'api/'], function () {
             Route::get('/pelanggan', 'Api\Exports\CustomerController@report')->name('exportCustomer');
 
             Route::get('/transaksi', 'Api\Exports\TransactionsController@transactions')->name('exportTrx');
+
+            // export databases
+            Route::post('/databases', 'Api\Exports\DatabaseController@export')->name('exportDatabases');
+            Route::get('/databases', 'Api\Exports\DatabaseController@all')->name('getListDatabaseExport');
         });
 
         Route::group(['prefix' => 'settings'], function () {
@@ -224,6 +228,10 @@ Route::group(['prefix' => 'api/'], function () {
             Route::get('/profile', 'Api\Settings\ProfileController@detail');
             Route::get('/store', 'Api\Settings\StoreController@detail');
             Route::get('/staff/{id}', 'Api\Settings\StaffController@get');
+            Route::post('/printer/{id}', 'Api\Settings\PrinterController@setting');
+            Route::get('/printer/{id}', 'Api\Settings\PrinterController@getSetting');
+
+            Route::get('/test-printer', 'Api\Settings\PrinterController@testConnection');
 
             // update
             Route::group(['prefix' => '/update'], function () {
