@@ -153,18 +153,16 @@ class PrintTrx
     {
         if($this->getPrinterSetting(1)->koneksi == "bluetooth") {
             $connector = new DummyPrintConnector();
+            $connector->finalize();
             $profile = CapabilityProfile::load($this->getPrinterSetting(1)->name_printer);
             $printer = new Printer($connector);
-            $printer->initialize();
             $printer->text("Hello world!\n");
-            $printer->cut();
             
             $data = $connector->getData();
-
             header('Content-type: application/octet-stream');
             header('Content-Length: '.strlen($data));
-            echo base64_encode($data);
-
+            return base64_encode($data);
+            $printer->feed(4);
             $printer->close();
         } else {
             $printer = $this->printer();
