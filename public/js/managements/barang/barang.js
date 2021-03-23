@@ -59,7 +59,8 @@ $(document).ready(function () {
 function addCodeBarang() {
   $('#formKodeBarang').on('submit', function(e) {
     const values = $('#inputCodeBarang').val()
-    $('#kode_barang').val(values)
+    const valueBefore = $('#kode_barang').val() + ","
+    $('#kode_barang').val(valueBefore + values)
     $('#modalKodeBarang').modal('hide')
     $('#inputCodeBarang').val('')
   })
@@ -110,48 +111,48 @@ function addData() {
       kode_barang: {
         required : true
       },
-      nama_barang: {
-        required : true
-      },
-      type_barang: {
-        required : true
-      },
-      stok: {
-        required : true,
-        number : true
-      },
-      satuan: {
-        required: true,
-      },
-      harga_dasar: {
-        required : true,
-        number : true
-      },
-      harga_jual: {
-        required : true,
-        number : true
-      },
-      kategori: {
-        required : true
-      },
-      berat: {
-        number: true
-      },
-      diskon: {
-        number: true,
-      },
-      point: {
-        number: true,
-        min: 0,
-      },
-      jumlah_persatuan: {
-        number: true,
-        min: 1,
-      },
-      harga_persatuan: {
-        number: true,
-        min: 0
-      }
+      // nama_barang: {
+      //   required : true
+      // },
+      // type_barang: {
+      //   required : true
+      // },
+      // stok: {
+      //   required : true,
+      //   number : true
+      // },
+      // satuan: {
+      //   required: true,
+      // },
+      // harga_dasar: {
+      //   required : true,
+      //   number : true
+      // },
+      // harga_jual: {
+      //   required : true,
+      //   number : true
+      // },
+      // kategori: {
+      //   required : true
+      // },
+      // berat: {
+      //   number: true
+      // },
+      // diskon: {
+      //   number: true,
+      // },
+      // point: {
+      //   number: true,
+      //   min: 0,
+      // },
+      // jumlah_persatuan: {
+      //   number: true,
+      //   min: 1,
+      // },
+      // harga_persatuan: {
+      //   number: true,
+      //   min: 0
+      // }
     },
     errorClass: "is-invalid",
     validClass: "is-valid",
@@ -175,6 +176,13 @@ function addData() {
     },
     submitHandler: function(form, e) {
       e.preventDefault()
+      const kode_barang = $('#kode_barang').val().split(',')
+      const filteringkodebarang = []
+      $.each(kode_barang, function(i, el) {
+        if(el != "") {
+          if($.inArray(el, filteringkodebarang) === -1) filteringkodebarang.push(el)
+        }
+      })
       const urlPostBarang = URL_API + "/managements/add/barang"
       const formData = new FormData()
       const data = {
@@ -191,7 +199,6 @@ function addData() {
         diskon: showAll ? $('#diskon').val() : "",
         keterangan: showAll ? $('#keterangan').val() : "",
         point: showAll ? $('#point').val() : 0,
-        kode_barang: $('#kode_barang').val(),
         typeHarga: typeHargaAdd,
         nama_agen: showAll ? (typeHargaAdd ? $('input[name^=nama_agent]').map((id, el) => { return $(el).val() }).get() : "") : "",
         harga: showAll ? (typeHargaAdd ? $('input[name^=type_harga]').map((id, el) => { return $(el).val() }).get() : "") : "",
@@ -211,7 +218,11 @@ function addData() {
       formData.append('typeHarga', data.typeHarga)
       formData.append('nama_agen', data.nama_agen)
       formData.append('harga', data.harga)
-      formData.append('kode_barang', data.kode_barang)
+      // formData.append('kode_barang', data.kode_barang)
+      for (let i = 0; i < filteringkodebarang.length; i++) {
+        const element = filteringkodebarang[i];
+        formData.append('kode_barang[]', element)
+      }
       formData.append('suplier_id', data.suplier_id)
       formData.append('cabang_id', data.cabang_id)
       formData.append('point', data.point)

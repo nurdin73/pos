@@ -299,24 +299,7 @@
               <span class="text-muted font-weight-bold text-uppercase">Daftar harga</span>
               <div class="dropdown-divider"></div>
               <div id="listTypeHarga" style="width: 100%">
-                {{-- <div class="border rounded p-2 mb-2">
-                  <div class="d-flex justify-content-between align-items-center">
-                    <span class="text-muted">Type : <span id="#typeAgen">Agen</span></span>
-                    <div class="btn-group">
-                      <button class="btn btn-sm btn-success">Edit</button>
-                      <button class="btn btn-sm btn-danger">Hapus</button>
-                    </div>
-                  </div>
-                  <div class="dropdown-divider"></div>
-                  <div class="row">
-                    <div class="col-3">
-                      1
-                    </div>
-                    <div class="col-9">
-                      <span id="harga">Rp. 0</span>
-                    </div>
-                  </div>
-                </div> --}}
+                
               </div>
             </div>
             <div class="d-flex justify-content-center">
