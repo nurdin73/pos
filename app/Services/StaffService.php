@@ -19,7 +19,6 @@ class StaffService
 
     public function add($req)
     {
-        $req['password'] = Hash::make($req['password']);
         $create = Staffs::create($req);
         if(!$create) return response(['message' => 'Staff gagal ditambahkan'], 500);
         return response(['message' => 'Staff berhasil ditambahkan']);

@@ -32,7 +32,7 @@ class StaffController extends Controller
             'nama_staff' => 'required',
             'email' => 'required',
             'no_telp' => 'required',
-            'jabatan' => 'required',
+            'role_id' => 'required',
         ]);
         return $this->staffService->update($request->all(), $id);
     }
@@ -48,8 +48,7 @@ class StaffController extends Controller
             'nama_staff' => 'required',
             'email' => 'required|unique:staffs',
             'no_telp' => 'required',
-            'jabatan' => 'required',
-            'password' => 'required'
+            'role_id' => 'required',
         ]);
 
         return $this->staffService->add($request->all());

@@ -31,4 +31,9 @@ class SettingController extends Controller
     {
         return view('admin.settings.printer.index');
     }
+
+    public function hakAkses()
+    {
+        return view('admin.settings.hak-akses.index');
+    }
 }

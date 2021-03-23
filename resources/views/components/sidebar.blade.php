@@ -182,6 +182,14 @@
         <span class="sr-only">Toko</span>
       </li>
       <li class="c-sidebar-nav-item">
+        <a class="c-sidebar-nav-link" href="{{ route('settingAccess') }}">
+          <svg class="c-sidebar-nav-icon">
+            <use xlink:href="{{ asset('vendors/@coreui/icons/svg/free.svg#cil-lock-locked') }}"></use>
+          </svg> Akses user
+        </a>
+        <span class="sr-only">Role</span>
+      </li>
+      <li class="c-sidebar-nav-item">
         <a class="c-sidebar-nav-link" href="{{ route('settingDatabase') }}">
           <svg class="c-sidebar-nav-icon">
             <use xlink:href="{{ asset('vendors/@coreui/icons/svg/free.svg#cil-storage') }}"></use>
