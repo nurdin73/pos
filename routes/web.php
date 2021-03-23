@@ -70,6 +70,9 @@ Route::group(['prefix' => 'admin', 'middleware' => ['auth']], function () {
             Route::get('/barang', 'Admin\AdminController@pajakBarang')->name('pajakBarang');
             Route::get('/universal', 'Admin\AdminController@pajakUniversal')->name('pajakUniversal');
         });
+        Route::group(['prefix' => '/staff'], function() {
+            Route::get('/', 'Admin\AdminController@managementStaff')->name('settingManagementStaff');
+        });
     });
 
     Route::group(['prefix' => 'reports'], function () {
@@ -97,7 +100,6 @@ Route::group(['prefix' => 'admin', 'middleware' => ['auth']], function () {
         });
         Route::get('/database', 'Admin\SettingController@database')->name('settingDatabase');
         Route::get('/printer-settings', 'Admin\SettingController@printerSettings')->name('printerSettings');
-        Route::get('/management-staff', 'Admin\SettingController@managementStaff')->name('settingManagementStaff');
     });
 });
 

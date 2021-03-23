@@ -21,7 +21,7 @@ class CreateUsersTable extends Migration
             $table->string('password');
             $table->rememberToken();
             $table->boolean('isLocked')->default(0);
-            $table->enum('role', ['owner', 'karyawan'])->default('karyawan');
+            $table->foreignId('role_id')->constrained('roles')->cascadeOnDelete();
             $table->longText('alamat')->nullable();
             $table->timestamps();
         });

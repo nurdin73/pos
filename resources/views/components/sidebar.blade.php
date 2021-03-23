@@ -94,18 +94,14 @@
         </a>
         <span class="sr-only">Pajak</span>
       </li>
-      {{-- <li class="c-sidebar-nav-item c-sidebar-nav-dropdown">
-        <a class="c-sidebar-nav-link c-sidebar-nav-dropdown-toggle" href="#">
+      <li class="c-sidebar-nav-item">
+        <a class="c-sidebar-nav-link" href="{{ route('settingManagementStaff') }}">
           <svg class="c-sidebar-nav-icon">
-            <use xlink:href="{{ asset('vendors/@coreui/icons/svg/free.svg#cil-fax') }}"></use>
-          </svg> Pajak
+            <use xlink:href="{{ asset('vendors/@coreui/icons/svg/free.svg#cil-contact') }}"></use>
+          </svg> Management Staff
+          <span class="badge badge-warning">On Going</span>
         </a>
-        <ul class="c-sidebar-nav-dropdown-items">
-          <li class="c-sidebar-nav-item"><a class="c-sidebar-nav-link" href="{{ route('pajakBarang') }}"><span class="c-sidebar-nav-icon"></span> Pajak Barang</a><span class="sr-only">Pajak Barang</span></li>
-          <li class="c-sidebar-nav-item"><a class="c-sidebar-nav-link" href="{{ route('pajakUniversal') }}"><span class="c-sidebar-nav-icon"></span> Pajak Universal</a><span class="sr-only">Pajak Universal</span></li>
-        </ul>
-        <span class="sr-only">Pajak</span>
-      </li> --}}
+      </li>
       {{-- <li class="c-sidebar-nav-item">
         <a class="c-sidebar-nav-link" href="{{ route('loyalityProgram') }}">
           <svg class="c-sidebar-nav-icon">
@@ -200,14 +196,6 @@
         </a>
         <span class="sr-only">Toko</span>
       </li>
-      {{-- <li class="c-sidebar-nav-item">
-        <a class="c-sidebar-nav-link" href="{{ route('settingManagementStaff') }}">
-          <svg class="c-sidebar-nav-icon">
-            <use xlink:href="{{ asset('vendors/@coreui/icons/svg/free.svg#cil-contact') }}"></use>
-          </svg> Management Staff
-          <span class="badge badge-warning">On Going</span>
-        </a>
-      </li> --}}
       {{-- <li class="c-sidebar-nav-item">
         <a class="c-sidebar-nav-link" href="{{ route('settingApi') }}">
           <svg class="c-sidebar-nav-icon">
