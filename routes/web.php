@@ -100,6 +100,7 @@ Route::group(['prefix' => 'admin', 'middleware' => ['auth']], function () {
         });
         Route::get('/database', 'Admin\SettingController@database')->name('settingDatabase');
         Route::get('/printer-settings', 'Admin\SettingController@printerSettings')->name('printerSettings');
+        Route::get('/hak-akses', 'Admin\SettingController@hakAkses')->name('settingAccess');
     });
 });
 
@@ -225,6 +226,7 @@ Route::group(['prefix' => 'api/'], function () {
         Route::group(['prefix' => 'settings'], function () {
             // get all
             Route::get('/staffs', 'Api\Settings\StaffController@getall');
+            Route::get('/roles', 'Api\Settings\RoleController@getall');
 
             // get detail
             Route::get('/profile', 'Api\Settings\ProfileController@detail');
@@ -232,6 +234,7 @@ Route::group(['prefix' => 'api/'], function () {
             Route::get('/staff/{id}', 'Api\Settings\StaffController@get');
             Route::post('/printer/{id}', 'Api\Settings\PrinterController@setting');
             Route::get('/printer/{id}', 'Api\Settings\PrinterController@getSetting');
+            Route::get('/role/{id}', 'Api\Settings\RoleController@get');
 
             Route::get('/test-printer', 'Api\Settings\PrinterController@testConnection');
 
@@ -242,16 +245,19 @@ Route::group(['prefix' => 'api/'], function () {
                 Route::post('/change-logo', 'Api\Settings\StoreController@updateLogo');
                 Route::put('/change-detail-store', 'Api\Settings\StoreController@update');
                 Route::put('/staff/{id}', 'Api\Settings\StaffController@update');
+                Route::put('/role/{id}', 'Api\Settings\RoleController@update');
             });
 
             // add
             Route::group(['prefix' => '/add'], function () {
                 Route::post('/staff', 'Api\Settings\StaffController@add');
+                Route::post('/role', 'Api\Settings\RoleController@create');
             });
 
             // delete
             Route::group(['prefix' => '/delete'], function () {
                 Route::delete('/staff/{id}', 'Api\Settings\StaffController@destroy');
+                Route::delete('/role/{id}', 'Api\Settings\RoleController@destroy');
             });
         });
 
