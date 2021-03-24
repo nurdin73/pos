@@ -48,11 +48,7 @@
                           <div class="col-md-4">
                             <div class="form-group">
                               <label for="satuan">Satuan(gram,pcs)</label>
-                              <select name="satuan" id="satuan" class="custom-select">
-                                <option value="bungkus">Bungkus</option>
-                                <option value="box">Box</option>
-                                <option value="pack">Pack</option>
-                              </select>
+                              <input type="text" name="satuan" id="satuan" class="form-control">
                             </div>
                           </div>
                         </div>
@@ -159,16 +155,37 @@
                   </div>
                 </div>
                 <div class="tab-pane" id="kodeBarang" role="tabpanel">
-                  <div class="d-flex justify-content-center flex-column align-items-center mb-2">
-                    <div id="listKodeBarang" style="width: 100%">
+                  <div class="row">
+                    <div class="col-md-6">
                       <table class="table table-striped table-borderless">
                         <thead>
                           <tr>
                             <th>Kode barang</th>
-                            <th>Action</th>
+                            <th style="width: 10%">Action</th>
                           </tr>
                         </thead>
+                        <tbody id="listCodeProduct">
+                          <tr>
+                            <td>213123123</td>
+                            <td>
+                              <div class="btn-group">
+                                <button class="btn btn-sm btn-danger">Hapus</button>
+                                <button class="btn btn-sm btn-primary">Edit</button>
+                              </div>
+                            </td>
+                          </tr>
+                        </tbody>
                       </table>
+                    </div>
+                    <div class="col-md-6">
+                      <form action="#" id="addKode" autocomplete="off">
+                        <div class="form-group">
+                          <label for="barcode">Scan kode barang</label>
+                          <input type="text" id="barcode" class="form-control" autofocus>
+                          <small>Gunakan scanner untuk mempercepat proses</small>
+                        </div>
+                        <button class="btn btn-sm btn-primary">Simpan</button>
+                      </form>
                     </div>
                   </div>
                 </div>

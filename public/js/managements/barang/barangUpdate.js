@@ -87,6 +87,11 @@ $(document).ready(function () {
             },
         }
     })
+
+    $('#addKode').on('submit', function (e) {  
+        e.preventDefault()
+        console.log($('#barcode').val());
+    })
 });
 
 // functions
