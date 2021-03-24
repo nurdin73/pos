@@ -39,7 +39,6 @@
                 <thead>
                   <tr>
                     <th style="width: 5%">No</th>
-                    <th>Kode Barang</th>
                     <th>Nama Barang</th>
                     <th>Terjual</th>
                   </tr>

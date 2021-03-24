@@ -35,7 +35,6 @@ const getDetail = {
                 })
                 $('#listProducts').append(`
                 <tr>
-                    <td>${result.kode_barang}</td>
                     <td>${result.nama_barang}</td>
                     <td>${stocks}</td>
                     <td>${Functions.prototype.formatRupiah(harga_dasar.toString(), 'Rp. ')}</td>

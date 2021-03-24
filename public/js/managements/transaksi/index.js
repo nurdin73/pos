@@ -324,7 +324,6 @@ function actionDelAndUpdate() {
   })
   const detailCart = {
     set successData(response) {
-      $('#kodeBarangUpdate').text(response.product.kode_barang)
       $('#hargaBarangUpdate').text(Functions.prototype.formatRupiah(response.harga_product.toString(), 'Rp. '))
       $('#namaBarangUpdate').text(response.product.nama_barang)
       $('#id_cart').val(response.id)

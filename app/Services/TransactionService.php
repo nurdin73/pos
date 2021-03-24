@@ -419,7 +419,7 @@ class TransactionService
 
     public function invoice($id)
     {
-        $result = Transactions::with('user:id,name', 'customer:id,nama', 'carts:id,no_invoice,qyt,harga_product,diskon_product,product_id', 'carts.product:id,nama_barang,kode_barang')->where('id', $id)->first();
+        $result = Transactions::with('user:id,name', 'customer:id,nama', 'carts:id,no_invoice,qyt,harga_product,diskon_product,product_id', 'carts.product:id,nama_barang')->where('id', $id)->first();
         if(!$result) return response(['message' => 'Invoice tidak ditemukan'], 404);
         return response($result);
     }

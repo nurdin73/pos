@@ -44,7 +44,6 @@ const getDataPembelian = {
                 })
 				$('#listProducts').append(`
 					<tr>
-						<td>${result.kode_barang}</td>
 						<td>${result.nama_barang}</td>
 						<td>${moment(tgl_input).format('D MMM YYYY')}</td>
 						<td>${stocks + result.selled}</td>

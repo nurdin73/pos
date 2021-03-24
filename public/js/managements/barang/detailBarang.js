@@ -35,7 +35,6 @@ const getDetail = {
             stocks += resultStok.stok
             harga_dasar = resultStok.harga_dasar
         })
-        $('#kode_barang').val(response.kode_barang)
         $('#nama_barang').val(response.nama_barang)
         var option = response.suplier != null ? new Option(response.suplier.nama_suplier, response.suplier.id, true, true) : new Option("", null, true, true)
         $("#suplier").append(option).trigger('change')

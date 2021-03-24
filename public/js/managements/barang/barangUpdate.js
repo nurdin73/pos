@@ -98,7 +98,6 @@ const getDetail = {
     },
     set successData(response) {
         $('#idProdPrice').val(response.id)
-        $('#kode_barang').val(response.kode_barang)
         $('#nama_barang').val(response.nama_barang)
         var option = response.suplier != null ? new Option(response.suplier.nama_suplier, response.suplier.id, true, true) : new Option("", "", true, true)
         $("#suplier").append(option).trigger('change')

@@ -21,7 +21,7 @@ class ProductsService
 {
     public function getAll()
     {
-        $results = Products::select('id', 'nama_barang', 'kode_barang', 'harga_jual')->get();
+        $results = Products::select('id', 'nama_barang', 'harga_jual')->get();
         return datatables()->of($results)
                 ->addIndexColumn()
                 ->addColumn('actions', function($row) {
