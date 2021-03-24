@@ -161,7 +161,8 @@ class ProductsService
 
     public function show($id)
     {
-        $result = Products::with('images:id,product_id,image', 'stocks', 'typePrices', 'suplier', 'branch', 'codeProducts')->where('id', $id)->first();
+        $result = Products::with('images:id,product_id,image', 'stocks', 'typePrices', 'suplier', 'branch')->where('id', $id)->first();
+        $result->setRelation('codeProducts', $result->codeProducts()->simplePaginate(10));
         return $result;
     }
 

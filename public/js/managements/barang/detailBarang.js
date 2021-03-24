@@ -104,6 +104,16 @@ const getDetail = {
         } else {
             $('#infoEceran').text(`Barang ini tidak bisa dijual eceran`)
         }
+        if(response.code_products.data.length > 0) {
+            $('#listCodeProduct').empty()
+            response.code_products.data.map(result => {
+                $('#listCodeProduct').append(`
+                    <tr>
+                        <td>${result.kode_barang}</td>
+                    </tr>
+                `)
+            })
+        }
     },
     set errorData(err) {
         console.log(err);

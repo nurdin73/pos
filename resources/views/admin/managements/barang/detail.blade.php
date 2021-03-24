@@ -141,9 +141,11 @@
                         <thead>
                           <tr>
                             <th>Kode barang</th>
-                            <th>Action</th>
                           </tr>
                         </thead>
+                        <tbody id="listCodeProduct">
+                          
+                        </tbody>
                       </table>
                     </div>
                   </div>

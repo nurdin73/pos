@@ -171,6 +171,23 @@ const getDetail = {
                 `)
             })
         }
+        
+        if(response.code_products.data.length > 0) {
+            $('#listCodeProduct').empty()
+            response.code_products.data.map(result => {
+                $('#listCodeProduct').append(`
+                    <tr>
+                        <td>${result.kode_barang}</td>
+                        <td>
+                        <div class="btn-group">
+                            <button class="btn btn-sm btn-danger" data-id="${result.id}">Hapus</button>
+                            <button class="btn btn-sm btn-primary" data-id="${result.id}">Edit</button>
+                        </div>
+                        </td>
+                    </tr>
+                `)
+            })
+        }
     },
     set errorData(err) {
         toastr.error(err.responseJSON.message, 'Error')

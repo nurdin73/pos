@@ -165,15 +165,7 @@
                           </tr>
                         </thead>
                         <tbody id="listCodeProduct">
-                          <tr>
-                            <td>213123123</td>
-                            <td>
-                              <div class="btn-group">
-                                <button class="btn btn-sm btn-danger">Hapus</button>
-                                <button class="btn btn-sm btn-primary">Edit</button>
-                              </div>
-                            </td>
-                          </tr>
+                          
                         </tbody>
                       </table>
                     </div>
