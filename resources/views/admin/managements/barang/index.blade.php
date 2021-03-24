@@ -68,7 +68,6 @@
               <table class="table table-striped table-hover table-condensed" id="dataTables">
                 <thead>
                   <tr>
-                    <th style="width: 15%">Kode Barang</th>
                     <th>Nama Barang</th>
                     <th style="width: 8%">Stok</th>
                     <th style="width: 15%">Harga Dasar</th>
@@ -142,11 +141,7 @@
                 <div class="col-md-4">
                   <div class="form-group">
                     <label for="satuan">Satuan</label>
-                    <select name="satuan" id="satuan" class="custom-select">
-                      <option value="bungkus">Bungkus</option>
-                      <option value="box">Box</option>
-                      <option value="pack">Pack</option>
-                    </select>
+                    <input type="text" name="satuan" id="satuan" class="form-control">
                   </div>
                 </div>
               </div>

@@ -119,11 +119,10 @@ const getDetail = {
             }
         })
         $('#type_barang').val(response.type_barang).trigger('change')
-        $('#kode-barang').text(response.kode_barang)
         $('#harga_jual').val(response.harga_jual)
         $('#kategori').val(response.kategori_id)
         $('#berat').val(response.berat)
-        $('#satuan').val(response.satuan).trigger('change')
+        $('#satuan').val(response.satuan)
         $('#diskon').val(response.diskon)
         $('#keterangan').val(response.keterangan)
         $('#point').val(response.point)
@@ -225,9 +224,6 @@ $('#fieldImage').on('click', 'div .delImage', function(e) {
 
 $('#updateProduct').validate({
     rules: {
-        kode_barang: {
-            required : true
-        },
         nama_barang: {
             required : true
         },
@@ -275,7 +271,6 @@ $('#updateProduct').validate({
       e.preventDefault()
       const urlUpdateProduct = URL_API + "/managements/update/barang/" + id
       const data = {
-        kode_barang: $('#kode_barang').val(),
         suplier_id: $('#suplier').val() != null ? $('#suplier').val() : 0,
         cabang_id: $('#cabang').val() != null ? $('#cabang').val() : 0,
         nama_barang: $('#nama_barang').val(),

@@ -6,6 +6,7 @@ use App\Exports\TransaksiExport;
 use App\Helpers\CreatePaginationLink;
 use App\Helpers\PrintTrx;
 use App\Models\Carts;
+use App\Models\CodeProducts;
 use App\Models\Customers;
 use App\Models\Products;
 use App\Models\Stocks;
@@ -19,24 +20,25 @@ class TransactionService
 
     public function store($data)
     {
-        $queryForProd = Products::with('stocks')->where('kode_barang', $data['kode'])->first();
+        // $queryForProd = Products::with('stocks')->where('kode_barang', $data['kode'])->first();
+        $queryForProd = CodeProducts::with('product.stocks')->where('kode_barang', $data['kode'])->first();
         if(!$queryForProd) return response(['message' => 'kode produk tidak ditemukan'], 404);
-        $data['product_id'] = $queryForProd->id;
+        $data['product_id'] = $queryForProd->product_id;
         $sisaStok = 0;
-        if(count($queryForProd->stocks) > 0) {
-            foreach ($queryForProd->stocks as $stock) {
+        if(count($queryForProd->product->stocks) > 0) {
+            foreach ($queryForProd->product->stocks as $stock) {
                 $sisaStok += $stock->stok;
             }
         }
         if($sisaStok < 1) return response(['message' => 'stok barang ini sudah habis'], 404);
-        $checkCart = Carts::where(['no_invoice' => $data['no_invoice'], 'product_id' => $queryForProd->id])->first();
+        $checkCart = Carts::where(['no_invoice' => $data['no_invoice'], 'product_id' => $queryForProd->product->id])->first();
         if($checkCart) {
-            $discountProduct = $queryForProd->diskon !== null ? $checkCart->harga_product * ($queryForProd->diskon / 100) : 0;
+            $discountProduct = $queryForProd->product->diskon !== null ? $checkCart->harga_product * ($queryForProd->product->diskon / 100) : 0;
             $discountBefore = $checkCart->diskon_product ?? 0;
             $data['diskon_product'] = ($discountBefore + $discountProduct) * $checkCart->qyt;
             // return $discountProduct;
         } else {
-            $discountProduct = $queryForProd->diskon !== null ? $queryForProd->harga_jual * ($queryForProd->diskon / 100) : 0;
+            $discountProduct = $queryForProd->product->diskon !== null ? $queryForProd->product->harga_jual * ($queryForProd->product->diskon / 100) : 0;
             $discountBefore = $checkCart->diskon_product ?? 0;
             $data['diskon_product'] = ($discountBefore + $discountProduct) * $data['qyt'];
             // return $discountProduct;
@@ -48,7 +50,7 @@ class TransactionService
                 'qyt' => $data['qyt']
             ]);
         } else {
-            $data['harga_product'] = $queryForProd->harga_jual;
+            $data['harga_product'] = $queryForProd->product->harga_jual;
             $create = Carts::create($data);
         }
         return response(['message' => 'Pesanan berhasil ditambahkan', 'no_invoice' => $data['no_invoice']]);
@@ -210,7 +212,7 @@ class TransactionService
 
     public function detailCart($id)
     {
-        $cart = Carts::with('product:id,kode_barang,nama_barang,harga_jual')->where('id', $id)->first();
+        $cart = Carts::with('product:id,nama_barang,harga_jual')->where('id', $id)->first();
         if(!$cart) return response(['message' => 'terjadi kesalahan. silahkan coba kembali'], 500);
         return response($cart);
     }

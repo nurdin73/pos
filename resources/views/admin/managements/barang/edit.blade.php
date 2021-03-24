@@ -22,16 +22,13 @@
                 <li class="nav-item"><a class="nav-link active" data-toggle="tab" href="#home" role="tab" aria-controls="home">Data</a></li>
                 <li class="nav-item"><a class="nav-link" data-toggle="tab" href="#profile" role="tab" aria-controls="profile">Images</a></li>
                 <li class="nav-item"><a class="nav-link" data-toggle="tab" href="#type_harga" role="tab" aria-controls="type_harga">Type Harga</a></li>
+                <li class="nav-item"><a class="nav-link" data-toggle="tab" href="#kodeBarang" role="tab" aria-controls="kode_barang">Kode barang</a></li>
               </ul>
               <div class="tab-content">
                 <div class="tab-pane active" id="home" role="tabpanel">
                   <form id="updateProduct" autocomplete="off">
                     <div class="row">
                       <div class="col-md-6">
-                        <div class="form-group">
-                          <label for="kode_barang">Kode Barang *</label>
-                          <input type="text" name="kode_barang" id="kode_barang" class="form-control">
-                        </div>
                         <div class="form-group">
                           <label for="suplier">Suplier <sub class="text-info">Optional</sub></label>
                           <select id="suplier" style="width: 100%" class="custom-select"></select>
@@ -159,6 +156,20 @@
                   </div>
                   <div class="d-flex justify-content-center">
                     <button type="button" class="btn btn-lg btn-outline-primary" data-toggle="modal" data-target="#typeHargaModal">Tambah type harga? <br> (Grosir / Retailer / Eceran / Gojek)</button>
+                  </div>
+                </div>
+                <div class="tab-pane" id="kodeBarang" role="tabpanel">
+                  <div class="d-flex justify-content-center flex-column align-items-center mb-2">
+                    <div id="listKodeBarang" style="width: 100%">
+                      <table class="table table-striped table-borderless">
+                        <thead>
+                          <tr>
+                            <th>Kode barang</th>
+                            <th>Action</th>
+                          </tr>
+                        </thead>
+                      </table>
+                    </div>
                   </div>
                 </div>
               </div>

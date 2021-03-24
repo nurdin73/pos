@@ -32,7 +32,6 @@ class Functions
                 $('.loading').show()
             },
             success: function (response) {
-                console.log(response);
                 $('.loading').hide()
                 toastr.success(response.message, "success")
                 setTimeout(() => {
@@ -46,7 +45,6 @@ class Functions
                 } else {
                     toastr.error(err.responseJSON.message, "error")
                 }
-                console.log(err);
             }
         });
     }

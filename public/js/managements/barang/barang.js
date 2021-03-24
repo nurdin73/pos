@@ -111,48 +111,48 @@ function addData() {
       kode_barang: {
         required : true
       },
-      // nama_barang: {
-      //   required : true
-      // },
-      // type_barang: {
-      //   required : true
-      // },
-      // stok: {
-      //   required : true,
-      //   number : true
-      // },
-      // satuan: {
-      //   required: true,
-      // },
-      // harga_dasar: {
-      //   required : true,
-      //   number : true
-      // },
-      // harga_jual: {
-      //   required : true,
-      //   number : true
-      // },
-      // kategori: {
-      //   required : true
-      // },
-      // berat: {
-      //   number: true
-      // },
-      // diskon: {
-      //   number: true,
-      // },
-      // point: {
-      //   number: true,
-      //   min: 0,
-      // },
-      // jumlah_persatuan: {
-      //   number: true,
-      //   min: 1,
-      // },
-      // harga_persatuan: {
-      //   number: true,
-      //   min: 0
-      // }
+      nama_barang: {
+        required : true
+      },
+      type_barang: {
+        required : true
+      },
+      stok: {
+        required : true,
+        number : true
+      },
+      satuan: {
+        required: true,
+      },
+      harga_dasar: {
+        required : true,
+        number : true
+      },
+      harga_jual: {
+        required : true,
+        number : true
+      },
+      kategori: {
+        required : true
+      },
+      berat: {
+        number: true
+      },
+      diskon: {
+        number: true,
+      },
+      point: {
+        number: true,
+        min: 0,
+      },
+      jumlah_persatuan: {
+        number: true,
+        min: 1,
+      },
+      harga_persatuan: {
+        number: true,
+        min: 0
+      }
     },
     errorClass: "is-invalid",
     validClass: "is-valid",
@@ -370,7 +370,6 @@ const getListProducts = {
         })
         $('#listProducts').append(`
           <tr>
-            <td>${result.kode_barang}</td>
             <td>${result.nama_barang}</td>
             <td>${result.isRetail == 1 ? `${stocks - 1}(${result.jumlah})` : stocks}</td>
             <td>${Functions.prototype.formatRupiah(harga_dasar.toString(), 'Rp. ')}</td>

@@ -7,12 +7,14 @@ $(document).ready(function () {
     changeHarga()
     eceran()
     cacl()
+    searchProducts()
     if(hargaBarangPajak == 0) {
       $('#pajakDetail').text('* harga belum termasuk ' + namaPajak + `(${persentasePajak}%)`)
     } else {
       $('#pajakDetail').text('* harga termasuk ' + namaPajak + `(${persentasePajak}%)`)
     }
 });
+
 
 function cacl() {
   $('.btn-number').on('click', function (e) {  
@@ -187,7 +189,6 @@ const getCarts = {
         lists += `
           <tr data-id="${result.id}">
             <td>${x++}</td>
-            <td>${result.product.kode_barang}</td>
             <td>${result.product.nama_barang}</td>
             <td>`
               if(typeHarga.length > 0) {

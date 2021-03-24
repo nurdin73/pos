@@ -81,11 +81,11 @@ class BarangController extends Controller
         $harga_satuan = $request->input('harga_satuan');
         $files = $request->file('files');
         // ------------------------------- //
-        if($satuan) {
-            if($satuan != "bungkus" && $satuan != "box" && $satuan != "pack") {
-                return response(['message' => 'value satuan tidak valid'], 406);
-            }
-        }
+        // if($satuan) {
+        //     if($satuan != "bungkus" && $satuan != "box" && $satuan != "pack") {
+        //         return response(['message' => 'value satuan tidak valid'], 406);
+        //     }
+        // }
         if($type_barang) {
             if($type_barang != "baru" && $type_barang != "bekas") {
                 return response(['message' => 'type barang tidak valid'], 406);
@@ -98,7 +98,6 @@ class BarangController extends Controller
             'cabang_id' => $cabang_id,
             'nama_barang' => $nama_barang,
             'type_barang' => $type_barang,
-            'kode_barang' => $kode_barang,
             'harga_jual' => $harga_jual,
             'selled' => 0,
             'kategori_id' => $kategori,
@@ -123,7 +122,7 @@ class BarangController extends Controller
                 'harga' => $request->input('harga'),
             ],
         ];
-        return $this->productsService->addProduct($data, $files, $typeharga, $stocks);
+        return $this->productsService->addProduct($data, $files, $typeharga, $stocks, $kode_barang);
     }
 
     /**

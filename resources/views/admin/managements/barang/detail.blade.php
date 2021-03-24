@@ -22,15 +22,12 @@
                 <li class="nav-item"><a class="nav-link active" data-toggle="tab" href="#home" role="tab" aria-controls="home">Data</a></li>
                 <li class="nav-item"><a class="nav-link" data-toggle="tab" href="#profile" role="tab" aria-controls="profile">Images</a></li>
                 <li class="nav-item"><a class="nav-link" data-toggle="tab" href="#type_harga" role="tab" aria-controls="type_harga">Type Harga</a></li>
+                <li class="nav-item"><a class="nav-link" data-toggle="tab" href="#kodeBarang" role="tab" aria-controls="kode_barang">Kode barang</a></li>
               </ul>
               <div class="tab-content">
                 <div class="tab-pane active" id="home" role="tabpanel">
                   <div class="row">
                     <div class="col-md-6">
-                      <div class="form-group">
-                        <label for="kode_barang">Kode Barang</label>
-                        <input type="text" name="kode_barang" id="kode_barang" class="form-control" readonly>
-                      </div>
                       <div class="form-group">
                         <label for="suplier">Suplier</label>
                         <select id="suplier" style="width: 100%" class="custom-select" disabled></select>
@@ -49,11 +46,7 @@
                         <div class="col-md-4">
                           <div class="form-group">
                             <label for="satuan">Satuan(gram,pcs)</label>
-                            <select name="satuan" id="satuan" class="form-control" readonly>
-                              <option value="bungkus">Bungkus</option>
-                              <option value="box">Box</option>
-                              <option value="pack">Pack</option>
-                            </select>
+                            <input type="text" name="satuan" id="satuan" class="form-control">
                           </div>
                         </div>
                       </div>
@@ -138,6 +131,20 @@
                   <div class="d-flex justify-content-center flex-column align-items-center mb-2">
                     <div id="listTypeHarga" style="width: 100%">
                       
+                    </div>
+                  </div>
+                </div>
+                <div class="tab-pane" id="kodeBarang" role="tabpanel">
+                  <div class="d-flex justify-content-center flex-column align-items-center mb-2">
+                    <div id="listKodeBarang" style="width: 100%">
+                      <table class="table table-striped table-borderless">
+                        <thead>
+                          <tr>
+                            <th>Kode barang</th>
+                            <th>Action</th>
+                          </tr>
+                        </thead>
+                      </table>
                     </div>
                   </div>
                 </div>
