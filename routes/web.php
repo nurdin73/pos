@@ -146,6 +146,7 @@ Route::group(['prefix' => 'api/'], function () {
             Route::get('suplier/{id}', 'Api\Managements\SuplierController@getDetail');
             Route::get('branch-store/{id}', 'Api\Managements\BranchStoreController@show');
             Route::get('invoice/{id}', 'Api\Managements\TransaksiController@invoice');
+            Route::get('kode-barang/{id}', 'Api\Managements\BarangController@codeProduct');
 
             // add 
             Route::group(['prefix' => 'add'], function () {
@@ -160,6 +161,7 @@ Route::group(['prefix' => 'api/'], function () {
                 Route::post('/type-price', 'Api\Managements\BarangController@addTypePrice');
                 Route::post('/suplier', 'Api\Managements\SuplierController@addSuplier');
                 Route::post('/branch-store', 'Api\Managements\BranchStoreController@add');
+                Route::post('/kode-barang', 'Api\Managements\BarangController@addCodeProduct');
             });
 
             // update 
@@ -176,6 +178,7 @@ Route::group(['prefix' => 'api/'], function () {
                 Route::put('/price-cart/{id}', 'Api\Managements\TransaksiController@changePrice');
                 Route::put('/suplier/{id}', 'Api\Managements\SuplierController@updateSuplier');
                 Route::put('/branch-store/{id}', 'Api\Managements\BranchStoreController@update');
+                Route::put('/kode-barang/{id}', 'Api\Managements\BarangController@updateCodeProduct');
             });
 
             // delete 
@@ -190,6 +193,7 @@ Route::group(['prefix' => 'api/'], function () {
                 Route::delete('/type-price/{id}', 'Api\Managements\BarangController@deleteTypePrice');
                 Route::delete('/suplier/{id}', 'Api\Managements\SuplierController@deleteSuplier');
                 Route::delete('/branch-store/{id}', 'Api\Managements\BranchStoreController@delete');
+                Route::delete('/kode-barang/{id}', 'Api\Managements\BarangController@deleteCodeProduct');
             });
 
         });

@@ -141,6 +141,25 @@ class Functions
             }
         })
     }
+
+    deleteingData(prosess, url) {
+        $.ajax({
+            method: "DELETE",
+            headers: {'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')},
+            url: url,
+            beforeSend: function() {
+                $('.loading').show()
+            },
+            success: function(response) {
+                $('.loading').hide()
+                prosess.successData = response
+            },
+            error: function(err) {
+                $('.loading').hide()
+                prosess.errorData = err
+            }
+        })
+    }
     
     formatRupiah(angka, prefix){
         try {

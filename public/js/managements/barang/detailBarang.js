@@ -21,6 +21,13 @@ $(document).ready(function() {
             },
         }
     })
+
+    $('.pagination').on('click', '.page-item .page-link', function(e) {
+        e.preventDefault()
+        const page = $(this).data('id');
+		var query_params = id + "?page=" + page
+		getDetail.loadData = query_params
+    })
 })
 
 const getDetail = {
@@ -106,6 +113,7 @@ const getDetail = {
         }
         if(response.code_products.data.length > 0) {
             $('#listCodeProduct').empty()
+            const { data, current_page, prev_page_url, next_page_url } = response.code_products
             response.code_products.data.map(result => {
                 $('#listCodeProduct').append(`
                     <tr>
@@ -113,6 +121,9 @@ const getDetail = {
                     </tr>
                 `)
             })
+            $('.pagination').empty()
+            const pagination = Functions.prototype.createPaginate(current_page, prev_page_url, next_page_url)
+            $('.pagination').html(pagination)
         }
     },
     set errorData(err) {

@@ -30,7 +30,7 @@ class TransactionService
                 $sisaStok += $stock->stok;
             }
         }
-        if($sisaStok < 1) return response(['message' => 'stok barang ini sudah habis'], 404);
+        if($sisaStok < 1) return response(['message' => 'stok barang ini sudah habis'], 403);
         $checkCart = Carts::where(['no_invoice' => $data['no_invoice'], 'product_id' => $queryForProd->product->id])->first();
         if($checkCart) {
             $discountProduct = $queryForProd->product->diskon !== null ? $checkCart->harga_product * ($queryForProd->product->diskon / 100) : 0;
@@ -45,10 +45,14 @@ class TransactionService
         }
         // return $checkCart;
         if($checkCart) {
-            $data['qyt'] = $checkCart->qyt + $data['qyt'];
-            $checkCart->update([
-                'qyt' => $data['qyt']
-            ]);
+            if($checkCart->qyt < $sisaStok) {
+                $data['qyt'] = $checkCart->qyt + $data['qyt'];
+                $checkCart->update([
+                    'qyt' => $data['qyt']
+                ]);
+            } else {
+                return response(['message' => 'jumlah quantity melebihi sisa stok'], 403);
+            }
         } else {
             $data['harga_product'] = $queryForProd->product->harga_jual;
             $create = Carts::create($data);

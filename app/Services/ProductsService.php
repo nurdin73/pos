@@ -257,4 +257,40 @@ class ProductsService
         $filename = "Products-". Str::random(20) . '.xlsx';
         return Excel::download(new ProductsExport($results), $filename);
     }
+
+    public function codeProduct($id)
+    {
+        $result = CodeProducts::find($id);
+        return $result;
+    }
+
+    public function addCodeProduct($data)
+    {
+        try {
+            $create = CodeProducts::create($data);
+            if(!$create) return response(['message' => 'kode barang gagal ditambahkan'], 500);
+            return response(['message' => 'kode barang berhasil ditambahkan']);
+        } catch (\Exception $e) {
+            return response(['message' => $e->getMessage()], 500);
+        }
+    }
+
+    public function updateCodeProduct($kode_barang, $id)
+    {
+        $check = CodeProducts::find($id);
+        if(!$check) return response(['message' => 'kode produk tidak ditemukan'], 404);
+        $check->kode_barang = $kode_barang;
+        $update = $check->save();
+        if(!$update) return response(['message' => 'kode barang gagal diupdate'], 500);
+        return response(['message' => 'kode barang berhasil diupdate']);
+    }
+
+    public function deleteCodeProduct($id)
+    {
+        $check = CodeProducts::find($id);
+        if(!$check) return response(['message' => 'kode produk tidak ditemukan'], 404);
+        $delete = $check->delete();
+        if(!$delete) return response(['message' => 'kode barang gagal didelete'], 500);
+        return response(['message' => 'kode barang berhasil didelete']);
+    }
 }

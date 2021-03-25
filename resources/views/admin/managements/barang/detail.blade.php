@@ -147,6 +147,11 @@
                           
                         </tbody>
                       </table>
+                      <nav aria-label="..." class="d-flex justify-content-end">
+                        <ul class="pagination">
+                          
+                        </ul>
+                      </nav>
                     </div>
                   </div>
                 </div>

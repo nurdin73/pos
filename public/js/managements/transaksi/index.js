@@ -7,7 +7,6 @@ $(document).ready(function () {
     changeHarga()
     eceran()
     cacl()
-    searchProducts()
     if(hargaBarangPajak == 0) {
       $('#pajakDetail').text('* harga belum termasuk ' + namaPajak + `(${persentasePajak}%)`)
     } else {

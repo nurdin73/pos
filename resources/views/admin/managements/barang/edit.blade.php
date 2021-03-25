@@ -168,6 +168,11 @@
                           
                         </tbody>
                       </table>
+                      <nav aria-label="..." class="d-flex justify-content-end">
+                        <ul class="pagination">
+                          
+                        </ul>
+                      </nav>
                     </div>
                     <div class="col-md-6">
                       <form action="#" id="addKode" autocomplete="off">
@@ -237,6 +242,29 @@
               <input type="text" name="harga_type_update" id="harga_type_update" placeholder="harga 1 pcs" class="form-control">
             </div>
             <button class="btn btn-sm btn-block btn-primary">Update</button>
+          </form>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Modal -->
+  <div class="modal fade" id="updateCodeProduct" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+    <div class="modal-dialog modal-sm shadow modal-dialog-centered">
+      <div class="modal-content">
+        <div class="modal-header">
+          <h5 class="modal-title" id="exampleModalLabel">Update kode produk</h5>
+          <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+            <span aria-hidden="true">&times;</span>
+          </button>
+        </div>
+        <div class="modal-body">
+          <form action="#" id="formUpdateCodeProduct" autocomplete="off">
+            <input type="hidden" id="idCodeProduct">
+            <div class="form-group">
+              <input type="text" name="kode_barang_update" id="kode_barang_update"class="form-control">
+            </div>
+            <button class="btn btn-sm btn-primary">Update</button>
           </form>
         </div>
       </div>
