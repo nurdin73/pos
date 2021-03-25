@@ -43,7 +43,7 @@
           <div class="col-md-4">
             <div class="card form-atas">
               <div class="card-body">
-                <form action="#" id="addProduct">
+                <form action="#" id="addProduct" autocomplete="off">
                   <div class="form-group row">
                     <label class="col-md-3 col-form-label" for="barcode">Kode</label>
                     <div class="col-md-9">
@@ -60,6 +60,7 @@
                     </div>
                   </div>
                 </form>
+
               </div>
             </div>
           </div>
@@ -83,7 +84,6 @@
                 <thead>
                   <tr>
                     <th style="width:5%">No.</th>
-                    <th>Kode Barang</th>
                     <th>Nama barang</th>
                     <th style="width: 17%">Harga</th>
                     <th style="width:5%">Qyt</th>
@@ -149,10 +149,6 @@
           <input type="hidden" name="id_cart" id="id_cart">
           <div class="modal-body">
             <div class="d-flex justify-content-between align-items-start">
-              <div class="d-flex justify-content-start flex-column align-items-start">
-                <span class="font-weight-bold text-primary">Kode Barang</span>
-                <small class="text-muted" id="kodeBarangUpdate"></small>
-              </div>
               <div class="d-flex justify-content-center flex-column align-items-center">
                 <span class="font-weight-bold text-primary">Harga</span>
                 <small class="text-muted" id="hargaBarangUpdate"></small>

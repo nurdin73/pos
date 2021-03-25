@@ -49,7 +49,6 @@
               <table class="table table-borderless table-striped table-hover">
                 <thead>
                   <tr>
-                    <th style="width: 15%">Kode Barang</th>
                     <th>Nama Barang</th>
                     <th style="width: 15%">Tanggal Update</th>
                     <th style="width: 10%">Stok Awal</th>

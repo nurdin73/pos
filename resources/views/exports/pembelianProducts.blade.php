@@ -25,7 +25,6 @@
             <th colspan="10"></th>
         </tr>
         <tr>
-            <th align="center" colspan="2">Kode Barang</th>
             <th align="center" colspan="2">Nama Barang</th>
             <th align="center" colspan="2">Tanggal Update</th>
             <th align="center" colspan="2">Stok Awal</th>
@@ -48,7 +47,6 @@
                 @endphp
             @endforeach
             <tr>
-                <td align="center" colspan="2">{{ $product->kode_barang }}</td>
                 <td align="center" colspan="2">{{ $product->nama_barang }}</td>
                 <td align="center" colspan="2">{{ date('d F Y', strtotime($tglUpdate)) }}</td>
                 <td align="center" colspan="2">{{ $stock + $product->selled }}</td>

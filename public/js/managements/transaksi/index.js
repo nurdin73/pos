@@ -14,6 +14,7 @@ $(document).ready(function () {
     }
 });
 
+
 function cacl() {
   $('.btn-number').on('click', function (e) {  
     e.preventDefault()
@@ -187,7 +188,6 @@ const getCarts = {
         lists += `
           <tr data-id="${result.id}">
             <td>${x++}</td>
-            <td>${result.product.kode_barang}</td>
             <td>${result.product.nama_barang}</td>
             <td>`
               if(typeHarga.length > 0) {
@@ -323,7 +323,6 @@ function actionDelAndUpdate() {
   })
   const detailCart = {
     set successData(response) {
-      $('#kodeBarangUpdate').text(response.product.kode_barang)
       $('#hargaBarangUpdate').text(Functions.prototype.formatRupiah(response.harga_product.toString(), 'Rp. '))
       $('#namaBarangUpdate').text(response.product.nama_barang)
       $('#id_cart').val(response.id)

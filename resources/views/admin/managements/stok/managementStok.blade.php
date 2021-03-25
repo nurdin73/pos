@@ -58,7 +58,6 @@
               <table class="table table-borderless table-striped table-hover">
                 <thead>
                   <tr>
-                    <th>Kode Barang</th>
                     <th>Nama Barang</th>
                     <th style="width: 7%">Stok</th>
                     <th style="width: 15%">Harga Dasar</th>

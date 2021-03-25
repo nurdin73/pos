@@ -3,6 +3,7 @@ namespace App\Services;
 
 use App\Exports\ProductsExport;
 use App\Helpers\CreatePaginationLink;
+use App\Models\CodeProducts;
 use App\Models\FileProducts;
 use App\Models\Products;
 use App\Models\Stocks;
@@ -20,7 +21,7 @@ class ProductsService
 {
     public function getAll()
     {
-        $results = Products::select('id', 'nama_barang', 'kode_barang', 'harga_jual')->get();
+        $results = Products::select('id', 'nama_barang', 'harga_jual')->get();
         return datatables()->of($results)
                 ->addIndexColumn()
                 ->addColumn('actions', function($row) {
@@ -41,22 +42,29 @@ class ProductsService
 
     public function showAll($nama, $kode, $sorting, $byBranch)
     {
-        $results = Products::with('stocks') ->select('id', 'nama_barang', 'kode_barang', 'harga_jual', 'selled', 'isRetail', 'jumlah');
-        $results->orderBy('kode_barang', 'ASC');
+        $results = Products::with('stocks') ->select('id', 'nama_barang', 'harga_jual', 'selled', 'isRetail', 'jumlah');
         if($byBranch !== null) {
             $results = $results->where('cabang_id', $byBranch);
         }
         if($nama != "") {
             if($kode != "") {
-                $results = $results->where('kode_barang', 'like', '%'.$kode.'%')->where('nama_barang', 'like', '%'.$nama.'%')->paginate($sorting);
+                $results = $results->whereHas('codeProducts', function($q) use($kode) {
+                    $q->where('kode_barang', 'like', "%$kode%");
+                })->with(['codeProducts' => function($q) use($kode) {
+                    $q->where('kode_barang', 'like', "%$kode%");
+                }])->where('nama_barang', 'like', '%'.$nama.'%')->paginate($sorting);
             } else {
                 $results = $results->where('nama_barang', 'like', '%'.$nama.'%')->paginate($sorting);
             }
         } else {
             if($kode != "") {
-                $results = $results->where('kode_barang', 'like', '%'.$kode.'%')->paginate($sorting);
+                $results = $results->whereHas('codeProducts', function($q) use($kode) {
+                    $q->where('kode_barang', 'like', "%$kode%");
+                })->with(['codeProducts' => function($q) use($kode) {
+                    $q->where('kode_barang', 'like', "%$kode%");
+                }])->paginate($sorting);    
             } else {
-                $results = $results->paginate($sorting);
+                $results = $results->with('codeProducts')->paginate($sorting);
             }
         }
         $createData = new CreatePaginationLink($results->getCollection(), $results->links(), $results->currentPage());
@@ -64,7 +72,7 @@ class ProductsService
         // return response($results);
     }
 
-    public function addProduct($data, $files, $typeHarga, $stocks)
+    public function addProduct($data, $files, $typeHarga, $stocks, $kode_barang)
     {
         DB::beginTransaction();
         try {
@@ -89,6 +97,8 @@ class ProductsService
 
             $create = Products::create($data);
             if($create) {
+
+                // images
                 if(count($pathOfFile) > 0) {
                     foreach ($pathOfFile as $val) {
                         $addImage = FileProducts::create([
@@ -102,12 +112,23 @@ class ProductsService
                         }
                     }
                 }
+                // kode barang
+                for ($x=0; $x < count($kode_barang); $x++) { 
+                    $kodebarang = CodeProducts::create([
+                        'product_id' => $create->id,
+                        'kode_barang' => $kode_barang[$x]
+                    ]);
+                }
+
+                // add stok
                 $managementStok = Stocks::create([
                     'product_id' => $create->id,
                     'stok' => $stocks['stok'],
                     'harga_dasar' => $stocks['harga_dasar'],
                     'tgl_update' => date('Y-m-d H:i:s')
                 ]);
+
+                // type harga
                 if($typeHarga['typeHarga'] != "false") {
                     Log::info('masuk sini '. json_encode($typeHarga));
                     $nama_agen = explode(',', $typeHarga['data']['nama_agen']);
@@ -133,6 +154,7 @@ class ProductsService
             return response(['message' => 'Produk berhasil ditambahkan']);
         } catch (\Exception $e) {
             DB::rollBack();
+            Log::error($e);
             return response(['message' => $e->getMessage()]);
         }
     }
@@ -140,6 +162,7 @@ class ProductsService
     public function show($id)
     {
         $result = Products::with('images:id,product_id,image', 'stocks', 'typePrices', 'suplier', 'branch')->where('id', $id)->first();
+        $result->setRelation('codeProducts', $result->codeProducts()->simplePaginate(10));
         return $result;
     }
 
@@ -233,5 +256,41 @@ class ProductsService
         ->orderBy('id', 'ASC')->get();
         $filename = "Products-". Str::random(20) . '.xlsx';
         return Excel::download(new ProductsExport($results), $filename);
+    }
+
+    public function codeProduct($id)
+    {
+        $result = CodeProducts::find($id);
+        return $result;
+    }
+
+    public function addCodeProduct($data)
+    {
+        try {
+            $create = CodeProducts::create($data);
+            if(!$create) return response(['message' => 'kode barang gagal ditambahkan'], 500);
+            return response(['message' => 'kode barang berhasil ditambahkan']);
+        } catch (\Exception $e) {
+            return response(['message' => $e->getMessage()], 500);
+        }
+    }
+
+    public function updateCodeProduct($kode_barang, $id)
+    {
+        $check = CodeProducts::find($id);
+        if(!$check) return response(['message' => 'kode produk tidak ditemukan'], 404);
+        $check->kode_barang = $kode_barang;
+        $update = $check->save();
+        if(!$update) return response(['message' => 'kode barang gagal diupdate'], 500);
+        return response(['message' => 'kode barang berhasil diupdate']);
+    }
+
+    public function deleteCodeProduct($id)
+    {
+        $check = CodeProducts::find($id);
+        if(!$check) return response(['message' => 'kode produk tidak ditemukan'], 404);
+        $delete = $check->delete();
+        if(!$delete) return response(['message' => 'kode barang gagal didelete'], 500);
+        return response(['message' => 'kode barang berhasil didelete']);
     }
 }

@@ -26,7 +26,6 @@ const getDetail = {
                 $('#listProducts').append(`
                     <tr>
                         <td>${no++}</td>
-                        <td>${product.kode_barang}</td>
                         <td>${product.nama_barang}</td>
                         <td>${product.selled}</td>
                     </tr>

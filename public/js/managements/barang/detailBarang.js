@@ -21,6 +21,13 @@ $(document).ready(function() {
             },
         }
     })
+
+    $('.pagination').on('click', '.page-item .page-link', function(e) {
+        e.preventDefault()
+        const page = $(this).data('id');
+		var query_params = id + "?page=" + page
+		getDetail.loadData = query_params
+    })
 })
 
 const getDetail = {
@@ -35,7 +42,6 @@ const getDetail = {
             stocks += resultStok.stok
             harga_dasar = resultStok.harga_dasar
         })
-        $('#kode_barang').val(response.kode_barang)
         $('#nama_barang').val(response.nama_barang)
         var option = response.suplier != null ? new Option(response.suplier.nama_suplier, response.suplier.id, true, true) : new Option("", null, true, true)
         $("#suplier").append(option).trigger('change')
@@ -57,12 +63,11 @@ const getDetail = {
         })
         $('#type_barang').val(response.type_barang).trigger('change').attr('disabled', true)
         $('#stok').val(stocks)
-        $('#kode-barang').text(response.kode_barang)
         $('#harga_dasar').val(Functions.prototype.formatRupiah(harga_dasar.toString(), 'Rp. '))
         $('#harga_jual').val(Functions.prototype.formatRupiah(response.harga_jual.toString(), 'Rp. '))
         $('#kategori').val(response.kategori_id)
         $('#berat').val(response.berat)
-        $('#satuan').val(response.satuan).trigger('change').attr('disabled', true)
+        $('#satuan').val(response.satuan).attr('disabled', true)
         $('#diskon').val(response.diskon)
         $('#rak').val(response.rak)
         $('#keterangan').val(response.keterangan)
@@ -105,6 +110,20 @@ const getDetail = {
             $('#infoEceran').text(`Barang ini bisa dijual eceran`)
         } else {
             $('#infoEceran').text(`Barang ini tidak bisa dijual eceran`)
+        }
+        if(response.code_products.data.length > 0) {
+            $('#listCodeProduct').empty()
+            const { data, current_page, prev_page_url, next_page_url } = response.code_products
+            response.code_products.data.map(result => {
+                $('#listCodeProduct').append(`
+                    <tr>
+                        <td>${result.kode_barang}</td>
+                    </tr>
+                `)
+            })
+            $('.pagination').empty()
+            const pagination = Functions.prototype.createPaginate(current_page, prev_page_url, next_page_url)
+            $('.pagination').html(pagination)
         }
     },
     set errorData(err) {

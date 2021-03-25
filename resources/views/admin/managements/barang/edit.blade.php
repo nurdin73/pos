@@ -22,16 +22,13 @@
                 <li class="nav-item"><a class="nav-link active" data-toggle="tab" href="#home" role="tab" aria-controls="home">Data</a></li>
                 <li class="nav-item"><a class="nav-link" data-toggle="tab" href="#profile" role="tab" aria-controls="profile">Images</a></li>
                 <li class="nav-item"><a class="nav-link" data-toggle="tab" href="#type_harga" role="tab" aria-controls="type_harga">Type Harga</a></li>
+                <li class="nav-item"><a class="nav-link" data-toggle="tab" href="#kodeBarang" role="tab" aria-controls="kode_barang">Kode barang</a></li>
               </ul>
               <div class="tab-content">
                 <div class="tab-pane active" id="home" role="tabpanel">
                   <form id="updateProduct" autocomplete="off">
                     <div class="row">
                       <div class="col-md-6">
-                        <div class="form-group">
-                          <label for="kode_barang">Kode Barang *</label>
-                          <input type="text" name="kode_barang" id="kode_barang" class="form-control">
-                        </div>
                         <div class="form-group">
                           <label for="suplier">Suplier <sub class="text-info">Optional</sub></label>
                           <select id="suplier" style="width: 100%" class="custom-select"></select>
@@ -51,11 +48,7 @@
                           <div class="col-md-4">
                             <div class="form-group">
                               <label for="satuan">Satuan(gram,pcs)</label>
-                              <select name="satuan" id="satuan" class="custom-select">
-                                <option value="bungkus">Bungkus</option>
-                                <option value="box">Box</option>
-                                <option value="pack">Pack</option>
-                              </select>
+                              <input type="text" name="satuan" id="satuan" class="form-control">
                             </div>
                           </div>
                         </div>
@@ -161,6 +154,38 @@
                     <button type="button" class="btn btn-lg btn-outline-primary" data-toggle="modal" data-target="#typeHargaModal">Tambah type harga? <br> (Grosir / Retailer / Eceran / Gojek)</button>
                   </div>
                 </div>
+                <div class="tab-pane" id="kodeBarang" role="tabpanel">
+                  <div class="row">
+                    <div class="col-md-6">
+                      <table class="table table-striped table-borderless">
+                        <thead>
+                          <tr>
+                            <th>Kode barang</th>
+                            <th style="width: 10%">Action</th>
+                          </tr>
+                        </thead>
+                        <tbody id="listCodeProduct">
+                          
+                        </tbody>
+                      </table>
+                      <nav aria-label="..." class="d-flex justify-content-end">
+                        <ul class="pagination">
+                          
+                        </ul>
+                      </nav>
+                    </div>
+                    <div class="col-md-6">
+                      <form action="#" id="addKode" autocomplete="off">
+                        <div class="form-group">
+                          <label for="barcode">Scan kode barang</label>
+                          <input type="text" id="barcode" class="form-control" autofocus>
+                          <small>Gunakan scanner untuk mempercepat proses</small>
+                        </div>
+                        <button class="btn btn-sm btn-primary">Simpan</button>
+                      </form>
+                    </div>
+                  </div>
+                </div>
               </div>
             </div>
           </div>
@@ -217,6 +242,29 @@
               <input type="text" name="harga_type_update" id="harga_type_update" placeholder="harga 1 pcs" class="form-control">
             </div>
             <button class="btn btn-sm btn-block btn-primary">Update</button>
+          </form>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Modal -->
+  <div class="modal fade" id="updateCodeProduct" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+    <div class="modal-dialog modal-sm shadow modal-dialog-centered">
+      <div class="modal-content">
+        <div class="modal-header">
+          <h5 class="modal-title" id="exampleModalLabel">Update kode produk</h5>
+          <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+            <span aria-hidden="true">&times;</span>
+          </button>
+        </div>
+        <div class="modal-body">
+          <form action="#" id="formUpdateCodeProduct" autocomplete="off">
+            <input type="hidden" id="idCodeProduct">
+            <div class="form-group">
+              <input type="text" name="kode_barang_update" id="kode_barang_update"class="form-control">
+            </div>
+            <button class="btn btn-sm btn-primary">Update</button>
           </form>
         </div>
       </div>

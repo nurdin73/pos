@@ -81,11 +81,11 @@ class BarangController extends Controller
         $harga_satuan = $request->input('harga_satuan');
         $files = $request->file('files');
         // ------------------------------- //
-        if($satuan) {
-            if($satuan != "bungkus" && $satuan != "box" && $satuan != "pack") {
-                return response(['message' => 'value satuan tidak valid'], 406);
-            }
-        }
+        // if($satuan) {
+        //     if($satuan != "bungkus" && $satuan != "box" && $satuan != "pack") {
+        //         return response(['message' => 'value satuan tidak valid'], 406);
+        //     }
+        // }
         if($type_barang) {
             if($type_barang != "baru" && $type_barang != "bekas") {
                 return response(['message' => 'type barang tidak valid'], 406);
@@ -98,7 +98,6 @@ class BarangController extends Controller
             'cabang_id' => $cabang_id,
             'nama_barang' => $nama_barang,
             'type_barang' => $type_barang,
-            'kode_barang' => $kode_barang,
             'harga_jual' => $harga_jual,
             'selled' => 0,
             'kategori_id' => $kategori,
@@ -123,7 +122,7 @@ class BarangController extends Controller
                 'harga' => $request->input('harga'),
             ],
         ];
-        return $this->productsService->addProduct($data, $files, $typeharga, $stocks);
+        return $this->productsService->addProduct($data, $files, $typeharga, $stocks, $kode_barang);
     }
 
     /**
@@ -250,5 +249,40 @@ class BarangController extends Controller
     public function reportProducts()
     {
         return $this->productsService->reportProducts();
+    }
+
+    public function codeProduct($id)
+    {
+        return $this->productsService->codeProduct($id);
+    }
+
+    public function updateCodeProduct(Request $request, $id)
+    {
+        $this->validate($request, [
+            'kode_barang' => 'required'
+        ]);
+        $kode_barang = $request->input('kode_barang');
+        return $this->productsService->updateCodeProduct($kode_barang, $id);
+    }
+
+    public function addCodeProduct(Request $request)
+    {
+        $this->validate($request, [
+            'product_id' => 'required',
+            'kode_barang' => 'required|unique:code_products'
+        ], [
+            'kode_barang.unique' => ':attribute sudah ada',
+            'kode_barang.required' => ':attribute wajib diisi',
+        ]);
+        $data = [
+            'product_id' => $request->input('product_id'),
+            'kode_barang' => $request->input('kode_barang')
+        ];
+        return $this->productsService->addCodeProduct($data);
+    }
+
+    public function deleteCodeProduct($id)
+    {
+        return $this->productsService->deleteCodeProduct($id);
     }
 }

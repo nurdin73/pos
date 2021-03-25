@@ -13,6 +13,14 @@ $(document).ready(function () {
         }
         $('#showOther').slideToggle()
     })
+
+    $('.pagination').on('click', '.page-item .page-link', function(e) {
+        e.preventDefault()
+        const page = $(this).data('id');
+		var query_params = id + "?page=" + page
+		getDetail.loadData = query_params
+    })
+
     $('#submitCategory').on('click', function(e) {
         e.preventDefault()
         const nameCategory = $('#kategoriAdd').val()
@@ -87,7 +95,109 @@ $(document).ready(function () {
             },
         }
     })
+
+    $('#addKode').on('submit', function (e) {  
+        e.preventDefault()
+        console.log($('#barcode').val());
+    })
+
+    $('#listCodeProduct').on('click', 'tr td div .delete', function(e) {
+        e.preventDefault()
+        const idKode = $(this).data('id')
+        const kode = $(this).data('kode')
+        Swal.fire({
+            title: 'Yakin?',
+            text: `kode barang ${kode} akan terhapus permanen!`,
+            icon: 'warning',
+            showCancelButton: true,
+            confirmButtonText: 'Hapus!',
+            cancelButtonText: 'Batal',
+            confirmButtonColor: '#321fdb',
+            cancelButtonColor: '#d33',
+        }).then(result => {
+            if(result.isConfirmed) {
+                const urlDelete = URL_API + "/managements/delete/kode-barang/" + idKode
+                Functions.prototype.deleteingData(prosesDeleteData, urlDelete)
+            } else {
+                Swal.fire(
+                    'Batal',
+                    'penghapusan dibatalkan',
+                    'error'
+                )
+            }
+        })
+    })
+
+    $('#listCodeProduct').on('click', 'tr td div .update', function(e) {
+        const idKode = $(this).data('id')
+        const kode = $(this).data('kode')
+        $('#updateCodeProduct').modal('show')
+        $('#kode_barang_update').val(kode)
+        $('#idCodeProduct').val(idKode)
+    })
+
+    $('#formUpdateCodeProduct').on('submit', function(e) {
+        e.preventDefault()
+        const kode = $('#kode_barang_update').val()
+        const idcode = $('#idCodeProduct').val()
+        const urlUpdateCodeProduct = URL_API + "/managements/update/kode-barang/" + idcode
+        Functions.prototype.putRequest(prosessUpdateCodeProduct, urlUpdateCodeProduct, {
+            product_id: id,
+            kode_barang: kode
+        })
+    })
+
+    const prosessUpdateCodeProduct = {
+        set successData(response) {
+            toastr.success(response.message, "Success")
+            $('#updateCodeProduct').modal('hide')
+            getDetail.loadData = id
+        },
+        set errorData(err) {
+            toastr.error(err.responseJSON.message, 'Error')
+        }
+    } 
+
+    $('#addKode').on('submit', function(e) {
+        e.preventDefault();
+        const data = {
+            kode_barang: $('#barcode').val(),
+            product_id: id
+        }
+        const urlPostData = URL_API + "/managements/add/kode-barang"
+        Functions.prototype.postRequest(prosessPostKodeBarang, urlPostData, data)
+    })
 });
+
+const prosessPostKodeBarang = {
+    set successData(response) {
+        toastr.success(response.message, 'Success')
+        getDetail.loadData = id
+        $('#barcode').val('')
+    },
+    set errorData(err) {
+        // toastr.error(err.responseJSON.message, 'Error')  
+        toastr.error(err.responseJSON.errors.kode_barang[0], 'Error')
+    }
+}
+
+const prosesDeleteData = {
+    set successData(response) {
+        Swal.fire(
+            'Terhapus!',
+            response.message,
+            'success'
+        )
+        getDetail.loadData = id
+    },
+    set errorData(err) {
+        Swal.fire(
+            'Oops!',
+            err.responseJSON.message,
+            'error'
+        )
+    }
+}
 
 // functions
 
@@ -98,7 +208,6 @@ const getDetail = {
     },
     set successData(response) {
         $('#idProdPrice').val(response.id)
-        $('#kode_barang').val(response.kode_barang)
         $('#nama_barang').val(response.nama_barang)
         var option = response.suplier != null ? new Option(response.suplier.nama_suplier, response.suplier.id, true, true) : new Option("", "", true, true)
         $("#suplier").append(option).trigger('change')
@@ -119,11 +228,10 @@ const getDetail = {
             }
         })
         $('#type_barang').val(response.type_barang).trigger('change')
-        $('#kode-barang').text(response.kode_barang)
         $('#harga_jual').val(response.harga_jual)
         $('#kategori').val(response.kategori_id)
         $('#berat').val(response.berat)
-        $('#satuan').val(response.satuan).trigger('change')
+        $('#satuan').val(response.satuan)
         $('#diskon').val(response.diskon)
         $('#keterangan').val(response.keterangan)
         $('#point').val(response.point)
@@ -167,6 +275,27 @@ const getDetail = {
                 </div>
                 `)
             })
+        }
+        
+        if(response.code_products.data.length > 0) {
+            $('#listCodeProduct').empty()
+            const { data, current_page, prev_page_url, next_page_url } = response.code_products
+            data.map(result => {
+                $('#listCodeProduct').append(`
+                    <tr>
+                        <td>${result.kode_barang}</td>
+                        <td>
+                        <div class="btn-group">
+                            <button class="btn btn-sm btn-danger delete" data-id="${result.id}" data-kode="${result.kode_barang}">Hapus</button>
+                            <button class="btn btn-sm btn-primary update" data-id="${result.id}" data-kode="${result.kode_barang}">Edit</button>
+                        </div>
+                        </td>
+                    </tr>
+                `)
+            })
+            $('.pagination').empty()
+            const pagination = Functions.prototype.createPaginate(current_page, prev_page_url, next_page_url)
+            $('.pagination').html(pagination)
         }
     },
     set errorData(err) {
@@ -225,9 +354,6 @@ $('#fieldImage').on('click', 'div .delImage', function(e) {
 
 $('#updateProduct').validate({
     rules: {
-        kode_barang: {
-            required : true
-        },
         nama_barang: {
             required : true
         },
@@ -275,7 +401,6 @@ $('#updateProduct').validate({
       e.preventDefault()
       const urlUpdateProduct = URL_API + "/managements/update/barang/" + id
       const data = {
-        kode_barang: $('#kode_barang').val(),
         suplier_id: $('#suplier').val() != null ? $('#suplier').val() : 0,
         cabang_id: $('#cabang').val() != null ? $('#cabang').val() : 0,
         nama_barang: $('#nama_barang').val(),

@@ -63,7 +63,6 @@
                   <table class="table table-borderless table-striped table-hover">
                     <thead>
                       <tr>
-                        <th>Kode Barang</th>
                         <th>Nama Barang</th>
                         <th>Terjual</th>
                         <th>Harga</th>

@@ -256,7 +256,6 @@ const getDetailProduct = {
     } 
     $('#imageProduct').attr('src', response.images.length > 0 ? response.images[0].image : "https://demo.getstisla.com/assets/img/avatar/avatar-1.png")
     $('#nameProduct').text(response.nama_barang)
-    $('#kodeProduct').text(response.kode_barang)
     $('#stokProduct').text(stocks)
     $('#hargaDasar').text(Functions.prototype.formatRupiah(harga_dasar.toString(), 'Rp. '))
     $('#updateStok').data('id', response.id)
@@ -287,7 +286,6 @@ const getListProducts = {
         })
         $('#listProducts').append(`
           <tr>
-            <td>${result.kode_barang}</td>
             <td>${result.nama_barang}</td>
             <td>${stocks}</td>
             <td>${Functions.prototype.formatRupiah(harga_dasar.toString(), 'Rp. ')}</td>

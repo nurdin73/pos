@@ -18,7 +18,6 @@
           <table class="table table-striped table-hover table-condensed" id="dataTables">
             <thead>
               <tr>
-                <th style="width: 15%">Kode Barang</th>
                 <th>Nama Barang</th>
                 <th style="width: 5%">Stok</th>
                 <th style="width: 15%">Harga Dasar</th>

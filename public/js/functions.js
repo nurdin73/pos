@@ -32,7 +32,6 @@ class Functions
                 $('.loading').show()
             },
             success: function (response) {
-                console.log(response);
                 $('.loading').hide()
                 toastr.success(response.message, "success")
                 setTimeout(() => {
@@ -46,7 +45,6 @@ class Functions
                 } else {
                     toastr.error(err.responseJSON.message, "error")
                 }
-                console.log(err);
             }
         });
     }
@@ -140,6 +138,25 @@ class Functions
             error: function(err) {
                 $('.loading').hide()
                 toastr.error(err.responseJSON.message, "error")
+            }
+        })
+    }
+
+    deleteingData(prosess, url) {
+        $.ajax({
+            method: "DELETE",
+            headers: {'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')},
+            url: url,
+            beforeSend: function() {
+                $('.loading').show()
+            },
+            success: function(response) {
+                $('.loading').hide()
+                prosess.successData = response
+            },
+            error: function(err) {
+                $('.loading').hide()
+                prosess.errorData = err
             }
         })
     }

@@ -8,7 +8,7 @@ class SuplierService
 {
     protected function getSuplier()
     {
-        $results = Supliers::with('products:id,kode_barang,nama_barang,suplier_id')->select('*');
+        $results = Supliers::with('products:id,nama_barang,suplier_id')->select('*');
         return $results;
     }
 
@@ -28,7 +28,7 @@ class SuplierService
     public function getDetail($id)
     {
         $result = Supliers::where('id', $id)->first();
-        $result->setRelation('products', $result->products()->select('id', 'suplier_id', 'nama_barang', 'kode_barang', 'selled')->simplePaginate(10));
+        $result->setRelation('products', $result->products()->select('id', 'suplier_id', 'nama_barang', 'selled')->simplePaginate(10));
         return response($result);
     }
 
