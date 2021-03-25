@@ -306,14 +306,23 @@ function actionDelAndUpdate() {
     }).then((result) => {
       if (result.isConfirmed) {
         const url = URL_API + "/managements/delete/cart/" + id
-        Functions.prototype.deleteData(url)
-        $('#sub_total').text("Rp. 0 ,-")
-        $('#total_pajak').text("Rp. 0 ,-")
-        $('#total').text("Rp. 0 ,-")
-        getCarts.loadData = noInvoice
+        Functions.prototype.deleteingData(prosessDeletingData, url)
       }
     })
   })
+
+  const prosessDeletingData = {
+    set successData(response) {
+      toastr.success(response.message, 'Success')
+      $('#sub_total').text("Rp. 0 ,-")
+      $('#total_pajak').text("Rp. 0 ,-")
+      $('#total').text("Rp. 0 ,-")
+      getCarts.loadData = noInvoice
+    },
+    set errorData(err) {
+      toastr.error(err.responseJSON.message, 'Error')
+    }
+  }
 
   $('#listCarts').on('click', 'tr td div .update', function(e) {
     e.preventDefault()
