@@ -7,7 +7,7 @@
           <div class="card-header d-flex justify-content-between align-items-center">
             <span class="lead">List Transaksi</span>
             <div class="btn-group">
-              <button type="button" class="btn btn-sm btn-success">Export Excel</button>
+              <a href="{{ route('exportTrx')."?year=". date('Y') }}" class="btn btn-sm btn-success">Export Excel</a>
               <button type="button" class="btn btn-sm btn-success dropdown-toggle dropdown-toggle-split" id="dropdownMenuReference" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false" data-reference="parent">
                 <span class="sr-only">Toggle Dropdown</span>
               </button>

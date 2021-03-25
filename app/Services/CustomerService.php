@@ -52,6 +52,7 @@ class CustomerService
 
     public function add($data)
     {
+        $data['no_telp'] = "62" . substr($data['no_telp'], 1);
         $create = Customers::create($data);
         if(!$create) return response(['message' => 'Pelanggan gagal ditambahkan'], 500);
         return response(['message' => 'Pelanggan berhasil ditambahkan']);

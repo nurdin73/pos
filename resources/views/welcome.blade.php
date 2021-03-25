@@ -85,7 +85,7 @@
                 </div>
 
                 <div class="links">
-                    ini adalah website demo.
+                    {{ $email ?? "ini adalah website demo" }}
                 </div>
             </div>
         </div>

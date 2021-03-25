@@ -23,7 +23,7 @@ function getCustomers() {
 }
 
 function addCustomers() {
-    $('#no_telp').mask('0000-0000-0000')
+    $('#no_telp').mask('000000000000')
     $('#formAddCustomer').validate({
         rules: {
             nik: {
@@ -107,7 +107,7 @@ function addCustomers() {
     }
 }
 function updateCustomer() {
-    $('#update_no_telp').mask('0000-0000-0000')
+    $('#update_no_telp').mask('000000000000')
     $('#update_nik').mask('0000000000000000')
     $('#formUpdateCustomer').validate({
         rules: {

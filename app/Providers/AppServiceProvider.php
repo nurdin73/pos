@@ -28,6 +28,7 @@ class AppServiceProvider extends ServiceProvider
         $this->app->singleton('BranchStoreService', \App\Services\BranchStoreService::class);
         $this->app->singleton('TaxService', \App\Services\TaxService::class);
         $this->app->singleton('StaffService', \App\Services\StaffService::class);
+        $this->app->singleton('FirebaseService', \App\Services\FirebaseService::class);
     }
 
     /**

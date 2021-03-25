@@ -60,13 +60,13 @@
               <div class="col-md-6">
                 <div class="form-group">
                   <label for="email">Email</label>
-                  <input type="text" name="email" id="email" class="form-control">
+                  <input type="text" name="email" id="email" class="form-control" placeholder="Contoh: contoh@contoh.com">
                 </div>
               </div>
               <div class="col-md-6">
                 <div class="form-group">
                   <label for="no_telp">No Telp</label>
-                  <input type="text" name="no_telp" id="no_telp" class="form-control">
+                  <input type="text" name="no_telp" id="no_telp" class="form-control" placeholder="Contoh: 088111222333">
                 </div>
               </div>
             </div>

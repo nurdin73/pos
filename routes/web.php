@@ -1,5 +1,6 @@
 <?php
 
+use App\Jobs\LogJob;
 use Illuminate\Support\Facades\Route;
 
 /*
@@ -101,6 +102,12 @@ Route::group(['prefix' => 'admin', 'middleware' => ['auth']], function () {
 });
 
 Route::group(['prefix' => 'api/'], function () {
+    Route::prefix('telegram')->group(function () {
+        Route::any('/', 'Bot\TelegramController@index');
+        Route::get('/webhook', 'Bot\TelegramController@webhook');
+        Route::get('/messages', 'Bot\TelegramController@getMessages');
+        Route::get('/send-message', 'Bot\TelegramController@sendMessage');
+    });
     Route::group(['prefix' => 'v1/', 'middleware' => ['checkLogin']], function () {
         Route::group(['prefix' => 'managements'], function () {
 
@@ -250,7 +257,23 @@ Route::group(['prefix' => 'api/'], function () {
             Route::get('/best-seller', 'Api\DashboardController@bestSeller');
             Route::get('/new-transactions', 'Api\DashboardController@newTransactions');
         });
+
+        Route::prefix('firebase')->group(function () {
+            Route::get('/messages', 'Firebase\FirebaseController@getMessages');
+        });
     });
+});
+
+Route::get('tes', function() {
+    $emails = [
+        "asalasalanemail@gmail.com",
+        "asalasalanemail1@gmail.com",
+        "asalasalanemail2@gmail.com",
+    ];
+    for ($i=0; $i < count($emails); $i++) { 
+        LogJob::dispatch($emails[$i]);
+    }
+    return "selesai";
 });
 
 Route::get('/home', 'HomeController@index')->name('home');

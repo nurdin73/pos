@@ -9,12 +9,14 @@
     "license": "MIT",
     "require": {
         "php": "^7.2.5|^8.0",
-        "dompdf/dompdf": "^0.8.6",
         "doctrine/dbal": "^2.0",
+        "dompdf/dompdf": "^0.8.6",
         "fideloper/proxy": "^4.4",
         "fruitcake/laravel-cors": "^2.0",
         "guzzlehttp/guzzle": "^6.3.1|^7.0.1",
         "intervention/image": "^2.5",
+        "irazasyed/telegram-bot-sdk": "^3.4",
+        "kreait/firebase-php": "^5.14",
         "laravel/framework": "^7.29",
         "laravel/tinker": "^2.5",
         "laravel/ui": "^2.5",
@@ -25,6 +27,7 @@
         "sentry/sentry-laravel": "^2.2",
         "spatie/image-optimizer": "^1.3",
         "spatie/laravel-image-optimizer": "^1.6",
+        "xendit/xendit-php": "^2.6",
         "yajra/laravel-datatables-oracle": "^9.14"
     },
     "require-dev": {
