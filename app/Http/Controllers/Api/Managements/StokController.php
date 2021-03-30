@@ -29,17 +29,10 @@ class StokController extends Controller
     {
         $request->validate([
             'harga_dasar' => 'numeric',
-            'jumlah' => 'required|numeric',
             'method' => 'required'
         ]);
 
-        $data = [
-            'harga_dasar' => $request->input('harga_dasar'),
-            'jumlah' => $request->input('jumlah'),
-            'method' => $request->input('method')
-        ];
-
-        return $this->stockService->updateStok($data, $id);
+        return $this->stockService->updateStok($request->all(), $id);
     }
 
     public function show($id)
