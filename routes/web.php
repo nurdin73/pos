@@ -90,6 +90,7 @@ Route::group(['prefix' => 'admin', 'middleware' => ['auth']], function () {
         Route::group(['prefix' => '/barang'], function () {
             Route::get('/', 'Admin\ReportController@barang')->name('reportBarang');
         });
+        Route::post('/cetak-struk', 'Admin\ReportController@cetakStruk')->name('cetakStruk');
     });
 
     Route::group(['prefix' => 'settings'], function () {
@@ -147,6 +148,7 @@ Route::group(['prefix' => 'api/'], function () {
             Route::get('branch-store/{id}', 'Api\Managements\BranchStoreController@show');
             Route::get('invoice/{id}', 'Api\Managements\TransaksiController@invoice');
             Route::get('kode-barang/{id}', 'Api\Managements\BarangController@codeProduct');
+            Route::get('cetak-struk/{id}', 'Api\Managements\TransaksiController@cetakStruk');
 
             // add 
             Route::group(['prefix' => 'add'], function () {
@@ -194,6 +196,7 @@ Route::group(['prefix' => 'api/'], function () {
                 Route::delete('/suplier/{id}', 'Api\Managements\SuplierController@deleteSuplier');
                 Route::delete('/branch-store/{id}', 'Api\Managements\BranchStoreController@delete');
                 Route::delete('/kode-barang/{id}', 'Api\Managements\BarangController@deleteCodeProduct');
+                Route::delete('/transaksi/{no_invoince}', 'Api\Managements\TransaksiController@cancelTransaction');
             });
 
         });

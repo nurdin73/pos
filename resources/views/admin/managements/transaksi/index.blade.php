@@ -43,7 +43,7 @@
           <div class="col-md-4">
             <div class="card form-atas">
               <div class="card-body">
-                <form action="#" id="addProduct" autocomplete="off">
+                {{-- <form action="#" id="addProduct" autocomplete="off"> --}}
                   <div class="form-group row">
                     <label class="col-md-3 col-form-label" for="barcode">Kode</label>
                     <div class="col-md-9">
@@ -59,7 +59,7 @@
                       </div>
                     </div>
                   </div>
-                </form>
+                {{-- </form> --}}
 
               </div>
             </div>
@@ -127,9 +127,9 @@
                 <small class="text-muted" id="grand_total">Rp. 0 ,-</small>
               </li>
             </ul>
-            <button class="btn btn-block btn-danger">Cancel</button>
-            <button class="btn btn-block btn-success btn-lg" data-target="#processPaymentModal" data-toggle="modal">Prosess</button>
-            {{-- <button class="btn btn-block btn-success btn-lg" id="btn-proccess-payment">Prosess</button> --}}
+            <button class="btn btn-block btn-danger" id="cancelOrder">Cancel</button>
+            <button class="btn btn-block btn-success btn-lg" id="btn-proccess-payment" type="submit">Prosess</button>
+            {{-- <button class="btn btn-block btn-success btn-lg" data-target="#processPaymentModal" data-toggle="modal">Prosess</button> --}}
           </div>
         </div>
       </div>
@@ -186,7 +186,7 @@
   </div>
 
   <!-- Modal -->
-<div class="modal fade" id="processPaymentModal" tabindex="-1" aria-labelledby="paymentModal" aria-hidden="true">
+{{-- <div class="modal fade" id="processPaymentModal" tabindex="-1" aria-labelledby="paymentModal" aria-hidden="true">
   <div class="modal-dialog modal-sm">
     <div class="modal-content">
       <div class="modal-header">
@@ -222,7 +222,7 @@
       </div>
     </div>
   </div>
-</div>
+</div> --}}
 @endsection
 
 @section('js')
@@ -242,6 +242,7 @@
     const hargaBarangPajak = '{{ $tax->hargaBarang ?? 0 }}'
     const pajakAktif = '{{ $tax->pajakAktif ?? 0 }}'
     const layananAktif = '{{ $tax->layananAktif ?? 0 }}'
+    const urlCetakStruk = '{{ route('cetakStruk') }}'
   </script>
   <script src="{{ asset('js/managements/transaksi/index.js') }}"></script>
 @endsection

@@ -9,11 +9,26 @@ use Mike42\Escpos\CapabilityProfile;
 use Mike42\Escpos\PrintConnectors\DummyPrintConnector;
 use Mike42\Escpos\PrintConnectors\FilePrintConnector;
 use Mike42\Escpos\PrintConnectors\NetworkPrintConnector;
+use Mike42\Escpos\PrintConnectors\RawbtPrintConnector;
 use Mike42\Escpos\PrintConnectors\WindowsPrintConnector;
 use Mike42\Escpos\Printer;
 
 class PrintTrx
 {
+    protected $connector;
+    protected $connection;
+    protected $os;
+    protected $name_printer;
+    protected $profile;
+
+    public function __construct($PrinterSettings) {
+        Log::debug($this->connection);
+        $this->connection = $PrinterSettings->koneksi ?? env('CONNECTION', 'usb');
+        Log::debug($this->connection);
+        $this->os = $PrinterSettings->os ?? env('OS', 'linux');
+        $this->name_printer = $PrinterSettings->name_printer ?? env('PRINTER_DEVICE', "EPSON TM-U220 Receipt");
+    }
+
     protected function getDetailStore($id)
     {
         $result = Stores::find($id);
@@ -28,20 +43,23 @@ class PrintTrx
 
     protected function printer()
     {
-        $getPrinterSettings = $this->getPrinterSetting(1);
-        $os = $getPrinterSettings->os ?? env('OS', 'linux');
-        $PRINTER_DEVICE = $getPrinterSettings->name_printer ?? env('PRINTER_DEVICE', "EPSON TM-U220 Receipt");
+        $os = $this->os ?? env('OS', 'linux');
+        $PRINTER_DEVICE = $this->name_printer ?? env('PRINTER_DEVICE', "EPSON TM-U220 Receipt");
         $connector = null;
-        $connection = $getPrinterSettings->koneksi ?? env('CONNECTION', 'usb');
-        if($connection == "usb") {
+        if($this->connection == "usb") {
             if($os == "windows") {
                 $connector = new WindowsPrintConnector($PRINTER_DEVICE); // ini untuk windows. ambil nama printer sharingnya
             } elseif($os == "linux") {
                 $connector = new FilePrintConnector($PRINTER_DEVICE);
             } 
-        } elseif($connection == "ethernet") {
+        } elseif($this->connection == "ethernet") {
             $connector = new NetworkPrintConnector(env('IP_PRINTER_SHARING', "10.x.x.x"), env('PORT_PRINTER_SHARING', "9100"));
-        } 
+        } elseif($this->connection = "bluetooth") {
+            $connector = new DummyPrintConnector();
+            $this->profile = CapabilityProfile::load($this->getPrinterSetting(1)->name_printer);
+            $connector->finalize();
+            $this->connector = $connector;
+        }
         $printer = new Printer($connector);
         return $printer;
     }
@@ -143,9 +161,15 @@ class PrintTrx
         $printer->setJustification(Printer::JUSTIFY_CENTER);
         $printer->text("Terima kasih telah berbelanja\n");
         $printer->text("$nameStore\n");
+        if($this->connection == "bluetooth") {
+            return response(['message' => $this->connector->getData(), 'connection' => $this->connection, 'no_inv' => $trx->no_invoice]);
+            // return $this->connector->getData();
+        }
 
         $printer->feed(5); // mencetak 5 baris kosong agar terangkat (pemotong kertas saya memiliki jarak 5 baris dari toner)
         $printer->close();
+
+        return response(['message' => 'processing', 'connection' => $this->connection, 'no_inv' => $trx->no_invoice]);
     }
 
 

@@ -125,4 +125,14 @@ class TransaksiController extends Controller
     {
         return $this->transactionService->invoice($id);
     }
+
+    public function cancelTransaction($no_invoice)
+    {
+        return $this->transactionService->cancelTransaction($no_invoice);
+    }
+
+    public function cetakStruk($id)
+    {
+        return $this->transactionService->cetakStruk($id);
+    }
 }

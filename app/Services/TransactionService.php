@@ -8,6 +8,7 @@ use App\Helpers\PrintTrx;
 use App\Models\Carts;
 use App\Models\CodeProducts;
 use App\Models\Customers;
+use App\Models\PrinterSettings;
 use App\Models\Products;
 use App\Models\Stocks;
 use App\Models\Transactions;
@@ -190,11 +191,11 @@ class TransactionService
                 }
                 // Print nota
                 
-                $printTrx = new PrintTrx();
-                $printTrx->invoice($create->id);
+                // $printTrx = new PrintTrx();
+                // $printTrx->invoice($create->id);
 
                 DB::commit();
-                return response(['message' => 'transaksi berhasil ditambahkan']);
+                return response(['message' => 'transaksi berhasil ditambahkan', 'idTrx' => $create->id]);
             } else {
                 return response(['message' => 'transaksi gagal ditambahkan'], 500);
             }
@@ -433,5 +434,24 @@ class TransactionService
         $results = Transactions::with('user:id,name', 'customer:id,nama')->where('tgl_transaksi', 'like', '%'.$years.'%')->get();
         $fileName = "transaksi-".$years.".xlsx";
         return Excel::download(new TransaksiExport($results, $years), $fileName);
+    }
+
+    public function cetakStruk($id)
+    {
+        $printerSetting = PrinterSettings::find(1);
+        $printTrx = new PrintTrx($printerSetting);
+        return $printTrx->invoice($id);
+    }
+
+    public function cancelTransaction($no_invoice)
+    {
+        $check = Carts::where('no_invoice', $no_invoice)->count();
+        if($check > 0) {
+            $delete = Carts::where('no_invoice', $no_invoice)->delete();
+            if(!$delete) return response(['message' => 'Cancel order gagal'], 500);
+            return response(['message' => 'cancel order berhasil']);
+        } else {
+            return response(['message' => 'keranjang masih kosong'], 422);
+        }
     }
 }

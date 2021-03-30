@@ -7,12 +7,50 @@ $(document).ready(function () {
     changeHarga()
     eceran()
     cacl()
+    cancelOrder()
     if(hargaBarangPajak == 0) {
       $('#pajakDetail').text('* harga belum termasuk ' + namaPajak + `(${persentasePajak}%)`)
     } else {
       $('#pajakDetail').text('* harga termasuk ' + namaPajak + `(${persentasePajak}%)`)
     }
 });
+
+function cancelOrder() {
+  $('#cancelOrder').on('click', function(e) {
+    e.preventDefault()
+    Swal.fire({
+      title: 'Apa kamu yakin?',
+      text: `transaksi dengan kode ${noInvoice} akan dihapus!`,
+      icon: 'warning',
+      showCancelButton: true,
+      confirmButtonColor: '#3085d6',
+      cancelButtonColor: '#d33',
+      confirmButtonText: 'Yakin'
+    }).then((result) => {
+      if (result.isConfirmed) {
+        const urlCancelOrder = URL_API + "/managements/delete/transaksi/" + noInvoice
+        Functions.prototype.deleteingData(processCancelOrder, urlCancelOrder)
+      }
+    })
+  })
+
+  const processCancelOrder = {
+    set successData(response) {
+      Swal.fire(
+        'Berhasil!',
+        response.message,
+        'success'
+      )
+      getCarts.loadData = noInvoice
+    }, 
+    set errorData(err) {
+      toastr.error(err.responseJSON.message, 'Error')
+    }
+  }
+
+}
+
+
 
 
 function cacl() {
@@ -21,7 +59,7 @@ function cacl() {
     const number = $(this).data('number')
     if(number == "C") {
       $('#fieldCash').val('')
-    } else {
+    } else {  
       var valueField = $('#fieldCash').val()
       $('#fieldCash').val(valueField + number)
     }
@@ -53,7 +91,7 @@ function getData() {
     //     addDataCart.loadData = data
     //   }
     // })
-    $('#addProduct').on('keyup', function(e) {
+    $('#barcode').on('keyup', function(e) {
       if(e.keyCode == 13) {
         const kode = $('#barcode').val()
         const no_invoice = noInvoice
@@ -232,12 +270,14 @@ const getCarts = {
         $('#pajak').val(pajak)
         $('#total').text(Functions.prototype.formatRupiah(total.toString(), 'Rp. '))
       })
+      $('#cancelOrder').attr('disabled', false)
     } else {
       lists += `
         <tr>
           <td colspan="8" align="center">keranjang masih kosong</td>
         </tr>
       `
+      $('#cancelOrder').attr('disabled', true)
     }
 
     $('#listCarts').html(lists)
@@ -417,15 +457,19 @@ function processPayment() {
       })
     } else {
       Swal.fire({
-        title: 'Perhatian?',
-        text: "Apakah data yang dimasukkan sudah benar?",
+        title: `Total belanja ${Functions.prototype.formatRupiah(grandTotal, 'Rp.')}`,
+        input: 'text',
+        inputAttributes: {
+          placeholder: 'Masukkan jumlah uang',
+        },
+        text: `Pastikan jumlah uang sudah benar`,
         icon: 'warning',
         showCancelButton: true,
         confirmButtonColor: '#3085d6',
         cancelButtonColor: '#d33',
-        confirmButtonText: 'Ya, Benar!'
-      }).then((result) => {
-        if (result.isConfirmed) {
+        confirmButtonText: 'Ya, Benar!',
+        showLoaderOnConfirm: true,
+        preConfirm: (totalUang) => {
           const urlAddTransaction = URL_API + "/managements/add/transaction"
           const data = {
             createdBy: idUser,
@@ -434,15 +478,107 @@ function processPayment() {
             diskon_transaksi: diskon != "" ? diskon : 0,
             keterangan: keterangan,
             total: grandTotal,
-            cash: cash,
-            change: change,
+            cash: totalUang,
+            change: totalUang - grandTotal,
             pajak: pajak
           }
-          Functions.prototype.postRequest(addTransaction, urlAddTransaction, data)
+          return fetch(urlAddTransaction, {
+            headers: {
+              'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content'),
+              'Accept': 'application/json',
+              'Content-Type': 'application/json'
+            },
+            method: 'POST',
+            body: JSON.stringify(data)
+          }).then(response => {
+            if (!response.ok) {
+              throw new Error(response.statusText)
+            }
+            return response.json()
+          })
+          .catch(error => {
+            toastr.error(error, 'Error')
+          })
+        },
+        allowOutsideClick: () => !Swal.isLoading()
+      }).then((result) => {
+        if (result.isConfirmed) {
+          Swal.fire({
+            title: result.value.message,
+            text: 'Ingin cetak struk?',
+            icon: 'warning',
+            showCancelButton: true,
+            confirmButtonColor: '#3085d6',
+            cancelButtonColor: '#d33',
+            confirmButtonText: 'Cetak',
+            cancelButtonText: 'Tidak'
+          }).then((res) => {
+            if (res.isConfirmed) {
+              const cetakStruk = URL_API + "/managements/cetak-struk/" + result.value.idTrx
+              Functions.prototype.getRequest(processPrintTrx, cetakStruk)
+            } else {
+              setTimeout(() => {
+                window.location.reload()
+              }, 500);
+            }
+          })
         }
       })
     }
   })
+}
+
+
+const processPrintTrx = {
+  set successData(response) {
+    console.log(response);
+    if(response.connection == "bluetooth") {
+        var form = document.createElement('form')
+				form.setAttribute('method', 'post')
+				form.setAttribute('action', urlCetakStruk)
+
+				var input = document.createElement('input')
+				input.setAttribute('value', response.message)
+				input.setAttribute('name', 'isi')
+				input.setAttribute('id', 'isi')
+				input.setAttribute('type', 'hidden')
+
+        var input2 = document.createElement('input')
+				input2.setAttribute('value', response.no_inv)
+				input2.setAttribute('name', 'noInv')
+				input2.setAttribute('id', 'noInv')
+				input2.setAttribute('type', 'hidden')
+
+        var input3 = document.createElement('input')
+				input3.setAttribute('value', $('meta[name="csrf-token"]').attr('content'))
+				input3.setAttribute('name', '_token')
+				input3.setAttribute('id', '_token')
+				input3.setAttribute('type', 'hidden')
+
+				form.appendChild(input)
+        form.appendChild(input2)
+        form.appendChild(input3)
+				document.body.appendChild(form)
+				form.submit()
+
+        // var S = "#Intent;scheme=rawbt;";
+        // var P =  "package=ru.a402d.rawbtprinter;end;";
+        // var textEncoded = encodeURI(response.message)
+        // window.location.href = "intent:"+textEncoded+S+P;
+        setTimeout(() => {
+          window.location.reload()
+        }, 1500);
+    } else {
+      toastr.success(response.message, 'Success')
+      setTimeout(() => {
+        window.location.reload()
+      }, 1500);
+    }
+  },
+  set errorData(err) {
+    console.log(err);
+    toastr.error(err.responseJSON.message)
+  }
 }
 
 const addTransaction = {

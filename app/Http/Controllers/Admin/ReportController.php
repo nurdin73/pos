@@ -51,4 +51,13 @@ class ReportController extends Controller
     {
         return view('admin.report.kasbon.index');
     }
+
+    public function cetakStruk(Request $request)
+    {
+        $isi = $request->input('isi');
+        $noInv = $request->input('noInv');
+        $data['isi'] = $isi;
+        $data['noInv'] = $noInv;
+        return view('exports.nota', $data);
+    }
 }

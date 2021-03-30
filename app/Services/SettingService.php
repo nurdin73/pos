@@ -113,7 +113,8 @@ class SettingService
     public function testConnection()
     {
         try {
-            $printer = new PrintTrx();
+            $printerSetting = PrinterSettings::find(1);
+            $printer = new PrintTrx($printerSetting);
             return $printer->testConnection();
         } catch (\Exception $e) {
             return response(['message' => $e->getMessage()], 500);
