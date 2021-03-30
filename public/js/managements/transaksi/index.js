@@ -8,12 +8,30 @@ $(document).ready(function () {
     eceran()
     cacl()
     cancelOrder()
+    qytForm()
     if(hargaBarangPajak == 0) {
       $('#pajakDetail').text('* harga belum termasuk ' + namaPajak + `(${persentasePajak}%)`)
     } else {
       $('#pajakDetail').text('* harga termasuk ' + namaPajak + `(${persentasePajak}%)`)
     }
+
 });
+
+function qytForm() {
+  $('#listCarts').on('change', 'tr td .qytForm', async function(e) {
+    e.preventDefault()
+    const id = $(this).data('id')
+    const discount = $(this).data('discount')
+    const qytUpdate = {
+      qyt: $(this).val(),
+      diskon_product: discount
+    }
+    const url = URL_API + "/managements/update/cart/" + id
+    Functions.prototype.updatingData(url, qytUpdate, 'put')
+    await new Promise(resolve => setTimeout(resolve, 500))
+    getCarts.loadData = noInvoice
+  })
+}
 
 function cancelOrder() {
   $('#cancelOrder').on('click', function(e) {
@@ -248,7 +266,7 @@ const getCarts = {
               }
               lists +=
             `</td>
-            <td>${result.qyt}</td>
+            <td><input type="number" value="${result.qyt}" data-id="${result.id}" data-discount="${result.diskon_product}" min="1" class="form-control qytForm"></td>
             <td>
               <div class="custom-control custom-switch">
                 <input type="checkbox" ${hargaAsal == result.product.harga_satuan ? "checked" : ""} class="custom-control-input eceran" data-id="${result.id}" data-harga-eceran="${result.product.harga_satuan}" data-harga-jual="${result.product.harga_jual}" name="eceranOpsi" id="eceranOpsi${i}" ${result.product.isRetail == 0 ? "disabled" : ""}>

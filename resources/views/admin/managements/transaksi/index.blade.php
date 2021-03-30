@@ -86,7 +86,7 @@
                     <th style="width:5%">No.</th>
                     <th>Nama barang</th>
                     <th style="width: 17%">Harga</th>
-                    <th style="width:5%">Qyt</th>
+                    <th style="width:8%">Qyt</th>
                     <th>Eceran</th>
                     <th>Total Diskon</th>
                     <th>Total</th>

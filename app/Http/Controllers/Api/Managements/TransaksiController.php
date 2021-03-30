@@ -66,13 +66,8 @@ class TransaksiController extends Controller
     {
         $request->validate([
             'qyt' => 'required|numeric',
-            'diskon_product' => 'required|numeric'
         ]);
-        $data = [
-            'qyt' => $request->input('qyt'),
-            'diskon_product' => $request->input('diskon_product')
-        ];
-        return $this->transactionService->updateCart($data, $id);
+        return $this->transactionService->updateCart($request->all(), $id);
     }
 
     public function transactions(Request $request)

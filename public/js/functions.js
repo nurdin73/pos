@@ -237,6 +237,26 @@ class Functions
         })
     }
 
+    updatingData(url, data, method) {
+        $.ajax({
+            url: url,
+            method: method,
+            data: data,
+            headers: {'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')},
+            beforeSend: function() {
+                $('.loading').show()
+            },
+            success: function(response) {
+                $('.loading').hide()
+                toastr.success(response.message, 'Success!')
+            },
+            error: function(err) {
+                $('.loading').hide()
+                toastr.error(err.responseJSON.message)
+            }
+        })
+    }
+
     getRequest(process, url) {
         $.ajax({
             type: "get",
