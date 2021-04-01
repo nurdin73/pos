@@ -2,7 +2,9 @@
 namespace App\Services;
 
 use App\Helpers\CreatePaginationLink;
+use App\Models\RoleAccess;
 use App\Models\Roles;
+use Illuminate\Support\Facades\DB;
 
 class RoleService
 {
@@ -18,13 +20,23 @@ class RoleService
         return $paginate->crafting();
     }
 
-    public function add($name)
+    public function create($name)
     {
-        $create = Roles::create([
-            'name' => $name
-        ]);
-        if(!$create) return response(['message' => 'jabatan gagal ditambahkan'], 500);
-        return response(['message' => 'jabatan berhasil ditambahkan']);
+        DB::beginTransaction();
+        try {
+            $create = Roles::create([
+                'name' => $name
+            ]);
+            if(!$create) return response(['message' => 'jabatan gagal ditambahkan'], 500);
+            $createRoleAccess = RoleAccess::create([
+                'role_id' => $create->id
+            ]);
+            DB::commit();
+            return response(['message' => 'jabatan berhasil ditambahkan']);
+        } catch (\Exception $e) {
+            DB::rollBack();
+            return response(['message' => $e->getMessage()], 500);
+        }
     }
 
     public function update($name, $id)

@@ -36,4 +36,9 @@ class SettingController extends Controller
     {
         return view('admin.settings.hak-akses.index');
     }
+
+    public function roles()
+    {
+        return view('admin.settings.roles.index');
+    }
 }

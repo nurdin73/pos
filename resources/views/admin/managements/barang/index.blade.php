@@ -3,7 +3,7 @@
 @section('css')
   <link rel="stylesheet" href="{{ asset('css/select2.css') }}"/>
   <link rel="stylesheet" href="{{ asset('css/select2-bs4.css') }}">
-  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/PgwSlider/2.3.0/pgwslider.min.css" integrity="sha512-J1G8iGNI7Vk77uSN3MCVgvfTYdKVmqXhNZRI/QdC4L0S6MRImg40OsfF+N95Hix1n/Mxu7PHvdE1ULW4Hgfxyw==" crossorigin="anonymous" />
+  <link rel="stylesheet" href="{{ asset('css/pgwslider.css') }}"/>
   <style>
     .modal { overflow: auto !important; }
     .page-link { cursor: pointer !important; }
@@ -361,7 +361,7 @@
 @endsection
 
 @section('js')  
-  <script src="https://cdnjs.cloudflare.com/ajax/libs/PgwSlider/2.3.0/pgwslider.min.js" integrity="sha512-Oz0WQx5ADiBluAj9vpDDLDKZRqMvawtS4jtgi4ebPahhvfB6pWlPdoDbr6gPndcVt4uPn/nX1/8rTuDA2B/qBQ==" crossorigin="anonymous"></script>
+  <script src="{{ asset('js/pgwslider.js') }}"></script>
   <script src="{{ asset('js/select2.js') }}"></script>
   <script src="{{ asset('js/jquery-validate.js') }}" ></script>
   <script src="{{ asset('js/additional-method.js') }}"></script>

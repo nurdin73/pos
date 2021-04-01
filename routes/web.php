@@ -102,6 +102,7 @@ Route::group(['prefix' => 'admin', 'middleware' => ['auth']], function () {
         Route::get('/database', 'Admin\SettingController@database')->name('settingDatabase');
         Route::get('/printer-settings', 'Admin\SettingController@printerSettings')->name('printerSettings');
         Route::get('/hak-akses', 'Admin\SettingController@hakAkses')->name('settingAccess');
+        Route::get('/roles', 'Admin\SettingController@roles')->name('settingRoles');
     });
 });
 
@@ -234,6 +235,7 @@ Route::group(['prefix' => 'api/'], function () {
             // get all
             Route::get('/staffs', 'Api\Settings\StaffController@getall');
             Route::get('/roles', 'Api\Settings\RoleController@getall');
+            Route::get('/role-access', 'Api\Settings\RoleAccessController@all');
 
             // get detail
             Route::get('/profile', 'Api\Settings\ProfileController@detail');

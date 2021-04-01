@@ -2,6 +2,7 @@
 
 namespace Database\Seeders;
 
+use App\Models\RoleAccess;
 use App\Models\Roles;
 use Illuminate\Database\Seeder;
 
@@ -19,8 +20,11 @@ class RoleSeeder extends Seeder
             'staff',
         ];
         for ($i=0; $i < count($roles); $i++) { 
-            Roles::create([
+            $create = Roles::create([
                 'name' => $roles[$i]
+            ]);
+            RoleAccess::create([
+                'role_id' => $create->id
             ]);
         }
     }

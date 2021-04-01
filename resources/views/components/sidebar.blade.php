@@ -1,6 +1,11 @@
 <div class="c-sidebar c-sidebar-dark c-sidebar-fixed c-sidebar-lg-show" id="sidebar">
     <div class="c-sidebar-brand d-lg-down-none">
-      POS
+      <div class="c-sidebar-brand-full">
+        Ritter POS
+      </div>
+      <div class="c-sidebar-brand-minimized">
+        RitPOS
+      </div>
       {{-- <svg class="c-sidebar-brand-full" width="118" height="46" alt="CoreUI Logo">
         <use xlink:href="{{ asset('assets/brand/coreui.svg#full') }}"></use>
       </svg>
@@ -165,6 +170,14 @@
         </a>
       </li>
       <li class="c-sidebar-nav-title">Pengaturan <span class="sr-only">Pengaturan</span></li>
+      <li class="c-sidebar-nav-item">
+        <a class="c-sidebar-nav-link" href="{{ route('settingRoles') }}">
+          <svg class="c-sidebar-nav-icon">
+            <use xlink:href="{{ asset('vendors/@coreui/icons/svg/free.svg#cil-check-circle') }}"></use>
+          </svg> Jabatan
+        </a>
+        <span class="sr-only">Jabatan</span>
+      </li>
       <li class="c-sidebar-nav-item">
         <a class="c-sidebar-nav-link" href="{{ route('settingProfile') }}">
           <svg class="c-sidebar-nav-icon">

@@ -28,7 +28,7 @@ class RoleController extends Controller
     public function create(Request $request)
     {
         $this->validate($request, [
-            'name' => 'required|unique:name'
+            'name' => 'required|unique:roles'
         ]);
         return $this->roleService->create($request->input('name'));
     }

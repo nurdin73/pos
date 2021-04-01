@@ -89,26 +89,6 @@ function getData() {
     $('#noInvoice').text(noInvoice)
     $('#kasir').val(name).attr('disabled', true).addClass('disabled')
     $('#persentasePajak').val(persentasePajak).attr('disabled', true).addClass('disabled')
-    // $('#addProduct').validate({
-    //   rules: {
-    //     barcode: {
-    //       required: true
-    //     },
-    //   },
-    //   errorClass: "is-invalid",
-    //   validClass: "is-valid",
-    //   errorElement: "small",
-    //   submitHandler: function(form, e) {
-    //     e.preventDefault()
-    //     const id_product = $('#barcode').val()
-    //     const no_invoice = noInvoice
-    //     const data = {
-    //       product_id: id_product,
-    //       no_invoice: no_invoice
-    //     }
-    //     addDataCart.loadData = data
-    //   }
-    // })
     $('#barcode').on('keyup', function(e) {
       if(e.keyCode == 13) {
         const kode = $('#barcode').val()
@@ -120,38 +100,6 @@ function getData() {
         addDataCart.loadData = data
       }
     })
-    // $('#barcode').on('change', function(e) {
-    //   e.preventDefault()
-    //   const id_product = $(this).val()
-    //   const no_invoice = noInvoice
-    //   const data = {
-    //     product_id : id_product,
-    //     no_invoice : no_invoice
-    //   }
-    //   getTax.loadData = id_product
-    //   addDataCart.loadData = data
-    // })
-    // $('#barcode').select2({
-    //   theme:'bootstrap4',
-    //   ajax: {
-    //     url: URL_API + "/managements",
-    //     data: function (params) {
-    //       return {
-    //           search_kode_barang: params.term,
-    //       }
-    //     },
-    //     processResults: function(response, params) {
-    //       return {
-    //         results: response.data.map(result => {
-    //           return {
-    //             text: result.kode_barang + " - " + result.nama_barang,
-    //             id: result.id
-    //           }
-    //         })
-    //       }
-    //     },
-    //   }
-    // })
     
     $('#diskon').on('keyup', function(e) {
       e.preventDefault()
