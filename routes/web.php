@@ -32,13 +32,13 @@ Route::group(['prefix' => 'admin', 'middleware' => ['auth']], function () {
     Route::get('/', 'Admin\AdminController@index')->name('dashboardAdmin');
     Route::group(['prefix' => 'management'], function () {
         // route barang
-        Route::group(['prefix' => '/barang'], function () {
+        Route::group(['prefix' => '/barang', 'middleware' => 'role:administrator'], function () {
             Route::get('/', 'Admin\AdminController@barang')->name('managementBarang');
             Route::get('/edit/{id}', 'Admin\AdminController@editProduct');
             Route::get('/detail/{id}', 'Admin\AdminController@detailProduct');
         });
 
-        Route::group(['prefix' => '/suplier'], function () {
+        Route::group(['prefix' => '/suplier', 'middleware' => 'role:administrator'], function () {
             Route::get('/', 'Admin\AdminController@suplier')->name('managementSuplier');
             Route::get('/detail/{id}', 'Admin\AdminController@detailSuplier');
         });
@@ -70,7 +70,7 @@ Route::group(['prefix' => 'admin', 'middleware' => ['auth']], function () {
             Route::get('/barang', 'Admin\AdminController@pajakBarang')->name('pajakBarang');
             Route::get('/universal', 'Admin\AdminController@pajakUniversal')->name('pajakUniversal');
         });
-        Route::group(['prefix' => '/staff'], function() {
+        Route::group(['prefix' => '/staff', 'middleware' => 'role:administrator'], function() {
             Route::get('/', 'Admin\AdminController@managementStaff')->name('settingManagementStaff');
         });
     });
@@ -93,7 +93,7 @@ Route::group(['prefix' => 'admin', 'middleware' => ['auth']], function () {
         Route::post('/cetak-struk', 'Admin\ReportController@cetakStruk')->name('cetakStruk');
     });
 
-    Route::group(['prefix' => 'settings'], function () {
+    Route::group(['prefix' => 'settings', 'middleware' => 'role:administrator'], function () {
         Route::get('/', 'Admin\SettingController@index')->name('settingProfile');
         Route::get('/toko', 'Admin\SettingController@toko')->name('settingToko');
         Route::group(['prefix' => '/api'], function () {
@@ -231,11 +231,12 @@ Route::group(['prefix' => 'api/'], function () {
             Route::get('/databases', 'Api\Exports\DatabaseController@all')->name('getListDatabaseExport');
         });
 
-        Route::group(['prefix' => 'settings'], function () {
+        Route::group(['prefix' => 'settings', 'middleware' => 'role:adminstrator'], function () {
             // get all
             Route::get('/staffs', 'Api\Settings\StaffController@getall');
             Route::get('/roles', 'Api\Settings\RoleController@getall');
             Route::get('/role-access', 'Api\Settings\RoleAccessController@all');
+            Route::get('/sub-menus/{role_id}', 'Api\Settings\SubMenuController@getall');
 
             // get detail
             Route::get('/profile', 'Api\Settings\ProfileController@detail');

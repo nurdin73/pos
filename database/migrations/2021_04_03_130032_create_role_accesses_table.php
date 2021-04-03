@@ -16,10 +16,8 @@ class CreateRoleAccessesTable extends Migration
         Schema::create('role_accesses', function (Blueprint $table) {
             $table->id();
             $table->foreignId('role_id')->constrained('roles')->cascadeOnDelete();
-            $table->boolean('read')->default(0);
-            $table->boolean('create')->default(0);
-            $table->boolean('update')->default(0);
-            $table->boolean('delete')->default(0);
+            $table->integer('sub_menu_id')->nullable();
+            $table->boolean('isGranted')->default(0);
             $table->timestamps();
         });
     }

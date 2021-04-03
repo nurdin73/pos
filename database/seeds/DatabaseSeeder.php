@@ -1,6 +1,7 @@
 <?php
 
 use Database\Seeders\MenuSeeder;
+use Database\Seeders\RoleAccessSeeder;
 use Illuminate\Database\Seeder;
 
 class DatabaseSeeder extends Seeder
@@ -16,6 +17,7 @@ class DatabaseSeeder extends Seeder
             Database\Seeders\RoleSeeder::class,
             UserSeeder::class,
             MenuSeeder::class,
+            RoleAccessSeeder::class,
             // ProductSeeder::class
         ]);
     }

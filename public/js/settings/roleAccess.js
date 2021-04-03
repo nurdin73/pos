@@ -1,5 +1,6 @@
 $(function () {
-    var query_params = ""
+    var query_params = "",
+        query_params2 = ""
     processGetlistRoleAccess.loadData = ""
 
     $('.paginate').on('click', '.pagination .page-item a', function(e) {
@@ -24,11 +25,44 @@ $(function () {
         $('#search').val('')
         processGetlistRoleAccess.loadData = ""
     })
+
+    $('#listRoleAccess').on('click', 'tr td .checkAkses', function(e) {
+        e.preventDefault()
+        const roleId = $(this).data('id')
+        const urlListRole = URL_API + "/settings/sub-menus/" + roleId
+        Functions.prototype.getRequest(processGetMenuAccess, urlListRole)
+    })
 });
+
+const processGetMenuAccess = {
+    set successData(response) {
+        $('#listMenu').empty()
+        if(response.length > 0) {
+            response.map(result => {
+                const checked = result.role_acceses[0].isGranted == 1 ? "checked" : "";
+                $('#listMenu').append(`
+                    <tr>
+                        <td>${result.name}</td>
+                        <td class="text-center"><input type="checkbox" name="isGranted[]" data-id="${result.id}" ${checked}></td>
+                    </tr>
+                `)
+            })
+        } else {
+            $('#listMenu').append(`
+                <tr>
+                    <td colspan="2" align="center">Akses belum ada</td>
+                </tr>
+            `)
+        }
+    },
+    set errorData(err) {
+        toastr.error(err.responseJSON.message, 'Error')
+    }
+}
 
 const processGetlistRoleAccess = {
     set loadData(query_params) {
-        const urlGetListRoleAccess = URL_API + "/settings/role-access" + query_params
+        const urlGetListRoleAccess = URL_API + "/settings/roles" + query_params
         Functions.prototype.getRequest(processGetlistRoleAccess, urlGetListRoleAccess)
     },
     set successData(response) {
@@ -43,18 +77,17 @@ const processGetlistRoleAccess = {
                 const del = result.delete == 1 ? "checked" : ""
                 $('#listRoleAccess').append(`
                     <tr>
-                        <td>${result.role.name}</td>
-                        <td class="text-center"><input type="checkbox" name="create[]" ${create} ${isAdmin}></td>
-                        <td class="text-center"><input type="checkbox" name="read[]" ${read} ${isAdmin}></td>
-                        <td class="text-center"><input type="checkbox" name="update[]" ${update} ${isAdmin}></td>
-                        <td class="text-center"><input type="checkbox" name="delete[]" ${del} ${isAdmin}></td>
+                        <td>${result.name}</td>
+                        <td class="text-center">
+                            <button class="btn btn-sm btn-primary checkAkses" data-id="${result.id}" data-target="#checkAksesModal" data-toggle="modal">Check akses</button>
+                        </td>
                     </tr>
                 `)
             })
         } else {
             $('#listRoleAccess').append(`
                 <tr>
-                    <td colspan="5" align="center">Role akses tidak ditemukan</td>
+                    <td colspan="2" align="center">Role akses tidak ditemukan</td>
                 </tr>
             `)
         }

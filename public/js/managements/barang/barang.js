@@ -365,7 +365,7 @@ const getListProducts = {
         var stocks = 0
         var harga_dasar = 0
         result.stocks.map(dataStok => {
-          stocks += dataStok.stok
+          stocks += parseInt(dataStok.stok)
           harga_dasar = dataStok.harga_dasar
         })
         $('#listProducts').append(`

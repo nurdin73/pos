@@ -9,7 +9,7 @@ class GenerateCode
 {
     public static function kode()
     {
-        $query = "SELECT MAX(MID(kode_barang, 4, 9)) AS kode_barang FROM products";
+        $query = "SELECT MAX(SUBSTRING(kode_barang, 4, 9)) AS kode_barang FROM products";
         $checkKodeBarang = DB::select($query);
         $getCodeStore = env('KODE_TOKO', 'POS');
         $urutan = $checkKodeBarang[0]->kode_barang;
@@ -22,7 +22,7 @@ class GenerateCode
     public static function invoice()
     {
         $date = date('ymd');
-        $query = "SELECT MAX(MID(no_invoice, 10, 4)) AS no_invoice FROM transactions WHERE MID(no_invoice, 4, 6) = $date";
+        $query = "SELECT MAX(SUBSTRING(no_invoice, 10, 4)) AS no_invoice FROM transactions WHERE SUBSTRING(no_invoice, 4, 6) = $date";
         $checkNoInvoice = DB::select($query);
         $getCodeStore = "INV";
         $urutan = (int)$checkNoInvoice[0]->no_invoice;

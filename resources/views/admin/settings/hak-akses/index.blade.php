@@ -47,10 +47,7 @@
                 <thead>
                   <tr>
                     <th class="text-center">Jabatan</th>
-                    <th style="width: 10%" class="text-center">Create</th>
-                    <th style="width: 10%" class="text-center">Read</th>
-                    <th style="width: 10%" class="text-center">Update</th>
-                    <th style="width: 10%" class="text-center">Delete</th>
+                    <th style="width: 15%" class="text-center">Action</th>
                   </tr>
                 </thead>
                 <tbody id="listRoleAccess">
@@ -64,6 +61,37 @@
     </div>
   </main>
 @endsection 
+
+@section('modal')
+  <div class="modal fade" id="checkAksesModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+    <div class="modal-dialog modal-md">
+      <div class="modal-content">
+        <div class="modal-header">
+          <h5 class="modal-title" id="exampleModalLabel">change akses menu user</h5>
+          <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+            <span aria-hidden="true">&times;</span>
+          </button>
+        </div>
+        <div class="modal-body">
+          <div class="table-responsive">
+            <table class="table table-borderless table-striped">
+              <thead>
+                <tr>
+                  <th>Menu</th>
+                  <th style="width: 20%" class="text-center">Is Granted</th>
+                </tr>
+              </thead>
+              <tbody id="listMenu">
+                
+              </tbody>
+            </table>
+            <div class="paginateMenu"></div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+@endsection
 
 @section('js')
   <script>

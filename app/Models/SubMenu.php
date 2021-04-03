@@ -10,6 +10,7 @@ class SubMenu extends Model
     use HasFactory;
 
     protected $fillable = ['menu_id', 'name', 'url', 'icon'];
+    protected $hidden = ['created_at', 'updated_at'];
 
     public function menu()
     {
@@ -19,5 +20,10 @@ class SubMenu extends Model
     public function childSubMenus()
     {
         return $this->hasMany(ChildSubMenu::class, 'sub_menu_id', 'id');
+    }
+
+    public function roleAcceses()
+    {
+        return $this->hasMany(RoleAccess::class, 'sub_menu_id', 'id');
     }
 }

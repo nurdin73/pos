@@ -15,7 +15,7 @@
     <meta name="description" content="Point of sale by nurdin rittercoding">
     <meta name="author" content="nurdin">
     <meta name="keyword" content="pos,point of sales, kasir">
-    <title>Error 401</title>
+    <title>Error 403</title>
     <!-- Main styles for this application-->
     <link href="{{ asset('css/style.min.css') }}" rel="stylesheet">
   </head>
@@ -24,9 +24,10 @@
       <div class="row justify-content-center">
         <div class="col-md-6">
           <div class="clearfix">
-            <h1 class="float-left display-3 mr-4">401</h1>
+            <h1 class="float-left display-3 mr-4">403</h1>
             <h4 class="pt-3">Unauthorized!</h4>
-            <p class="text-muted">URL tidak dapat diakses</p>
+            <p class="text-muted">Anda tidak dapat mengakses halaman ini</p>
+            <a href="{{ url()->previous() }}" class="btn btn-sm btn-primary">Kembali</a>
           </div>
         </div>
       </div>

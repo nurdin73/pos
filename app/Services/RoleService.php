@@ -4,6 +4,7 @@ namespace App\Services;
 use App\Helpers\CreatePaginationLink;
 use App\Models\RoleAccess;
 use App\Models\Roles;
+use App\Models\SubMenu;
 use Illuminate\Support\Facades\DB;
 
 class RoleService
@@ -28,9 +29,13 @@ class RoleService
                 'name' => $name
             ]);
             if(!$create) return response(['message' => 'jabatan gagal ditambahkan'], 500);
-            $createRoleAccess = RoleAccess::create([
-                'role_id' => $create->id
-            ]);
+            $submenus = SubMenu::all();
+            foreach ($submenus as $submenu) {
+                $createRoleAccess = RoleAccess::create([
+                    'role_id' => $create->id,
+                    'sub_menu_id' => $submenu->id
+                ]);
+            }
             DB::commit();
             return response(['message' => 'jabatan berhasil ditambahkan']);
         } catch (\Exception $e) {
