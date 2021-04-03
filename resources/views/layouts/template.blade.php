@@ -57,7 +57,7 @@
   </head>
   {{-- <body class="c-app c-dark-theme"> --}}
   <body class="c-app">
-    @include('components.sidebar')
+    @include('components.sidebar-v2')
 
     <div class="c-wrapper c-fixed-components">
       <header class="c-header c-header-light c-header-fixed c-header-with-subheader">

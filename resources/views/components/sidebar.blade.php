@@ -200,7 +200,7 @@
             <use xlink:href="{{ asset('vendors/@coreui/icons/svg/free.svg#cil-lock-locked') }}"></use>
           </svg> Akses user
         </a>
-        <span class="sr-only">Role</span>
+        <span class="sr-only">Akses users</span>
       </li>
       <li class="c-sidebar-nav-item">
         <a class="c-sidebar-nav-link" href="{{ route('settingDatabase') }}">
@@ -215,7 +215,7 @@
             <use xlink:href="{{ asset('vendors/@coreui/icons/svg/free.svg#cil-print') }}"></use>
           </svg> Printer Settings
         </a>
-        <span class="sr-only">Toko</span>
+        <span class="sr-only">Printer Settings</span>
       </li>
       {{-- <li class="c-sidebar-nav-item">
         <a class="c-sidebar-nav-link" href="{{ route('settingApi') }}">
