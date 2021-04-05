@@ -470,7 +470,7 @@ function processPayment() {
       }).then((result) => {
         if (result.isConfirmed) {
           Swal.fire({
-            title: `Kembalian : ${result.value.kembalian}`,
+            title: `Kembalian : ${Functions.prototype.formatRupiah(result.value.kembalian.toString(), 'Rp. ')}`,
             text: 'Ingin cetak struk?',
             icon: 'warning',
             showCancelButton: true,
