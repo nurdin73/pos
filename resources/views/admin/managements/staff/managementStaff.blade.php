@@ -123,6 +123,57 @@
       </div>
     </div>
   </div>
+
+  <!-- Modal -->
+  <div class="modal fade" id="updateStaff" aria-labelledby="exampleModalLabel" aria-hidden="true">
+    <div class="modal-dialog">
+      <div class="modal-content">
+        <div class="modal-header">
+          <h5 class="modal-title" id="exampleModalLabel">Update Staff</h5>
+          <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+            <span aria-hidden="true">&times;</span>
+          </button>
+        </div>
+        <form action="#" id="updateStaffForm" autocomplete="off">
+          <input type="hidden" name="idStaff" id="idStaff">
+          <div class="modal-body">
+            <div class="form-group">
+              <label for="update_email_staff">Email Staff</label>
+              <input type="text" name="update_email_staff" id="update_email_staff" class="form-control">
+            </div>
+            <div class="row">
+              <div class="col-md-6">
+                <div class="form-group">
+                  <label for="update_nama_staff">Nama Staff</label>
+                  <input type="text" name="update_nama_staff" id="update_nama_staff" class="form-control">
+                </div>
+              </div>
+              <div class="col-md-6">
+                <div class="form-group">
+                  <label for="update_no_telp_staff">No Telp</label>
+                  <input type="text" name="update_no_telp_staff" id="update_no_telp_staff" class="form-control">
+                </div>
+              </div>
+            </div>
+            <div class="form-group">
+              <label for="update_jabatan">Jabatan Staff</label>
+              <select name="update_jabatan" id="update_jabatan" class="custom-select"  style="width: 100%">
+                
+              </select>
+            </div>
+            <div class="form-group">
+              <label for="update_alamat">Alamat</label>
+              <textarea name="update_alamat" id="update_alamat" cols="30" rows="2" class="form-control"></textarea>
+            </div>
+          </div>
+          <div class="modal-footer">
+            <button type="reset" class="btn btn-secondary" data-dismiss="modal">Close</button>
+            <button type="submit" class="btn btn-primary">Simpan</button>
+          </div>
+        </form>
+      </div>
+    </div>
+  </div>
 @endsection
 
 @section('js')
