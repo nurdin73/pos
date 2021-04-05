@@ -21,8 +21,11 @@ class RoleAccessService
         return $convertpaginate->crafting();
     }
 
-    public function update($req, $id)
+    public function isGranted($isGranted, $id)
     {
-        
+        $check = RoleAccess::findOrFail($id);
+        $check->isGranted = $isGranted;
+        $check->save();
+        return response(['message' => 'Data berhasil diubah']);
     }
 }

@@ -67,12 +67,13 @@
     <div class="modal-dialog modal-md">
       <div class="modal-content">
         <div class="modal-header">
-          <h5 class="modal-title" id="exampleModalLabel">change akses menu user</h5>
+          <h5 class="modal-title" id="exampleModalLabel">change akses menu role <span id="roleName" class="badge badge-primary"></span></h5>
           <button type="button" class="close" data-dismiss="modal" aria-label="Close">
             <span aria-hidden="true">&times;</span>
           </button>
         </div>
         <div class="modal-body">
+          <small>* Untuk role adminstrator tidak dapat dirubah</small>
           <div class="table-responsive">
             <table class="table table-borderless table-striped">
               <thead>

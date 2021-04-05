@@ -195,7 +195,11 @@ class TransactionService
                 // $printTrx->invoice($create->id);
 
                 DB::commit();
-                return response(['message' => 'transaksi berhasil ditambahkan', 'idTrx' => $create->id]);
+                return response([
+                    'message' => 'transaksi berhasil ditambahkan', 
+                    'idTrx' => $create->id,
+                    'kembalian' => $create->change
+                ]);
             } else {
                 return response(['message' => 'transaksi gagal ditambahkan'], 500);
             }

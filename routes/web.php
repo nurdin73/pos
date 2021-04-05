@@ -29,80 +29,80 @@ Route::group(['prefix' => 'auth'], function () {
 });
 
 Route::group(['prefix' => 'admin', 'middleware' => ['auth']], function () {
-    Route::get('/', 'Admin\AdminController@index')->name('dashboardAdmin');
+    Route::get('/', 'Admin\AdminController@index')->name('dashboardAdmin')->middleware('role:dashboardAdmin');
     Route::group(['prefix' => 'management'], function () {
         // route barang
-        Route::group(['prefix' => '/barang', 'middleware' => 'role:administrator'], function () {
-            Route::get('/', 'Admin\AdminController@barang')->name('managementBarang');
-            Route::get('/edit/{id}', 'Admin\AdminController@editProduct');
-            Route::get('/detail/{id}', 'Admin\AdminController@detailProduct');
+        Route::group(['prefix' => '/barang'], function () {
+            Route::get('/', 'Admin\AdminController@barang')->name('managementBarang')->middleware('role:managementBarang');
+            Route::get('/edit/{id}', 'Admin\AdminController@editProduct')->middleware('role:managementBarang');
+            Route::get('/detail/{id}', 'Admin\AdminController@detailProduct')->middleware('role:managementBarang');
         });
 
-        Route::group(['prefix' => '/suplier', 'middleware' => 'role:administrator'], function () {
-            Route::get('/', 'Admin\AdminController@suplier')->name('managementSuplier');
-            Route::get('/detail/{id}', 'Admin\AdminController@detailSuplier');
+        Route::group(['prefix' => '/suplier'], function () {
+            Route::get('/', 'Admin\AdminController@suplier')->name('managementSuplier')->middleware('role:managementSuplier');
+            Route::get('/detail/{id}', 'Admin\AdminController@detailSuplier')->middleware('role:managementSuplier');
         });
 
         Route::group(['prefix' => '/loyality-program'], function () {
-            Route::get('/', 'Admin\AdminController@loyalityProgram')->name('loyalityProgram');
+            Route::get('/', 'Admin\AdminController@loyalityProgram')->name('loyalityProgram')->middleware('role:loyalityProgram');
         });
 
-        Route::get('/kategori', 'Admin\AdminController@kategori')->name('managementKategori');
+        Route::get('/kategori', 'Admin\AdminController@kategori')->name('managementKategori')->middleware('role:managementKategori');;
         
         Route::group(['prefix' => '/transaksi'], function () {
-            Route::get('/', 'Admin\AdminController@managementTransaksi')->name('managementTransaksi');
-            Route::get('/list-transaksi', 'Admin\AdminController@listTransaksi')->name('listTransaksi');
-            Route::get('/invoice/{id}', 'Admin\AdminController@invoice');
+            Route::get('/', 'Admin\AdminController@managementTransaksi')->name('managementTransaksi')->middleware('role:#');
+            Route::get('/list-transaksi', 'Admin\AdminController@listTransaksi')->name('listTransaksi')->middleware('role:#');
+            Route::get('/invoice/{id}', 'Admin\AdminController@invoice')->middleware('role:#');
         });
 
-        Route::get('/cabang', 'Admin\AdminController@managementCabang')->name('managementCabang');
-        Route::get('/cabang/detail/{id}', 'Admin\AdminController@detailCabang');
-        Route::get('/pelanggan', 'Admin\AdminController@pelanggan')->name('managementPelanggan');
-        Route::get('/management-stok', 'Admin\AdminController@managementStok')->name('managementStok');
-        Route::group(['prefix' => '/kasbon'], function () {
+        Route::get('/cabang', 'Admin\AdminController@managementCabang')->name('managementCabang')->middleware('role:managementCabang');
+        Route::get('/cabang/detail/{id}', 'Admin\AdminController@detailCabang')->middleware('role:managementCabang');
+        Route::get('/pelanggan', 'Admin\AdminController@pelanggan')->name('managementPelanggan')->middleware('role:managementPelanggan');
+        Route::get('/management-stok', 'Admin\AdminController@managementStok')->name('managementStok')->middleware('role:managementStok');
+        Route::group(['prefix' => '/kasbon', 'middleware' => ['role:managementKasbon']], function () {
             Route::get('/', 'Admin\AdminController@kasbon')->name('managementKasbon');
             // Route::get('/add', 'Admin\AdminController@addKasbon')->name('addKasbon');
             Route::get('/bayar/{id}', 'Admin\AdminController@bayarKasbon');
             // bayar kasbon
             Route::get('/bayar/{id}/{id_kasbon}', 'Admin\AdminController@payment');
         });
-        Route::group(['prefix' => '/pajak'], function () {
+        Route::group(['prefix' => '/pajak', 'middleware' => ['role:pajakUniversal']], function () {
             Route::get('/barang', 'Admin\AdminController@pajakBarang')->name('pajakBarang');
             Route::get('/universal', 'Admin\AdminController@pajakUniversal')->name('pajakUniversal');
         });
-        Route::group(['prefix' => '/staff', 'middleware' => 'role:administrator'], function() {
+        Route::group(['prefix' => '/staff', 'middleware' => 'role:settingManagementStaff'], function() {
             Route::get('/', 'Admin\AdminController@managementStaff')->name('settingManagementStaff');
         });
     });
 
     Route::group(['prefix' => 'reports'], function () {
-        Route::get('/', 'Admin\ReportController@index')->name('reportUmum');
-        Route::get('/transaksi', 'Admin\ReportController@transaksi')->name('reportTransaksi');
-        Route::get('/penjualan', 'Admin\ReportController@penjualan')->name('reportPenjualan');
-        Route::get('/pembelian', 'Admin\ReportController@pembelian')->name('reportPembelian');
-        Route::get('/modal', 'Admin\ReportController@modal')->name('reportModal');
-        Route::get('/pajak', 'Admin\ReportController@pajak')->name('reportPajak');
-        Route::get('/pelanggan', 'Admin\ReportController@reportPelanggan')->name('reportPelanggan');
-        Route::group(['prefix' => '/kasbon'], function () {
+        Route::get('/', 'Admin\ReportController@index')->name('reportUmum')->middleware('role:#');
+        Route::get('/transaksi', 'Admin\ReportController@transaksi')->name('reportTransaksi')->middleware('role:#');
+        Route::get('/penjualan', 'Admin\ReportController@penjualan')->name('reportPenjualan')->middleware('role:#');
+        Route::get('/pembelian', 'Admin\ReportController@pembelian')->name('reportPembelian')->middleware('role:#');
+        Route::get('/modal', 'Admin\ReportController@modal')->name('reportModal')->middleware('role:reportModal');
+        Route::get('/pajak', 'Admin\ReportController@pajak')->name('reportPajak')->middleware('role:reportPajak');
+        Route::get('/pelanggan', 'Admin\ReportController@reportPelanggan')->name('reportPelanggan')->middleware('role:reportPelanggan');
+        Route::group(['prefix' => '/kasbon', 'middleware' => ['role:reportKasbon']], function () {
             Route::get('/', 'Admin\ReportController@reportKasbon')->name('reportKasbon');
         });
 
-        Route::group(['prefix' => '/barang'], function () {
+        Route::group(['prefix' => '/barang', 'middleware' => ['role:reportBarang']], function () {
             Route::get('/', 'Admin\ReportController@barang')->name('reportBarang');
         });
         Route::post('/cetak-struk', 'Admin\ReportController@cetakStruk')->name('cetakStruk');
     });
 
-    Route::group(['prefix' => 'settings', 'middleware' => 'role:administrator'], function () {
-        Route::get('/', 'Admin\SettingController@index')->name('settingProfile');
-        Route::get('/toko', 'Admin\SettingController@toko')->name('settingToko');
-        Route::group(['prefix' => '/api'], function () {
+    Route::group(['prefix' => 'settings'], function () {
+        Route::get('/', 'Admin\SettingController@index')->name('settingProfile')->middleware('role:settingProfile');
+        Route::get('/toko', 'Admin\SettingController@toko')->name('settingToko')->middleware('role:settingToko');
+        Route::group(['prefix' => '/api', 'middleware' => ['role:settingApi']], function () {
             Route::get('/', 'Admin\SettingController@api')->name('settingApi');
         });
-        Route::get('/database', 'Admin\SettingController@database')->name('settingDatabase');
-        Route::get('/printer-settings', 'Admin\SettingController@printerSettings')->name('printerSettings');
-        Route::get('/hak-akses', 'Admin\SettingController@hakAkses')->name('settingAccess');
-        Route::get('/roles', 'Admin\SettingController@roles')->name('settingRoles');
+        Route::get('/database', 'Admin\SettingController@database')->name('settingDatabase')->middleware('role:settingDatabase');
+        Route::get('/printer-settings', 'Admin\SettingController@printerSettings')->name('printerSettings')->middleware('role:printerSettings');
+        Route::get('/hak-akses', 'Admin\SettingController@hakAkses')->name('settingAccess')->middleware('role:settingAccess');
+        Route::get('/roles', 'Admin\SettingController@roles')->name('settingRoles')->middleware('role:settingRoles');
     });
 });
 
@@ -231,7 +231,7 @@ Route::group(['prefix' => 'api/'], function () {
             Route::get('/databases', 'Api\Exports\DatabaseController@all')->name('getListDatabaseExport');
         });
 
-        Route::group(['prefix' => 'settings', 'middleware' => 'role:adminstrator'], function () {
+        Route::group(['prefix' => 'settings'], function () {
             // get all
             Route::get('/staffs', 'Api\Settings\StaffController@getall');
             Route::get('/roles', 'Api\Settings\RoleController@getall');
@@ -256,6 +256,7 @@ Route::group(['prefix' => 'api/'], function () {
                 Route::put('/change-detail-store', 'Api\Settings\StoreController@update');
                 Route::put('/staff/{id}', 'Api\Settings\StaffController@update');
                 Route::put('/role/{id}', 'Api\Settings\RoleController@update');
+                Route::put('/role-access/{id}', 'Api\Settings\RoleAccessController@isGranted');
             });
 
             // add

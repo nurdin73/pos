@@ -18,4 +18,10 @@ class RoleAccessController extends Controller
         $sorting = $request->input('sorting') ?? 10;
         return $this->roleAccessService->all($search, $sorting);
     }
+
+    public function isGranted(Request $request, $id)
+    {
+        $isGranted = $request->input('granted');
+        return $this->roleAccessService->isGranted($isGranted, $id);
+    }
 }

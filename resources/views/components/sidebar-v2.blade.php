@@ -1,9 +1,11 @@
 <?php
 
 use App\Models\Menu;
-
-$menus = Menu::with('submenus.childSubMenus')->get();
-
+$menus = Menu::with(['subMenus' => function($q) {
+  $q->with('childSubMenus')->whereHas('roleAcceses', function($w) {
+    $w->where('role_id', auth()->user()->role_id)->where('isGranted', 1);
+  });
+}])->get();
 ?>
 
 <div class="c-sidebar c-sidebar-dark c-sidebar-fixed c-sidebar-lg-show" id="sidebar">
@@ -17,9 +19,9 @@ $menus = Menu::with('submenus.childSubMenus')->get();
   </div>
   <ul class="c-sidebar-nav">
     @foreach ($menus as $menu)
-      <li class="c-sidebar-nav-title">{{ $menu->name }} <span class="sr-only">{{ $menu->name }}</span></li>
-      @if (count($menu->submenus) > 0) 
-        @foreach ($menu->submenus as $submenu)
+      @if (count($menu->subMenus) > 0) 
+        <li class="c-sidebar-nav-title">{{ $menu->name }} <span class="sr-only">{{ $menu->name }}</span></li>
+        @foreach ($menu->subMenus as $submenu)
         @if (count($submenu->childSubMenus) > 0)
         <li class="c-sidebar-nav-item c-sidebar-nav-dropdown">
           <a class="c-sidebar-nav-link c-sidebar-nav-dropdown-toggle" href="#">

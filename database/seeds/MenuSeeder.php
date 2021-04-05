@@ -95,6 +95,12 @@ class MenuSeeder extends Seeder
                         'child_sub_menu' => [] 
                     ],
                     [
+                        'name' => 'Loyality Program',
+                        'icon' => 'vendors/@coreui/icons/svg/free.svg#cil-dollar',
+                        'url' => 'loyalityProgram', // route name
+                        'child_sub_menu' => [] 
+                    ],
+                    [
                         'name' => 'Management Staff',
                         'icon' => 'vendors/@coreui/icons/svg/free.svg#cil-contact',
                         'url' => 'settingManagementStaff', // route name

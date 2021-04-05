@@ -470,7 +470,7 @@ function processPayment() {
       }).then((result) => {
         if (result.isConfirmed) {
           Swal.fire({
-            title: result.value.message,
+            title: `Kembalian : ${result.value.kembalian}`,
             text: 'Ingin cetak struk?',
             icon: 'warning',
             showCancelButton: true,
