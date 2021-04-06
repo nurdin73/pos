@@ -16,7 +16,7 @@ class CreateTypePricesTable extends Migration
         Schema::create('type_prices', function (Blueprint $table) {
             $table->id();
             $table->foreignId('product_id')->constrained('products')->cascadeOnDelete();
-            $table->string('nama_agen');
+            $table->string('nama_agen');\
             $table->bigInteger('harga');
             $table->timestamps();
         });

@@ -30,4 +30,14 @@ class GenerateCode
         $kode = sprintf("%04s", $urutan);
         return $getCodeStore.$date.$kode;
     }
+
+    public static function generateId($char = "1234567890", $length = 10)
+    {
+        $charLength = strlen($char);
+        $randStr = "";
+        for ($i=0; $i < $length; $i++) { 
+            $randStr .= $char[rand(0, $charLength - 1)];
+        }
+        return $randStr;
+    }
 }

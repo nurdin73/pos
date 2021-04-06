@@ -48,7 +48,7 @@ class StaffService
 
     public function get($id)
     {
-        $result = Staffs::find($id);
+        $result = Staffs::where('id', $id)->with('role')->first();
         if(!$result) return response(['message' => 'Staff tidak ditemukan'], 404);
         return response($result);
     }
@@ -59,6 +59,9 @@ class StaffService
         if(!$result) return response(['message' => 'Staff tidak ditemukan'], 404);
         $update = $result->update($req);
         if(!$update) return response(['message' => 'Staff gagal diupdate'], 500);
+        User::where('email', $result->email)->update([
+            'role_id' => $req['role_id']
+        ]);
         return response(['message' => 'Staff berhasil di update']);
     }
 
@@ -68,6 +71,7 @@ class StaffService
         if(!$result) return response(['message' => 'Staff tidak ditemukan'], 404);
         $delete = $result->delete();
         if(!$delete) return response(['message' => 'Staff gagal dihapus'], 500);
+        User::where('email', $result->email)->delete();
         return response(['message' => 'Staff berhasil dihapus']);
     }
 }
