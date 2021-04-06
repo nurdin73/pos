@@ -60,7 +60,8 @@ class StaffService
         $update = $result->update($req);
         if(!$update) return response(['message' => 'Staff gagal diupdate'], 500);
         User::where('email', $result->email)->update([
-            'role_id' => $req['role_id']
+            'role_id' => $req['role_id'],
+            'email' => $req['email']
         ]);
         return response(['message' => 'Staff berhasil di update']);
     }
