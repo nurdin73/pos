@@ -10,7 +10,8 @@ class TaxService
 {
     protected function getTax()
     {
-        $results = Tax::select('*');
+        $results = Tax::select(['id', 'nama_pajak', 'persentasePajak', 'persentaseLayanan', 'hargaBarang', 'pajakAktif', 'layananAktif']);
+        // $results = Tax::select('*');
         return $results;
     }
 
