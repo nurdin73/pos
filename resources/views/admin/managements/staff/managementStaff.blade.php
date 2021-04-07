@@ -114,6 +114,10 @@
               <label for="alamat">Alamat</label>
               <textarea name="alamat" id="alamat" cols="30" rows="2" class="form-control"></textarea>
             </div>
+            <div class="alert alert-info">
+              <h5 class="alert-heading">Perhatian!</h5>
+              <p>Untuk staff baru. login menggunakan password : "<strong>password</strong>". tolong update pada saat pertama kali login</p>
+            </div>
           </div>
           <div class="modal-footer">
             <button type="reset" class="btn btn-secondary" data-dismiss="modal">Close</button>

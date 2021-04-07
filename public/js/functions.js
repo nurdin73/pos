@@ -294,6 +294,29 @@ class Functions
             }
         });
     }
+
+    addRequest(process, url, data) {
+        $.ajax({
+            type: "post",
+            url: url,
+            data: data,
+            processData: false,
+            contentType: false,
+            headers: {'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')},
+            beforeSend: function() {
+                $('.loading').show()
+            },
+            success: function (response) {
+                $('.loading').hide()
+                process.successData = response;
+            },
+            error: function(err) {
+                $('.loading').hide()
+                process.errorData = err
+            }
+        });
+    }
+
     putRequest(process, url, data) {
         $.ajax({
             type: "put",
@@ -408,5 +431,15 @@ class Functions
             }
         }
         return true
+    }
+
+    generateCode(length) {
+        var result           = [];
+        var characters       = 'ABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789';
+        var charactersLength = characters.length;
+        for ( var i = 0; i < length; i++ ) {
+            result.push(characters.charAt(Math.floor(Math.random() * charactersLength)));
+        }
+        return result.join('');
     }
 }

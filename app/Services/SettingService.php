@@ -16,7 +16,7 @@ class SettingService
 {
     public function getProfile()
     {
-        $user = Auth::user();
+        $user = User::with('role')->findOrFail(auth()->id());
         return response($user);
     }
 

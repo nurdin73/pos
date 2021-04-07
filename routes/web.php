@@ -135,6 +135,7 @@ Route::group(['prefix' => 'api/'], function () {
             Route::get('/supliers', 'Api\Managements\SuplierController@getAll');
             Route::get('/branch-stores', 'Api\Managements\BranchStoreController@getAll');
             Route::get('/chart-pajak', 'Api\Managements\PajakController@cartPajak');
+            Route::get('/loyality-program', 'Api\Managements\LoyalityProgramController@getall');
 
             // get detail
             Route::get('barang/{id}', 'Api\Managements\BarangController@show');
@@ -150,6 +151,7 @@ Route::group(['prefix' => 'api/'], function () {
             Route::get('invoice/{id}', 'Api\Managements\TransaksiController@invoice');
             Route::get('kode-barang/{id}', 'Api\Managements\BarangController@codeProduct');
             Route::get('cetak-struk/{id}', 'Api\Managements\TransaksiController@cetakStruk');
+            Route::get('loyality-program/{id}', 'Api\Managements\LoyalityProgramController@get');
 
             // add 
             Route::group(['prefix' => 'add'], function () {
@@ -165,6 +167,7 @@ Route::group(['prefix' => 'api/'], function () {
                 Route::post('/suplier', 'Api\Managements\SuplierController@addSuplier');
                 Route::post('/branch-store', 'Api\Managements\BranchStoreController@add');
                 Route::post('/kode-barang', 'Api\Managements\BarangController@addCodeProduct');
+                Route::post('/loyality-program', 'Api\Managements\LoyalityProgramController@store');
             });
 
             // update 
@@ -182,6 +185,7 @@ Route::group(['prefix' => 'api/'], function () {
                 Route::put('/suplier/{id}', 'Api\Managements\SuplierController@updateSuplier');
                 Route::put('/branch-store/{id}', 'Api\Managements\BranchStoreController@update');
                 Route::put('/kode-barang/{id}', 'Api\Managements\BarangController@updateCodeProduct');
+                Route::put('/loyality-program/{id}', 'Api\Managements\LoyalityProgramController@update');
             });
 
             // delete 
@@ -198,6 +202,7 @@ Route::group(['prefix' => 'api/'], function () {
                 Route::delete('/branch-store/{id}', 'Api\Managements\BranchStoreController@delete');
                 Route::delete('/kode-barang/{id}', 'Api\Managements\BarangController@deleteCodeProduct');
                 Route::delete('/transaksi/{no_invoince}', 'Api\Managements\TransaksiController@cancelTransaction');
+                Route::delete('/loyality-program/{id}', 'Api\Managements\LoyalityProgramController@delete');
             });
 
         });
