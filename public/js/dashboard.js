@@ -86,7 +86,7 @@ const getChartTransactions = {
                 yAxes: [{
                     ticks: {
                         beginAtZero: true,
-                        stepSize : 50000
+                        stepSize : 5000000
                     },
 
                 }]
@@ -117,7 +117,6 @@ const listBestSeller = {
             response.map(result => {
                 $('#listBestSeller').append(`
                     <tr>
-                        <td>${result.kode_barang}</td>
                         <td>${result.nama_barang.substr(0, 20)}</td>
                         <td>${result.selled}</td>
                         <td>${Functions.prototype.formatRupiah(result.harga_jual.toString(), 'Rp. ')}</td>

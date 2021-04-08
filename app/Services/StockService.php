@@ -15,7 +15,7 @@ class StockService
         if($data['method'] == "tambah") {
             $create = Stocks::create([
                 'product_id' => $id_product,
-                'stok' => $data['jumlah'],
+                'stok' => $data['jumlah'] ?? 0,
                 'harga_dasar' => $data['harga_dasar'],
                 'tgl_update' => date('Y-m-d H:i:s')
             ]);

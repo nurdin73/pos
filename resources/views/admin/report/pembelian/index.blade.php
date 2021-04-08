@@ -49,7 +49,6 @@
               <table class="table table-borderless table-striped table-hover">
                 <thead>
                   <tr>
-                    <th style="width: 15%">Kode Barang</th>
                     <th>Nama Barang</th>
                     <th style="width: 15%">Tanggal Update</th>
                     <th style="width: 10%">Stok Awal</th>
@@ -72,7 +71,6 @@
 @endsection 
 
 @section('js')
-  <script src="https://cdnjs.cloudflare.com/ajax/libs/moment.js/2.29.1/moment.min.js" integrity="sha512-qTXRIMyZIFb8iQcfjXWCO8+M5Tbc38Qi5WzdPOYZHIlZpzBHG3L3by84BBBOiRGiEb7KKtAOAs5qYdUiZiQNNQ==" crossorigin="anonymous"></script>
   <script type="text/javascript">
     const URL_API = '{{ url('api/v1') }}'
   </script>

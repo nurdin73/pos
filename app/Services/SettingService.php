@@ -1,6 +1,8 @@
 <?php
 namespace App\Services;
 
+use App\Helpers\PrintTrx;
+use App\Models\PrinterSettings;
 use App\Models\Stores;
 use App\Models\User;
 use Illuminate\Support\Facades\Auth;
@@ -14,7 +16,7 @@ class SettingService
 {
     public function getProfile()
     {
-        $user = Auth::user();
+        $user = User::with('role')->findOrFail(auth()->id());
         return response($user);
     }
 
@@ -84,5 +86,38 @@ class SettingService
             $store->update($data);
         }
         return response(['message' => 'Detail toko berhasil di update']);
+    }
+
+    public function printer($data, $id)
+    {
+        try {
+            $check = PrinterSettings::find($id);
+            if(!$check) {
+                $check = PrinterSettings::create($data);
+            } else {
+                $check = $check->update($data);
+            }
+            return response(['message' => 'Settingan berhasil di update']);
+        } catch (\Exception $e) {
+            return response(['message' => $e->getMessage()]);
+        }
+    }
+
+    public function getSettingPrinter($id)
+    {
+        $result = PrinterSettings::find($id);
+        if(!$result) return response(['message' => 'Data masih kosong']);
+        return response($result);
+    }
+
+    public function testConnection()
+    {
+        try {
+            $printerSetting = PrinterSettings::find(1);
+            $printer = new PrintTrx($printerSetting);
+            return $printer->testConnection();
+        } catch (\Exception $e) {
+            return response(['message' => $e->getMessage()], 500);
+        }
     }
 }

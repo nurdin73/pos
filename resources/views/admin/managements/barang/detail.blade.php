@@ -1,8 +1,8 @@
 @extends('layouts.template')
 
 @section('css')
-  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/select2/4.0.13/css/select2.min.css" integrity="sha512-nMNlpuaDPrqlEls3IX/Q56H36qvBASwb3ipuo3MxeWbsQB1881ox0cRv7UPTgBlriqoynt35KjEwgGUeUXIPnw==" crossorigin="anonymous" />
-  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap4-select2-theme@1.0.3/src/css/bootstrap4-select2-theme.css">
+  <link rel="stylesheet" href="{{ asset('css/select2.css') }}"/>
+  <link rel="stylesheet" href="{{ asset('css/select2-bs4.css') }}">
 @endsection
 
 @section('content')
@@ -22,15 +22,12 @@
                 <li class="nav-item"><a class="nav-link active" data-toggle="tab" href="#home" role="tab" aria-controls="home">Data</a></li>
                 <li class="nav-item"><a class="nav-link" data-toggle="tab" href="#profile" role="tab" aria-controls="profile">Images</a></li>
                 <li class="nav-item"><a class="nav-link" data-toggle="tab" href="#type_harga" role="tab" aria-controls="type_harga">Type Harga</a></li>
+                <li class="nav-item"><a class="nav-link" data-toggle="tab" href="#kodeBarang" role="tab" aria-controls="kode_barang">Kode barang</a></li>
               </ul>
               <div class="tab-content">
                 <div class="tab-pane active" id="home" role="tabpanel">
                   <div class="row">
                     <div class="col-md-6">
-                      <div class="form-group">
-                        <label for="kode_barang">Kode Barang</label>
-                        <input type="text" name="kode_barang" id="kode_barang" class="form-control" readonly>
-                      </div>
                       <div class="form-group">
                         <label for="suplier">Suplier</label>
                         <select id="suplier" style="width: 100%" class="custom-select" disabled></select>
@@ -39,9 +36,19 @@
                         <label for="cabang">Cabang</label>
                         <select id="cabang" style="width: 100%" class="custom-select" disabled></select>
                       </div>
-                      <div class="form-group">
-                        <label for="nama_barang">Nama Barang</label>
-                        <input type="text" name="nama_barang" id="nama_barang" class="form-control" readonly>
+                      <div class="row">
+                        <div class="col-md-8">
+                          <div class="form-group">
+                            <label for="nama_barang">Nama Barang</label>
+                            <input type="text" name="nama_barang" id="nama_barang" class="form-control" readonly>
+                          </div>
+                        </div>
+                        <div class="col-md-4">
+                          <div class="form-group">
+                            <label for="satuan">Satuan(gram,pcs)</label>
+                            <input type="text" name="satuan" id="satuan" class="form-control">
+                          </div>
+                        </div>
                       </div>
                       
                       <div class="row">
@@ -84,45 +91,33 @@
                     </div>
                     <div class="col-md-6">
                       <div class="row">
-                        <div class="col-md-6">
+                        <div class="col-md-4">
                           <div class="form-group">
                             <label for="berat">Berat</label>
                             <input type="text" name="berat" id="berat" class="form-control" readonly>
                           </div>
+                        </div>
+                        <div class="col-md-4">
                           <div class="form-group">
                             <label for="diskon">Diskon(%)</label>
                             <input type="text" name="diskon" id="diskon" class="form-control" readonly>
                           </div>
                         </div>
-                        <div class="col-md-6">
-                          <div class="row">
-                            <div class="col-6">
-                              <div class="form-group">
-                                <label for="satuan">Satuan(gram,pcs)</label>
-                                <select name="satuan" id="satuan" class="form-control" readonly>
-                                  <option value="gram">Gram</option>
-                                  <option value="pcs">Pcs</option>
-                                </select>
-                              </div>
-                            </div>
-                            <div class="col-6">
-                              <div class="form-group">
-                                <div class="form-group">
-                                  <label for="point">Point</label>
-                                  <input type="number" name="point" id="point" class="form-control" readonly>
-                                </div>
-                              </div>
-                            </div>
-                          </div>
+                        <div class="col-md-4">
                           <div class="form-group">
-                            <label for="rak">Letak rak</label>
-                            <input type="text" name="rak" id="rak" class="form-control" readonly>
+                            <div class="form-group">
+                              <label for="point">Point</label>
+                              <input type="number" name="point" id="point" class="form-control" readonly>
+                            </div>
                           </div>
                         </div>
                       </div>
                       <div class="form-group">
                         <label for="keterangan">Keterangan</label>
                         <textarea name="keterangan" id="keterangan" cols="30" rows="2" class="form-control" readonly></textarea>
+                      </div>
+                      <div class="alert alert-info" id="infoEceran">
+                        
                       </div>
                     </div>
                   </div>
@@ -139,6 +134,27 @@
                     </div>
                   </div>
                 </div>
+                <div class="tab-pane" id="kodeBarang" role="tabpanel">
+                  <div class="d-flex justify-content-center flex-column align-items-center mb-2">
+                    <div id="listKodeBarang" style="width: 100%">
+                      <table class="table table-striped table-borderless">
+                        <thead>
+                          <tr>
+                            <th>Kode barang</th>
+                          </tr>
+                        </thead>
+                        <tbody id="listCodeProduct">
+                          
+                        </tbody>
+                      </table>
+                      <nav aria-label="..." class="d-flex justify-content-end">
+                        <ul class="pagination">
+                          
+                        </ul>
+                      </nav>
+                    </div>
+                  </div>
+                </div>
               </div>
             </div>
           </div>
@@ -149,7 +165,7 @@
 @endsection 
 
 @section('js')
-  <script src="https://cdnjs.cloudflare.com/ajax/libs/select2/4.0.13/js/select2.min.js" integrity="sha512-2ImtlRlf2VVmiGZsjm9bEyhjGW4dU7B6TNwh/hx/iSByxNENtj3WVE6o/9Lj4TJeVXPi4bnOIMXFIJJAeufa0A==" crossorigin="anonymous"></script>
+  <script src="{{ asset('js/select2.js') }}"></script>
   <script>
     const URL_API = '{{ url('api/v1') }}'
     const URL_IMAGE = '{{ url('') }}'

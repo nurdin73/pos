@@ -116,6 +116,11 @@ class AdminController extends Controller
         return view('admin.managements.stok.managementStok');
     }
 
+    public function managementStaff()
+    {
+        return view('admin.managements.staff.managementStaff');
+    }
+
     public function loyalityProgram()
     {
         return view('admin.managements.loyality-program.index');

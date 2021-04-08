@@ -32,7 +32,7 @@ const getTrxPerJam = {
                 yAxes: [{
                     ticks: {
                         beginAtZero: true,
-                        stepSize : 50000
+                        stepSize : 1000000
                     },
 
                 }]
@@ -73,7 +73,7 @@ const getTrxPerDays = {
                 yAxes: [{
                     ticks: {
                         beginAtZero: true,
-                        stepSize : 50000
+                        stepSize : 1500000
                     },
 
                 }]
@@ -114,7 +114,7 @@ const getTrxPerMonth = {
                 yAxes: [{
                     ticks: {
                         beginAtZero: true,
-                        stepSize : 50000
+                        stepSize : 2000000
                     },
 
                 }]
@@ -155,7 +155,7 @@ const getTrxPerYears = {
                 yAxes: [{
                     ticks: {
                         beginAtZero: true,
-                        stepSize : 50000
+                        stepSize : 5000000
                     },
 
                 }]
@@ -190,7 +190,12 @@ function gettingCharts(data = {}) {
                     cart.product.stocks.map(stock => {
                         harga_dasar = stock.harga_dasar
                     })
-                    totalModal += harga_dasar * cart.qyt
+                    if(cart.eceran == 1) {
+                        var hargaEcerModal = Math.floor(harga_dasar / cart.product.jumlahEceranPermanent)
+                        totalModal += Math.floor(hargaEcerModal * cart.qyt)
+                    } else {
+                        totalModal += harga_dasar * cart.qyt
+                    }   
                 })
             })
         }

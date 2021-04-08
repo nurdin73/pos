@@ -11,8 +11,7 @@ class PembelianService
 {
     public function getAll($nama_barang, $sorting)
     {
-        $results = Products::with('stocks:id,product_id,stok,harga_dasar,created_at') ->select('id', 'nama_barang', 'kode_barang', 'selled');
-        $results->orderBy('kode_barang', 'ASC');
+        $results = Products::with('stocks:id,product_id,stok,harga_dasar,created_at') ->select('id', 'nama_barang', 'selled');
         if($nama_barang != "") {
             $results = $results->where('nama_barang', 'like', '%'.$nama_barang.'%')->paginate($sorting);
         } else {
@@ -24,7 +23,7 @@ class PembelianService
 
     public function export()
     {
-        $results = Products::with('stocks:id,product_id,stok,harga_dasar,created_at')->select('id', 'nama_barang', 'kode_barang', 'selled')->orderBy('kode_barang', 'ASC')->get();
+        $results = Products::with('stocks:id,product_id,stok,harga_dasar,created_at')->select('id', 'nama_barang', 'selled')->get();
         $filename = 'Pembelian-'. Str::random(20) . '.xlsx';
         return Excel::download(new PembelianProductExport($results), $filename);
     }

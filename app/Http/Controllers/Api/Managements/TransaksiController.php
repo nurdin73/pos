@@ -66,13 +66,8 @@ class TransaksiController extends Controller
     {
         $request->validate([
             'qyt' => 'required|numeric',
-            'diskon_product' => 'required|numeric'
         ]);
-        $data = [
-            'qyt' => $request->input('qyt'),
-            'diskon_product' => $request->input('diskon_product')
-        ];
-        return $this->transactionService->updateCart($data, $id);
+        return $this->transactionService->updateCart($request->all(), $id);
     }
 
     public function transactions(Request $request)
@@ -124,5 +119,15 @@ class TransaksiController extends Controller
     public function invoice($id)
     {
         return $this->transactionService->invoice($id);
+    }
+
+    public function cancelTransaction($no_invoice)
+    {
+        return $this->transactionService->cancelTransaction($no_invoice);
+    }
+
+    public function cetakStruk($id)
+    {
+        return $this->transactionService->cetakStruk($id);
     }
 }

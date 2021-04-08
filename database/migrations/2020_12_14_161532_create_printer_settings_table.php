@@ -15,7 +15,8 @@ class CreatePrinterSettingsTable extends Migration
     {
         Schema::create('printer_settings', function (Blueprint $table) {
             $table->id();
-            $table->enum('os', ['windows', 'linux'])->default('windows');
+            $table->enum('os', ['windows', 'linux', 'mac'])->default('windows');
+            $table->enum('koneksi', ['usb', 'ethernet', 'bluetooth'])->default('usb');
             $table->string('name_printer');
             $table->timestamps();
         });

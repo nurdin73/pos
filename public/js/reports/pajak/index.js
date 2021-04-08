@@ -76,7 +76,7 @@ const getChartPajak = {
                 yAxes: [{
                     ticks: {
                         beginAtZero: true,
-                        stepSize : 50000
+                        stepSize : 1000000
                     },
                 }]
             }

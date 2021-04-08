@@ -13,7 +13,7 @@ const getProfile = {
     set successData(response) {
         $('#nameUser').text(response.name)
         $('#emailUser').text(response.email)
-        $('#roleUser').text(response.role)
+        $('#roleUser').text(response.role.name)
         $('#addressUser').text(response.alamat != null ? response.alamat : "-")
         $('#nama').val(response.name)
         $('#email').val(response.email).attr('disabled', true).addClass('disabled')

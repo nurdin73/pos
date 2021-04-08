@@ -1,6 +1,11 @@
 <div class="c-sidebar c-sidebar-dark c-sidebar-fixed c-sidebar-lg-show" id="sidebar">
     <div class="c-sidebar-brand d-lg-down-none">
-      POS
+      <div class="c-sidebar-brand-full">
+        Ritter POS
+      </div>
+      <div class="c-sidebar-brand-minimized">
+        RitPOS
+      </div>
       {{-- <svg class="c-sidebar-brand-full" width="118" height="46" alt="CoreUI Logo">
         <use xlink:href="{{ asset('assets/brand/coreui.svg#full') }}"></use>
       </svg>
@@ -94,18 +99,14 @@
         </a>
         <span class="sr-only">Pajak</span>
       </li>
-      {{-- <li class="c-sidebar-nav-item c-sidebar-nav-dropdown">
-        <a class="c-sidebar-nav-link c-sidebar-nav-dropdown-toggle" href="#">
+      <li class="c-sidebar-nav-item">
+        <a class="c-sidebar-nav-link" href="{{ route('settingManagementStaff') }}">
           <svg class="c-sidebar-nav-icon">
-            <use xlink:href="{{ asset('vendors/@coreui/icons/svg/free.svg#cil-fax') }}"></use>
-          </svg> Pajak
+            <use xlink:href="{{ asset('vendors/@coreui/icons/svg/free.svg#cil-contact') }}"></use>
+          </svg> Management Staff
+          <span class="badge badge-warning">On Going</span>
         </a>
-        <ul class="c-sidebar-nav-dropdown-items">
-          <li class="c-sidebar-nav-item"><a class="c-sidebar-nav-link" href="{{ route('pajakBarang') }}"><span class="c-sidebar-nav-icon"></span> Pajak Barang</a><span class="sr-only">Pajak Barang</span></li>
-          <li class="c-sidebar-nav-item"><a class="c-sidebar-nav-link" href="{{ route('pajakUniversal') }}"><span class="c-sidebar-nav-icon"></span> Pajak Universal</a><span class="sr-only">Pajak Universal</span></li>
-        </ul>
-        <span class="sr-only">Pajak</span>
-      </li> --}}
+      </li>
       {{-- <li class="c-sidebar-nav-item">
         <a class="c-sidebar-nav-link" href="{{ route('loyalityProgram') }}">
           <svg class="c-sidebar-nav-icon">
@@ -170,6 +171,14 @@
       </li>
       <li class="c-sidebar-nav-title">Pengaturan <span class="sr-only">Pengaturan</span></li>
       <li class="c-sidebar-nav-item">
+        <a class="c-sidebar-nav-link" href="{{ route('settingRoles') }}">
+          <svg class="c-sidebar-nav-icon">
+            <use xlink:href="{{ asset('vendors/@coreui/icons/svg/free.svg#cil-check-circle') }}"></use>
+          </svg> Jabatan
+        </a>
+        <span class="sr-only">Jabatan</span>
+      </li>
+      <li class="c-sidebar-nav-item">
         <a class="c-sidebar-nav-link" href="{{ route('settingProfile') }}">
           <svg class="c-sidebar-nav-icon">
             <use xlink:href="{{ asset('vendors/@coreui/icons/svg/free.svg#cil-user') }}"></use>
@@ -185,22 +194,29 @@
         </a>
         <span class="sr-only">Toko</span>
       </li>
-      {{-- <li class="c-sidebar-nav-item">
-        <a class="c-sidebar-nav-link" href="{{ route('printerSettings') }}">
-          <div class="c-sidebar-nav-icon">
-            <i class="fa fa-fw fa-print"></i>
-          </div> Printer Settings
-        </a>
-        <span class="sr-only">Toko</span>
-      </li> --}}
-      {{-- <li class="c-sidebar-nav-item">
-        <a class="c-sidebar-nav-link" href="{{ route('settingManagementStaff') }}">
+      <li class="c-sidebar-nav-item">
+        <a class="c-sidebar-nav-link" href="{{ route('settingAccess') }}">
           <svg class="c-sidebar-nav-icon">
-            <use xlink:href="{{ asset('vendors/@coreui/icons/svg/free.svg#cil-contact') }}"></use>
-          </svg> Management Staff
-          <span class="badge badge-warning">On Going</span>
+            <use xlink:href="{{ asset('vendors/@coreui/icons/svg/free.svg#cil-lock-locked') }}"></use>
+          </svg> Akses user
         </a>
-      </li> --}}
+        <span class="sr-only">Akses users</span>
+      </li>
+      <li class="c-sidebar-nav-item">
+        <a class="c-sidebar-nav-link" href="{{ route('settingDatabase') }}">
+          <svg class="c-sidebar-nav-icon">
+            <use xlink:href="{{ asset('vendors/@coreui/icons/svg/free.svg#cil-storage') }}"></use>
+          </svg> Database
+        </a>
+      </li>
+      <li class="c-sidebar-nav-item">
+        <a class="c-sidebar-nav-link" href="{{ route('printerSettings') }}">
+          <svg class="c-sidebar-nav-icon">
+            <use xlink:href="{{ asset('vendors/@coreui/icons/svg/free.svg#cil-print') }}"></use>
+          </svg> Printer Settings
+        </a>
+        <span class="sr-only">Printer Settings</span>
+      </li>
       {{-- <li class="c-sidebar-nav-item">
         <a class="c-sidebar-nav-link" href="{{ route('settingApi') }}">
           <svg class="c-sidebar-nav-icon">
@@ -210,14 +226,6 @@
         </a>
         <span class="sr-only">API</span>
       </li> --}}
-      {{-- <li class="c-sidebar-nav-item">
-        <a class="c-sidebar-nav-link" href="{{ route('settingDatabase') }}">
-          <svg class="c-sidebar-nav-icon">
-            <use xlink:href="{{ asset('vendors/@coreui/icons/svg/free.svg#cil-storage') }}"></use>
-          </svg> Database
-        </a>
-      </li> --}}
-      <span class="sr-only">Sidebar</span>
     </ul>
     <button class="c-sidebar-minimizer c-class-toggler" type="button" data-target="_parent" data-class="c-sidebar-minimized"></button>
   </div>

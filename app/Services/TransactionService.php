@@ -6,7 +6,9 @@ use App\Exports\TransaksiExport;
 use App\Helpers\CreatePaginationLink;
 use App\Helpers\PrintTrx;
 use App\Models\Carts;
+use App\Models\CodeProducts;
 use App\Models\Customers;
+use App\Models\PrinterSettings;
 use App\Models\Products;
 use App\Models\Stocks;
 use App\Models\Transactions;
@@ -19,36 +21,41 @@ class TransactionService
 
     public function store($data)
     {
-        $queryForProd = Products::with('stocks')->where('kode_barang', $data['kode'])->first();
+        // $queryForProd = Products::with('stocks')->where('kode_barang', $data['kode'])->first();
+        $queryForProd = CodeProducts::with('product.stocks')->where('kode_barang', $data['kode'])->first();
         if(!$queryForProd) return response(['message' => 'kode produk tidak ditemukan'], 404);
-        $data['product_id'] = $queryForProd->id;
+        $data['product_id'] = $queryForProd->product_id;
         $sisaStok = 0;
-        if(count($queryForProd->stocks) > 0) {
-            foreach ($queryForProd->stocks as $stock) {
+        if(count($queryForProd->product->stocks) > 0) {
+            foreach ($queryForProd->product->stocks as $stock) {
                 $sisaStok += $stock->stok;
             }
         }
-        if($sisaStok < 1) return response(['message' => 'stok barang ini sudah habis'], 404);
-        $checkCart = Carts::where(['no_invoice' => $data['no_invoice'], 'product_id' => $queryForProd->id])->first();
+        if($sisaStok < 1) return response(['message' => 'stok barang ini sudah habis'], 403);
+        $checkCart = Carts::where(['no_invoice' => $data['no_invoice'], 'product_id' => $queryForProd->product->id])->first();
         if($checkCart) {
-            $discountProduct = $queryForProd->diskon !== null ? $checkCart->harga_product * ($queryForProd->diskon / 100) : 0;
+            $discountProduct = $queryForProd->product->diskon !== null ? $checkCart->harga_product * ($queryForProd->product->diskon / 100) : 0;
             $discountBefore = $checkCart->diskon_product ?? 0;
             $data['diskon_product'] = ($discountBefore + $discountProduct) * $checkCart->qyt;
             // return $discountProduct;
         } else {
-            $discountProduct = $queryForProd->diskon !== null ? $queryForProd->harga_jual * ($queryForProd->diskon / 100) : 0;
+            $discountProduct = $queryForProd->product->diskon !== null ? $queryForProd->product->harga_jual * ($queryForProd->product->diskon / 100) : 0;
             $discountBefore = $checkCart->diskon_product ?? 0;
             $data['diskon_product'] = ($discountBefore + $discountProduct) * $data['qyt'];
             // return $discountProduct;
         }
         // return $checkCart;
         if($checkCart) {
-            $data['qyt'] = $checkCart->qyt + $data['qyt'];
-            $checkCart->update([
-                'qyt' => $data['qyt']
-            ]);
+            if($checkCart->qyt < $sisaStok) {
+                $data['qyt'] = $checkCart->qyt + $data['qyt'];
+                $checkCart->update([
+                    'qyt' => $data['qyt']
+                ]);
+            } else {
+                return response(['message' => 'jumlah quantity melebihi sisa stok'], 403);
+            }
         } else {
-            $data['harga_product'] = $queryForProd->harga_jual;
+            $data['harga_product'] = $queryForProd->product->harga_jual;
             $create = Carts::create($data);
         }
         return response(['message' => 'Pesanan berhasil ditambahkan', 'no_invoice' => $data['no_invoice']]);
@@ -128,7 +135,8 @@ class TransactionService
                             }
 
                             Products::find($cc->product_id)->update([
-                                'jumlah' => $sisanya
+                                'jumlah' => $sisanya,
+                                'selled' => $cc->product->selled + $penguranganStok
                             ]);
                             foreach ($cc->product->stocks as $stock) {
                                 if($cc->qyt > $stock->stok) {
@@ -187,7 +195,11 @@ class TransactionService
                 // $printTrx->invoice($create->id);
 
                 DB::commit();
-                return response(['message' => 'transaksi berhasil ditambahkan']);
+                return response([
+                    'message' => 'transaksi berhasil ditambahkan', 
+                    'idTrx' => $create->id,
+                    'kembalian' => $create->change
+                ]);
             } else {
                 return response(['message' => 'transaksi gagal ditambahkan'], 500);
             }
@@ -209,7 +221,7 @@ class TransactionService
 
     public function detailCart($id)
     {
-        $cart = Carts::with('product:id,kode_barang,nama_barang,harga_jual')->where('id', $id)->first();
+        $cart = Carts::with('product:id,nama_barang,harga_jual')->where('id', $id)->first();
         if(!$cart) return response(['message' => 'terjadi kesalahan. silahkan coba kembali'], 500);
         return response($cart);
     }
@@ -236,6 +248,7 @@ class TransactionService
 
     public function transactions($hari)
     {
+        $transactions = null;
         if($hari == "hari ini") {
             $date = date('Y-m-d');
             $transactions = Transactions::with('carts.product.stocks')
@@ -243,7 +256,6 @@ class TransactionService
             ->where('tgl_transaksi', 'like', '%'.$date.'%')
             ->orderBy('jam_transaksi', 'ASC')
             ->get();
-            return $transactions;
         } else {
             $date = date('Y-m-d', strtotime("-1 days"));
             $transactions = Transactions::with('carts.product.stocks')
@@ -251,8 +263,30 @@ class TransactionService
             ->where('tgl_transaksi', 'like', '%'.$date.'%')
             ->orderBy('jam_transaksi', 'ASC')
             ->get();
-            return $transactions;
         }
+        $data = [
+            'total_trx' => count($transactions),
+        ];
+        $totalModal = 0;
+        $totalPembelian = 0;
+        foreach ($transactions as $trx) {
+            $totalPembelian += $trx->total;
+            foreach ($trx->carts as $cart) {
+                $harga_dasar = 0;
+                foreach ($cart->product->stocks as $stock) {
+                    $harga_dasar = $stock->harga_dasar;
+                }
+                if($cart->eceran == 1) {
+                    $hargaEcerModal = floor($harga_dasar / $cart->product->jumlahEceranPermanent);
+                    $totalModal += floor($hargaEcerModal * $cart->qyt);
+                } else {
+                    $totalModal += $harga_dasar * $cart->qyt;
+                }
+            }
+        }
+        $data['total'] = $totalPembelian;
+        $data['keuntungan'] = $totalPembelian - $totalModal;
+        return response($data);
     }
 
     public function getTrxPerHours($type = "graph")
@@ -394,7 +428,7 @@ class TransactionService
 
     public function invoice($id)
     {
-        $result = Transactions::with('user:id,name', 'customer:id,nama', 'carts:id,no_invoice,qyt,harga_product,diskon_product,product_id', 'carts.product:id,nama_barang,kode_barang')->where('id', $id)->first();
+        $result = Transactions::with('user:id,name', 'customer:id,nama', 'carts:id,no_invoice,qyt,harga_product,diskon_product,product_id', 'carts.product:id,nama_barang')->where('id', $id)->first();
         if(!$result) return response(['message' => 'Invoice tidak ditemukan'], 404);
         return response($result);
     }
@@ -404,5 +438,24 @@ class TransactionService
         $results = Transactions::with('user:id,name', 'customer:id,nama')->where('tgl_transaksi', 'like', '%'.$years.'%')->get();
         $fileName = "transaksi-".$years.".xlsx";
         return Excel::download(new TransaksiExport($results, $years), $fileName);
+    }
+
+    public function cetakStruk($id)
+    {
+        $printerSetting = PrinterSettings::find(1);
+        $printTrx = new PrintTrx($printerSetting);
+        return $printTrx->invoice($id);
+    }
+
+    public function cancelTransaction($no_invoice)
+    {
+        $check = Carts::where('no_invoice', $no_invoice)->count();
+        if($check > 0) {
+            $delete = Carts::where('no_invoice', $no_invoice)->delete();
+            if(!$delete) return response(['message' => 'Cancel order gagal'], 500);
+            return response(['message' => 'cancel order berhasil']);
+        } else {
+            return response(['message' => 'keranjang masih kosong'], 422);
+        }
     }
 }

@@ -29,75 +29,80 @@ Route::group(['prefix' => 'auth'], function () {
 });
 
 Route::group(['prefix' => 'admin', 'middleware' => ['auth']], function () {
-    Route::get('/', 'Admin\AdminController@index')->name('dashboardAdmin');
+    Route::get('/', 'Admin\AdminController@index')->name('dashboardAdmin')->middleware('role:dashboardAdmin');
     Route::group(['prefix' => 'management'], function () {
         // route barang
         Route::group(['prefix' => '/barang'], function () {
-            Route::get('/', 'Admin\AdminController@barang')->name('managementBarang');
-            Route::get('/edit/{id}', 'Admin\AdminController@editProduct');
-            Route::get('/detail/{id}', 'Admin\AdminController@detailProduct');
+            Route::get('/', 'Admin\AdminController@barang')->name('managementBarang')->middleware('role:managementBarang');
+            Route::get('/edit/{id}', 'Admin\AdminController@editProduct')->middleware('role:managementBarang');
+            Route::get('/detail/{id}', 'Admin\AdminController@detailProduct')->middleware('role:managementBarang');
         });
 
         Route::group(['prefix' => '/suplier'], function () {
-            Route::get('/', 'Admin\AdminController@suplier')->name('managementSuplier');
-            Route::get('/detail/{id}', 'Admin\AdminController@detailSuplier');
+            Route::get('/', 'Admin\AdminController@suplier')->name('managementSuplier')->middleware('role:managementSuplier');
+            Route::get('/detail/{id}', 'Admin\AdminController@detailSuplier')->middleware('role:managementSuplier');
         });
 
         Route::group(['prefix' => '/loyality-program'], function () {
-            Route::get('/', 'Admin\AdminController@loyalityProgram')->name('loyalityProgram');
+            Route::get('/', 'Admin\AdminController@loyalityProgram')->name('loyalityProgram')->middleware('role:loyalityProgram');
         });
 
-        Route::get('/kategori', 'Admin\AdminController@kategori')->name('managementKategori');
+        Route::get('/kategori', 'Admin\AdminController@kategori')->name('managementKategori')->middleware('role:managementKategori');;
         
         Route::group(['prefix' => '/transaksi'], function () {
-            Route::get('/', 'Admin\AdminController@managementTransaksi')->name('managementTransaksi');
-            Route::get('/list-transaksi', 'Admin\AdminController@listTransaksi')->name('listTransaksi');
-            Route::get('/invoice/{id}', 'Admin\AdminController@invoice');
+            Route::get('/', 'Admin\AdminController@managementTransaksi')->name('managementTransaksi')->middleware('role:#');
+            Route::get('/list-transaksi', 'Admin\AdminController@listTransaksi')->name('listTransaksi')->middleware('role:#');
+            Route::get('/invoice/{id}', 'Admin\AdminController@invoice')->middleware('role:#');
         });
 
-        Route::get('/cabang', 'Admin\AdminController@managementCabang')->name('managementCabang');
-        Route::get('/cabang/detail/{id}', 'Admin\AdminController@detailCabang');
-        Route::get('/pelanggan', 'Admin\AdminController@pelanggan')->name('managementPelanggan');
-        Route::get('/management-stok', 'Admin\AdminController@managementStok')->name('managementStok');
-        Route::group(['prefix' => '/kasbon'], function () {
+        Route::get('/cabang', 'Admin\AdminController@managementCabang')->name('managementCabang')->middleware('role:managementCabang');
+        Route::get('/cabang/detail/{id}', 'Admin\AdminController@detailCabang')->middleware('role:managementCabang');
+        Route::get('/pelanggan', 'Admin\AdminController@pelanggan')->name('managementPelanggan')->middleware('role:managementPelanggan');
+        Route::get('/management-stok', 'Admin\AdminController@managementStok')->name('managementStok')->middleware('role:managementStok');
+        Route::group(['prefix' => '/kasbon', 'middleware' => ['role:managementKasbon']], function () {
             Route::get('/', 'Admin\AdminController@kasbon')->name('managementKasbon');
             // Route::get('/add', 'Admin\AdminController@addKasbon')->name('addKasbon');
             Route::get('/bayar/{id}', 'Admin\AdminController@bayarKasbon');
             // bayar kasbon
             Route::get('/bayar/{id}/{id_kasbon}', 'Admin\AdminController@payment');
         });
-        Route::group(['prefix' => '/pajak'], function () {
+        Route::group(['prefix' => '/pajak', 'middleware' => ['role:pajakUniversal']], function () {
             Route::get('/barang', 'Admin\AdminController@pajakBarang')->name('pajakBarang');
             Route::get('/universal', 'Admin\AdminController@pajakUniversal')->name('pajakUniversal');
+        });
+        Route::group(['prefix' => '/staff', 'middleware' => 'role:settingManagementStaff'], function() {
+            Route::get('/', 'Admin\AdminController@managementStaff')->name('settingManagementStaff');
         });
     });
 
     Route::group(['prefix' => 'reports'], function () {
-        Route::get('/', 'Admin\ReportController@index')->name('reportUmum');
-        Route::get('/transaksi', 'Admin\ReportController@transaksi')->name('reportTransaksi');
-        Route::get('/penjualan', 'Admin\ReportController@penjualan')->name('reportPenjualan');
-        Route::get('/pembelian', 'Admin\ReportController@pembelian')->name('reportPembelian');
-        Route::get('/modal', 'Admin\ReportController@modal')->name('reportModal');
-        Route::get('/pajak', 'Admin\ReportController@pajak')->name('reportPajak');
-        Route::get('/pelanggan', 'Admin\ReportController@reportPelanggan')->name('reportPelanggan');
-        Route::group(['prefix' => '/kasbon'], function () {
+        Route::get('/', 'Admin\ReportController@index')->name('reportUmum')->middleware('role:#');
+        Route::get('/transaksi', 'Admin\ReportController@transaksi')->name('reportTransaksi')->middleware('role:#');
+        Route::get('/penjualan', 'Admin\ReportController@penjualan')->name('reportPenjualan')->middleware('role:#');
+        Route::get('/pembelian', 'Admin\ReportController@pembelian')->name('reportPembelian')->middleware('role:#');
+        Route::get('/modal', 'Admin\ReportController@modal')->name('reportModal')->middleware('role:reportModal');
+        Route::get('/pajak', 'Admin\ReportController@pajak')->name('reportPajak')->middleware('role:reportPajak');
+        Route::get('/pelanggan', 'Admin\ReportController@reportPelanggan')->name('reportPelanggan')->middleware('role:reportPelanggan');
+        Route::group(['prefix' => '/kasbon', 'middleware' => ['role:reportKasbon']], function () {
             Route::get('/', 'Admin\ReportController@reportKasbon')->name('reportKasbon');
         });
 
-        Route::group(['prefix' => '/barang'], function () {
+        Route::group(['prefix' => '/barang', 'middleware' => ['role:reportBarang']], function () {
             Route::get('/', 'Admin\ReportController@barang')->name('reportBarang');
         });
+        Route::post('/cetak-struk', 'Admin\ReportController@cetakStruk')->name('cetakStruk');
     });
 
     Route::group(['prefix' => 'settings'], function () {
-        Route::get('/', 'Admin\SettingController@index')->name('settingProfile');
-        Route::get('/toko', 'Admin\SettingController@toko')->name('settingToko');
-        Route::group(['prefix' => '/api'], function () {
+        Route::get('/', 'Admin\SettingController@index')->name('settingProfile')->middleware('role:settingProfile');
+        Route::get('/toko', 'Admin\SettingController@toko')->name('settingToko')->middleware('role:settingToko');
+        Route::group(['prefix' => '/api', 'middleware' => ['role:settingApi']], function () {
             Route::get('/', 'Admin\SettingController@api')->name('settingApi');
         });
-        // Route::get('/database', 'Admin\SettingController@database')->name('settingDatabase');
-        Route::get('/printer-settings', 'Admin\SettingController@printerSettings')->name('printerSettings');
-        Route::get('/management-staff', 'Admin\SettingController@managementStaff')->name('settingManagementStaff');
+        Route::get('/database', 'Admin\SettingController@database')->name('settingDatabase')->middleware('role:settingDatabase');
+        Route::get('/printer-settings', 'Admin\SettingController@printerSettings')->name('printerSettings')->middleware('role:printerSettings');
+        Route::get('/hak-akses', 'Admin\SettingController@hakAkses')->name('settingAccess')->middleware('role:settingAccess');
+        Route::get('/roles', 'Admin\SettingController@roles')->name('settingRoles')->middleware('role:settingRoles');
     });
 });
 
@@ -130,6 +135,7 @@ Route::group(['prefix' => 'api/'], function () {
             Route::get('/supliers', 'Api\Managements\SuplierController@getAll');
             Route::get('/branch-stores', 'Api\Managements\BranchStoreController@getAll');
             Route::get('/chart-pajak', 'Api\Managements\PajakController@cartPajak');
+            Route::get('/loyality-program', 'Api\Managements\LoyalityProgramController@getall');
 
             // get detail
             Route::get('barang/{id}', 'Api\Managements\BarangController@show');
@@ -143,6 +149,9 @@ Route::group(['prefix' => 'api/'], function () {
             Route::get('suplier/{id}', 'Api\Managements\SuplierController@getDetail');
             Route::get('branch-store/{id}', 'Api\Managements\BranchStoreController@show');
             Route::get('invoice/{id}', 'Api\Managements\TransaksiController@invoice');
+            Route::get('kode-barang/{id}', 'Api\Managements\BarangController@codeProduct');
+            Route::get('cetak-struk/{id}', 'Api\Managements\TransaksiController@cetakStruk');
+            Route::get('loyality-program/{id}', 'Api\Managements\LoyalityProgramController@get');
 
             // add 
             Route::group(['prefix' => 'add'], function () {
@@ -157,6 +166,8 @@ Route::group(['prefix' => 'api/'], function () {
                 Route::post('/type-price', 'Api\Managements\BarangController@addTypePrice');
                 Route::post('/suplier', 'Api\Managements\SuplierController@addSuplier');
                 Route::post('/branch-store', 'Api\Managements\BranchStoreController@add');
+                Route::post('/kode-barang', 'Api\Managements\BarangController@addCodeProduct');
+                Route::post('/loyality-program', 'Api\Managements\LoyalityProgramController@store');
             });
 
             // update 
@@ -173,6 +184,8 @@ Route::group(['prefix' => 'api/'], function () {
                 Route::put('/price-cart/{id}', 'Api\Managements\TransaksiController@changePrice');
                 Route::put('/suplier/{id}', 'Api\Managements\SuplierController@updateSuplier');
                 Route::put('/branch-store/{id}', 'Api\Managements\BranchStoreController@update');
+                Route::put('/kode-barang/{id}', 'Api\Managements\BarangController@updateCodeProduct');
+                Route::put('/loyality-program/{id}', 'Api\Managements\LoyalityProgramController@update');
             });
 
             // delete 
@@ -187,6 +200,9 @@ Route::group(['prefix' => 'api/'], function () {
                 Route::delete('/type-price/{id}', 'Api\Managements\BarangController@deleteTypePrice');
                 Route::delete('/suplier/{id}', 'Api\Managements\SuplierController@deleteSuplier');
                 Route::delete('/branch-store/{id}', 'Api\Managements\BranchStoreController@delete');
+                Route::delete('/kode-barang/{id}', 'Api\Managements\BarangController@deleteCodeProduct');
+                Route::delete('/transaksi/{no_invoince}', 'Api\Managements\TransaksiController@cancelTransaction');
+                Route::delete('/loyality-program/{id}', 'Api\Managements\LoyalityProgramController@delete');
             });
 
         });
@@ -214,16 +230,28 @@ Route::group(['prefix' => 'api/'], function () {
             Route::get('/pelanggan', 'Api\Exports\CustomerController@report')->name('exportCustomer');
 
             Route::get('/transaksi', 'Api\Exports\TransactionsController@transactions')->name('exportTrx');
+
+            // export databases
+            Route::post('/databases', 'Api\Exports\DatabaseController@export')->name('exportDatabases');
+            Route::get('/databases', 'Api\Exports\DatabaseController@all')->name('getListDatabaseExport');
         });
 
         Route::group(['prefix' => 'settings'], function () {
             // get all
             Route::get('/staffs', 'Api\Settings\StaffController@getall');
+            Route::get('/roles', 'Api\Settings\RoleController@getall');
+            Route::get('/role-access', 'Api\Settings\RoleAccessController@all');
+            Route::get('/sub-menus/{role_id}', 'Api\Settings\SubMenuController@getall');
 
             // get detail
             Route::get('/profile', 'Api\Settings\ProfileController@detail');
             Route::get('/store', 'Api\Settings\StoreController@detail');
             Route::get('/staff/{id}', 'Api\Settings\StaffController@get');
+            Route::post('/printer/{id}', 'Api\Settings\PrinterController@setting');
+            Route::get('/printer/{id}', 'Api\Settings\PrinterController@getSetting');
+            Route::get('/role/{id}', 'Api\Settings\RoleController@get');
+
+            Route::get('/test-printer', 'Api\Settings\PrinterController@testConnection');
 
             // update
             Route::group(['prefix' => '/update'], function () {
@@ -232,16 +260,20 @@ Route::group(['prefix' => 'api/'], function () {
                 Route::post('/change-logo', 'Api\Settings\StoreController@updateLogo');
                 Route::put('/change-detail-store', 'Api\Settings\StoreController@update');
                 Route::put('/staff/{id}', 'Api\Settings\StaffController@update');
+                Route::put('/role/{id}', 'Api\Settings\RoleController@update');
+                Route::put('/role-access/{id}', 'Api\Settings\RoleAccessController@isGranted');
             });
 
             // add
             Route::group(['prefix' => '/add'], function () {
                 Route::post('/staff', 'Api\Settings\StaffController@add');
+                Route::post('/role', 'Api\Settings\RoleController@create');
             });
 
             // delete
             Route::group(['prefix' => '/delete'], function () {
                 Route::delete('/staff/{id}', 'Api\Settings\StaffController@destroy');
+                Route::delete('/role/{id}', 'Api\Settings\RoleController@destroy');
             });
         });
 

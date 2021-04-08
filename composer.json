@@ -23,12 +23,14 @@
         "mike42/escpos-php": "^3.0",
         "nesbot/carbon": "^2.41",
         "predis/predis": "^1.1",
-        "sentry/sentry-laravel": "^2.2",
+        "spatie/db-dumper": "^2.21",
         "spatie/image-optimizer": "^1.3",
         "spatie/laravel-image-optimizer": "^1.6",
         "yajra/laravel-datatables-oracle": "^9.14"
     },
     "require-dev": {
+        "barryvdh/laravel-debugbar": "^3.5",
+        "beyondcode/laravel-query-detector": "^1.5",
         "facade/ignition": "^2.3.6",
         "fakerphp/faker": "^1.9.1",
         "mockery/mockery": "^1.3.1",

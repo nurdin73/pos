@@ -59,7 +59,8 @@ $(document).ready(function () {
 function addCodeBarang() {
   $('#formKodeBarang').on('submit', function(e) {
     const values = $('#inputCodeBarang').val()
-    $('#kode_barang').val(values)
+    const valueBefore = $('#kode_barang').val() + ","
+    $('#kode_barang').val(valueBefore + values)
     $('#modalKodeBarang').modal('hide')
     $('#inputCodeBarang').val('')
   })
@@ -175,6 +176,13 @@ function addData() {
     },
     submitHandler: function(form, e) {
       e.preventDefault()
+      const kode_barang = $('#kode_barang').val().split(',')
+      const filteringkodebarang = []
+      $.each(kode_barang, function(i, el) {
+        if(el != "") {
+          if($.inArray(el, filteringkodebarang) === -1) filteringkodebarang.push(el)
+        }
+      })
       const urlPostBarang = URL_API + "/managements/add/barang"
       const formData = new FormData()
       const data = {
@@ -191,7 +199,6 @@ function addData() {
         diskon: showAll ? $('#diskon').val() : "",
         keterangan: showAll ? $('#keterangan').val() : "",
         point: showAll ? $('#point').val() : 0,
-        kode_barang: $('#kode_barang').val(),
         typeHarga: typeHargaAdd,
         nama_agen: showAll ? (typeHargaAdd ? $('input[name^=nama_agent]').map((id, el) => { return $(el).val() }).get() : "") : "",
         harga: showAll ? (typeHargaAdd ? $('input[name^=type_harga]').map((id, el) => { return $(el).val() }).get() : "") : "",
@@ -211,7 +218,11 @@ function addData() {
       formData.append('typeHarga', data.typeHarga)
       formData.append('nama_agen', data.nama_agen)
       formData.append('harga', data.harga)
-      formData.append('kode_barang', data.kode_barang)
+      // formData.append('kode_barang', data.kode_barang)
+      for (let i = 0; i < filteringkodebarang.length; i++) {
+        const element = filteringkodebarang[i];
+        formData.append('kode_barang[]', element)
+      }
       formData.append('suplier_id', data.suplier_id)
       formData.append('cabang_id', data.cabang_id)
       formData.append('point', data.point)
@@ -354,12 +365,11 @@ const getListProducts = {
         var stocks = 0
         var harga_dasar = 0
         result.stocks.map(dataStok => {
-          stocks += dataStok.stok
+          stocks += parseInt(dataStok.stok)
           harga_dasar = dataStok.harga_dasar
         })
         $('#listProducts').append(`
           <tr>
-            <td>${result.kode_barang}</td>
             <td>${result.nama_barang}</td>
             <td>${result.isRetail == 1 ? `${stocks - 1}(${result.jumlah})` : stocks}</td>
             <td>${Functions.prototype.formatRupiah(harga_dasar.toString(), 'Rp. ')}</td>

@@ -18,8 +18,7 @@ class CreateStaffsTable extends Migration
             $table->string('email');
             $table->string('nama_staff');
             $table->string('no_telp');
-            $table->enum('jabatan', ['kasir', 'manager', 'administrator'])->default('kasir');
-            $table->string('password');
+            $table->foreignId('role_id')->constrained('roles')->cascadeOnDelete();
             $table->longText('alamat')->nullable();
             $table->timestamps();
         });

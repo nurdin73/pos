@@ -32,7 +32,6 @@ class Functions
                 $('.loading').show()
             },
             success: function (response) {
-                console.log(response);
                 $('.loading').hide()
                 toastr.success(response.message, "success")
                 setTimeout(() => {
@@ -46,7 +45,6 @@ class Functions
                 } else {
                     toastr.error(err.responseJSON.message, "error")
                 }
-                console.log(err);
             }
         });
     }
@@ -143,6 +141,25 @@ class Functions
             }
         })
     }
+
+    deleteingData(prosess, url) {
+        $.ajax({
+            method: "DELETE",
+            headers: {'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')},
+            url: url,
+            beforeSend: function() {
+                $('.loading').show()
+            },
+            success: function(response) {
+                $('.loading').hide()
+                prosess.successData = response
+            },
+            error: function(err) {
+                $('.loading').hide()
+                prosess.errorData = err
+            }
+        })
+    }
     
     formatRupiah(angka, prefix){
         try {
@@ -209,6 +226,29 @@ class Functions
             success: function(response) {
                 $('.loading').hide()
                 toastr.success(response.message, 'Success!')
+                setTimeout(() => {
+                    window.location.reload()
+                }, 1000);
+            },
+            error: function(err) {
+                $('.loading').hide()
+                toastr.error(err.responseJSON.message)
+            }
+        })
+    }
+
+    updatingData(url, data, method) {
+        $.ajax({
+            url: url,
+            method: method,
+            data: data,
+            headers: {'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')},
+            beforeSend: function() {
+                $('.loading').show()
+            },
+            success: function(response) {
+                $('.loading').hide()
+                toastr.success(response.message, 'Success!')
             },
             error: function(err) {
                 $('.loading').hide()
@@ -254,6 +294,29 @@ class Functions
             }
         });
     }
+
+    addRequest(process, url, data) {
+        $.ajax({
+            type: "post",
+            url: url,
+            data: data,
+            processData: false,
+            contentType: false,
+            headers: {'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')},
+            beforeSend: function() {
+                $('.loading').show()
+            },
+            success: function (response) {
+                $('.loading').hide()
+                process.successData = response;
+            },
+            error: function(err) {
+                $('.loading').hide()
+                process.errorData = err
+            }
+        });
+    }
+
     putRequest(process, url, data) {
         $.ajax({
             type: "put",
@@ -307,8 +370,10 @@ class Functions
                 labels: labels,
                 datasets: [{
                     label: nameLabel,
-                    backgroundColor: '#321fdb',
-                    borderColor: 'rgb(255, 99, 132)',
+                    backgroundColor: coreui.Utils.hexToRgba(coreui.Utils.getStyle('--info', document.getElementsByClassName('c-app')[0]), 10),
+                    borderColor: coreui.Utils.getStyle('--info', document.getElementsByClassName('c-app')[0]),
+                    pointHoverBackgroundColor: '#fff',
+                    borderWidth: 2,
                     data: data,
                 }]
             },
@@ -366,5 +431,15 @@ class Functions
             }
         }
         return true
+    }
+
+    generateCode(length) {
+        var result           = [];
+        var characters       = 'ABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789';
+        var charactersLength = characters.length;
+        for ( var i = 0; i < length; i++ ) {
+            result.push(characters.charAt(Math.floor(Math.random() * charactersLength)));
+        }
+        return result.join('');
     }
 }

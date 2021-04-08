@@ -15,10 +15,10 @@ class StaffController extends Controller
 
     public function getall(Request $request)
     {
-        $nama = $request->input('nama_staff') != null ? $request->input('nama_staff') : "";
-        $sorting = $request->input('sorting') != null ? $request->input('sorting') : 10;
+        $search = $request->input('search') ?? "";
+        $sorting = $request->input('sorting') ?? 10;
 
-        return $this->staffService->getall($nama, $sorting);
+        return $this->staffService->getall($search, $sorting);
     }
 
     public function get($id)
@@ -32,7 +32,7 @@ class StaffController extends Controller
             'nama_staff' => 'required',
             'email' => 'required',
             'no_telp' => 'required',
-            'jabatan' => 'required',
+            'role_id' => 'required',
         ]);
         return $this->staffService->update($request->all(), $id);
     }
@@ -48,8 +48,7 @@ class StaffController extends Controller
             'nama_staff' => 'required',
             'email' => 'required|unique:staffs',
             'no_telp' => 'required',
-            'jabatan' => 'required',
-            'password' => 'required'
+            'role_id' => 'required',
         ]);
 
         return $this->staffService->add($request->all());

@@ -14,8 +14,8 @@
           <div class="col-md-4">
             <div class="card">
               <div class="card-body">
-                <div class="text-value-lg" id="totalBarang"></div>
-                <div>Total Barang Keseluruhan</div>
+                <div class="text-value-lg text-primary" id="totalBarang"></div>
+                <div class="text-primary">Total Barang Keseluruhan</div>
                 <div class="progress progress-xs my-2">
                   <div class="progress-bar bg-warning" role="progressbar"></div>
                 </div>
@@ -26,7 +26,7 @@
             <div class="card">
               <div class="card-body">
                 <div class="text-value-lg text-warning" id="totalBarangMasuk"></div>
-                <div>Total Barang Tersedia</div>
+                <div class="text-warning">Total Barang Tersedia</div>
                 <div class="progress progress-xs my-2">
                   <div class="progress-bar bg-warning" role="progressbar"></div>
                 </div>
@@ -37,7 +37,7 @@
             <div class="card">
               <div class="card-body">
                 <div class="text-value-lg text-success" id="totalBarangKeluar"></div>
-                <div>Total Barang Terjual</div>
+                <div class="text-success">Total Barang Terjual</div>
                 <div class="progress progress-xs my-2">
                   <div class="progress-bar bg-warning" role="progressbar"></div>
                 </div>

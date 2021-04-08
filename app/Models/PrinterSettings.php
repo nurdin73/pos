@@ -6,5 +6,5 @@ use Illuminate\Database\Eloquent\Model;
 
 class PrinterSettings extends Model
 {
-    protected $fillable = ['os', 'name_printer'];
+    protected $fillable = ['os', 'name_printer', 'koneksi'];
 }

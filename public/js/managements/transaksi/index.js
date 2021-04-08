@@ -7,12 +7,69 @@ $(document).ready(function () {
     changeHarga()
     eceran()
     cacl()
+    cancelOrder()
+    qytForm()
     if(hargaBarangPajak == 0) {
       $('#pajakDetail').text('* harga belum termasuk ' + namaPajak + `(${persentasePajak}%)`)
     } else {
       $('#pajakDetail').text('* harga termasuk ' + namaPajak + `(${persentasePajak}%)`)
     }
+
 });
+
+function qytForm() {
+  $('#listCarts').on('change', 'tr td .qytForm', async function(e) {
+    e.preventDefault()
+    const id = $(this).data('id')
+    const discount = $(this).data('discount')
+    const qytUpdate = {
+      qyt: $(this).val(),
+      diskon_product: discount
+    }
+    const url = URL_API + "/managements/update/cart/" + id
+    Functions.prototype.updatingData(url, qytUpdate, 'put')
+    await new Promise(resolve => setTimeout(resolve, 500))
+    getCarts.loadData = noInvoice
+  })
+}
+
+function cancelOrder() {
+  $('#cancelOrder').on('click', function(e) {
+    e.preventDefault()
+    Swal.fire({
+      title: 'Apa kamu yakin?',
+      text: `transaksi dengan kode ${noInvoice} akan dihapus!`,
+      icon: 'warning',
+      showCancelButton: true,
+      confirmButtonColor: '#3085d6',
+      cancelButtonColor: '#d33',
+      confirmButtonText: 'Yakin'
+    }).then((result) => {
+      if (result.isConfirmed) {
+        const urlCancelOrder = URL_API + "/managements/delete/transaksi/" + noInvoice
+        Functions.prototype.deleteingData(processCancelOrder, urlCancelOrder)
+      }
+    })
+  })
+
+  const processCancelOrder = {
+    set successData(response) {
+      Swal.fire(
+        'Berhasil!',
+        response.message,
+        'success'
+      )
+      getCarts.loadData = noInvoice
+    }, 
+    set errorData(err) {
+      toastr.error(err.responseJSON.message, 'Error')
+    }
+  }
+
+}
+
+
+
 
 function cacl() {
   $('.btn-number').on('click', function (e) {  
@@ -20,7 +77,7 @@ function cacl() {
     const number = $(this).data('number')
     if(number == "C") {
       $('#fieldCash').val('')
-    } else {
+    } else {  
       var valueField = $('#fieldCash').val()
       $('#fieldCash').val(valueField + number)
     }
@@ -32,27 +89,7 @@ function getData() {
     $('#noInvoice').text(noInvoice)
     $('#kasir').val(name).attr('disabled', true).addClass('disabled')
     $('#persentasePajak').val(persentasePajak).attr('disabled', true).addClass('disabled')
-    // $('#addProduct').validate({
-    //   rules: {
-    //     barcode: {
-    //       required: true
-    //     },
-    //   },
-    //   errorClass: "is-invalid",
-    //   validClass: "is-valid",
-    //   errorElement: "small",
-    //   submitHandler: function(form, e) {
-    //     e.preventDefault()
-    //     const id_product = $('#barcode').val()
-    //     const no_invoice = noInvoice
-    //     const data = {
-    //       product_id: id_product,
-    //       no_invoice: no_invoice
-    //     }
-    //     addDataCart.loadData = data
-    //   }
-    // })
-    $('#addProduct').on('keyup', function(e) {
+    $('#barcode').on('keyup', function(e) {
       if(e.keyCode == 13) {
         const kode = $('#barcode').val()
         const no_invoice = noInvoice
@@ -63,38 +100,6 @@ function getData() {
         addDataCart.loadData = data
       }
     })
-    // $('#barcode').on('change', function(e) {
-    //   e.preventDefault()
-    //   const id_product = $(this).val()
-    //   const no_invoice = noInvoice
-    //   const data = {
-    //     product_id : id_product,
-    //     no_invoice : no_invoice
-    //   }
-    //   getTax.loadData = id_product
-    //   addDataCart.loadData = data
-    // })
-    // $('#barcode').select2({
-    //   theme:'bootstrap4',
-    //   ajax: {
-    //     url: URL_API + "/managements",
-    //     data: function (params) {
-    //       return {
-    //           search_kode_barang: params.term,
-    //       }
-    //     },
-    //     processResults: function(response, params) {
-    //       return {
-    //         results: response.data.map(result => {
-    //           return {
-    //             text: result.kode_barang + " - " + result.nama_barang,
-    //             id: result.id
-    //           }
-    //         })
-    //       }
-    //     },
-    //   }
-    // })
     
     $('#diskon').on('keyup', function(e) {
       e.preventDefault()
@@ -187,7 +192,6 @@ const getCarts = {
         lists += `
           <tr data-id="${result.id}">
             <td>${x++}</td>
-            <td>${result.product.kode_barang}</td>
             <td>${result.product.nama_barang}</td>
             <td>`
               if(typeHarga.length > 0) {
@@ -210,7 +214,7 @@ const getCarts = {
               }
               lists +=
             `</td>
-            <td>${result.qyt}</td>
+            <td><input type="number" value="${result.qyt}" data-id="${result.id}" data-discount="${result.diskon_product}" min="1" class="form-control qytForm"></td>
             <td>
               <div class="custom-control custom-switch">
                 <input type="checkbox" ${hargaAsal == result.product.harga_satuan ? "checked" : ""} class="custom-control-input eceran" data-id="${result.id}" data-harga-eceran="${result.product.harga_satuan}" data-harga-jual="${result.product.harga_jual}" name="eceranOpsi" id="eceranOpsi${i}" ${result.product.isRetail == 0 ? "disabled" : ""}>
@@ -232,12 +236,14 @@ const getCarts = {
         $('#pajak').val(pajak)
         $('#total').text(Functions.prototype.formatRupiah(total.toString(), 'Rp. '))
       })
+      $('#cancelOrder').attr('disabled', false)
     } else {
       lists += `
         <tr>
           <td colspan="8" align="center">keranjang masih kosong</td>
         </tr>
       `
+      $('#cancelOrder').attr('disabled', true)
     }
 
     $('#listCarts').html(lists)
@@ -306,14 +312,23 @@ function actionDelAndUpdate() {
     }).then((result) => {
       if (result.isConfirmed) {
         const url = URL_API + "/managements/delete/cart/" + id
-        Functions.prototype.deleteData(url)
-        $('#sub_total').text("Rp. 0 ,-")
-        $('#total_pajak').text("Rp. 0 ,-")
-        $('#total').text("Rp. 0 ,-")
-        getCarts.loadData = noInvoice
+        Functions.prototype.deleteingData(prosessDeletingData, url)
       }
     })
   })
+
+  const prosessDeletingData = {
+    set successData(response) {
+      toastr.success(response.message, 'Success')
+      $('#sub_total').text("Rp. 0 ,-")
+      $('#total_pajak').text("Rp. 0 ,-")
+      $('#total').text("Rp. 0 ,-")
+      getCarts.loadData = noInvoice
+    },
+    set errorData(err) {
+      toastr.error(err.responseJSON.message, 'Error')
+    }
+  }
 
   $('#listCarts').on('click', 'tr td div .update', function(e) {
     e.preventDefault()
@@ -323,7 +338,6 @@ function actionDelAndUpdate() {
   })
   const detailCart = {
     set successData(response) {
-      $('#kodeBarangUpdate').text(response.product.kode_barang)
       $('#hargaBarangUpdate').text(Functions.prototype.formatRupiah(response.harga_product.toString(), 'Rp. '))
       $('#namaBarangUpdate').text(response.product.nama_barang)
       $('#id_cart').val(response.id)
@@ -409,15 +423,19 @@ function processPayment() {
       })
     } else {
       Swal.fire({
-        title: 'Perhatian?',
-        text: "Apakah data yang dimasukkan sudah benar?",
+        title: `Total belanja ${Functions.prototype.formatRupiah(grandTotal, 'Rp.')}`,
+        input: 'text',
+        inputAttributes: {
+          placeholder: 'Masukkan jumlah uang',
+        },
+        text: `Pastikan jumlah uang sudah benar`,
         icon: 'warning',
         showCancelButton: true,
         confirmButtonColor: '#3085d6',
         cancelButtonColor: '#d33',
-        confirmButtonText: 'Ya, Benar!'
-      }).then((result) => {
-        if (result.isConfirmed) {
+        confirmButtonText: 'Ya, Benar!',
+        showLoaderOnConfirm: true,
+        preConfirm: (totalUang) => {
           const urlAddTransaction = URL_API + "/managements/add/transaction"
           const data = {
             createdBy: idUser,
@@ -426,15 +444,107 @@ function processPayment() {
             diskon_transaksi: diskon != "" ? diskon : 0,
             keterangan: keterangan,
             total: grandTotal,
-            cash: cash,
-            change: change,
+            cash: totalUang,
+            change: totalUang - grandTotal,
             pajak: pajak
           }
-          Functions.prototype.postRequest(addTransaction, urlAddTransaction, data)
+          return fetch(urlAddTransaction, {
+            headers: {
+              'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content'),
+              'Accept': 'application/json',
+              'Content-Type': 'application/json'
+            },
+            method: 'POST',
+            body: JSON.stringify(data)
+          }).then(response => {
+            if (!response.ok) {
+              throw new Error(response.statusText)
+            }
+            return response.json()
+          })
+          .catch(error => {
+            toastr.error(error, 'Error')
+          })
+        },
+        allowOutsideClick: () => !Swal.isLoading()
+      }).then((result) => {
+        if (result.isConfirmed) {
+          Swal.fire({
+            title: `Kembalian : ${Functions.prototype.formatRupiah(result.value.kembalian.toString(), 'Rp. ')}`,
+            text: 'Ingin cetak struk?',
+            icon: 'warning',
+            showCancelButton: true,
+            confirmButtonColor: '#3085d6',
+            cancelButtonColor: '#d33',
+            confirmButtonText: 'Cetak',
+            cancelButtonText: 'Tidak'
+          }).then((res) => {
+            if (res.isConfirmed) {
+              const cetakStruk = URL_API + "/managements/cetak-struk/" + result.value.idTrx
+              Functions.prototype.getRequest(processPrintTrx, cetakStruk)
+            } else {
+              setTimeout(() => {
+                window.location.reload()
+              }, 500);
+            }
+          })
         }
       })
     }
   })
+}
+
+
+const processPrintTrx = {
+  set successData(response) {
+    console.log(response);
+    if(response.connection == "bluetooth") {
+        var form = document.createElement('form')
+				form.setAttribute('method', 'post')
+				form.setAttribute('action', urlCetakStruk)
+
+				var input = document.createElement('input')
+				input.setAttribute('value', response.message)
+				input.setAttribute('name', 'isi')
+				input.setAttribute('id', 'isi')
+				input.setAttribute('type', 'hidden')
+
+        var input2 = document.createElement('input')
+				input2.setAttribute('value', response.no_inv)
+				input2.setAttribute('name', 'noInv')
+				input2.setAttribute('id', 'noInv')
+				input2.setAttribute('type', 'hidden')
+
+        var input3 = document.createElement('input')
+				input3.setAttribute('value', $('meta[name="csrf-token"]').attr('content'))
+				input3.setAttribute('name', '_token')
+				input3.setAttribute('id', '_token')
+				input3.setAttribute('type', 'hidden')
+
+				form.appendChild(input)
+        form.appendChild(input2)
+        form.appendChild(input3)
+				document.body.appendChild(form)
+				form.submit()
+
+        // var S = "#Intent;scheme=rawbt;";
+        // var P =  "package=ru.a402d.rawbtprinter;end;";
+        // var textEncoded = encodeURI(response.message)
+        // window.location.href = "intent:"+textEncoded+S+P;
+        setTimeout(() => {
+          window.location.reload()
+        }, 1500);
+    } else {
+      toastr.success(response.message, 'Success')
+      setTimeout(() => {
+        window.location.reload()
+      }, 1500);
+    }
+  },
+  set errorData(err) {
+    console.log(err);
+    toastr.error(err.responseJSON.message)
+  }
 }
 
 const addTransaction = {

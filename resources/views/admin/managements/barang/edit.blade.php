@@ -1,8 +1,8 @@
 @extends('layouts.template')
 
 @section('css')
-  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/select2/4.0.13/css/select2.min.css" integrity="sha512-nMNlpuaDPrqlEls3IX/Q56H36qvBASwb3ipuo3MxeWbsQB1881ox0cRv7UPTgBlriqoynt35KjEwgGUeUXIPnw==" crossorigin="anonymous" />
-  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap4-select2-theme@1.0.3/src/css/bootstrap4-select2-theme.css">
+  <link rel="stylesheet" href="{{ asset('css/select2.css') }}"/>
+  <link rel="stylesheet" href="{{ asset('css/select2-bs4.css') }}">
 @endsection
 
 @section('content')
@@ -22,16 +22,13 @@
                 <li class="nav-item"><a class="nav-link active" data-toggle="tab" href="#home" role="tab" aria-controls="home">Data</a></li>
                 <li class="nav-item"><a class="nav-link" data-toggle="tab" href="#profile" role="tab" aria-controls="profile">Images</a></li>
                 <li class="nav-item"><a class="nav-link" data-toggle="tab" href="#type_harga" role="tab" aria-controls="type_harga">Type Harga</a></li>
+                <li class="nav-item"><a class="nav-link" data-toggle="tab" href="#kodeBarang" role="tab" aria-controls="kode_barang">Kode barang</a></li>
               </ul>
               <div class="tab-content">
                 <div class="tab-pane active" id="home" role="tabpanel">
                   <form id="updateProduct" autocomplete="off">
                     <div class="row">
                       <div class="col-md-6">
-                        <div class="form-group">
-                          <label for="kode_barang">Kode Barang *</label>
-                          <input type="text" name="kode_barang" id="kode_barang" class="form-control">
-                        </div>
                         <div class="form-group">
                           <label for="suplier">Suplier <sub class="text-info">Optional</sub></label>
                           <select id="suplier" style="width: 100%" class="custom-select"></select>
@@ -41,9 +38,19 @@
                           <select id="cabang" style="width: 100%" class="custom-select"></select>
                         </div>
 
-                        <div class="form-group">
-                          <label for="nama_barang">Nama Barang *</label>
-                          <input type="text" name="nama_barang" id="nama_barang" class="form-control">
+                        <div class="row">
+                          <div class="col-md-8">
+                            <div class="form-group">
+                              <label for="nama_barang">Nama Barang *</label>
+                              <input type="text" name="nama_barang" id="nama_barang" class="form-control">
+                            </div>
+                          </div>
+                          <div class="col-md-4">
+                            <div class="form-group">
+                              <label for="satuan">Satuan(gram,pcs)</label>
+                              <input type="text" name="satuan" id="satuan" class="form-control">
+                            </div>
+                          </div>
                         </div>
                         
                         <div class="row">
@@ -89,37 +96,22 @@
                         <small class="btn-link text-info" id="btnShowOther" style="cursor: pointer; font-weight: bold;">Tampilkan lainnya</small>
                         <div id="showOther" style="display: none">
                           <div class="row">
-                            <div class="col-md-6">
+                            <div class="col-md-4">
                               <div class="form-group">
                                 <label for="berat">Berat</label>
                                 <input type="text" name="berat" id="berat" class="form-control">
                               </div>
+                            </div>
+                            <div class="col-md-4">
                               <div class="form-group">
                                 <label for="diskon">Diskon(%)</label>
-                                <input type="text" name="diskon" id="diskon" class="form-control">
+                                <input type="number" name="diskon" id="diskon" class="form-control">
                               </div>
                             </div>
-                            <div class="col-md-6">
-                              <div class="row">
-                                <div class="col-6">
-                                  <div class="form-group">
-                                    <label for="satuan">Satuan(gram,pcs)</label>
-                                    <select name="satuan" id="satuan" class="custom-select">
-                                      <option value="gram">Gram</option>
-                                      <option value="pcs">Pcs</option>
-                                    </select>
-                                  </div>
-                                </div>
-                                <div class="col-6">
-                                  <div class="form-group">
-                                    <label for="point">Point</label>
-                                    <input type="number" name="point" id="point" class="form-control">
-                                  </div>
-                                </div>
-                              </div>
+                            <div class="col-md-4">
                               <div class="form-group">
-                                <label for="rak">Letak rak</label>
-                                <input type="text" name="rak" id="rak" class="form-control">
+                                <label for="point">Point</label>
+                                <input type="number" name="point" id="point" class="form-control">
                               </div>
                             </div>
                           </div>
@@ -160,6 +152,38 @@
                   </div>
                   <div class="d-flex justify-content-center">
                     <button type="button" class="btn btn-lg btn-outline-primary" data-toggle="modal" data-target="#typeHargaModal">Tambah type harga? <br> (Grosir / Retailer / Eceran / Gojek)</button>
+                  </div>
+                </div>
+                <div class="tab-pane" id="kodeBarang" role="tabpanel">
+                  <div class="row">
+                    <div class="col-md-6">
+                      <table class="table table-striped table-borderless">
+                        <thead>
+                          <tr>
+                            <th>Kode barang</th>
+                            <th style="width: 10%">Action</th>
+                          </tr>
+                        </thead>
+                        <tbody id="listCodeProduct">
+                          
+                        </tbody>
+                      </table>
+                      <nav aria-label="..." class="d-flex justify-content-end">
+                        <ul class="pagination">
+                          
+                        </ul>
+                      </nav>
+                    </div>
+                    <div class="col-md-6">
+                      <form action="#" id="addKode" autocomplete="off">
+                        <div class="form-group">
+                          <label for="barcode">Scan kode barang</label>
+                          <input type="text" id="barcode" class="form-control" autofocus>
+                          <small>Gunakan scanner untuk mempercepat proses</small>
+                        </div>
+                        <button class="btn btn-sm btn-primary">Simpan</button>
+                      </form>
+                    </div>
                   </div>
                 </div>
               </div>
@@ -223,15 +247,38 @@
       </div>
     </div>
   </div>
+
+  <!-- Modal -->
+  <div class="modal fade" id="updateCodeProduct" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+    <div class="modal-dialog modal-sm shadow modal-dialog-centered">
+      <div class="modal-content">
+        <div class="modal-header">
+          <h5 class="modal-title" id="exampleModalLabel">Update kode produk</h5>
+          <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+            <span aria-hidden="true">&times;</span>
+          </button>
+        </div>
+        <div class="modal-body">
+          <form action="#" id="formUpdateCodeProduct" autocomplete="off">
+            <input type="hidden" id="idCodeProduct">
+            <div class="form-group">
+              <input type="text" name="kode_barang_update" id="kode_barang_update"class="form-control">
+            </div>
+            <button class="btn btn-sm btn-primary">Update</button>
+          </form>
+        </div>
+      </div>
+    </div>
+  </div>
 @endsection
 
 
 @section('js')
-  <script src="https://cdnjs.cloudflare.com/ajax/libs/select2/4.0.13/js/select2.min.js" integrity="sha512-2ImtlRlf2VVmiGZsjm9bEyhjGW4dU7B6TNwh/hx/iSByxNENtj3WVE6o/9Lj4TJeVXPi4bnOIMXFIJJAeufa0A==" crossorigin="anonymous"></script>
-  <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery-validate/1.19.2/jquery.validate.min.js" integrity="sha512-UdIMMlVx0HEynClOIFSyOrPggomfhBKJE28LKl8yR3ghkgugPnG6iLfRfHwushZl1MOPSY6TsuBDGPK2X4zYKg==" crossorigin="anonymous"></script>
-  <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery-validate/1.19.2/additional-methods.min.js" integrity="sha512-6Uv+497AWTmj/6V14BsQioPrm3kgwmK9HYIyWP+vClykX52b0zrDGP7lajZoIY1nNlX4oQuh7zsGjmF7D0VZYA==" crossorigin="anonymous"></script>
-  <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery-validate/1.19.2/localization/messages_id.min.js" integrity="sha512-Pb0klMWnom+fUBpq+8ncvrvozi/TDwdAbzbICN8EBoaVXZo00q6tgWk+6k6Pd+cezWRwyu2cB+XvVamRsbbtBA==" crossorigin="anonymous"></script>
-  <script src="https://cdn.jsdelivr.net/npm/sweetalert2@10"></script>
+  <script src="{{ asset('js/select2.js') }}"></script>
+  <script src="{{ asset('js/jquery-validate.js') }}" ></script>
+  <script src="{{ asset('js/additional-method.js') }}"></script>
+  <script src="{{ asset('js/message_id.js') }}" integrity="sha512-Pb0klMWnom+fUBpq+8ncvrvozi/TDwdAbzbICN8EBoaVXZo00q6tgWk+6k6Pd+cezWRwyu2cB+XvVamRsbbtBA==" crossorigin="anonymous"></script>
+  <script src="{{ asset('js/sweetalert.js') }}"></script>
   <script>
     const URL_API = '{{ url('api/v1') }}'
     const URL_IMAGE = '{{ url('') }}'

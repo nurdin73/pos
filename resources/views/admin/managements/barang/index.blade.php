@@ -1,9 +1,9 @@
 @extends('layouts.template')
 
 @section('css')
-  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/select2/4.0.13/css/select2.min.css" integrity="sha512-nMNlpuaDPrqlEls3IX/Q56H36qvBASwb3ipuo3MxeWbsQB1881ox0cRv7UPTgBlriqoynt35KjEwgGUeUXIPnw==" crossorigin="anonymous" />
-  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap4-select2-theme@1.0.3/src/css/bootstrap4-select2-theme.css">
-  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/PgwSlider/2.3.0/pgwslider.min.css" integrity="sha512-J1G8iGNI7Vk77uSN3MCVgvfTYdKVmqXhNZRI/QdC4L0S6MRImg40OsfF+N95Hix1n/Mxu7PHvdE1ULW4Hgfxyw==" crossorigin="anonymous" />
+  <link rel="stylesheet" href="{{ asset('css/select2.css') }}"/>
+  <link rel="stylesheet" href="{{ asset('css/select2-bs4.css') }}">
+  <link rel="stylesheet" href="{{ asset('css/pgwslider.css') }}"/>
   <style>
     .modal { overflow: auto !important; }
     .page-link { cursor: pointer !important; }
@@ -68,7 +68,6 @@
               <table class="table table-striped table-hover table-condensed" id="dataTables">
                 <thead>
                   <tr>
-                    <th style="width: 15%">Kode Barang</th>
                     <th>Nama Barang</th>
                     <th style="width: 8%">Stok</th>
                     <th style="width: 15%">Harga Dasar</th>
@@ -142,11 +141,7 @@
                 <div class="col-md-4">
                   <div class="form-group">
                     <label for="satuan">Satuan</label>
-                    <select name="satuan" id="satuan" class="custom-select">
-                      <option value="bungkus">Bungkus</option>
-                      <option value="box">Box</option>
-                      <option value="pack">Pack</option>
-                    </select>
+                    <input type="text" name="satuan" id="satuan" class="form-control">
                   </div>
                 </div>
               </div>
@@ -299,24 +294,7 @@
               <span class="text-muted font-weight-bold text-uppercase">Daftar harga</span>
               <div class="dropdown-divider"></div>
               <div id="listTypeHarga" style="width: 100%">
-                {{-- <div class="border rounded p-2 mb-2">
-                  <div class="d-flex justify-content-between align-items-center">
-                    <span class="text-muted">Type : <span id="#typeAgen">Agen</span></span>
-                    <div class="btn-group">
-                      <button class="btn btn-sm btn-success">Edit</button>
-                      <button class="btn btn-sm btn-danger">Hapus</button>
-                    </div>
-                  </div>
-                  <div class="dropdown-divider"></div>
-                  <div class="row">
-                    <div class="col-3">
-                      1
-                    </div>
-                    <div class="col-9">
-                      <span id="harga">Rp. 0</span>
-                    </div>
-                  </div>
-                </div> --}}
+                
               </div>
             </div>
             <div class="d-flex justify-content-center">
@@ -383,12 +361,12 @@
 @endsection
 
 @section('js')  
-  <script src="https://cdnjs.cloudflare.com/ajax/libs/PgwSlider/2.3.0/pgwslider.min.js" integrity="sha512-Oz0WQx5ADiBluAj9vpDDLDKZRqMvawtS4jtgi4ebPahhvfB6pWlPdoDbr6gPndcVt4uPn/nX1/8rTuDA2B/qBQ==" crossorigin="anonymous"></script>
-  <script src="https://cdnjs.cloudflare.com/ajax/libs/select2/4.0.13/js/select2.min.js" integrity="sha512-2ImtlRlf2VVmiGZsjm9bEyhjGW4dU7B6TNwh/hx/iSByxNENtj3WVE6o/9Lj4TJeVXPi4bnOIMXFIJJAeufa0A==" crossorigin="anonymous"></script>
-  <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery-validate/1.19.2/jquery.validate.min.js" integrity="sha512-UdIMMlVx0HEynClOIFSyOrPggomfhBKJE28LKl8yR3ghkgugPnG6iLfRfHwushZl1MOPSY6TsuBDGPK2X4zYKg==" crossorigin="anonymous"></script>
-  <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery-validate/1.19.2/additional-methods.min.js" integrity="sha512-6Uv+497AWTmj/6V14BsQioPrm3kgwmK9HYIyWP+vClykX52b0zrDGP7lajZoIY1nNlX4oQuh7zsGjmF7D0VZYA==" crossorigin="anonymous"></script>
-  <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery-validate/1.19.2/localization/messages_id.min.js" integrity="sha512-Pb0klMWnom+fUBpq+8ncvrvozi/TDwdAbzbICN8EBoaVXZo00q6tgWk+6k6Pd+cezWRwyu2cB+XvVamRsbbtBA==" crossorigin="anonymous"></script>
-  <script src="https://cdn.jsdelivr.net/npm/sweetalert2@10"></script>
+  <script src="{{ asset('js/pgwslider.js') }}"></script>
+  <script src="{{ asset('js/select2.js') }}"></script>
+  <script src="{{ asset('js/jquery-validate.js') }}" ></script>
+  <script src="{{ asset('js/additional-method.js') }}"></script>
+  <script src="{{ asset('js/message_id.js') }}" integrity="sha512-Pb0klMWnom+fUBpq+8ncvrvozi/TDwdAbzbICN8EBoaVXZo00q6tgWk+6k6Pd+cezWRwyu2cB+XvVamRsbbtBA==" crossorigin="anonymous"></script>
+  <script src="{{ asset('js/sweetalert.js') }}"></script>
   <script>
     const URL_API = '{{ url('api/v1') }}'
     const URL_IMAGE = '{{ url('') }}'

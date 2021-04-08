@@ -12,8 +12,8 @@
           <div class="col-md-4">
             <div class="card">
               <div class="card-body">
-                <div class="text-value-lg" id="countTransaction">0</div>
-                <div>Jumlah Transaksi</div>
+                <div class="text-value-lg text-danger" id="countTransaction">0</div>
+                <div class="text-danger">Jumlah Transaksi</div>
                 <div class="progress progress-xs my-2">
                   <div class="progress-bar bg-success" role="progressbar" style="width: 0%" aria-valuenow="0" aria-valuemin="0" aria-valuemax="100"></div>
                 </div>
@@ -23,8 +23,8 @@
           <div class="col-md-4">
             <div class="card">
               <div class="card-body">
-                <div class="text-value-lg" id="keuntungan">0</div>
-                <div>Keuntungan</div>
+                <div class="text-value-lg text-success" id="keuntungan">0</div>
+                <div class="text-success">Keuntungan</div>
                 <div class="progress progress-xs my-2">
                   <div class="progress-bar bg-success" role="progressbar" style="width: 0%" aria-valuenow="0" aria-valuemin="0" aria-valuemax="100"></div>
                 </div>
@@ -34,8 +34,8 @@
           <div class="col-md-4">
             <div class="card">
               <div class="card-body">
-                <div class="text-value-lg" id="pendapatan">0</div>
-                <div>Pendapatan</div>
+                <div class="text-value-lg text-info" id="pendapatan">0</div>
+                <div class="text-info">Pendapatan</div>
                 <div class="progress progress-xs my-2">
                   <div class="progress-bar bg-success" role="progressbar" style="width: 0%" aria-valuenow="0" aria-valuemin="0" aria-valuemax="100"></div>
                 </div>
@@ -86,7 +86,8 @@
 @endsection 
 
 @section('js')
-  <script src="https://cdn.jsdelivr.net/npm/chart.js@2.8.0"></script>
+  <script src="{{ asset('vendors/@coreui/chartjs/js/coreui-chartjs.bundle.js') }}"></script>
+  <script src="{{ asset('vendors/@coreui/utils/js/coreui-utils.js') }}"></script>
   <script>
     const URL_API = '{{ url('api/v1') }}'
     var keuntunganHariIni = 0

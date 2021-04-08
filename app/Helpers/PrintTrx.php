@@ -1,16 +1,35 @@
 <?php
 namespace App\Helpers;
 
+use App\Models\PrinterSettings;
 use App\Models\Stores;
 use App\Models\Tax;
 use App\Models\Transactions;
-use Carbon\Carbon;
+use Illuminate\Support\Facades\Log;
+use Mike42\Escpos\CapabilityProfile;
+use Mike42\Escpos\PrintConnectors\DummyPrintConnector;
 use Mike42\Escpos\PrintConnectors\FilePrintConnector;
+use Mike42\Escpos\PrintConnectors\NetworkPrintConnector;
+use Mike42\Escpos\PrintConnectors\RawbtPrintConnector;
 use Mike42\Escpos\PrintConnectors\WindowsPrintConnector;
 use Mike42\Escpos\Printer;
 
 class PrintTrx
 {
+    protected $connector;
+    protected $connection;
+    protected $os;
+    protected $name_printer;
+    protected $profile;
+
+    public function __construct($PrinterSettings) {
+        Log::debug($this->connection);
+        $this->connection = $PrinterSettings->koneksi ?? env('CONNECTION', 'usb');
+        Log::debug($this->connection);
+        $this->os = $PrinterSettings->os ?? env('OS', 'linux');
+        $this->name_printer = $PrinterSettings->name_printer ?? env('PRINTER_DEVICE', "EPSON TM-U220 Receipt");
+    }
+
     protected function getDetailStore($id)
     {
         $result = Stores::find($id);
@@ -22,7 +41,34 @@ class PrintTrx
         $result = Tax::find(1);
         return $result;
     }
-    
+    protected function getPrinterSetting($id)
+    {
+        $result = PrinterSettings::find($id);
+        return $result;
+    }
+
+    protected function printer()
+    {
+        $os = $this->os ?? env('OS', 'linux');
+        $PRINTER_DEVICE = $this->name_printer ?? env('PRINTER_DEVICE', "EPSON TM-U220 Receipt");
+        $connector = null;
+        if($this->connection == "usb") {
+            if($os == "windows") {
+                $connector = new WindowsPrintConnector($PRINTER_DEVICE); // ini untuk windows. ambil nama printer sharingnya
+            } elseif($os == "linux") {
+                $connector = new FilePrintConnector($PRINTER_DEVICE);
+            } 
+        } elseif($this->connection == "ethernet") {
+            $connector = new NetworkPrintConnector(env('IP_PRINTER_SHARING', "10.x.x.x"), env('PORT_PRINTER_SHARING', "9100"));
+        } elseif($this->connection = "bluetooth") {
+            $connector = new DummyPrintConnector();
+            $this->profile = CapabilityProfile::load($this->getPrinterSetting(1)->name_printer);
+            $connector->finalize();
+            $this->connector = $connector;
+        }
+        $printer = new Printer($connector);
+        return $printer;
+    }
     protected function create4Column($column1, $column2, $column3, $column4)
     {
 
@@ -67,13 +113,7 @@ class PrintTrx
 
     function invoice($id)
     {
-        // $PRINTER_DEVICE = env('PRINTER_DEVICE', "EPSON TM-U220 Receipt");
-        // $connector = "";
-        // $connector = new WindowsPrintConnector($PRINTER_DEVICE); // ini untuk windows. ambil nama printer sharingnya
-        // $printer = new Printer($connector);
-        $PRINTER_DEVICE = "/dev/usb/lp1";
-        $connector = new FilePrintConnector($PRINTER_DEVICE);
-        $printer = new Printer($connector);
+        $printer = $this->printer();
         $trx = Transactions::with('carts.product', 'customer', 'user')->where('id', $id)->first();
 
         // detail stores
@@ -132,8 +172,39 @@ class PrintTrx
         $printer->setJustification(Printer::JUSTIFY_CENTER);
         $printer->text("Terima kasih telah berbelanja\n");
         $printer->text("$nameStore\n");
+        if($this->connection == "bluetooth") {
+            return response(['message' => $this->connector->getData(), 'connection' => $this->connection, 'no_inv' => $trx->no_invoice]);
+            // return $this->connector->getData();
+        }
 
         $printer->feed(5); // mencetak 5 baris kosong agar terangkat (pemotong kertas saya memiliki jarak 5 baris dari toner)
         $printer->close();
+
+        return response(['message' => 'processing', 'connection' => $this->connection, 'no_inv' => $trx->no_invoice]);
+    }
+
+
+    function testConnection()
+    {
+        if($this->getPrinterSetting(1)->koneksi == "bluetooth") {
+            $connector = new DummyPrintConnector();
+            $connector->finalize();
+            $profile = CapabilityProfile::load($this->getPrinterSetting(1)->name_printer);
+            $printer = new Printer($connector);
+            $printer->text("Hello world!\n");
+            
+            $data = $connector->getData();
+            $printer->feed(4);
+            $printer->close();
+            // return response(['message' => base64_encode($data)]);
+        } else {
+            $printer = $this->printer();
+            $printer->initialize();
+            $printer->text("Tes koneksi berhasil. :) \n");
+            $printer->feed(5);
+            $printer->close();
+        }
+        return ['message' => 'tes koneksi berhasil'];
+
     }
 }

@@ -15,7 +15,7 @@
     <meta name="description" content="Point of sale by nurdin rittercoding">
     <meta name="author" content="nurdin">
     <meta name="keyword" content="pos,point of sales, kasir">
-    <title>Error 404</title>
+    <title>Error 401</title>
     <!-- Main styles for this application-->
     <link href="{{ asset('css/style.min.css') }}" rel="stylesheet">
   </head>

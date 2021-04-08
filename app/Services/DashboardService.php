@@ -4,6 +4,7 @@ namespace App\Services;
 use App\Models\Products;
 use App\Models\Transactions;
 use DateTime;
+use Illuminate\Support\Facades\Log;
 
 class DashboardService
 {
@@ -22,7 +23,12 @@ class DashboardService
                 foreach ($cart->product->stocks as $stock) {
                     $harga_dasar = $stock->harga_dasar;
                 }
-                $totalModal += $harga_dasar * $cart->qyt;
+                if($cart->eceran == 1) {
+                    $hargaEcerModal = floor($harga_dasar / $cart->product->jumlahEceranPermanent);
+                    $totalModal += floor($hargaEcerModal * $cart->qyt);
+                } else {
+                    $totalModal += $harga_dasar * $cart->qyt;
+                }
             }
         }
         $data['total'] = $totalPembelian;
@@ -54,8 +60,14 @@ class DashboardService
                             foreach ($cart->product->stocks as $stock) {
                                 $harga_dasar = $stock->harga_dasar;
                             }
+                            $cap = 0;
                             $earning = ($cart->harga_product - $cart->diskon_product) * $cart->qyt;
-                            $cap = $harga_dasar * $cart->qyt;
+                            if($cart->eceran == 1) {
+                                $hargaEcerModal = floor($harga_dasar / $cart->product->jumlahEceranPermanent);
+                                $cap = floor($hargaEcerModal * $cart->qyt);
+                            } else {
+                                $cap = $harga_dasar * $cart->qyt;
+                            }
                             $dataset[] = [
                                 'modal' => $cap,
                                 'pendapatan' => $earning,
@@ -75,7 +87,7 @@ class DashboardService
                             'pendapatan' => $pendapatan,
                             'keuntungan' => $keuntungan,
                         ];
-                        array_push($sets[$y], $data);
+                        array_push($sets[$y], $data); 
                     }
                 }
                 break;
@@ -102,8 +114,14 @@ class DashboardService
                             foreach ($cart->product->stocks as $stock) {
                                 $harga_dasar = $stock->harga_dasar;
                             }
+                            $cap = 0;
                             $earning = ($cart->harga_product - $cart->diskon_product) * $cart->qyt;
-                            $cap = $harga_dasar * $cart->qyt;
+                            if($cart->eceran == 1) {
+                                $hargaEcerModal = floor($harga_dasar / $cart->product->jumlahEceranPermanent);
+                                $cap = floor($hargaEcerModal * $cart->qyt);
+                            } else {
+                                $cap = $harga_dasar * $cart->qyt;
+                            }
                             $dataset[] = [
                                 'modal' => $cap,
                                 'pendapatan' => $earning,
@@ -145,8 +163,14 @@ class DashboardService
                             foreach ($cart->product->stocks as $stock) {
                                 $harga_dasar = $stock->harga_dasar;
                             }
+                            $cap = 0;
                             $earning = ($cart->harga_product - $cart->diskon_product) * $cart->qyt;
-                            $cap = $harga_dasar * $cart->qyt;
+                            if($cart->eceran == 1) {
+                                $hargaEcerModal = floor($harga_dasar / $cart->product->jumlahEceranPermanent);
+                                $cap = floor($hargaEcerModal * $cart->qyt);
+                            } else {
+                                $cap = $harga_dasar * $cart->qyt;
+                            }
                             $dataset[] = [
                                 'modal' => $cap,
                                 'pendapatan' => $earning,
@@ -190,8 +214,14 @@ class DashboardService
                             foreach ($cart->product->stocks as $stock) {
                                 $harga_dasar = $stock->harga_dasar;
                             }
+                            $cap = 0;
                             $earning = ($cart->harga_product - $cart->diskon_product) * $cart->qyt;
-                            $cap = $harga_dasar * $cart->qyt;
+                            if($cart->eceran == 1) {
+                                $hargaEcerModal = floor($harga_dasar / $cart->product->jumlahEceranPermanent);
+                                $cap = floor($hargaEcerModal * $cart->qyt);
+                            } else {
+                                $cap = $harga_dasar * $cart->qyt;
+                            }
                             $dataset[] = [
                                 'modal' => $cap,
                                 'pendapatan' => $earning,
@@ -221,7 +251,7 @@ class DashboardService
 
     public function bestSeller()
     {
-        $products = Products::where('selled', '>', 10)->select('id', 'nama_barang', 'type_barang', 'kode_barang', 'harga_jual', 'selled')->orderBy('selled', 'DESC')->limit(5)->get();
+        $products = Products::where('selled', '>', 10)->select('id', 'nama_barang', 'type_barang', 'harga_jual', 'selled')->orderBy('selled', 'DESC')->limit(5)->get();
         return response($products);
     }
 
