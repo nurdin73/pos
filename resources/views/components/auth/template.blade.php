@@ -35,6 +35,7 @@
     <meta name="theme-color" content="#ffffff">
     <!-- Main styles for this application-->
     <link href="{{ asset('css/style.css') }}" rel="stylesheet">
+    <link rel="stylesheet" href="{{ asset('css/toastr.css') }}">
   </head>
   <body class="c-app flex-row align-items-center">
     <div class="container">
@@ -42,11 +43,14 @@
         @yield('content')
       </div>
     </div>
+    {{-- Jquery CDN --}}
+    <script src="{{ asset('js/jquery.js') }}"></script>
     <!-- CoreUI and necessary plugins-->
     <script src="{{ asset('vendors/@coreui/coreui/js/coreui.bundle.min.js') }}"></script>
     <!--[if IE]><!-->
     <script src="{{ asset('vendors/@coreui/icons/js/svgxuse.min.js') }}"></script>
     <!--<![endif]-->
-
+    <script src="{{ asset('js/toastr.js') }}"></script>
+    @yield('js')
   </body>
 </html>

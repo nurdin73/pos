@@ -87,4 +87,10 @@ class ProfileController extends Controller
         ];
         return $this->settingService->changePassword($data);
     }
+
+    public function locked()
+    {
+        $password = request()->password;
+        return $this->settingService->locked($password);
+    }
 }

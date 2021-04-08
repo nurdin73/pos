@@ -3,6 +3,7 @@ namespace App\Helpers;
 
 use App\Models\PrinterSettings;
 use App\Models\Stores;
+use App\Models\Tax;
 use App\Models\Transactions;
 use Illuminate\Support\Facades\Log;
 use Mike42\Escpos\CapabilityProfile;
@@ -35,6 +36,11 @@ class PrintTrx
         return $result;
     }
 
+    protected function getPajakDetail()
+    {
+        $result = Tax::find(1);
+        return $result;
+    }
     protected function getPrinterSetting($id)
     {
         $result = PrinterSettings::find($id);
@@ -63,7 +69,6 @@ class PrintTrx
         $printer = new Printer($connector);
         return $printer;
     }
-    
     protected function create4Column($column1, $column2, $column3, $column4)
     {
 
@@ -113,8 +118,13 @@ class PrintTrx
 
         // detail stores
         $store = $this->getDetailStore(1);
+        $pajak = $this->getPajakDetail();
         $nameStore = $store->nama_toko ?? "RitterCoding";
         $alamat = $store->alamat ?? "Cirebon";
+
+        // pajak
+        $namaPajak = $pajak->nama_pajak ?? "-";
+        $totalPajak = $trx->pajak ?? "-";
 
         // heading
         $printer->initialize();
@@ -153,6 +163,7 @@ class PrintTrx
         $printer->text($this->create4Column('', '', "Total", $trx->total));
         $printer->text($this->create4Column('', '', "Bayar", $trx->cash));
         $printer->text($this->create4Column('', '', "Kembalian", $trx->change));
+        $printer->text("$namaPajak ($totalPajak)" . "\n");
         $printer->text("Ket : " . $trx->keterangan ?? "-" . "\n");
         $printer->text("\n");
 
@@ -173,7 +184,7 @@ class PrintTrx
     }
 
 
-    public function testConnection()
+    function testConnection()
     {
         if($this->getPrinterSetting(1)->koneksi == "bluetooth") {
             $connector = new DummyPrintConnector();

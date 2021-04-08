@@ -260,6 +260,10 @@ function getCategory() {
     theme:'bootstrap4',
     ajax: {
       url: URL_API + "/managements/categories",
+      headers: {
+        'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content'),
+        'Authorization' : "Bearer " + sessionStorage.getItem('token')
+      },
       data: function (params) {
         return {
             name: params.term,
@@ -284,6 +288,10 @@ function getSuplier() {
     theme:'bootstrap4',
     ajax: {
       url: URL_API + "/managements/supliers",
+      headers: {
+        'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content'),
+        'Authorization' : "Bearer " + sessionStorage.getItem('token')
+      },
       data: function (params) {
         return {
           search_nama_suplier: params.term,
@@ -307,6 +315,10 @@ function getCabang() {
     theme:'bootstrap4',
     ajax: {
       url: URL_API + "/managements/branch-stores",
+      headers: {
+        'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content'),
+        'Authorization' : "Bearer " + sessionStorage.getItem('token')
+      },
       data: function (params) {
         return {
           search_cabang: params.term,

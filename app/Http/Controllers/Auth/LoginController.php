@@ -5,6 +5,8 @@ namespace App\Http\Controllers\Auth;
 use App\Http\Controllers\Controller;
 use App\Providers\RouteServiceProvider;
 use Illuminate\Foundation\Auth\AuthenticatesUsers;
+use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Auth;
 
 class LoginController extends Controller
 {
@@ -41,5 +43,18 @@ class LoginController extends Controller
     public function showLoginForm()
     {
         return view('auth.login-form');
+    }
+
+    public function login(Request $request)
+    {
+        if(Auth::attempt(['email' => $request->email, 'password' => $request->password])) {
+            $user = Auth::user();
+            $response = [];
+            $response['token'] = $user->createToken(env('APP_KEY'))->accessToken;
+            $response['message'] = 'Login berhasil';
+            return $response;
+        } else {
+            return response(['message' => 'Email atau password salah'], 401);
+        }
     }
 }

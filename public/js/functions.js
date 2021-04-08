@@ -5,7 +5,10 @@ class Functions
         $.ajax({
             type: method,
             url: url,
-            headers: {'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')},
+            headers: {
+                'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content'),
+                'Authorization' : "Bearer " + sessionStorage.getItem('token')
+            },
             data: data,
             beforeSend: function() {
                 $('.loading').show()
@@ -26,7 +29,10 @@ class Functions
             url: url,
             processData: false,
             contentType: false,
-            headers: {'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')},
+            headers: {
+                'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content'),
+                'Authorization' : "Bearer " + sessionStorage.getItem('token')
+            },
             data: data,
             beforeSend: function() {
                 $('.loading').show()
@@ -88,7 +94,10 @@ class Functions
             processData: false,
             contentType: false,
             data: data,
-            headers: {'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')},
+            headers: {
+                'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content'),
+                'Authorization' : "Bearer " + sessionStorage.getItem('token')
+            },
             beforeSend: function() {
                 $('.progress').show()
             },
@@ -126,7 +135,10 @@ class Functions
     deleteData(url) {
         $.ajax({
             method: "DELETE",
-            headers: {'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')},
+            headers: {
+                'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content'),
+                'Authorization' : "Bearer " + sessionStorage.getItem('token')
+            },
             url: url,
             beforeSend: function() {
                 $('.loading').show()
@@ -145,7 +157,10 @@ class Functions
     deleteingData(prosess, url) {
         $.ajax({
             method: "DELETE",
-            headers: {'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')},
+            headers: {
+                'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content'),
+                'Authorization' : "Bearer " + sessionStorage.getItem('token')
+            },
             url: url,
             beforeSend: function() {
                 $('.loading').show()
@@ -190,7 +205,13 @@ class Functions
             "prosessing"    : true,
             "deferRender"   : true,
             "stateSave"     : true,
-            "ajax"          : url,
+            "ajax"          : {
+                url : url,
+                headers: {
+                    'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content'),
+                    'Authorization' : "Bearer " + sessionStorage.getItem('token')
+                },
+            },
             "columns"       : columns,
         })
     }
@@ -199,6 +220,10 @@ class Functions
         $.ajax({
             type: "get",
             url: url,
+            headers: {
+                'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content'),
+                'Authorization' : "Bearer " + sessionStorage.getItem('token')
+            },
             data: data,
             beforeSend: function() {
                 $('.loading').show()
@@ -219,7 +244,10 @@ class Functions
             url: url,
             method: method,
             data: data,
-            headers: {'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')},
+            headers: {
+                'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content'),
+                'Authorization' : "Bearer " + sessionStorage.getItem('token')
+            },
             beforeSend: function() {
                 $('.loading').show()
             },
@@ -242,7 +270,10 @@ class Functions
             url: url,
             method: method,
             data: data,
-            headers: {'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')},
+            headers: {
+                'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content'),
+                'Authorization' : "Bearer " + sessionStorage.getItem('token')
+            },
             beforeSend: function() {
                 $('.loading').show()
             },
@@ -261,6 +292,10 @@ class Functions
         $.ajax({
             type: "get",
             url: url,
+            headers: {
+                'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content'),
+                'Authorization' : "Bearer " + sessionStorage.getItem('token')
+            },
             beforeSend: function() {
                 $('.loading').show()
             },
@@ -280,7 +315,10 @@ class Functions
             type: "post",
             url: url,
             data: data,
-            headers: {'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')},
+            headers: {
+                'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content'),
+                'Authorization' : "Bearer " + sessionStorage.getItem('token')
+            },
             beforeSend: function() {
                 $('.loading').show()
             },
@@ -302,7 +340,10 @@ class Functions
             data: data,
             processData: false,
             contentType: false,
-            headers: {'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')},
+            headers: {
+                'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content'),
+                'Authorization' : "Bearer " + sessionStorage.getItem('token')
+            },
             beforeSend: function() {
                 $('.loading').show()
             },
@@ -322,7 +363,10 @@ class Functions
             type: "put",
             url: url,
             data: data,
-            headers: {'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')},
+            headers: {
+                'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content'),
+                'Authorization' : "Bearer " + sessionStorage.getItem('token')
+            },
             beforeSend: function() {
                 $('.loading').show()
             },

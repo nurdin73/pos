@@ -4,6 +4,10 @@ $(document).ready(function() {
         theme:'bootstrap4',
         ajax: {
             url: URL_API + "/managements/categories",
+            headers: {
+                'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content'),
+                'Authorization' : "Bearer " + sessionStorage.getItem('token')
+            },
             data: function (params) {
                 return {
                     name: params.term,
