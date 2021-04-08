@@ -7,7 +7,7 @@
         <div class="card-body">
           <h1>Masuk</h1>
           <p class="text-muted">Masuk dengan akun kamu</p>
-          <form action="{{ route('loginPost') }}" method="post">
+          <form action="#" method="post" id="loginForm">
             @csrf
             <div class="form-group mb-3">
               <div class="input-group">
@@ -49,4 +49,27 @@
       
     </div>
   </div>
+@endsection
+
+@section('js')
+  <script>
+    $('#loginForm').on('submit', function(e) {
+      e.preventDefault();
+      const data = $(this).serialize()
+      $.ajax({
+        type: "post",
+        url: '{{ route('loginPost') }}',
+        data: data,
+        success: function (response) {
+          // document.cookie = `token=${response.token}`
+          sessionStorage.setItem('token', response.token)
+          toastr.success(response.message, 'Success')
+          window.location.href = '{{ route('dashboardAdmin') }}'
+        },
+        error: function(err) {
+          toastr.error(err.responseJSON.message, 'Error')
+        }
+      });
+    })
+  </script>
 @endsection

@@ -88,6 +88,10 @@ function searchCustomers() {
         theme:'bootstrap4',
         ajax: {
             url: URL_API + "/managements/search-pelanggan",
+            headers: {
+                'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content'),
+                'Authorization' : "Bearer " + sessionStorage.getItem('token')
+            },
             data: function (params) {
                 return {
                     name: params.term,

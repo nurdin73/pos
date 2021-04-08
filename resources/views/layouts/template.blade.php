@@ -81,6 +81,31 @@
     </div>
 
     @yield('modal')
+    <!-- Modal -->
+    <div class="modal fade" id="lockAccountModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+      <div class="modal-dialog">
+        <div class="modal-content">
+          <div class="modal-header">
+            <h5 class="modal-title" id="exampleModalLabel">Verifikasi</h5>
+            <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+              <span aria-hidden="true">&times;</span>
+            </button>
+          </div>
+          <form action="#" id="lockAccount">
+            <div class="modal-body">
+              <div class="form-group">
+                <label for="password">Masukkan password</label>
+                <input type="password" name="password" class="form-control">
+              </div>
+            </div>
+            <div class="modal-footer">
+              <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+              <button type="submit" class="btn btn-primary">Verifikasi</button>
+            </div>
+          </form>
+        </div>
+      </div>
+    </div>
     {{-- Jquery CDN --}}
     <script src="{{ asset('js/jquery.js') }}"></script>
     <!-- CoreUI and necessary plugins-->
@@ -145,6 +170,27 @@
           "progressBar": true,
         }
       });
+      $('#lockAccount').on('submit', function(e) {
+        e.preventDefault()
+        $.ajax({
+          type: "put",
+          url: '{{ url('api/v1/settings/update/locked') }}',
+          data: $(this).serialize(),
+          headers: {
+            'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content'),
+            'Authorization' : "Bearer " + sessionStorage.getItem('token')
+          },
+          success: function (response) {
+            toastr.success(response.message, 'Success')
+            setTimeout(() => {
+              window.location.reload()
+            }, 1500);
+          },
+          error:function(err) {
+            toastr.error(err.responseJSON.message, 'Error')
+          }
+        });
+      })
     </script>
     {{-- Templates --}}
     @yield('js')

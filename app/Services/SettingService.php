@@ -120,4 +120,21 @@ class SettingService
             return response(['message' => $e->getMessage()], 500);
         }
     }
+
+    public function locked($password)
+    {
+        $authCheck = auth()->user();
+        if(!app('hash')->check($password, $authCheck->password)) return response(['message' => 'password yang dimasukkan salah'], 401);
+        if($authCheck->isLocked == 1) {
+            $user = User::find($authCheck->id)->update([
+                'isLocked' => 0
+            ]);
+            return response(['message' => 'Akun berhasil dibuka']);
+        } else {
+            $user = User::find($authCheck->id)->update([
+                'isLocked' => 1
+            ]);
+            return response(['message' => 'akun berhasil dikunci']);
+        }
+    }
 }
