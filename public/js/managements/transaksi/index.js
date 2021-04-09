@@ -456,7 +456,8 @@ function processPayment() {
             headers: {
               'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content'),
               'Accept': 'application/json',
-              'Content-Type': 'application/json'
+              'Content-Type': 'application/json',
+              'Authorization' : "Bearer " + sessionStorage.getItem('token')
             },
             method: 'POST',
             body: JSON.stringify(data)
