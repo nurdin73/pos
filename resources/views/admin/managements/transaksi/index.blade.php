@@ -127,8 +127,8 @@
                 <small class="text-muted" id="grand_total">Rp. 0 ,-</small>
               </li>
             </ul>
-            <button class="btn btn-block btn-danger" id="cancelOrder">Cancel</button>
-            <button class="btn btn-block btn-success btn-lg" id="btn-proccess-payment" type="submit">Prosess</button>
+            <button class="btn btn-block btn-secondary" id="cancelOrder">Cancel</button>
+            <button class="btn btn-block btn-primary btn-lg" id="btn-proccess-payment" type="submit">Prosess</button>
             {{-- <button class="btn btn-block btn-success btn-lg" data-target="#processPaymentModal" data-toggle="modal">Prosess</button> --}}
           </div>
         </div>

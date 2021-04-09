@@ -25,8 +25,10 @@
     @else
       <title>{{ ucfirst($explodeUrl[count($explodeUrl) - 2]) }} - {{ $settings->nama_toko ?? "" }} Point Of Sales</title>
     @endif
+    {{-- app --}}
+    {{-- <link rel="stylesheet" href="{{ asset('css/app.css') }}"> --}}
     <!-- Main styles for this application-->
-    <link href="{{ asset('css/style.min.css') }}" rel="stylesheet">
+    <link href="{{ asset('css/style.css') }}" rel="stylesheet">
     {{-- <link rel="preload" href="{{ asset('css/style.min.css') }}" as="style" onload="this.onload=null;this.rel='stylesheet'">
     <noscript><link rel="stylesheet" href="{{ asset('css/style.min.css') }}"></noscript>   --}}
     <meta name="csrf-token" content="{{ csrf_token() }}">
@@ -106,6 +108,7 @@
         </div>
       </div>
     </div>
+    {{-- <script src="{{ asset('js/app.js') }}"></script> --}}
     {{-- Jquery CDN --}}
     <script src="{{ asset('js/jquery.js') }}"></script>
     <!-- CoreUI and necessary plugins-->
