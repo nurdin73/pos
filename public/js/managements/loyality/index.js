@@ -44,9 +44,60 @@ $(function () {
         }
     })
 
+    $('#listLoyality').on('click', 'div div div .detailLoyality', function(e) {
+        e.preventDefault()
+        const id = $(this).data('id')
+        const urlDetailLoyal = URL_API + "/managements/loyality-program/" + id
+        Functions.prototype.getRequest(processDetailRolayty, urlDetailLoyal)
+    })
+
+    $('#listLoyality').on('click', 'div div .btn-del-loyal', function(e) {
+        e.preventDefault()
+        const id = $(this).data('id')
+        Swal.fire({
+            title: 'Yakin?',
+            text: `Loyality akan terhapus permanen!`,
+            icon: 'warning',
+            showCancelButton: true,
+            confirmButtonText: 'Hapus!',
+            cancelButtonText: 'Batal',
+            confirmButtonColor: '#321fdb',
+            cancelButtonColor: '#d33',
+        }).then(result => {
+            if(result.isConfirmed) {
+                const urlDelLoyal = URL_API + "/managements/delete/loyality-program/" + id
+                Functions.prototype.deleteingData(processDeleteLoyal, urlDelLoyal)
+            }
+        })
+    })
+
 
     addLoyality()
 });
+
+const processDeleteLoyal = {
+    set successData(response) {
+        toastr.success(response.message, 'Success')
+        processGetLoyality.loadData = ""
+    },
+    set errorData(err) {
+        toastr.error(err.responseJSON.message, 'Error')
+    }
+}
+
+const processDetailRolayty = {
+    set successData(response) {
+        const image = response.image != null ? URL_IMAGE + "/" + response.image : URL_NO_IMAGE
+        $('#exampleModalLabel').text(response.name)
+        $('#deskripsiLoyality').text(response.deskripsi ?? "-")
+        $('#thumbNailLoyal').attr('src', image)
+        $('#stockLoyal').text(response.stock)
+        $('#pointLoyal').text(response.point)
+    },
+    set errorData(err) {
+        toastr.error(err.responseJSON.message, 'Error')
+    }
+}
 
 const processGetLoyality = {
     set loadData(query) {
@@ -67,7 +118,7 @@ const processGetLoyality = {
                             <i class="fas fa-times"></i>
                         </button>
                         <div class="bg-dark p-2 captions d-flex justify-content-between align-items-center">
-                            <a href="#" class="text-white card-link font-weight-bold stretched-link" data-toggle="modal" data-target="#descriptionVoucher" data-id="${data.id}">${title}</a>
+                            <a href="#" class="text-white card-link font-weight-bold stretched-link detailLoyality" data-toggle="modal" data-target="#descriptionVoucher" data-id="${result.id}">${title}</a>
                             <small>${result.point} Point</small>
                         </div>
                     </div>
@@ -159,7 +210,7 @@ function addLoyality() {
 const processAddLoyality = {
     set successData(response) {
         toastr.success(response.message, 'Success')
-        processGetLoyality.loadData = ""
+        window.location.reload()
     },
     set errorData(err) {
         toastr.error(err.responseJSON.message, 'error')

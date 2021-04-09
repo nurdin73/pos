@@ -48,17 +48,27 @@
     <div class="modal-dialog">
       <div class="modal-content">
         <div class="modal-header">
-          <h5 class="modal-title" id="exampleModalLabel">Modal title</h5>
+          <h5 class="modal-title" id="exampleModalLabel">Title</h5>
           <button type="button" class="close" data-dismiss="modal" aria-label="Close">
             <span aria-hidden="true">&times;</span>
           </button>
         </div>
         <div class="modal-body">
-          ...
+          <img src="{{ asset('assets/img/assets/no_img.png') }}" class="img-fluid img-thumbnail" id="thumbNailLoyal" />
+          <div class="d-flex justify-content-between align-items-center mt-2">
+            <div class="d-flex justify-content-start flex-column align-items-start">
+              <span class="badge badge-primary lead">Stock</span>
+              <span id="stockLoyal"></span>
+            </div>
+            <div class="d-flex justify-content-end flex-column align-items-end">
+              <span class="badge badge-danger lead">Point</span>
+              <span id="pointLoyal"></span>
+            </div>
+          </div>
+          <p id="deskripsiLoyality"></p>
         </div>
         <div class="modal-footer">
           <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
-          <button type="button" class="btn btn-primary">Save changes</button>
         </div>
       </div>
     </div>

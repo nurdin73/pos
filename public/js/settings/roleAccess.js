@@ -130,9 +130,9 @@ function granted() {
 
 const processIsGranted = {
     set successData(response) {
-        console.log(response);
+        toastr.success(response.message, 'Success')
     },
     set errorData(err) {
-        console.log(err);
+        toastr.error(er.responseJSON.message, 'Error')
     }
 }

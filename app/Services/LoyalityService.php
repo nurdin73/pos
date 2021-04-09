@@ -31,7 +31,7 @@ class LoyalityService
 
     public function get($id)
     {
-        $result = LoyalityProgram::with('category')->findOrFail($id);
+        $result = LoyalityProgram::with('category:id,name')->findOrFail($id);
         return $result;
     }
 
