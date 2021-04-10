@@ -31,6 +31,7 @@ class DashboardService
                 }
             }
         }
+        $data['average'] = count($transactions) > 0 ? $totalPembelian / count($transactions) : 0;
         $data['total'] = $totalPembelian;
         $data['keuntungan'] = $totalPembelian - $totalModal;
         return response($data);

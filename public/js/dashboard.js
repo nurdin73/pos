@@ -20,6 +20,7 @@ const getTransactions = {
     },
     set successData(response) {
         $('#countTransaction').text(response.total_trx)
+        $('#countAverage').text(Functions.prototype.formatRupiah(response.average.toString(), 'Rp. '))
         $('#countPendapatan').text(Functions.prototype.formatRupiah(response.total.toString(), 'Rp. '))
         if(response.keuntungan < 0) {
             $('#countKeuntungan').text(Functions.prototype.formatRupiah(response.keuntungan.toString(), 'Rp. -'))
@@ -75,8 +76,8 @@ const getChartTransactions = {
             {
                 label: 'Keuntungan',
                 fill: false,
-                backgroundColor: 'rgb(4, 47, 102)',
-                borderColor: 'rgb(4, 47, 102)',
+                backgroundColor: '#2eb85c',
+                borderColor: '#2eb85c',
                 data: keuntungan,
             },
         ]
@@ -90,7 +91,7 @@ const getChartTransactions = {
                     },
 
                 }]
-            }
+            },
         }
         Functions.prototype.createManyChart(resetCanvas(), 'bar', dataset, labels, options)
     },

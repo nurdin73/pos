@@ -4,7 +4,7 @@
     <div class="container-fluid">
       <div class="fade-in">
         <div class="row">
-          <div class="col-md-4">
+          <div class="col-md-3">
             <div class="card">
               <div class="card-body">
                 <div class="text-value-lg" id="countTransaction">0</div>
@@ -15,10 +15,10 @@
               </div>
             </div>
           </div>
-          <div class="col-md-4">
+          <div class="col-md-3">
             <div class="card">
               <div class="card-body">
-                <div class="text-value-lg" id="countPendapatan">0</div>
+                <div class="text-value-lg text-info" id="countPendapatan">0</div>
                 <div>Jumlah Pendapatan</div>
                 <div class="progress progress-xs my-2">
                   <div class="progress-bar bg-success" role="progressbar" style="width: 0%" aria-valuenow="0" aria-valuemin="0" aria-valuemax="100"></div>
@@ -26,10 +26,21 @@
               </div>
             </div>
           </div>
-          <div class="col-md-4">
+          <div class="col-md-3">
             <div class="card">
               <div class="card-body">
-                <div class="text-value-lg" id="countKeuntungan">0</div>
+                <div class="text-value-lg text-primary" id="countAverage">0</div>
+                <div>Rata rata pendapatan</div>
+                <div class="progress progress-xs my-2">
+                  <div class="progress-bar bg-success" role="progressbar" style="width: 0%" aria-valuenow="0" aria-valuemin="0" aria-valuemax="100"></div>
+                </div>
+              </div>
+            </div>
+          </div>
+          <div class="col-md-3">
+            <div class="card">
+              <div class="card-body">
+                <div class="text-value-lg text-success" id="countKeuntungan">0</div>
                 <div>Jumlah keuntungan</div>
                 <div class="progress progress-xs my-2">
                   <div class="progress-bar bg-success" role="progressbar" style="width: 0%" aria-valuenow="0" aria-valuemin="0" aria-valuemax="100"></div>
