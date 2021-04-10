@@ -37,6 +37,9 @@ Route::group(['prefix' => 'admin', 'middleware' => ['auth', 'checkLockAccount']]
             Route::get('/edit/{id}', 'Admin\AdminController@editProduct')->middleware('role:managementBarang');
             Route::get('/detail/{id}', 'Admin\AdminController@detailProduct')->middleware('role:managementBarang');
         });
+        Route::group(['prefix' => '/return'], function(){
+            Route::get('/', 'Admin\AdminController@return')->name('returnBarang')->middleware('role:returnBarang');
+        });
 
         Route::group(['prefix' => '/suplier'], function () {
             Route::get('/', 'Admin\AdminController@suplier')->name('managementSuplier')->middleware('role:managementSuplier');

@@ -31,6 +31,11 @@ class AdminController extends Controller
         return view('admin.managements.barang.detail', $data);
     }
 
+    public function return()
+    {
+        return view('admin.managements.return.index');
+    }
+
     public function kategori()
     {
         return view('admin.managements.kategori.index');

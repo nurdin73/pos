@@ -44,6 +44,12 @@ class MenuSeeder extends Seeder
                         'child_sub_menu' => [] 
                     ],
                     [
+                        'name' => 'Return barang',
+                        'icon' => 'vendors/@coreui/icons/svg/free.svg#cil-loop',
+                        'url' => 'returnBarang', // route name
+                        'child_sub_menu' => [] 
+                    ],
+                    [
                         'name' => 'Suplier',
                         'icon' => 'vendors/@coreui/icons/svg/free.svg#cil-truck',
                         'url' => 'managementSuplier', // route name
