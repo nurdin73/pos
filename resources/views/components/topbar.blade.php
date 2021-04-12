@@ -15,11 +15,11 @@
 </button>
 <ul class="c-header-nav ml-auto mr-4">
   {{-- <li class="c-header-nav-item d-md-down-none mx-2">
-    <a class="c-header-nav-link changeTheme" href="#"> --}}
-      {{-- <svg class="c-icon">
+    <a class="c-header-nav-link changeTheme" href="#">
+      <svg class="c-icon">
         <use xlink:href="{{ asset('vendors/@coreui/icons/svg/free.svg#cil-sun') }}"></use>
-      </svg> --}}
-    {{-- </a>
+      </svg>
+    </a>
   </li> --}}
   <li class="c-header-nav-item d-md-down-none mx-2">
     <a class="c-header-nav-link" href="#">
