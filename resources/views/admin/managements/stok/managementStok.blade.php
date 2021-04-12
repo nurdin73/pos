@@ -110,7 +110,7 @@
               <button class="btn btn-sm btn-primary btn-block" id="updateStok" data-toggle="modal" data-target="#changeStok">Edit Stok</button>
             </div>
             <div class="col-6">
-              <button class="btn btn-sm btn-outline-primary btn-block" id="showStok" data-toggle="modal" data-target="#listStokHistory">Lihat Stok</button>
+              <button class="btn btn-sm btn-secondary btn-block" id="showStok" data-toggle="modal" data-target="#listStokHistory">Lihat Stok</button>
             </div>
           </div>
         </div>
@@ -157,6 +157,9 @@
                   <label for="jumlah">Jumlah</label>
                   <input type="text" name="jumlah" id="jumlah" class="form-control">
                 </div>
+              </div>
+              <div class="col-12 mt-2">
+                <small class="text-info">* untuk update harga dasar. pilih opsi tambah dan silahkan kosongkan field jumlah</small>
               </div>
             </div>
             <button type="submit" class="btn btn-primary btn-block btn-sm">Simpan</button>

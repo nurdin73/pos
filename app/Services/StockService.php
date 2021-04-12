@@ -13,12 +13,19 @@ class StockService
     public function updateStok($data, $id_product)
     {
         if($data['method'] == "tambah") {
-            $create = Stocks::create([
-                'product_id' => $id_product,
-                'stok' => $data['jumlah'] ?? 0,
-                'harga_dasar' => $data['harga_dasar'],
-                'tgl_update' => date('Y-m-d H:i:s')
-            ]);
+            if($data['jumlah'] == 0) {
+                $stocks = Stocks::where('product_id', $id_product)->latest()->first();
+                $stocks->update([
+                    'harga_dasar' => $data['harga_dasar']
+                ]);
+            } else {
+                $create = Stocks::create([
+                    'product_id' => $id_product,
+                    'stok' => $data['jumlah'] ?? 0,
+                    'harga_dasar' => $data['harga_dasar'],
+                    'tgl_update' => date('Y-m-d H:i:s')
+                ]);
+            }
             return response(['message' => 'Stok berhasil ditambahkan']);
         } else {
             $stocks = Stocks::where('product_id', $id_product)->orderBy('tgl_update', 'ASC')->get();
