@@ -5,3 +5,5 @@ php artisan passport:install --force
 echo "passport install success"
 php artisan view:cache
 echo "cache success"
+php artisan storage:link
+echo "Storage link berhasil dibuat"
