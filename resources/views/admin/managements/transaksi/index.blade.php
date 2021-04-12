@@ -52,9 +52,9 @@
                   </div>
                   <div class="form-group row">
                     <label class="col-md-3 col-form-label" for="pajak">Pajak</label>
-                    <div class="input-group col-md-9">
-                      <input class="form-control" id="persentasePajak" type="text" name="persentasePajak" placeholder="0.00" disabled>
-                      <div class="input-group-append">
+                    <div class="col-md-9">
+                      <div class="input-group">
+                        <input class="form-control" id="persentasePajak" type="text" name="persentasePajak" placeholder="0.00" disabled>
                         <span class="input-group-text" id="basic-addon2">%</span>
                       </div>
                     </div>
@@ -127,7 +127,7 @@
                 <small class="text-muted" id="grand_total">Rp. 0 ,-</small>
               </li>
             </ul>
-            <button class="btn btn-block btn-secondary" id="cancelOrder">Cancel</button>
+            <button class="btn btn-block btn-secondary mt-2" id="cancelOrder">Cancel</button>
             <button class="btn btn-block btn-primary btn-lg" id="btn-proccess-payment" type="submit">Prosess</button>
             {{-- <button class="btn btn-block btn-success btn-lg" data-target="#processPaymentModal" data-toggle="modal">Prosess</button> --}}
           </div>
