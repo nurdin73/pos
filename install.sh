@@ -5,6 +5,7 @@ php artisan migrate:fresh --seed
 echo "migrate success"
 php artisan passport:install --force
 echo "passport install success"
+php artisan optimize
 php artisan view:cache
 echo "cache success"
 php artisan storage:link
