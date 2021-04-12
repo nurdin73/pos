@@ -2,6 +2,8 @@
 @ECHO OFF
 ECHO Pastikan database sudah dibuat terlebih dahulu...
 PAUSE
+composer update
+php artisan key:generate
 ECHO Migrasi database akan dibuat.. 
 php artisan migrate:fresh --seed
 ECHO migrate success

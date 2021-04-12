@@ -1,4 +1,6 @@
 # pastikan database sudah di buat
+composer update
+php artisan key:generate
 php artisan migrate:fresh --seed
 echo "migrate success"
 php artisan passport:install --force
