@@ -101,7 +101,7 @@ Aplikasi point of sale ini digunakan untuk memanagement stok barang, transaksi d
 - **Email :** admin@admin.com
 - **Password** : admin
 
-# License
+## License
 Aplikasi berbayar.
 
 ## Kontak Developer
