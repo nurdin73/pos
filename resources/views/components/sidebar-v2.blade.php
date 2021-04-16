@@ -3,13 +3,15 @@
 use App\Models\Menu;
 use Illuminate\Support\Facades\Cache;
 
-$menus = Menu::with(['subMenus' => function($q) {
-  $q->with(['childSubMenus' => function($z) {
-    $z->select('id', 'url', 'name', 'sub_menu_id');
-  }])->whereHas('roleAcceses', function($w) {
-    $w->where('role_id', auth()->user()->role_id)->where('isGranted', 1)->select('id', 'role_id', 'isGranted', 'sub_menu_id');
-  })->select('id', 'name', 'icon', 'url', 'menu_id');
-}])->get(['id', 'name']);
+$menus =Cache::rememberForever('menus:'. auth()->user()->role_id, function () {
+  return Menu::with(['subMenus' => function($q) {
+    $q->with(['childSubMenus' => function($z) {
+      $z->select('id', 'url', 'name', 'sub_menu_id');
+    }])->whereHas('roleAcceses', function($w) {
+      $w->where('role_id', auth()->user()->role_id)->where('isGranted', 1)->select('id', 'role_id', 'isGranted', 'sub_menu_id');
+    })->select('id', 'name', 'icon', 'url', 'menu_id');
+  }])->get(['id', 'name']);
+});
 ?>
 
 <div class="c-sidebar c-sidebar-dark c-sidebar-fixed c-sidebar-lg-show" id="sidebar">

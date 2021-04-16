@@ -34,6 +34,7 @@ class AppServiceProvider extends ServiceProvider
         $this->app->singleton('RoleAccessService', \App\Services\RoleAccessService::class);
         $this->app->singleton('SubMenuService', \App\Services\SubMenuService::class);
         $this->app->singleton('LoyalityService', \App\Services\LoyalityService::class);
+        $this->app->singleton('ReturnProductService', \App\Services\ReturnProductService::class);
     }
 
     /**

@@ -42,4 +42,9 @@ class Products extends Model
     {
         return $this->belongsTo(BranchStores::class, 'cabang_id', 'id');
     }
+
+    public function returnProducts()
+    {
+        return $this->hasMany(ReturnProduct::class, 'product_id', 'product_id');
+    }
 }

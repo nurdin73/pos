@@ -43,6 +43,7 @@ Route::group(['prefix' => 'v1/' , 'middleware' => 'auth:api'], function() {
         Route::get('/branch-stores', 'Api\Managements\BranchStoreController@getAll');
         Route::get('/chart-pajak', 'Api\Managements\PajakController@cartPajak');
         Route::get('/loyality-program', 'Api\Managements\LoyalityProgramController@getall');
+        Route::get('/return-products', 'Api\Managements\ReturnProductController@getall');
 
         // get detail
         Route::get('barang/{id}', 'Api\Managements\BarangController@show');
@@ -59,6 +60,7 @@ Route::group(['prefix' => 'v1/' , 'middleware' => 'auth:api'], function() {
         Route::get('kode-barang/{id}', 'Api\Managements\BarangController@codeProduct');
         Route::get('cetak-struk/{id}', 'Api\Managements\TransaksiController@cetakStruk');
         Route::get('loyality-program/{id}', 'Api\Managements\LoyalityProgramController@get');
+        Route::get('return-product/{id}', 'Api\Managements\ReturnProductController@get');
 
         // add 
         Route::group(['prefix' => 'add'], function () {
@@ -75,6 +77,7 @@ Route::group(['prefix' => 'v1/' , 'middleware' => 'auth:api'], function() {
             Route::post('/branch-store', 'Api\Managements\BranchStoreController@add');
             Route::post('/kode-barang', 'Api\Managements\BarangController@addCodeProduct');
             Route::post('/loyality-program', 'Api\Managements\LoyalityProgramController@store');
+            Route::post('/return-product', 'Api\Managements\ReturnProductController@add');
         });
 
         // update 
@@ -93,6 +96,7 @@ Route::group(['prefix' => 'v1/' , 'middleware' => 'auth:api'], function() {
             Route::put('/branch-store/{id}', 'Api\Managements\BranchStoreController@update');
             Route::put('/kode-barang/{id}', 'Api\Managements\BarangController@updateCodeProduct');
             Route::put('/loyality-program/{id}', 'Api\Managements\LoyalityProgramController@update');
+            Route::put('/return-product/{id}', 'Api\Managements\ReturnProductController@update');
         });
 
         // delete 
@@ -110,6 +114,7 @@ Route::group(['prefix' => 'v1/' , 'middleware' => 'auth:api'], function() {
             Route::delete('/kode-barang/{id}', 'Api\Managements\BarangController@deleteCodeProduct');
             Route::delete('/transaksi/{no_invoince}', 'Api\Managements\TransaksiController@cancelTransaction');
             Route::delete('/loyality-program/{id}', 'Api\Managements\LoyalityProgramController@delete');
+            Route::delete('/return-product/{id}', 'Api\Managements\ReturnProductController@destroy');
         });
 
     });

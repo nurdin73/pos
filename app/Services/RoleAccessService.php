@@ -3,6 +3,7 @@ namespace App\Services;
 
 use App\Helpers\CreatePaginationLink;
 use App\Models\RoleAccess;
+use Illuminate\Support\Facades\Cache;
 
 class RoleAccessService
 {
@@ -26,6 +27,7 @@ class RoleAccessService
         $check = RoleAccess::findOrFail($id);
         $check->isGranted = $isGranted;
         $check->save();
+        Cache::forget('menus:'.$check->role_id);
         return response(['message' => 'Data berhasil diubah']);
     }
 }
