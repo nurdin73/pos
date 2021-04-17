@@ -23,8 +23,38 @@ $(function () {
         query_params = ""
         processGetAllProdReturn.loadData = ""
     })
-
+    addReturnProduct()
+    getProduct()
 });
+
+function getProduct() {
+    $('#product').select2({
+        theme:'bootstrap4',
+        placeholder: "Cari produk",
+        ajax: {
+            url: URL_API + "/managements",
+            headers: {
+                'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content'),
+                'Authorization' : "Bearer " + sessionStorage.getItem('token')
+            },
+            data: function (params) {
+                return {
+                    search_nama_barang: params.term,
+                }
+            },
+            processResults: function(data, params) {
+                return {
+                    results: data.data.map(result => {
+                        return {
+                                text: result.nama_barang,
+                                id: result.id
+                            }
+                    })
+                }
+            },
+        }
+    })
+}
 
 const processGetAllProdReturn = {
     set loadData(query_params) {
@@ -59,7 +89,7 @@ const processGetAllProdReturn = {
                 </tr>
                 `)
             })
-            $('.paginate').html(paginations)
+            $('.paginate').html(pagination)
             $('.paginate').find('a').each(function() {
                 if($(this).text() === '‹'){
                     $(this).attr('data-id', currentPage - 1);
@@ -76,6 +106,35 @@ const processGetAllProdReturn = {
                 </tr>
             `)
         }
+    },
+    set errorData(err) {
+        toastr.error(err.responseJSON.message, 'Error')
+    }
+}
+
+function addReturnProduct() {
+    $('#addReturnProductForm').on('submit', function(e) {
+        e.preventDefault()
+        const product = $('#product').val()
+        if(product == "" || product == null) {
+            return toastr.error("Pilih produk terlebih dahulu", "error")
+        }
+        const data = {
+            product_id: product,
+            qyt: $('#qyt').val(),
+            reason: $('#reason').val()
+        }
+        const urlAdd = URL_API + "/managements/add/return-product"
+        Functions.prototype.postRequest(processAddReturnProduct, urlAdd, data)
+    })
+}
+
+const processAddReturnProduct = {
+    set successData(response) {
+        toastr.success(response.message)
+        setTimeout(() => {
+            window.location.reload()
+        }, 1500);
     },
     set errorData(err) {
         toastr.error(err.responseJSON.message, 'Error')
