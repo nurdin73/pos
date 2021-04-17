@@ -25,12 +25,90 @@ $(function () {
     })
     addReturnProduct()
     getProduct()
+
+    $('#listReturnProd').on('click', 'tr td div .detail', function(e) {
+        e.preventDefault()
+        const id = $(this).data('id')
+        const urlDetail = URL_API + "/managements/return-product/" + id
+        Functions.prototype.getRequest(processDetailProduct, urlDetail)
+    })
+
+    $('#listReturnProd').on('click', 'tr td div .update', function(e) {
+        e.preventDefault()
+        const id = $(this).data('id')
+        const urlDetail = URL_API + "/managements/return-product/" + id
+        Functions.prototype.getRequest(processUpdateProduct, urlDetail)
+    })
+    $('#listReturnProd').on('click', 'tr td div .delete', function(e) {
+        e.preventDefault()
+        const id = $(this).data('id')
+        console.log(id);
+    })
 });
+
+const processDetailProduct = {
+    set successData(response) {
+        $('#nama_barang').text(response.product.nama_barang)
+        $('#qyt_barang').text(response.qyt)
+        $('#alasan_return').text(response.reason)
+        $('#status_return').text(response.status)
+    },
+    set errorData(err) {
+        toastr.error(err.responseJSON.message, 'Error')
+    }
+}
+
+const processUpdateProduct = {
+    set successData(response) {
+        console.log(response);
+        var option2 = response.product != null ? new Option(response.product.nama_cabang, response.product.id, true, true) : new Option("", "", true, true)
+        $("#update_product").append(option2).trigger('change')
+        $("#update_product").trigger({
+            type: 'select2:select',
+            params: {
+                search_nama_barang : response.product != null ? response.product.nama_barang : ""
+            }
+        })
+        $('#update_qyt').val(response.qyt)
+        $('#update_reason').val(response.reason)
+    },
+    set errorData(err) {
+        toastr.error(err.responseJSON.message, 'Error')
+    }
+}
 
 function getProduct() {
     $('#product').select2({
         theme:'bootstrap4',
         placeholder: "Cari produk",
+        ajax: {
+            url: URL_API + "/managements",
+            headers: {
+                'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content'),
+                'Authorization' : "Bearer " + sessionStorage.getItem('token')
+            },
+            data: function (params) {
+                return {
+                    search_nama_barang: params.term,
+                }
+            },
+            processResults: function(data, params) {
+                return {
+                    results: data.data.map(result => {
+                        return {
+                                text: result.nama_barang,
+                                id: result.id
+                            }
+                    })
+                }
+            },
+        }
+    })
+
+    $('#update_product').select2({
+        theme:'bootstrap4',
+        placeholder: "Cari produk",
+        dropdownParent: $('#updateReturnBarangModal'),
         ajax: {
             url: URL_API + "/managements",
             headers: {
@@ -81,8 +159,8 @@ const processGetAllProdReturn = {
                     <td class="text-center">${status}</td>
                     <td>
                         <div class="btn-group">
-                            <button data-id="${result.id}" class="btn btn-sm btn-primary detail">Detail</button>
-                            <button data-id="${result.id}" class="btn btn-sm btn-info update">Update</button>
+                            <button data-id="${result.id}" data-toggle="modal" data-target="#detailReturnBarang" class="btn btn-sm btn-primary detail">Detail</button>
+                            <button data-id="${result.id}" data-toggle="modal" data-target="#updateReturnBarangModal" class="btn btn-sm btn-info update">Update</button>
                             <button data-id="${result.id}" class="btn btn-sm btn-danger delete">Hapus</button>
                         </div>
                     </td>
@@ -140,3 +218,4 @@ const processAddReturnProduct = {
         toastr.error(err.responseJSON.message, 'Error')
     }
 }
+

@@ -113,6 +113,90 @@
       </div>
     </div>
   </div>
+
+  <!-- Modal -->
+  <div class="modal fade" id="updateReturnBarangModal" aria-labelledby="exampleModalLabel" aria-hidden="true">
+    <div class="modal-dialog">
+      <div class="modal-content">
+        <div class="modal-header">
+          <h5 class="modal-title" id="exampleModalLabel">Update barang return</h5>
+          <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+            <span aria-hidden="true">&times;</span>
+          </button>
+        </div>
+        <form action="#" id="updateReturnProductForm">
+          <div class="modal-body">
+            <div class="row">
+              <div class="col-md-9">
+                <div class="form-group">
+                  <label for="update_product">Pilih barang</label>
+                  <select name="update_product" id="update_product" class="custom-select" style="width: 100%">
+                  </select>
+                </div>
+              </div>
+              <div class="col-md-3">
+                <div class="form-group">
+                  <label for="update_qty">Qty</label>
+                  <input type="number" name="update_qyt" id="update_qyt" min="1" value="1" class="form-control">
+                </div>
+              </div>
+            </div>
+            <div class="form-group">
+              <label for="update_reason">Alasan</label>
+              <textarea name="update_reason" id="update_reason" cols="30" rows="3" class="form-control"></textarea>
+            </div>
+          </div>
+          <div class="modal-footer">
+            <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+            <button type="submit" class="btn btn-primary">Simpan</button>
+          </div>
+        </form>
+      </div>
+    </div>
+  </div>
+
+  <!-- Modal -->
+  <div class="modal fade" id="detailReturnBarang" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+    <div class="modal-dialog">
+      <div class="modal-content">
+        <div class="modal-header">
+          <h5 class="modal-title" id="exampleModalLabel">Detail barang return</h5>
+          <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+            <span aria-hidden="true">&times;</span>
+          </button>
+        </div>
+        <div class="modal-body">
+          <div class="row">
+            <div class="col-md-9">
+              <div class="d-flex justify-content-start flex-column align-items-start">
+                <span for="nama_barang" class="text-danger">Nama Barang</span>
+                <span id="nama_barang" class="text-muted">Nama barang</span>
+              </div>
+            </div>
+            <div class="col-md-3">
+              <div class="d-flex justify-content-end flex-column align-items-end">
+                <span for="nama_barang" class="text-danger">Qty</span>
+                <span id="qyt_barang" class="text-muted">Nama barang</span>
+              </div>
+            </div>
+          </div>
+          <div class="dropdown-divider"></div>
+          <div class="d-flex justify-content-start flex-column align-items-start">
+            <span for="nama_barang" class="text-danger">Alasan</span>
+            <span id="alasan_return" class="text-muted"></span>
+          </div>
+          <div class="dropdown-divider"></div>
+          <div class="d-flex justify-content-start flex-column align-items-start">
+            <span for="nama_barang" class="text-danger">Status</span>
+            <span id="status_return" class="badge badge-info"></span>
+          </div>
+        </div>
+        <div class="modal-footer">
+          <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+        </div>
+      </div>
+    </div>
+  </div>
 @endsection
 
 @section('js')

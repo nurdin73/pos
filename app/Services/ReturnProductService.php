@@ -8,7 +8,7 @@ class ReturnProductService
 {
     public function getall($search, $sorting)
     {
-        $results = ReturnProduct::with('product')->select('product_id', 'qyt', 'status');
+        $results = ReturnProduct::with('product')->select('id', 'product_id', 'qyt', 'status');
         if($search != "") {
             $results = $results->whereHas('product', function($q) use($search) {
                 $q->where('nama_barang', 'like', "%$search%")->select('id', 'nama_barang');
