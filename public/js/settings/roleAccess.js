@@ -42,7 +42,7 @@ const processGetMenuAccess = {
         if(response.length > 0) {
             response.map((result, i) => {
                 const checked = result.role_acceses[0].isGranted == 1 ? "checked" : "";
-                const roleAdmin = result.role_acceses[0].role_id == 1 ? "disabled" : ""
+                const roleAdmin = result.role_acceses[0].role_id == 1 || result.id == 1 ? "disabled" : ""
                 $('#listMenu').append(`
                     <tr>
                         <td>${result.name}</td>

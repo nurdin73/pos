@@ -20,7 +20,7 @@ class RoleAccessSeeder extends Seeder
         $submenus = SubMenu::all();
         foreach ($roles as $role) {
             foreach ($submenus as $submenu) {
-                $granted = $role->id == 1 ? 1 : 0;
+                $granted = $role->id == 1 || $submenu->id == 1 ? 1 : 0;
                 RoleAccess::create([
                     'role_id' => $role->id,
                     'sub_menu_id' => $submenu->id,

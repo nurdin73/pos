@@ -31,9 +31,11 @@ class RoleService
             if(!$create) return response(['message' => 'jabatan gagal ditambahkan'], 500);
             $submenus = SubMenu::all();
             foreach ($submenus as $submenu) {
+                $granted = $submenu->id == 1 ? 1 : 0;
                 $createRoleAccess = RoleAccess::create([
                     'role_id' => $create->id,
-                    'sub_menu_id' => $submenu->id
+                    'sub_menu_id' => $submenu->id,
+                    'isGranted' => $granted
                 ]);
             }
             DB::commit();
