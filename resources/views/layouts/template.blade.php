@@ -26,8 +26,8 @@
       <title>{{ ucfirst($explodeUrl[count($explodeUrl) - 2]) }} - {{ $settings->nama_toko ?? "" }} Point Of Sales</title>
     @endif
     {{-- app --}}
-    {{-- <link rel="stylesheet" href="{{ asset('css/app.css') }}"> --}}
     <!-- Main styles for this application-->
+    {{-- <link rel="stylesheet" href="{{ asset('css/app.css') }}"> --}}
     <link href="{{ asset('css/style.css') }}" rel="stylesheet">
     {{-- <link rel="preload" href="{{ asset('css/style.min.css') }}" as="style" onload="this.onload=null;this.rel='stylesheet'">
     <noscript><link rel="stylesheet" href="{{ asset('css/style.min.css') }}"></noscript>   --}}
@@ -135,6 +135,7 @@
     <script src="{{ asset('js/functions.js') }}"></script>
     <script>
       $(function () {
+        $('[data-toggle="tooltip"]').tooltip()
         var dark = localStorage.getItem('theme');
         if(dark == "true") {
           console.log('masuk sini');

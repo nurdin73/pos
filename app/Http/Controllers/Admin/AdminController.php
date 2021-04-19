@@ -66,7 +66,7 @@ class AdminController extends Controller
     {
         $data['no_invoice'] = GenerateCode::invoice();
         $data['tax'] = Tax::find(1);
-        return view('admin.managements.transaksi.index', $data);
+        return view('admin.managements.transaksi.v3.index', $data);
     }
 
     public function listTransaksi()

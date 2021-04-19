@@ -166,11 +166,11 @@ class BarangController extends Controller
         $cabang_id = $request->input('cabang_id');
         $point = $request->input('point');
         // ------------------------------- //
-        if($satuan) {
-            if($satuan != "bungkus" && $satuan != "box" && $satuan != "pack") {
-                return response(['message' => 'value satuan tidak valid'], 406);
-            }
-        }
+        // if($satuan) {
+        //     if($satuan != "bungkus" && $satuan != "box" && $satuan != "pack") {
+        //         return response(['message' => 'value satuan tidak valid'], 406);
+        //     }
+        // }
         if($type_barang) {
             if($type_barang != "baru" && $type_barang != "bekas") {
                 return response(['message' => 'type barang tidak valid'], 406);
