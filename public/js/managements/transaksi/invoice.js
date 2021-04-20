@@ -18,10 +18,12 @@ const getInvoice = {
             var i = 1
             response.carts.map(cart => {
                 const total = cart.qyt * (cart.harga_product - cart.diskon_product)
+                const isEceran = cart.harga_product == cart.product.harga_satuan ? "<strong>(eceran)</strong>" : ""
+                console.log(cart.product.harga_satuan);
                 $('#listCarts').append(`
                     <tr>
                         <td>${i++}</td>
-                        <td>${cart.product.nama_barang}</td>
+                        <td>${cart.product.nama_barang}${isEceran}</td>
                         <td>${cart.qyt}</td>
                         <td>${Functions.prototype.formatRupiah(cart.harga_product.toString(), 'Rp. ')}</td>
                         <td>${Functions.prototype.formatRupiah(cart.diskon_product.toString(), 'Rp. ')}</td>

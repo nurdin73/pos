@@ -1,4 +1,10 @@
 @extends('layouts.template')
+
+@section('css')
+  <link rel="stylesheet" href="{{ asset('css/select2.css') }}"/>
+  <link rel="stylesheet" href="{{ asset('css/select2-bs4.css') }}">
+@endsection
+
 @section('content')
   <main class="c-main">
     <div class="container-fluid">
@@ -8,9 +14,9 @@
             <h4 class="alert-heading">Keyboard ShortCut</h4>
             <ul class="list-unstyled">
               <li><strong>CTRL + Y</strong> Tambah barang</li>
-              <li><strong>CTRL + B</strong> Diskon transaksi</li>
-              <li><strong>CTRL + M</strong> untuk memilih member jika ada</li>
+              <li><strong>CTRL + X</strong> Diskon transaksi</li>
               <li><strong>CTRL + ENTER</strong> proses transaksi</li>
+              <li><strong>CTRL + C</strong> Batalkan transaksi</li>
             </ul>  
           </div>
           <div class="row">
@@ -27,6 +33,7 @@
                           <th>Nama Barang</th>
                           <th class="text-center" style="width: 25%">Harga/Qty</th>
                           <th class="text-center" style="width: 10%">Eceran</th>
+                          <th></th>
                         </tr>
                       </thead>
                       <tbody id="listCarts">
@@ -43,28 +50,31 @@
                   <input type="hidden" id="grandTotal">
                   <input type="hidden" id="subTotal">
                   <input type="hidden" id="pajak">
+                  <input type="hidden" id="diskonValue">
                   <div class="d-flex flex-column justify-content-end align-items-end">
                     <span class="text-muted font-weight-bold">{{ $no_invoice }}</span>
-                    <span class="font-weight-bold subTotalBadge" style="font-size: 30px">Rp.100.000 ,-</span>
+                    <span class="font-weight-bold grand_total" style="font-size: 30px"></span>
                   </div>
                   <div class="dropdown-divider"></div>
                   <div class="d-flex justify-content-between align-items-center">
                     <span class="font-weight-bold text-muted" style="font-size: 17px;">Sub Total</span>
-                    <span class="font-weight-bold text-danger subTotalBadge" style="font-size: 14px;">Rp.100.000 ,-</span>
+                    <span class="font-weight-bold text-danger subTotalBadge" style="font-size: 14px;"></span>
                   </div>
                   <div class="d-flex justify-content-between align-items-center">
                     <span class="font-weight-bold text-muted" style="font-size: 17px;">Diskon</span>
-                    <span class="font-weight-bold text-success" style="font-size: 14px;" id="diskonTrx">Rp.0 ,-</span>
+                    <span class="font-weight-bold text-success" style="font-size: 14px;" id="diskonTrxLabel">Rp. 0,-</span>
                   </div>
                   <div class="dropdown-divider"></div>
                   <div class="d-flex justify-content-between align-items-center">
                     <span class="font-weight-bold text-muted" style="font-size: 17px;">Total</span>
-                    <span class="font-weight-bold text-primary grand_total" style="font-size: 14px;">Rp.90.000 ,-</span>
+                    <span class="font-weight-bold text-primary grand_total" style="font-size: 14px;"></span>
                   </div>
                   <div class="dropdown-divider"></div>
                   <div class="form-group">
                     <label for="customer">Member <small class="text-muted">* Jika ada</small> </label>
-                    <input type="text" class="form-control" name="customer" id="customer">
+                    <select name="customer" id="customer" class="form-control">
+                      
+                    </select>
                   </div>
                   <button class="btn btn-block btn-secondary mt-2" id="cancelOrder">Cancel</button>
                   <button class="btn btn-block btn-primary btn-lg grand_total" id="btn-proccess-payment" type="submit">Rp.90.000 ,-</button>
@@ -77,6 +87,31 @@
     </div>
   </main>
 @endsection 
+
+@section('modal')
+
+<div class="modal fade" id="editCartModal" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+  <div class="modal-dialog modal-md" role="document">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h4 class="modal-title">Edit barang <span id="namaBarangLabel"></span></h4>
+        <button class="close" type="button" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">×</span></button>
+      </div>
+      <form id="formUpdateCart" autocomplete="off">
+        <div class="modal-body" id="fieldUpdateCartForm">
+          
+        </div>
+        <div class="modal-footer">
+          <button class="btn btn-secondary" data-dismiss="modal">Cancel</button>
+          <button class="btn btn-primary" type="submit">Save</button>
+        </div>
+      </form>
+    </div>
+    <!-- /.modal-content-->
+  </div>
+  <!-- /.modal-dialog-->
+</div>
+@endsection
 
 @section('js')
   <script src="{{ asset('js/jquery-validate.js') }}" ></script>

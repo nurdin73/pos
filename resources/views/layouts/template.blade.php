@@ -135,7 +135,6 @@
     <script src="{{ asset('js/functions.js') }}"></script>
     <script>
       $(function () {
-        $('[data-toggle="tooltip"]').tooltip()
         var dark = localStorage.getItem('theme');
         if(dark == "true") {
           console.log('masuk sini');

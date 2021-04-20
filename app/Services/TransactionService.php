@@ -221,7 +221,7 @@ class TransactionService
 
     public function detailCart($id)
     {
-        $cart = Carts::with('product:id,nama_barang,harga_jual')->where('id', $id)->first();
+        $cart = Carts::with('product:id,nama_barang,harga_jual', 'product.typePrices')->where('id', $id)->first();
         if(!$cart) return response(['message' => 'terjadi kesalahan. silahkan coba kembali'], 500);
         return response($cart);
     }
@@ -428,7 +428,7 @@ class TransactionService
 
     public function invoice($id)
     {
-        $result = Transactions::with('user:id,name', 'customer:id,nama', 'carts:id,no_invoice,qyt,harga_product,diskon_product,product_id', 'carts.product:id,nama_barang')->where('id', $id)->first();
+        $result = Transactions::with('user:id,name', 'customer:id,nama', 'carts:id,no_invoice,qyt,harga_product,diskon_product,product_id', 'carts.product:id,nama_barang,harga_jual,harga_satuan')->where('id', $id)->first();
         if(!$result) return response(['message' => 'Invoice tidak ditemukan'], 404);
         return response($result);
     }

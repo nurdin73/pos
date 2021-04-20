@@ -1,34 +1,203 @@
 $(document).on('keydown', function(e) {
   if(e.ctrlKey == true) {
-    if(e.which == 66) {
-      alert('diskon')
+    if(e.which == 88) {
+      diskonTransaksi()
     } else if(e.which == 89) {
       $('#barcode').focus()
-    } else if(e.which == 77) {
-      alert('change customer')
     } else if(e.which == 13) {
       processPayment(e)
+    } else if(e.which == 67) {
+      cancelOrder(e)
     }
   }
 })
 
 
+function diskonTransaksi() {
+  const grandTotal = $('#grandTotal').val()
+  const diskonValue = $('#diskonValue').val()
+  if(grandTotal < 1 && diskonValue == 0) {
+    Swal.fire({
+      text: 'isi barang terlebih dahulu',
+      title: 'perhatian!',
+      icon: 'warning'
+    })
+  } else {
+    Swal.fire({
+      title: 'Masukkan diskon transaksi',
+      input: 'number',
+      inputAttributes: {
+        autocapitalize: 'off',
+      },
+      inputValue: $('#diskonValue').val(),
+      showCancelButton: true,
+      confirmButtonText: 'Simpan',
+      showLoaderOnConfirm: true,
+      preConfirm: (diskon) => {
+        if(diskon > $('#subTotal').val()) {
+          Swal.showValidationMessage(
+            `Jumlah diskon melebihi total pembelian`
+          )
+        } else {
+          return diskon
+        }
+      },
+      allowOutsideClick: () => !Swal.isLoading()
+    }).then((result) => {
+      if (result.isConfirmed) {
+        const grandTotal = $('#subTotal').val() - result.value
+        $('#diskonTrxLabel').text(Functions.prototype.formatRupiah(result.value.toString(), 'Rp. '))
+        $('.grand_total').text(Functions.prototype.formatRupiah(grandTotal.toString(), 'Rp. '))
+        $('#grandTotal').val(grandTotal)
+        $('#diskonValue').val(result.value)
+      }
+    })
+  }
+}
+
 $(function () {
   getCarts.loadData = noInvoice
   $('#btn-proccess-payment').on('click', processPayment)
+  $('#cancelOrder').on('click', cancelOrder)
   eceran()
-  cancelOrder()
+  updateCart()
+  customerFunc()
+  deleteCart()
+  $('#listCarts').on('click', 'tr td .update', function(e) {
+    e.preventDefault()
+    const id = $(this).data('id')
+    const urlDetail = URL_API + "/managements/cart/" + id
+    Functions.prototype.requestDetail(detailCart, urlDetail)
+  })
 });
 
-$('#barcode').on('keydown', function(e) {
-  if(e.keyCode == 13) {
-    const kode = $('#barcode').val()
-    const no_invoice = noInvoice
-    const data = {
-      kode: kode,
-      no_invoice: no_invoice
+function customerFunc() {
+  var option = new Option("Umum", 0, true, true)
+  $("#customer").append(option).trigger('change')
+  $("#customer").trigger({
+    type: 'select2:select',
+    params: {
+      name : null
     }
-    addDataCart.loadData = data
+  })
+  $('#customer').select2({
+    theme:'bootstrap4',
+    ajax: {
+      url: URL_API + "/managements/search-pelanggan",
+      headers: {
+        'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content'),
+        'Authorization' : "Bearer " + sessionStorage.getItem('token')
+      },
+      data: function (params) {
+        return {
+          name: params.term,
+        }
+      },
+      processResults: function(data, params) {
+        return {
+          results: data.map(result => {
+            return {
+              text: result.nama,
+              id: result.id
+            }
+          })
+        }
+      },
+    }
+  })
+}
+
+
+const detailCart = {
+  set successData(response) {
+    var fieldInput = "";
+    const typePrices = response.product.type_prices
+    fieldInput += `<input type="hidden" name="id_cart" id="idCart" value="${response.id}">`
+    if(typePrices.length > 0) {
+      fieldInput += `<div class="form-group row">`
+      fieldInput += `<label for="harga_barang_update" class="col-sm-4 col-form-label">Harga Barang</label>`
+      fieldInput += `<div class="col-sm-8">`
+      fieldInput += `<select name="harga_barang_update" id="harga_barang_update" class="custom-select" data-id-cart="${response.id}">`
+      typePrices.map(result => {
+        if(response.harga_product == result.harga) {
+          fieldInput += `<option value="${result.harga}" selected>${result.harga} - ${result.nama_agen}</option>`
+        } else {
+          fieldInput += `<option value="${result.harga}">${result.harga} - ${result.nama_agen}</option>`
+        }
+      })
+      if(response.harga_product == response.product.harga_jual) {
+        fieldInput += `<option value="${response.product.harga_jual}" selected>${response.product.harga_jual} - default</option>`
+      } else {
+        fieldInput += `<option value="${response.product.harga_jual}">${response.product.harga_jual} - default</option>`
+      }
+      fieldInput += `</select>`
+      fieldInput += `</div>`
+      fieldInput += `</div>`
+    } else {
+      fieldInput += `
+      <div class="form-group row">
+        <label for="harga_barang_update" class="col-sm-4 col-form-label">Harga Barang</label>
+        <div class="col-sm-8">
+          <input type="text" id="harga_barang_update" name="harga_barang_update" class="form-control" value="${response.harga_product}" readonly>
+        </div>
+      </div>
+      `
+    }
+    fieldInput += `
+      <div class="form-group row">
+        <label for="qty_barang" class="col-sm-4 col-form-label">Qty</label>
+        <div class="col-sm-8">
+          <input type="number" name="qty_barang" class="form-control" id="qyt_update" value="${response.qyt}">
+        </div>
+      </div>
+      <div class="form-group row">
+        <label for="diskon_update" class="col-sm-4 col-form-label">Diskon barang</label>
+        <div class="col-sm-8">
+          <input type="number" class="form-control" id="diskon_update" value="${response.diskon_product}">
+        </div>
+      </div>
+    `
+    const title = response.product.nama_barang.length > 20 ? response.product.nama_barang.substr(0, 20) + "..." : response.product.nama_barang
+    $('#namaBarangLabel').text(title)
+    $('#idCart').val(response.id)
+
+    $('#fieldUpdateCartForm').html(fieldInput)
+  },
+  set errorData(err) {
+    toastr.error(err.responseJSON.message, 'Error')
+  }
+}
+
+function updateCart() {
+  $('#formUpdateCart').on('submit', async function(e) {
+    e.preventDefault()
+    const id = $('#idCart').val()
+    const url = URL_API + "/managements/update/cart/" + id
+    const data = {
+      qyt: $('#qyt_update').val(),
+      diskon_product: $('#diskon_update').val(),
+      harga_product: $('#harga_barang_update').val()
+    }
+    Functions.prototype.updatingData(url, data, 'put')
+    await new Promise(resolve => setTimeout(resolve, 500))
+    getCarts.loadData = noInvoice
+    $('#formUpdateCart')[0].reset()
+    $('#editCartModal').modal('hide')
+  })
+}
+
+
+$('#barcode').on('keydown', function(e) {
+  if(e.ctrlKey == false) {
+    if(e.keyCode == 13) {
+      const kode = $('#barcode').val()
+      const no_invoice = noInvoice
+      const data = {
+        kode: kode,
+        no_invoice: no_invoice
+      }
+      addDataCart.loadData = data
+    }
   }
 })
 
@@ -48,9 +217,16 @@ const addDataCart = {
   }
 }
 
-function cancelOrder() {
-  $('#cancelOrder').on('click', function(e) {
-    e.preventDefault()
+function cancelOrder(e) {
+  e.preventDefault()
+  const grandTotal = $('#grandTotal').val()
+  if(grandTotal < 1) {
+    Swal.fire({
+      text: 'Transaksi masih kosong. silahkan tambahkan terlebih dahulu',
+      title: 'perhatian!',
+      icon: 'warning'
+    })
+  } else {
     Swal.fire({
       title: 'Apa kamu yakin?',
       text: `transaksi dengan kode ${noInvoice} akan dihapus!`,
@@ -65,7 +241,7 @@ function cancelOrder() {
         Functions.prototype.deleteingData(processCancelOrder, urlCancelOrder)
       }
     })
-  })
+  }
 
   const processCancelOrder = {
     set successData(response) {
@@ -81,6 +257,37 @@ function cancelOrder() {
     }
   }
 
+}
+
+function deleteCart() {
+  $('#listCarts').on('click', 'tr td .delete', function(e) {
+    e.preventDefault()
+    const id = $(this).data('id')
+    Swal.fire({
+      title: 'Perhatian?',
+      text: "Yakin ingin menghapus produk ini",
+      icon: 'warning',
+      showCancelButton: true,
+      confirmButtonColor: '#3085d6',
+      cancelButtonColor: '#d33',
+      confirmButtonText: 'Ya, Hapus!'
+    }).then((result) => {
+      if (result.isConfirmed) {
+        const url = URL_API + "/managements/delete/cart/" + id
+        Functions.prototype.deleteingData(prosessDeletingData, url)
+      }
+    })
+  })
+
+  const prosessDeletingData = {
+    set successData(response) {
+      toastr.success(response.message, 'Success')
+      getCarts.loadData = noInvoice
+    },
+    set errorData(err) {
+      toastr.error(err.responseJSON.message, 'Error')
+    }
+  }
 }
 
 
@@ -108,26 +315,31 @@ const getCarts = {
         $('#listCarts').append(`
           <tr>
             <td class="text-center">${x++}</td>
-            <td><span data-toggle="modal" data-target="#halo"><a href="#" data-toggle="tooltip" data-placement="top" title="Klik disini untuk edit">${title}</a></span></td>
+            <td><a herf="#" data-toggle="modal" data-id="${result.id}" class="update" data-target="#editCartModal"><span class="text-primary" data-toggle="tooltip" data-placement="top" title="Klik disini untuk edit" style="cursor: pointer">${title}</span></a></td>
             <td class="text-center" style="width: 10%"><span class="text-success">${Functions.prototype.formatRupiah(hargaAsal.toString(), '')}</span> x <span class="text-danger">${result.qyt}</span></td>
             <td>
               <div class="custom-control custom-switch">
-                <input type="checkbox" ${hargaAsal == result.product.harga_satuan ? "checked" : ""} class="custom-control-input eceran" data-id="${result.id}" data-harga-eceran="${result.product.harga_satuan}" data-harga-jual="${result.product.harga_jual}" name="eceranOpsi" id="eceranOpsi${i}" ${result.product.isRetail == 0 ? "disabled" : ""}>
-                <label class="custom-control-label" for="eceranOpsi${i}">Ya</label>
+                <input type="checkbox" ${hargaAsal == result.product.harga_satuan ? "checked" : ""} class="custom-control-input eceran" data-id="${result.id}" data-harga-eceran="${result.product.harga_satuan}" data-harga-jual="${result.product.harga_jual}" name="eceranOpsi${result.id}" id="eceranOpsi${result.id}" ${result.product.isRetail == 0 ? "disabled" : ""}>
+                <label class="custom-control-label" for="eceranOpsi${result.id}">Ya</label>
               </div>
+            </td>
+            <td>
+              <button class="badge badge-danger border-0 delete" data-id="${result.id}" style="outline: none;"><i class="fas fa-times"></i></button>
             </td>
           </tr>
         `)
       })
+      $('[data-toggle="tooltip"]').tooltip()
     } else {
       $('#listCarts').html(`
         <tr>
-          <td colspan="4" align="center">keranjang masih kosong</td>
+          <td colspan="5" align="center">keranjang masih kosong</td>
         </tr>
       `)
     }
 
     $('.subTotalBadge').text(Functions.prototype.formatRupiah(subTotal.toString(), 'Rp. '))
+    $('#subTotal').val(subTotal)
     $('.grand_total').text(Functions.prototype.formatRupiah(subTotal.toString(), 'Rp. '))
     $('#grandTotal').val(subTotal)
   },
@@ -138,22 +350,22 @@ const getCarts = {
 
 function eceran() {
   $('#listCarts').on('change', 'tr td div .eceran', async function(e) {
-    // e.preventDefault()
-    const check = $('input[name=eceranOpsi]:checked').length
+    e.preventDefault()
     const id = $(this).data('id')
+    const check = $(`input[name=eceranOpsi${id}]:checked`).length
     const urlUpdatePrice = URL_API + "/managements/update/price-cart/" + id
     if(check > 0) {
       const data = {
         price: $(this).data('harga-eceran'),
         eceran: 1
       }
-      Functions.prototype.updateData(urlUpdatePrice, data, 'put')
+      Functions.prototype.updatingData(urlUpdatePrice, data, 'put')
     } else {
       const data = {
         price: $(this).data('harga-jual'),
         eceran: 0
       }
-      Functions.prototype.updateData(urlUpdatePrice, data, 'put')
+      Functions.prototype.updatingData(urlUpdatePrice, data, 'put')
     }
     await new Promise(resolve => setTimeout(resolve, 500));
     getCarts.loadData = noInvoice
