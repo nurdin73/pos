@@ -299,6 +299,8 @@ const getCarts = {
   set successData(response) {
     var subTotal = 0
     $('#listCarts').empty()
+    $('#diskonValue').val(0)
+    $('#diskonTrxLabel').text('Rp. 0,-')
     if(response.length > 0) {
       var x = 1
       response.map((result, i) => {
