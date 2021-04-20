@@ -3,6 +3,21 @@
 @section('css')
   <link rel="stylesheet" href="{{ asset('css/select2.css') }}"/>
   <link rel="stylesheet" href="{{ asset('css/select2-bs4.css') }}">
+  <style>
+    #carts {
+      overflow-y: scroll;
+      max-height: 500px;
+    }
+    #carts::-webkit-scrollbar {
+      display: none;
+    }
+
+    @media only screen and (max-width: 600px) {
+      #carts {
+        overflow-y: auto;
+      }
+    }
+  </style>
 @endsection
 
 @section('content')
@@ -19,13 +34,13 @@
               <li><strong>CTRL + C</strong> Batalkan transaksi</li>
             </ul>  
           </div>
-          <div class="row">
+          <div class="row position-relative">
             <div class="col-md-7">
               <div class="card">
                 <div class="card-body">
                   <input class="form-control" id="barcode" type="text" name="barcode" placeholder="barcode" autofocus>
                   <div class="dropdown-divider"></div>
-                  <div class="table-responsive">
+                  <div class="table-responsive" id="carts">
                     <table class="table table-borderless table-striped">
                       <thead>
                         <tr>
