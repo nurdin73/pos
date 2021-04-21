@@ -46,9 +46,9 @@ const getProducts = {
                 }
             })
             paginations = ""
-            $('#totalBarangMasuk').text(response.totalStok)
-            $('#totalBarangKeluar').text(response.totalSelled)
-            $('#totalBarang').text(response.totalStok + response.totalSelled)
+            $('#totalBarangMasuk').text(Functions.prototype.kFormatter(response.totalStok))
+            $('#totalBarangKeluar').text(Functions.prototype.kFormatter(response.totalSelled))
+            $('#totalBarang').text(Functions.prototype.kFormatter(response.totalStok + response.totalSelled))
         } else {
             $('#listProducts').append(`
                 <tr>

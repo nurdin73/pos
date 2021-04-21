@@ -35,9 +35,9 @@ const getChart = {
             sisa.push(tersisa)
         })
 
-        $('#totalKasbon').text(Functions.prototype.formatRupiah(totalKasbon.toString(), 'Rp. '))
-        $('#totalDibayar').text(Functions.prototype.formatRupiah(totalDibayar.toString(), 'Rp. '))
-        $('#totalSisa').text(Functions.prototype.formatRupiah(totalSisa.toString(), 'Rp. '))
+        $('#totalKasbon').text(Functions.prototype.kFormatter(totalKasbon, 'Rp. '))
+        $('#totalDibayar').text(Functions.prototype.kFormatter(totalDibayar, 'Rp. '))
+        $('#totalSisa').text(Functions.prototype.kFormatter(totalSisa, 'Rp. '))
 
         const data = [
             {

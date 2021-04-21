@@ -16,9 +16,9 @@ const getTrx = {
     },
     set successData(response) {
         const totalBersih = response.totalPenjualan - response.totalPajak
-        $('#totalPenjualan').text(Functions.prototype.formatRupiah(response.totalPenjualan.toString(), 'Rp. '))
-        $('#totalPajak').text(Functions.prototype.formatRupiah(response.totalPajak.toString(), 'Rp. '))
-        $('#totalBersih').text(Functions.prototype.formatRupiah(totalBersih.toString(), 'Rp. '))
+        $('#totalPenjualan').text(Functions.prototype.kFormatter(response.totalPenjualan, 'Rp. '))
+        $('#totalPajak').text(Functions.prototype.kFormatter(response.totalPajak, 'Rp. '))
+        $('#totalBersih').text(Functions.prototype.kFormatter(totalBersih, 'Rp. '))
     },
     set errorData(err) {
         toastr.error(err.responseJSON.message, 'Error')

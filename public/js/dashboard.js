@@ -20,12 +20,12 @@ const getTransactions = {
     },
     set successData(response) {
         $('#countTransaction').text(response.total_trx)
-        $('#countAverage').text(Functions.prototype.formatRupiah(response.average.toString(), 'Rp. '))
-        $('#countPendapatan').text(Functions.prototype.formatRupiah(response.total.toString(), 'Rp. '))
+        $('#countAverage').text(Functions.prototype.kFormatter(response.average, 'Rp. '))
+        $('#countPendapatan').text(Functions.prototype.kFormatter(response.total, 'Rp. '))
         if(response.keuntungan < 0) {
-            $('#countKeuntungan').text(Functions.prototype.formatRupiah(response.keuntungan.toString(), 'Rp. -'))
+            $('#countKeuntungan').text(Functions.prototype.kFormatter(response.keuntungan, 'Rp. -'))
         } else {
-            $('#countKeuntungan').text(Functions.prototype.formatRupiah(response.keuntungan.toString(), 'Rp. '))
+            $('#countKeuntungan').text(Functions.prototype.kFormatter(response.keuntungan, 'Rp. '))
         }
     },
     set errorData(err) {

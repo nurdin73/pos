@@ -486,4 +486,8 @@ class Functions
         }
         return result.join('');
     }
+
+    kFormatter(num, prefix = "") {
+        return Math.abs(num) > 999 ? prefix + Math.sign(num)*((Math.abs(num)/1000).toFixed(1)) + 'k' : Math.sign(num)*Math.abs(num)
+    }
 }

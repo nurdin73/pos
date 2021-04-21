@@ -10,8 +10,8 @@ const getTransactionsNow = {
         Functions.prototype.getRequest(getTransactionsNow, url)
     },
     set successData(response) {
-        $('#keuntungan').text(Functions.prototype.formatRupiah(response.keuntungan.toString(), 'Rp. '))
-        $('#pendapatan').text(Functions.prototype.formatRupiah(response.total.toString(), 'Rp. '))
+        $('#keuntungan').text(Functions.prototype.kFormatter(response.keuntungan, 'Rp. '))
+        $('#pendapatan').text(Functions.prototype.kFormatter(response.total, 'Rp. '))
         $('#countTransaction').text(response.total_trx)
     },
     set errorData(err) {
