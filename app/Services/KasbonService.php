@@ -16,8 +16,8 @@ class KasbonService
     {
         $data = [];
         $results = Customers::with('cashReceipts.installments')->select("*");
-        $countData = $results->count();
         $totalKasbon = CashReceipts::with("installments")->get();
+        $countData = count($totalKasbon);
         $totalSisa = 0;
         foreach ($totalKasbon as $t) {
             $cicilan = 0;

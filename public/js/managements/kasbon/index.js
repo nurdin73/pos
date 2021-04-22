@@ -38,6 +38,7 @@ const getDataList = {
         Functions.prototype.getRequest(getDataList, urlKasbonList)
     },
     set successData(response) {
+        console.log(response);
         var paginations = ""
         $('#listData').empty()
         if(response.data.length > 0) {

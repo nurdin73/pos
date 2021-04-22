@@ -107,6 +107,7 @@
 @endsection 
 
 @section('js')
+  <script src="{{ asset('js/sweetalert.js') }}"></script>
   <script src="{{ asset('js/jquery-validate.js') }}" ></script>
   <script src="{{ asset('js/additional-method.js') }}"></script>
   <script src="{{ asset('js/message_id.js') }}" integrity="sha512-Pb0klMWnom+fUBpq+8ncvrvozi/TDwdAbzbICN8EBoaVXZo00q6tgWk+6k6Pd+cezWRwyu2cB+XvVamRsbbtBA==" crossorigin="anonymous"></script>

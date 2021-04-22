@@ -42,9 +42,9 @@
                 <td align="center" colspan="2">{{ $trx->customer != null ? $trx->customer->nama : "Umum" }}</td>
                 <td align="center" colspan="2">{{ $trx->user->name ?? "Guest" }}</td>
                 <td align="center" colspan="3">{{ date('d F Y', strtotime($trx->tgl_transaksi)) }}</td>
-                <td align="center" colspan="2">Rp. {{ number_format($trx->diskon_transaksi, 0,',','.') }}</td>
-                <td align="center" colspan="2">Rp. {{ number_format($trx->total + $trx->diskon_transaksi, 0,',','.') }}</td>
-                <td align="center" colspan="2">Rp. {{ number_format($trx->total, 0,',','.') }}</td>
+                <td align="left" colspan="2">Rp. {{ number_format($trx->diskon_transaksi, 0,',','.') }}</td>
+                <td align="left" colspan="2">Rp. {{ number_format($trx->total + $trx->diskon_transaksi, 0,',','.') }}</td>
+                <td align="left" colspan="2">Rp. {{ number_format($trx->total, 0,',','.') }}</td>
             </tr>
             @endforeach            
         @else

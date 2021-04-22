@@ -16,6 +16,7 @@ use Dompdf\Dompdf;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Log;
 use Maatwebsite\Excel\Facades\Excel;
+use Illuminate\Support\Str;
 
 class TransactionService
 {
@@ -416,7 +417,7 @@ class TransactionService
 
     public function listTransaksi($no_invoice, $sorting)
     {
-        $results = Transactions::with('user', 'customer')->select("*");
+        $results = Transactions::with('user', 'customer')->select("*")->orderBy('no_invoice', 'DESC');
         if($no_invoice != "") {
             $results = $results->where('no_invoice', 'like', '%'.$no_invoice.'%')->paginate($sorting);
         } else {
@@ -431,7 +432,7 @@ class TransactionService
     {
         $result = Transactions::with('user:id,name', 'customer:id,nama', 'carts:id,no_invoice,qyt,harga_product,diskon_product,product_id', 'carts.product:id,nama_barang,harga_jual,harga_satuan')->where('id', $id)->first();
         if(!$result) return response(['message' => 'Invoice tidak ditemukan'], 404);
-        return response($result);
+        return $result;
     }
 
     public function exportTransactions($years)
@@ -462,12 +463,14 @@ class TransactionService
 
     public function exportPdfInvoice($id)
     {
+        $nota = $this->invoice($id);
+        $fileName = $nota->no_invoice . "-" . strtoupper(Str::random(4));
         $pdf = new Dompdf();
         $options = $pdf->getOptions();
         $options->isHtml5ParserEnabled(true);
         $pdf->setOptions($options);
-        $pdf->loadHtml("invoice id $id");
+        $pdf->loadHtml(view('exports.invoice', ['transactions' => $nota]));
         $pdf->render();
-        $pdf->stream();
+        $pdf->stream($fileName);
     }
 }

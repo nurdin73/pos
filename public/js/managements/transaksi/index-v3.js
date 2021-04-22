@@ -463,3 +463,55 @@ function processPayment(e) {
     })
   }
 }
+
+const processPrintTrx = {
+  set successData(response) {
+    console.log(response);
+    if(response.connection == "bluetooth") {
+        var form = document.createElement('form')
+				form.setAttribute('method', 'post')
+				form.setAttribute('action', urlCetakStruk)
+
+				var input = document.createElement('input')
+				input.setAttribute('value', response.message)
+				input.setAttribute('name', 'isi')
+				input.setAttribute('id', 'isi')
+				input.setAttribute('type', 'hidden')
+
+        var input2 = document.createElement('input')
+				input2.setAttribute('value', response.no_inv)
+				input2.setAttribute('name', 'noInv')
+				input2.setAttribute('id', 'noInv')
+				input2.setAttribute('type', 'hidden')
+
+        var input3 = document.createElement('input')
+				input3.setAttribute('value', $('meta[name="csrf-token"]').attr('content'))
+				input3.setAttribute('name', '_token')
+				input3.setAttribute('id', '_token')
+				input3.setAttribute('type', 'hidden')
+
+				form.appendChild(input)
+        form.appendChild(input2)
+        form.appendChild(input3)
+				document.body.appendChild(form)
+				form.submit()
+
+        // var S = "#Intent;scheme=rawbt;";
+        // var P =  "package=ru.a402d.rawbtprinter;end;";
+        // var textEncoded = encodeURI(response.message)
+        // window.location.href = "intent:"+textEncoded+S+P;
+        setTimeout(() => {
+          window.location.reload()
+        }, 1500);
+    } else {
+      toastr.success(response.message, 'Success')
+      setTimeout(() => {
+        window.location.reload()
+      }, 1500);
+    }
+  },
+  set errorData(err) {
+    console.log(err);
+    toastr.error(err.responseJSON.message)
+  }
+}

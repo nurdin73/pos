@@ -95,12 +95,25 @@ function addData() {
                 keterangan: $('#keterangan').val()
             }
             const urlPost = URL_API + "/managements/add/payment-kasbon/" + id
-            Functions.prototype.httpRequest(urlPost, data, 'post')
-            setTimeout(() => {
-                getDetail.loadData = id
-                $('#paymentForm')[0].reset()
-            }, 2000);
+            Functions.prototype.postRequest(postPembayaran, urlPost, data)
 
         }
     })
+}
+
+const postPembayaran = {
+    set successData(response) {
+        Swal.fire({
+            icon: 'success',
+            title: 'berhasil',
+            text: response.message
+        }).then(result => {
+            if(result.isConfirmed) {
+                getDetail.loadData = id
+            }
+        })
+    }, 
+    set errorData(err) {
+        toastr.error(err.responseJSON.message, 'Error')
+    }
 }

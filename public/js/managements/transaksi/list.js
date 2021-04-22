@@ -3,8 +3,8 @@ $(document).ready(function () {
     $('.paginate').on('click', '.pagination .page-item a', function(e) {
         e.preventDefault()
         const id = $(this).data('id');
-        query_params += "?page=" + id
-        getDataList.loadData = query_params
+        query_params = "?page=" + id
+        listTransactions.loadData = query_params
     })
     listTransactions.loadData = ""
 });
@@ -20,11 +20,12 @@ const listTransactions = {
         const { data, currentPage, pagination } = response
         if(data.length > 0) {
             data.map(result => {
-                const customer = result.customer != null ? result.customer.nama : "umum"
+                // const customer = result.customer != null ? result.customer.nama : "umum"
+                const customer = result.customer !== null ? `<span class="badge badge-danger">${result.customer.nama}</span>` : `<span class="badge badge-info">umum</span>`
                 $('#listTransactions').append(`
                     <tr>
                         <td>${result.no_invoice}</td>
-                        <td><span class="badge badge-info">${customer}</span></td>
+                        <td>${customer}</td>
                         <td><span class="badge badge-primary">${result.user.name}</span></td>
                         <td>${moment(result.tgl_transaksi).format('D MMMM YYYY')}</td>
                         <td>${Functions.prototype.formatRupiah(result.total.toString(), 'Rp. ')}</td>
@@ -35,7 +36,7 @@ const listTransactions = {
                 `)
             })
 
-            $('#paginate').html(pagination)
+            $('.paginate').html(pagination)
             $('.paginate').find('a').each(function() {
                 if($(this).text() === '‹'){
                     $(this).attr('data-id', currentPage - 1);
