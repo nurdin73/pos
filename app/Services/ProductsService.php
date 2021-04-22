@@ -94,7 +94,7 @@ class ProductsService
                     array_push($pathOfFile, $path.$filename);
                 }
             }
-
+            $data['alias_name'] = Str::of($data['nama_barang'])->slug();
             $create = Products::create($data);
             if($create) {
 
@@ -161,7 +161,7 @@ class ProductsService
 
     public function show($id)
     {
-        $result = Products::with('images:id,product_id,image', 'stocks', 'typePrices', 'suplier', 'branch')->where('id', $id)->first();
+        $result = Products::with('images:id,product_id,image', 'stocks', 'typePrices', 'suplier', 'branch')->where('id', $id)->orWhere('alias_name', $id)->first();
         $result->setRelation('codeProducts', $result->codeProducts()->simplePaginate(10));
         return $result;
     }
@@ -170,6 +170,7 @@ class ProductsService
     {
         $result = Products::find($id);
         if(!$result) return response(['message' => 'Data tidak cocok dengan dokumen apapun'], 404);
+        $data['alias_name'] = Str::of($data['nama_barang'])->slug();
         $result->update($data);
         $result->save();
         return response(['message' => 'Update produk berhasil']);

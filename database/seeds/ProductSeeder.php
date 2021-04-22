@@ -6,6 +6,7 @@ use App\Models\Products;
 use App\Models\Stocks;
 use Carbon\Carbon;
 use Illuminate\Database\Seeder;
+use Illuminate\Support\Str;
 
 class ProductSeeder extends Seeder
 {
@@ -19,6 +20,7 @@ class ProductSeeder extends Seeder
         for ($i=301; $i < 40000; $i++) { 
             $product = Products::create([
                 'nama_barang' => 'produk '.$i,
+                'alias_name' => Str::of('produk '.$i)->slug(),
                 'type_barang' => 'baru',
                 'harga_jual'  => 2000,
                 'selled'        => 0,

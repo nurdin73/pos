@@ -342,10 +342,11 @@ function delProduct() {
   $('#dataTables').on('click', 'tbody tr td .delete', function(e) {
     e.preventDefault()
     const id = $(this).data('id')
+    const name = $(this).data('name-product')
     const urlDeleteProduct = URL_API + "/managements/delete/barang/" + id
     Swal.fire({
-      title: 'Yakin ingin menghapus produk ini?',
-      text: "produk akan dihapus permanen!",
+      title: `Yakin?`,
+      html: `produk <span class="text-danger font-weight-bold">${name}</span> akan dihapus permanen!`,
       icon: 'warning',
       showCancelButton: true,
       confirmButtonColor: '#3085d6',
@@ -390,7 +391,7 @@ const getListProducts = {
               <div class="btn-group">
                 <a href="${BASE_URL_ADMIN}/management/barang/edit/${result.id}" class='btn btn-info btn-sm'>Update</a>
                 <a href="${BASE_URL_ADMIN}/management/barang/detail/${result.id}" class='btn btn-primary btn-sm'>Detail</a>
-                <button class='btn btn-sm btn-danger delete' data-id="${result.id}">Delete</button>
+                <button class='btn btn-sm btn-danger delete' data-id="${result.id}" data-name-product="${result.nama_barang}">Delete</button>
               </div>
             </td>
           </tr>
