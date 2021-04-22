@@ -128,25 +128,27 @@ Route::group(['prefix' => 'v1/' , 'middleware' => 'auth:api'], function() {
         Route::get('/pajak', 'Api\Managements\PajakController@reportTaxes');
     });
 
-    Route::group(['prefix' => 'exports'], function () {
-        Route::get('/transactions-hours', 'Api\Exports\TransactionsController@hours')->name('exportTrxHours');
-        Route::get('/transactions-days', 'Api\Exports\TransactionsController@days')->name('exportTrxDays');
-        Route::get('/transactions-months', 'Api\Exports\TransactionsController@months')->name('exportTrxMonths');
-        Route::get('/transactions-years', 'Api\Exports\TransactionsController@years')->name('exportTrxYears');
+    // Route::group(['prefix' => 'exports'], function () {
+        // Route::get('/transactions-hours', 'Api\Exports\TransactionsController@hours')->name('exportTrxHours');
+        // Route::get('/transactions-days', 'Api\Exports\TransactionsController@days')->name('exportTrxDays');
+        // Route::get('/transactions-months', 'Api\Exports\TransactionsController@months')->name('exportTrxMonths');
+        // Route::get('/transactions-years', 'Api\Exports\TransactionsController@years')->name('exportTrxYears');
 
-        Route::get('/products', 'Api\Exports\ProductController@index')->name('exportProduct');
+        // Route::get('/products', 'Api\Exports\ProductController@index')->name('exportProduct');
 
-        Route::get('/pembelian-products', 'Api\Reports\PembelianController@export')->name('exportPembelianProduct');
-        Route::get('/modal', 'Api\Exports\ModalController@export')->name('exportModal');
+        // Route::get('/pembelian-products', 'Api\Reports\PembelianController@export')->name('exportPembelianProduct');
+        // Route::get('/modal', 'Api\Exports\ModalController@export')->name('exportModal');
 
-        Route::get('/pelanggan', 'Api\Exports\CustomerController@report')->name('exportCustomer');
+        // Route::get('/pelanggan', 'Api\Exports\CustomerController@report')->name('exportCustomer');
 
-        Route::get('/transaksi', 'Api\Exports\TransactionsController@transactions')->name('exportTrx');
+        // Route::get('/transaksi', 'Api\Exports\TransactionsController@transactions')->name('exportTrx');
 
-        // export databases
-        Route::post('/databases', 'Api\Exports\DatabaseController@export')->name('exportDatabases');
-        Route::get('/databases', 'Api\Exports\DatabaseController@all')->name('getListDatabaseExport');
-    });
+        // Route::get('/invoice', 'Api\Exports\TransactionsController@invoice')->name('printPdfInvoice');
+
+        // // export databases
+        // Route::post('/databases', 'Api\Exports\DatabaseController@export')->name('exportDatabases');
+        // Route::get('/databases', 'Api\Exports\DatabaseController@all')->name('getListDatabaseExport');
+    // });
 
     Route::group(['prefix' => 'settings'], function () {
         // get all

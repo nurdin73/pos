@@ -38,4 +38,10 @@ class TransactionsController extends Controller
         $years = $request->input('year') != null ? $request->input('year') : date('Y');
         return $this->transactionService->exportTransactions($years);
     }
+
+    public function invoice(Request $request)
+    {
+        $id = $request->input('id');
+        return $this->transactionService->exportPdfInvoice($id);
+    }
 }

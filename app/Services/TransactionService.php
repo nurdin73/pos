@@ -12,6 +12,7 @@ use App\Models\PrinterSettings;
 use App\Models\Products;
 use App\Models\Stocks;
 use App\Models\Transactions;
+use Dompdf\Dompdf;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Log;
 use Maatwebsite\Excel\Facades\Excel;
@@ -457,5 +458,16 @@ class TransactionService
         } else {
             return response(['message' => 'keranjang masih kosong'], 422);
         }
+    }
+
+    public function exportPdfInvoice($id)
+    {
+        $pdf = new Dompdf();
+        $options = $pdf->getOptions();
+        $options->isHtml5ParserEnabled(true);
+        $pdf->setOptions($options);
+        $pdf->loadHtml("invoice id $id");
+        $pdf->render();
+        $pdf->stream();
     }
 }

@@ -80,12 +80,12 @@ Route::group(['prefix' => 'admin', 'middleware' => ['auth', 'checkLockAccount']]
 
     Route::group(['prefix' => 'reports'], function () {
         Route::get('/', 'Admin\ReportController@index')->name('reportUmum')->middleware('role:#');
-        Route::get('/transaksi', 'Admin\ReportController@transaksi')->name('reportTransaksi')->middleware('role:#');
+        Route::get('/transactions', 'Admin\ReportController@transaksi')->name('reportTransaksi')->middleware('role:#');
         Route::get('/penjualan', 'Admin\ReportController@penjualan')->name('reportPenjualan')->middleware('role:#');
         Route::get('/pembelian', 'Admin\ReportController@pembelian')->name('reportPembelian')->middleware('role:#');
-        Route::get('/modal', 'Admin\ReportController@modal')->name('reportModal')->middleware('role:reportModal');
+        Route::get('/modals', 'Admin\ReportController@modal')->name('reportModal')->middleware('role:reportModal');
         Route::get('/pajak', 'Admin\ReportController@pajak')->name('reportPajak')->middleware('role:reportPajak');
-        Route::get('/pelanggan', 'Admin\ReportController@reportPelanggan')->name('reportPelanggan')->middleware('role:reportPelanggan');
+        Route::get('/customers', 'Admin\ReportController@reportPelanggan')->name('reportPelanggan')->middleware('role:reportPelanggan');
         Route::group(['prefix' => '/kasbon', 'middleware' => ['role:reportKasbon']], function () {
             Route::get('/', 'Admin\ReportController@reportKasbon')->name('reportKasbon');
         });
@@ -94,6 +94,29 @@ Route::group(['prefix' => 'admin', 'middleware' => ['auth', 'checkLockAccount']]
             Route::get('/', 'Admin\ReportController@barang')->name('reportBarang');
         });
         Route::post('/cetak-struk', 'Admin\ReportController@cetakStruk')->name('cetakStruk');
+        
+        Route::get('/transactions-hours', 'Api\Exports\TransactionsController@hours')->name('exportTrxHours');
+        Route::get('/transactions-days', 'Api\Exports\TransactionsController@days')->name('exportTrxDays');
+        Route::get('/transactions-months', 'Api\Exports\TransactionsController@months')->name('exportTrxMonths');
+        Route::get('/transactions-years', 'Api\Exports\TransactionsController@years')->name('exportTrxYears');
+
+        Route::get('/products', 'Api\Exports\ProductController@index')->name('exportProduct');
+
+        Route::get('/pembelian-products', 'Api\Reports\PembelianController@export')->name('exportPembelianProduct');
+        Route::get('/modal', 'Api\Exports\ModalController@export')->name('exportModal');
+
+        Route::get('/pelanggan', 'Api\Exports\CustomerController@report')->name('exportCustomer');
+
+        Route::get('/penjualan-barang-export', 'Api\Reports\PenjualanController@getAll')->name('exportPenjualaBarang');
+        Route::get('/kasbon-export', 'Api\Managements\KasbonController@chartKasbon')->name('exportKasbon');
+
+        Route::get('/transaksi', 'Api\Exports\TransactionsController@transactions')->name('exportTrx');
+
+        Route::get('/invoice', 'Api\Exports\TransactionsController@invoice')->name('printPdfInvoice');
+
+        // export databases
+        Route::post('/databases', 'Api\Exports\DatabaseController@export')->name('exportDatabases');
+        Route::get('/databases', 'Api\Exports\DatabaseController@all')->name('getListDatabaseExport');
     });
 
     Route::group(['prefix' => 'settings'], function () {

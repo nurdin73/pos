@@ -41,7 +41,7 @@
         <div class="card">
           <div class="card-header d-flex justify-content-between align-items-center">
             <span class="lead">Kasbon</span>
-            <a href="{{ route('reportKasbonChart') }}?type=export&query=months" class="btn btn-sm btn-success">Export Excel</a>
+            <a href="{{ route('exportKasbon') }}?type=export&query=months" class="btn btn-sm btn-success">Export Excel</a>
           </div>
           <div class="card-body">
             <div class="d-flex justify-content-end">
