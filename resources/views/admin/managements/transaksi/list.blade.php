@@ -1,4 +1,10 @@
 @extends('layouts.template')
+@section('css')
+  <style>
+    .modal { overflow: auto !important; }
+    .page-link { cursor: pointer !important; }
+  </style>
+@endsection
 @section('content')
   <main class="c-main">
     <div class="container-fluid">

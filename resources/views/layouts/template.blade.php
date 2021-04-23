@@ -46,6 +46,10 @@
     <link rel="stylesheet" href="{{ asset('css/toastr.css') }}">
     <link rel="stylesheet" href="{{ asset('fonts/wrapper.css') }}">
     <link rel="stylesheet" href="{{ asset('css/fontawesome.css') }}">
+    <style>
+      .modal { overflow: auto !important; }
+      .page-link { cursor: pointer !important; }
+    </style>
     @yield('css')
     <!-- Global site tag (gtag.js) - Google Analytics -->
     {{-- <script async src="https://www.googletagmanager.com/gtag/js?id=G-5DVJWELFJ3"></script>
