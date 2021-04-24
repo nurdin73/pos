@@ -8,15 +8,16 @@ class Transactions extends Model
 {
     protected $fillable = ['no_invoice', 'createdBy', 'customer_id', 'diskon_transaksi', 'total', 'cash', 'pajak', 'change', 'tgl_transaksi', 'jam_transaksi', 'keterangan'];
 
+    
+    protected $hidden = [
+        'createdBy', 'customer_id', 'created_at', 'updated_at'
+    ];
+    
     public function carts()
     {
         return $this->hasMany(Carts::class, 'no_invoice', 'no_invoice');
     }
-
-    protected $hidden = [
-        'createdBy', 'customer_id', 'created_at', 'updated_at'
-    ];
-
+    
     public function customer()
     {
         return $this->belongsTo(Customers::class, 'customer_id', 'id');
@@ -25,5 +26,20 @@ class Transactions extends Model
     public function user()
     {
         return $this->belongsTo(User::class, 'createdBy', 'id');
+    }
+
+    public function getTotalModalAttribute()
+    {
+        $totalModal = 0;
+        foreach ($this->carts()->get() as $cart) {
+            $harga_dasar = $cart->product->stocks()->harga_dasar;
+            if($cart->eceran == 1) {
+                $hargaEcerModal = floor($harga_dasar / $cart->product->jumlahEceranPermanent);
+                $totalModal += floor($hargaEcerModal * $cart->qyt);
+            } else {
+                $totalModal += $harga_dasar * $cart->qyt;
+            }
+        }
+        return $totalModal;
     }
 }

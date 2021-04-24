@@ -2,6 +2,7 @@
 
 use Database\Seeders\MenuSeeder;
 use Database\Seeders\RoleAccessSeeder;
+use Database\Seeders\TransactionSeeder;
 use Illuminate\Database\Seeder;
 
 class DatabaseSeeder extends Seeder
@@ -18,7 +19,8 @@ class DatabaseSeeder extends Seeder
             UserSeeder::class,
             MenuSeeder::class,
             RoleAccessSeeder::class,
-            // ProductSeeder::class
+            ProductSeeder::class,
+            TransactionSeeder::class,
         ]);
     }
 }
