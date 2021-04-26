@@ -14,17 +14,9 @@ const getDataPenjualan = {
         let pendapatan = []
         let keuntungan = []
         datasets.map(ds => {
-            let totalModal = 0
-            let totalPendapatan = 0
-            let totalKeuntungan = 0
-            ds.map(dataset => {
-                totalModal += dataset.modal
-                totalPendapatan += dataset.pendapatan
-                totalKeuntungan += dataset.keuntungan
-            })
-            modal.push(totalModal)
-            pendapatan.push(totalPendapatan)
-            keuntungan.push(totalKeuntungan)
+            modal.push(ds.modal)
+            pendapatan.push(ds.pendapatan)
+            keuntungan.push(ds.keuntungan)
         })
         const dataset = [
             {

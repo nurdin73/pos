@@ -179,29 +179,9 @@ function gettingCharts(data = {}) {
     var totalKeuntungan = [];
     var totalPendapatan = []
     dataset.map(ds => {
-        totalTrx.push(ds.length)
-        var totalModal = 0
-        var totalPembelian = 0
-        if(ds.length > 0) {
-            ds.map(trx => {
-                totalPembelian += trx.total
-                trx.carts.map(cart => {
-                    var harga_dasar = 0
-                    cart.product.stocks.map(stock => {
-                        harga_dasar = stock.harga_dasar
-                    })
-                    if(cart.eceran == 1) {
-                        var hargaEcerModal = Math.floor(harga_dasar / cart.product.jumlahEceranPermanent)
-                        totalModal += Math.floor(hargaEcerModal * cart.qyt)
-                    } else {
-                        totalModal += harga_dasar * cart.qyt
-                    }   
-                })
-            })
-        }
-        const keuntunganTotal = totalPembelian - totalModal
-        totalKeuntungan.push(keuntunganTotal)
-        totalPendapatan.push(totalPembelian)
+        totalTrx.push(ds.totalTrx)
+        totalKeuntungan.push(ds.totalKeuntungan)
+        totalPendapatan.push(ds.totalPendapatan)
     })
     return {
         totalTrx,

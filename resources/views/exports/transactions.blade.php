@@ -29,43 +29,12 @@
             <th align="center" colspan="2">Total Keuntungan</th>
         </tr>
         @foreach ($transactions as $transaction => $vals)
-            @php
-                $totalTrx = 0;
-                $totalModal = 0;
-                $totalPembelian = 0;
-            @endphp
-            @foreach ($vals as $trx)
-                @php
-                    $totalPembelian += $trx->total
-                @endphp
-                @foreach ($trx->carts as $cart)
-                    @php
-                        $hargaDasar = 0;
-                    @endphp
-                    @foreach ($cart->product->stocks as $stock)
-                        @php
-                            $hargaDasar = $stock->harga_dasar;
-                        @endphp
-                    @endforeach
-                    @php
-                        if ($cart->eceran == 1) {
-                            $hargaEcerModal = floor($hargaDasar / $cart->product->jumlahEceranPermanent);
-                            $totalModal += floor($hargaEcerModal * $cart->qyt);
-                        } else {
-                            $totalModal += $hargaDasar * $cart->qyt;
-                        }
-                    @endphp
-                @endforeach
-                @php
-                    $totalTrx++;
-                @endphp
-            @endforeach
             <tr>
                 <td align="center" colspan="2">{{ $transaction }}</td>
-                <td align="center" colspan="2">{{ $totalTrx }}</td>
-                <td align="center" colspan="2">{{ $totalPembelian }}</td>
-                <td align="center" colspan="2">{{ $totalModal }}</td>
-                <td align="center" colspan="2">{{ $totalPembelian - $totalModal }}</td>
+                <td align="center" colspan="2">{{ number_format($vals['totalTrx']) }}</td>
+                <td align="center" colspan="2">Rp. {{ number_format($vals['totalPendapatan'], 2, ',', '.') }}</td>
+                <td align="center" colspan="2">Rp. {{ number_format($vals['totalModal'], 2, ',', '.') }}</td>
+                <td align="center" colspan="2">Rp. {{ number_format($vals['totalKeuntungan'], 2, ',', '.') }}</td>
             </tr>
         @endforeach
     </tbody>

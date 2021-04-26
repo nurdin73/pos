@@ -93,15 +93,18 @@ class TransactionService
         if(!$checkCart) return response(['message' => 'kerangjang masih kosong silahkan coba lagi'], 422);
         DB::beginTransaction();
         try {
+            $modal = 0;
             foreach ($checkCart as $cc) {
                 $totalPoint += $cc->product->point; // total point
                 
                 // check sisa stok
 
                 $sisaStok = 0;
+                $priceModalProduct = 0;
                 if(count($cc->product->stocks)) {
                     foreach ($cc->product->stocks as $stock) {
                         $sisaStok += $stock->stok;
+                        $priceModalProduct = $stock->harga_dasar;
                     }
                 }
 
@@ -112,6 +115,7 @@ class TransactionService
                     $returnQytProd = true;
                 } else {
                     if($cc->eceran == 1) {
+                        $modal += $cc->qyt * $cc->product->harga_satuan;
                         $qyt = $cc->qyt;
                         $jumlahEceran = $cc->product->jumlah;
                         $penguranganStok = floor($qyt / $jumlahEceran);
@@ -158,6 +162,7 @@ class TransactionService
                             }
                         }
                     } else {
+                        $modal += $priceModalProduct * $cc->qyt;
                         Products::find($cc->product_id)->update([
                             'selled' => $cc->product->selled + $cc->qyt
                         ]);
@@ -181,6 +186,7 @@ class TransactionService
                 }
             }
             if($returnQytProd == false) {
+                $data['modal'] = $modal;
                 $create = Transactions::create($data);
                 if(!$create) return response(['message' => 'transaksi gagal ditambahkan'], 500);
                 if($totalPoint > 0) {
@@ -256,38 +262,19 @@ class TransactionService
             $transactions = Transactions::with('carts.product.stocks')
             ->select('id', 'no_invoice', 'diskon_transaksi', 'total', 'tgl_transaksi', 'jam_transaksi')
             ->where('tgl_transaksi', 'like', '%'.$date.'%')
-            ->orderBy('jam_transaksi', 'ASC')
-            ->get();
+            ->orderBy('jam_transaksi', 'ASC');
         } else {
             $date = date('Y-m-d', strtotime("-1 days"));
             $transactions = Transactions::with('carts.product.stocks')
             ->select('id', 'no_invoice', 'diskon_transaksi', 'total', 'tgl_transaksi', 'jam_transaksi')
             ->where('tgl_transaksi', 'like', '%'.$date.'%')
-            ->orderBy('jam_transaksi', 'ASC')
-            ->get();
+            ->orderBy('jam_transaksi', 'ASC');
         }
-        $data = [
-            'total_trx' => count($transactions),
-        ];
-        $totalModal = 0;
-        $totalPembelian = 0;
-        foreach ($transactions as $trx) {
-            $totalPembelian += $trx->total;
-            foreach ($trx->carts as $cart) {
-                $harga_dasar = 0;
-                foreach ($cart->product->stocks as $stock) {
-                    $harga_dasar = $stock->harga_dasar;
-                }
-                if($cart->eceran == 1) {
-                    $hargaEcerModal = floor($harga_dasar / $cart->product->jumlahEceranPermanent);
-                    $totalModal += floor($hargaEcerModal * $cart->qyt);
-                } else {
-                    $totalModal += $harga_dasar * $cart->qyt;
-                }
-            }
-        }
-        $data['total'] = $totalPembelian;
-        $data['keuntungan'] = $totalPembelian - $totalModal;
+        $total = $transactions->sum('total');
+        $data['total_trx'] = $transactions->count();
+        $data['average'] = $data['total_trx'] > 0 ? round($total / $data['total_trx']) : 0;
+        $data['total'] = $total;
+        $data['keuntungan'] = $total - $transactions->sum('modal');
         return response($data);
     }
 
@@ -324,13 +311,19 @@ class TransactionService
         $dataset = array_merge($dataset, $jam);
         foreach ($jam as $j => $val) {
             $transactions = Transactions::with('carts.product.stocks')
-            ->select('id', 'no_invoice', 'diskon_transaksi', 'total', 'tgl_transaksi', 'jam_transaksi')
+            ->select('id', 'no_invoice', 'diskon_transaksi', 'total', 'modal', 'tgl_transaksi', 'jam_transaksi')
             ->where('tgl_transaksi', 'like', '%'.$date.'%')
-            ->where('jam_transaksi', 'like', '%'.$j.'%')
-            ->get();
-            foreach ($transactions as $trx) {
-                array_push($dataset[$j], $trx);
-            }
+            ->where('jam_transaksi', 'like', '%'.$j.'%');
+            $totaltransactions = $transactions->count();
+            $totalModal = $transactions->sum('modal');
+            $total = $transactions->sum('total');
+            $keuntungan = $total - $totalModal;
+            $dataset[$j] = [
+                'totalTrx' => $totaltransactions,
+                'totalKeuntungan' => $keuntungan,
+                'totalPendapatan' => $total,
+                'totalModal' => $totalModal
+            ];
         }
         if($type == "export") {
             $fileName = "trx-hours-".date('ymd').".xlsx";
@@ -351,12 +344,18 @@ class TransactionService
         // $dataset = array_merge($dataset, $days);
         foreach ($days as $d => $value) {
             $transactions = Transactions::with('carts.product.stocks')
-            ->select('id', 'no_invoice', 'diskon_transaksi', 'total', 'tgl_transaksi', 'jam_transaksi')
-            ->where('tgl_transaksi', $d)
-            ->get();
-            foreach ($transactions as $trx) {
-                array_push($days[$d], $trx);
-            }
+            ->select('id', 'no_invoice', 'diskon_transaksi', 'total', 'modal', 'tgl_transaksi', 'jam_transaksi')
+            ->where('tgl_transaksi', $d);
+            $totaltransactions = $transactions->count();
+            $totalModal = $transactions->sum('modal');
+            $total = $transactions->sum('total');
+            $keuntungan = $total - $totalModal;
+            $days[$d] = [
+                'totalTrx' => $totaltransactions,
+                'totalKeuntungan' => $keuntungan,
+                'totalPendapatan' => $total,
+                'totalModal' => $totalModal
+            ];
         }
         if($type == "export") {
             $fileName = "trx-days-".date('ymd').".xlsx";
@@ -376,12 +375,18 @@ class TransactionService
         }
         foreach ($month as $m => $value) {
             $transactions = Transactions::with('carts.product.stocks')
-            ->select('id', 'no_invoice', 'diskon_transaksi', 'total', 'tgl_transaksi', 'jam_transaksi')
-            ->where('tgl_transaksi', 'like', '%'.$m.'%')
-            ->get();
-            foreach ($transactions as $trx) {
-                array_push($month[$m], $trx);
-            }
+            ->select('id', 'no_invoice', 'diskon_transaksi', 'total', 'modal', 'tgl_transaksi', 'jam_transaksi')
+            ->where('tgl_transaksi', 'like', '%'.$m.'%');
+            $totaltransactions = $transactions->count();
+            $totalModal = $transactions->sum('modal');
+            $total = $transactions->sum('total');
+            $keuntungan = $total - $totalModal;
+            $month[$m] = [
+                'totalTrx' => $totaltransactions,
+                'totalKeuntungan' => $keuntungan,
+                'totalPendapatan' => $total,
+                'totalModal' => $totalModal
+            ];
         }
         if($type == "export") {
             $fileName = "trx-months-".date('ymd').".xlsx";
@@ -400,12 +405,18 @@ class TransactionService
         }
         foreach ($years as $y => $value) {
             $transactions = Transactions::with('carts.product.stocks')
-            ->select('id', 'no_invoice', 'diskon_transaksi', 'total', 'tgl_transaksi', 'jam_transaksi')
-            ->where('tgl_transaksi', 'like', '%'.$y.'%')
-            ->get();
-            foreach ($transactions as $trx) {
-                array_push($years[$y], $trx);
-            }
+            ->select('id', 'no_invoice', 'diskon_transaksi', 'total', 'modal', 'tgl_transaksi', 'jam_transaksi')
+            ->where('tgl_transaksi', 'like', '%'.$y.'%');
+            $totaltransactions = $transactions->count();
+            $totalModal = $transactions->sum('modal');
+            $total = $transactions->sum('total');
+            $keuntungan = $total - $totalModal;
+            $years[$y] = [
+                'totalTrx' => $totaltransactions,
+                'totalKeuntungan' => $keuntungan,
+                'totalPendapatan' => $total,
+                'totalModal' => $totalModal
+            ];
         }
         if($type == "export") {
             $fileName = "trx-year-".date('ymd').".xlsx";

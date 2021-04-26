@@ -10,30 +10,12 @@ class DashboardService
 {
     public function transactions()
     {
-        $transactions = Transactions::with('carts.product.stocks')->get();
-        $data = [
-            'total_trx' => count($transactions),
-        ];
-        $totalModal = 0;
-        $totalPembelian = 0;
-        foreach ($transactions as $trx) {
-            $totalPembelian += $trx->total;
-            foreach ($trx->carts as $cart) {
-                $harga_dasar = 0;
-                foreach ($cart->product->stocks as $stock) {
-                    $harga_dasar = $stock->harga_dasar;
-                }
-                if($cart->eceran == 1) {
-                    $hargaEcerModal = floor($harga_dasar / $cart->product->jumlahEceranPermanent);
-                    $totalModal += floor($hargaEcerModal * $cart->qyt);
-                } else {
-                    $totalModal += $harga_dasar * $cart->qyt;
-                }
-            }
-        }
-        $data['average'] = count($transactions) > 0 ? round($totalPembelian / count($transactions)) : 0;
-        $data['total'] = $totalPembelian;
-        $data['keuntungan'] = $totalPembelian - $totalModal;
+        $transactions = Transactions::select('no_invoice', 'total');
+        $total = $transactions->sum('total');
+        $data['total_trx'] = $transactions->count();
+        $data['average'] = $data['total_trx'] > 0 ? round($total / $data['total_trx']) : 0;
+        $data['total'] = $total;
+        $data['keuntungan'] = $total - $transactions->sum('modal');
         return response($data);
     }
 
@@ -50,46 +32,16 @@ class DashboardService
                 }
                 foreach ($labelTime as $y => $value) {
                     $transactions = Transactions::with('carts.product.stocks')
-                    ->select('id', 'no_invoice', 'diskon_transaksi', 'total', 'tgl_transaksi', 'jam_transaksi')
-                    ->where('tgl_transaksi', 'like', '%'.$y.'%')
-                    ->get();
+                    ->select('id', 'no_invoice', 'diskon_transaksi', 'total', 'modal','tgl_transaksi', 'jam_transaksi')
+                    ->where('tgl_transaksi', 'like', '%'.$y.'%');
+                    $total = $transactions->sum('total');
+                    $modal = $transactions->sum('modal');
                     $sets[$y] = [];
-                    foreach ($transactions as $trx) {
-                        $dataset = [];
-                        foreach ($trx->carts as $cart) {
-                            $harga_dasar = 0;
-                            foreach ($cart->product->stocks as $stock) {
-                                $harga_dasar = $stock->harga_dasar;
-                            }
-                            $cap = 0;
-                            $earning = ($cart->harga_product - $cart->diskon_product) * $cart->qyt;
-                            if($cart->eceran == 1) {
-                                $hargaEcerModal = floor($harga_dasar / $cart->product->jumlahEceranPermanent);
-                                $cap = floor($hargaEcerModal * $cart->qyt);
-                            } else {
-                                $cap = $harga_dasar * $cart->qyt;
-                            }
-                            $dataset[] = [
-                                'modal' => $cap,
-                                'pendapatan' => $earning,
-                                'keuntungan' => $earning - $cap
-                            ];
-                        }
-                        $modal = 0;
-                        $pendapatan = 0;
-                        $keuntungan = 0;
-                        foreach ($dataset as $data) {
-                            $modal += $data['modal'];
-                            $pendapatan += $data['pendapatan'];
-                            $keuntungan += $data['keuntungan'];
-                        }
-                        $data = [
-                            'modal' => $modal,
-                            'pendapatan' => $pendapatan,
-                            'keuntungan' => $keuntungan,
-                        ];
-                        array_push($sets[$y], $data); 
-                    }
+                    array_push($sets[$y], [
+                        'modal' => $modal,
+                        'pendapatan' => intval($total),
+                        'keuntungan' => $total - $modal
+                    ]);
                 }
                 break;
             
@@ -101,49 +53,19 @@ class DashboardService
                 }
                 foreach ($labelTime as $m => $value) {
                     $transactions = Transactions::with('carts.product.stocks')
-                    ->select('id', 'no_invoice', 'diskon_transaksi', 'total', 'tgl_transaksi', 'jam_transaksi')
-                    ->where('tgl_transaksi', 'like', '%'.$m.'%')
-                    ->get();
+                    ->select('id', 'no_invoice', 'diskon_transaksi', 'total', 'modal', 'tgl_transaksi', 'jam_transaksi')
+                    ->where('tgl_transaksi', 'like', '%'.$m.'%');
                     $monthName = explode('-', $m);
                     $convertMonth = DateTime::createFromFormat('!m', $monthName[1]);
                     $nameMonth = $convertMonth->format('F');
                     $sets[$nameMonth] = [];
-                    foreach ($transactions as $trx) {
-                        $dataset = [];
-                        foreach ($trx->carts as $cart) {
-                            $harga_dasar = 0;
-                            foreach ($cart->product->stocks as $stock) {
-                                $harga_dasar = $stock->harga_dasar;
-                            }
-                            $cap = 0;
-                            $earning = ($cart->harga_product - $cart->diskon_product) * $cart->qyt;
-                            if($cart->eceran == 1) {
-                                $hargaEcerModal = floor($harga_dasar / $cart->product->jumlahEceranPermanent);
-                                $cap = floor($hargaEcerModal * $cart->qyt);
-                            } else {
-                                $cap = $harga_dasar * $cart->qyt;
-                            }
-                            $dataset[] = [
-                                'modal' => $cap,
-                                'pendapatan' => $earning,
-                                'keuntungan' => $earning - $cap
-                            ];
-                        }
-                        $modal = 0;
-                        $pendapatan = 0;
-                        $keuntungan = 0;
-                        foreach ($dataset as $data) {
-                            $modal += $data['modal'];
-                            $pendapatan += $data['pendapatan'];
-                            $keuntungan += $data['keuntungan'];
-                        }
-                        $data = [
-                            'modal' => $modal,
-                            'pendapatan' => $pendapatan,
-                            'keuntungan' => $keuntungan,
-                        ];
-                        array_push($sets[$nameMonth], $data);
-                    }
+                    $total = $transactions->sum('total');
+                    $modal = $transactions->sum('modal');
+                    array_push($sets[$nameMonth], [
+                        'modal' => $modal,
+                        'pendapatan' => intval($total),
+                        'keuntungan' => $total - $modal
+                    ]);
                 }
                 break;
             case 'years':
@@ -153,46 +75,16 @@ class DashboardService
                 }
                 foreach ($labelTime as $y => $value) {
                     $transactions = Transactions::with('carts.product.stocks')
-                    ->select('id', 'no_invoice', 'diskon_transaksi', 'total', 'tgl_transaksi', 'jam_transaksi')
-                    ->where('tgl_transaksi', 'like', '%'.$y.'%')
-                    ->get();
+                    ->select('id', 'no_invoice', 'diskon_transaksi', 'total', 'modal','tgl_transaksi', 'jam_transaksi')
+                    ->where('tgl_transaksi', 'like', '%'.$y.'%');
+                    $total = $transactions->sum('total');
+                    $modal = $transactions->sum('modal');
                     $sets[$y] = [];
-                    foreach ($transactions as $trx) {
-                        $dataset = [];
-                        foreach ($trx->carts as $cart) {
-                            $harga_dasar = 0;
-                            foreach ($cart->product->stocks as $stock) {
-                                $harga_dasar = $stock->harga_dasar;
-                            }
-                            $cap = 0;
-                            $earning = ($cart->harga_product - $cart->diskon_product) * $cart->qyt;
-                            if($cart->eceran == 1) {
-                                $hargaEcerModal = floor($harga_dasar / $cart->product->jumlahEceranPermanent);
-                                $cap = floor($hargaEcerModal * $cart->qyt);
-                            } else {
-                                $cap = $harga_dasar * $cart->qyt;
-                            }
-                            $dataset[] = [
-                                'modal' => $cap,
-                                'pendapatan' => $earning,
-                                'keuntungan' => $earning - $cap
-                            ];
-                        }
-                        $modal = 0;
-                        $pendapatan = 0;
-                        $keuntungan = 0;
-                        foreach ($dataset as $data) {
-                            $modal += $data['modal'];
-                            $pendapatan += $data['pendapatan'];
-                            $keuntungan += $data['keuntungan'];
-                        }
-                        $data = [
-                            'modal' => $modal,
-                            'pendapatan' => $pendapatan,
-                            'keuntungan' => $keuntungan,
-                        ];
-                        array_push($sets[$y], $data);
-                    }
+                    array_push($sets[$y], [
+                        'modal' => $modal,
+                        'pendapatan' => intval($total),
+                        'keuntungan' => $total - $modal
+                    ]);
                 }
                 break;
             
@@ -204,46 +96,16 @@ class DashboardService
                 }
                 foreach ($labelTime as $y => $value) {
                     $transactions = Transactions::with('carts.product.stocks')
-                    ->select('id', 'no_invoice', 'diskon_transaksi', 'total', 'tgl_transaksi', 'jam_transaksi')
-                    ->where('tgl_transaksi', 'like', '%'.$y.'%')
-                    ->get();
+                    ->select('id', 'no_invoice', 'diskon_transaksi', 'total', 'modal','tgl_transaksi', 'jam_transaksi')
+                    ->where('tgl_transaksi', 'like', '%'.$y.'%');
+                    $total = $transactions->sum('total');
+                    $modal = $transactions->sum('modal');
                     $sets[$y] = [];
-                    foreach ($transactions as $trx) {
-                        $dataset = [];
-                        foreach ($trx->carts as $cart) {
-                            $harga_dasar = 0;
-                            foreach ($cart->product->stocks as $stock) {
-                                $harga_dasar = $stock->harga_dasar;
-                            }
-                            $cap = 0;
-                            $earning = ($cart->harga_product - $cart->diskon_product) * $cart->qyt;
-                            if($cart->eceran == 1) {
-                                $hargaEcerModal = floor($harga_dasar / $cart->product->jumlahEceranPermanent);
-                                $cap = floor($hargaEcerModal * $cart->qyt);
-                            } else {
-                                $cap = $harga_dasar * $cart->qyt;
-                            }
-                            $dataset[] = [
-                                'modal' => $cap,
-                                'pendapatan' => $earning,
-                                'keuntungan' => $earning - $cap
-                            ];
-                        }
-                        $modal = 0;
-                        $pendapatan = 0;
-                        $keuntungan = 0;
-                        foreach ($dataset as $data) {
-                            $modal += $data['modal'];
-                            $pendapatan += $data['pendapatan'];
-                            $keuntungan += $data['keuntungan'];
-                        }
-                        $data = [
-                            'modal' => $modal,
-                            'pendapatan' => $pendapatan,
-                            'keuntungan' => $keuntungan,
-                        ];
-                        array_push($sets[$y], $data);
-                    }
+                    array_push($sets[$y], [
+                        'modal' => $modal,
+                        'pendapatan' => intval($total),
+                        'keuntungan' => $total - $modal
+                    ]);
                 }
                 break;
         }

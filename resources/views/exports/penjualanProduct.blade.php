@@ -33,23 +33,11 @@
     </thead>
     <tbody>
         @foreach ($products as $product => $vals)
-            @php
-                $modal = 0;
-                $pendapatan = 0;
-                $keuntungan = 0;
-            @endphp
-            @foreach ($vals as $v)
-                @php
-                    $modal += $v['modal'];
-                    $pendapatan += $v['pendapatan'];
-                    $keuntungan += $v['keuntungan'];
-                @endphp
-            @endforeach
             <tr>
                 <td align="center" colspan="2">{{ $product }}</td>
-                <td align="center" colspan="2">{{ $modal }}</td>
-                <td align="center" colspan="2">{{ $pendapatan }}</td>
-                <td align="center" colspan="2">{{ $keuntungan }}</td>
+                <td align="center" colspan="2">{{ number_format($vals['modal'], 2, ',', '.') }}</td>
+                <td align="center" colspan="2">{{ number_format($vals['pendapatan'], 2, ',', '.') }}</td>
+                <td align="center" colspan="2">{{ number_format($vals['keuntungan'], 2, ',', '.') }}</td>
             </tr>
         @endforeach
     </tbody>

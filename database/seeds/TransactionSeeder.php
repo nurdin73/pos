@@ -9,6 +9,7 @@ use App\Models\Stocks;
 use App\Models\Transactions;
 use Illuminate\Database\Seeder;
 use Illuminate\Support\Facades\Cache;
+use Illuminate\Support\Facades\Log;
 
 class TransactionSeeder extends Seeder
 {
@@ -22,6 +23,7 @@ class TransactionSeeder extends Seeder
         for ($i=0; $i < 10000; $i++) { 
             $total = 0;
             $cash = 0;
+            $modal = 0;
             $trx['no_invoice'] = GenerateCode::invoice();
             $trx['createdBy'] = 1;
             $trx['customer_id'] = 0;
@@ -42,7 +44,9 @@ class TransactionSeeder extends Seeder
                 Carts::create($cart);
                 $product->selled = $product->selled + $qyt;
                 $update = $product->save();
+                $priceProduct = 0;
                 foreach ($product->stocks as $stock) {
+                    $priceProduct = $stock->harga_dasar;
                     if($qyt > $stock->stok) {
                         $idStok = $stock->id;
                         $qyt -= $stock->stok;
@@ -54,17 +58,18 @@ class TransactionSeeder extends Seeder
                         $qyt = 0;
                         $update = Stocks::find($idStok)->update([
                             'stok' => $stock->stok
-                            ]);
-                            break;
-                        }
+                        ]);
+                        break;
                     }
                 }
-                $trx['total'] = $total;
-                $trx['cash'] = $cash;
-                $trx['change'] = $cash - $total;
-                $trx['pajak'] = (10 / 100) * $trx['total'];
+                $modal += $priceProduct * 1;
+            }
+            $trx['modal'] = $modal;
+            $trx['total'] = $total;
+            $trx['cash'] = $cash;
+            $trx['change'] = $cash - $total;
+            $trx['pajak'] = (10 / 100) * $trx['total'];
             Transactions::create($trx);
         }
-
     }
 }

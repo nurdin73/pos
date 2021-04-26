@@ -21,49 +21,19 @@ class PenjualanService
         }
         foreach ($month as $m => $value) {
             $transactions = Transactions::with('carts.product.stocks')
-            ->select('id', 'no_invoice', 'diskon_transaksi', 'total', 'tgl_transaksi', 'jam_transaksi')
-            ->where('tgl_transaksi', 'like', '%'.$m.'%')
-            ->get();
+            ->select('id', 'no_invoice', 'diskon_transaksi', 'total', 'modal', 'tgl_transaksi', 'jam_transaksi')
+            ->where('tgl_transaksi', 'like', '%'.$m.'%');
             $monthName = explode('-', $m);
             $convertMonth = DateTime::createFromFormat('!m', $monthName[1]);
             $nameMonth = $convertMonth->format('F');
             $monthset[$nameMonth] = [];
-            foreach ($transactions as $trx) {
-                $dataset = [];
-                foreach ($trx->carts as $cart) {
-                    $harga_dasar = 0;
-                    foreach ($cart->product->stocks as $stock) {
-                        $harga_dasar = $stock->harga_dasar;
-                    }
-                    $cap = 0;
-                    $earning = ($cart->harga_product - $cart->diskon_product) * $cart->qyt;
-                    if($cart->eceran == 1) {
-                        $hargaEcerModal = floor($harga_dasar / $cart->product->jumlahEceranPermanent);
-                        $cap = floor($hargaEcerModal * $cart->qyt);
-                    } else {
-                        $cap = $harga_dasar * $cart->qyt;
-                    }
-                    $dataset[] = [
-                        'modal' => $cap,
-                        'pendapatan' => $earning,
-                        'keuntungan' => $earning - $cap
-                    ];
-                }
-                $modal = 0;
-                $pendapatan = 0;
-                $keuntungan = 0;
-                foreach ($dataset as $data) {
-                    $modal += $data['modal'];
-                    $pendapatan += $data['pendapatan'];
-                    $keuntungan += $data['keuntungan'];
-                }
-                $data = [
-                    'modal' => $modal,
-                    'pendapatan' => $pendapatan,
-                    'keuntungan' => $keuntungan,
-                ];
-                array_push($monthset[$nameMonth], $data);
-            }
+            $total = $transactions->sum('total');
+            $modal = $transactions->sum('modal');
+            $monthset[$nameMonth] = [
+                'pendapatan' => intval($total),
+                'keuntungan' => $total - $modal,
+                'modal' => $modal,
+            ];
         }
         if($type == "export") {
             $filename = 'Penjualan-'.Str::random(20). '.xlsx';
