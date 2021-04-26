@@ -428,7 +428,7 @@ class TransactionService
 
     public function listTransaksi($no_invoice, $sorting)
     {
-        $results = Transactions::with('user', 'customer')->select("*")->orderBy('no_invoice', 'DESC');
+        $results = Transactions::with('user', 'customer')->select("*")->orderBy('id', 'DESC');
         if($no_invoice != "") {
             $results = $results->where('no_invoice', 'like', '%'.$no_invoice.'%')->paginate($sorting);
         } else {
