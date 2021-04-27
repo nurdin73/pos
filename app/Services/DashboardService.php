@@ -4,7 +4,6 @@ namespace App\Services;
 use App\Models\Products;
 use App\Models\Transactions;
 use DateTime;
-use Illuminate\Support\Facades\Log;
 
 class DashboardService
 {
@@ -16,7 +15,7 @@ class DashboardService
         $data['average'] = $data['total_trx'] > 0 ? round($total / $data['total_trx']) : 0;
         $data['total'] = $total;
         $data['keuntungan'] = $total - $transactions->sum('modal');
-        return response($data);
+        return $data;
     }
 
     public function chartTransactions($time)

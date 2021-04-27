@@ -1,14 +1,17 @@
 <?php
 namespace App\Exports;
 
+use Illuminate\Contracts\Queue\ShouldQueue;
 use Illuminate\Contracts\View\View;
+use Illuminate\Support\Facades\Log;
 use Maatwebsite\Excel\Concerns\Exportable;
 use Maatwebsite\Excel\Concerns\FromView;
 use Maatwebsite\Excel\Concerns\WithStyles;
 use PhpOffice\PhpSpreadsheet\Style\Border;
 use PhpOffice\PhpSpreadsheet\Worksheet\Worksheet;
+use Throwable;
 
-class TransaksiExport implements FromView, WithStyles
+class TransaksiExport implements FromView, WithStyles, ShouldQueue
 {
     use Exportable;
 
@@ -63,5 +66,10 @@ class TransaksiExport implements FromView, WithStyles
     public function view() : View
     {
         return view('exports.transaksi-list', ['transactions' => $this->data, 'year' => $this->year]);
+    }
+
+    public function failed(Throwable $exception): void
+    {
+        Log::error($exception->getMessage());
     }
 }

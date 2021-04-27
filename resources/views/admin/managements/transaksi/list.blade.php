@@ -12,7 +12,7 @@
         <div class="card">
           <div class="card-header d-flex justify-content-between align-items-center">
             <span class="lead">List Transaksi</span>
-            <div class="btn-group">
+            {{-- <div class="btn-group">
               <button type="button" class="btn btn-sm btn-success">Export Excel</button>
               <button type="button" class="btn btn-sm btn-success dropdown-toggle dropdown-toggle-split" id="dropdownMenuReference" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false" data-reference="parent">
                 <span class="sr-only">Toggle Dropdown</span>
@@ -26,7 +26,7 @@
                     @endif
                 @endfor
               </div>
-            </div>
+            </div> --}}
           </div>
           <div class="card-body">
             <div class="table-responsive">

@@ -22,12 +22,12 @@ class GenerateCode
     public static function invoice()
     {
         $date = date('ymd');
-        $query = "SELECT MAX(SUBSTRING(no_invoice, 10, 4)) AS no_invoice FROM transactions WHERE SUBSTRING(no_invoice, 4, 6) = $date";
+        $query = "SELECT MAX(SUBSTRING(no_invoice, 10, 5)) AS no_invoice FROM transactions WHERE SUBSTRING(no_invoice, 4, 6) = $date";
         $checkNoInvoice = DB::select($query);
         $getCodeStore = "INV";
         $urutan = (int)$checkNoInvoice[0]->no_invoice;
         $urutan++;
-        $kode = sprintf("%04s", $urutan);
+        $kode = sprintf("%05s", $urutan);
         return $getCodeStore.$date.$kode;
     }
 

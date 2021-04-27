@@ -12,6 +12,7 @@ use App\Models\PrinterSettings;
 use App\Models\Products;
 use App\Models\Stocks;
 use App\Models\Transactions;
+use App\Notifications\NotifyUserCompleteExport;
 use Dompdf\Dompdf;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Log;
@@ -450,7 +451,16 @@ class TransactionService
     {
         $results = Transactions::with('user:id,name', 'customer:id,nama')->where('tgl_transaksi', 'like', '%'.$years.'%')->get();
         $fileName = "transaksi-".$years.".xlsx";
-        return Excel::download(new TransaksiExport($results, $years), $fileName);
+        $path = "export/excel/";
+        // (new TransaksiExport($results, $years))->store($path . $fileName, 'local')->chain([
+        //     new NotifyUserCompleteExport(auth()->id, $fileName, $path . $fileName),
+        // ]);
+        (new TransaksiExport($results, $years))->queue($path . $fileName,'local')->chain([
+            new NotifyUserCompleteExport(auth()->id(),$fileName, $path . $fileName),
+        ])->onQueue('exports');
+
+        return response(['message' => 'Export excel dijalankan. tunggu notifikasi selanjutnya']);
+        // return Excel::download(new TransaksiExport($results, $years), $fileName);
     }
 
     public function cetakStruk($id)
